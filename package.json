@@ -3,8 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "fs": "^0.0.1-security",
     "react": "^16.4.2",
-    "react-dom": "^16.4.2"
+    "react-dom": "^16.4.2",
+    "react-transition-group": "^2.4.0"
   },
   "scripts": {
     "dev": "electron-webpack dev",
@@ -17,10 +19,13 @@
     "@types/node": "^10.7.0",
     "@types/react": "^16.4.10",
     "@types/react-dom": "^16.0.7",
+    "@types/react-transition-group": "^2.0.13",
     "electron": "^2.0.7",
     "electron-builder": "^20.28.1",
     "electron-webpack": "^2.1.2",
     "electron-webpack-ts": "^2.0.2",
+    "node-sass": "^4.9.3",
+    "sass-loader": "^7.1.0",
     "typescript": "^3.0.1",
     "webpack": "^4.16.5"
   }

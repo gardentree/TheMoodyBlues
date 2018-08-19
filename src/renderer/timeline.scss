@@ -1,0 +1,50 @@
+body {
+  margin: 0;
+}
+
+ul.timeline {
+  list-style: none;
+  padding-left: 0;
+
+  li {
+    border-bottom: solid 1px #ccc;
+
+    & > div {
+      display: table;
+      padding: 8px;
+    }
+    & > div > div {
+      display: table-cell;
+      vertical-align: top;
+    }
+    & p {
+      margin: 0;
+    }
+
+    .avatar {
+      position: relative;
+    }
+  }
+  img {
+    padding-right: 8px;
+  }
+}
+
+img.tweeter {
+  width: 48px;
+  display: block;
+}
+img.retweeter {
+  position:: absolute;
+  width: 24px;
+  display: block;
+  right: 0;
+  top: 24px;
+}
+
+.fade-enter {
+  opacity: 0;
+}
+.fade-enter-done {
+  opacity: 1;
+}
