@@ -1,13 +1,11 @@
 import * as React from "react";
-import {shell} from "electron"
 import {Tweet} from "./twitter";
+import {openLinkOnAnchor} from "./tools"
 
 export class PrettyTweet extends React.Component<{tweet: Tweet},{tweet: Tweet}> {
   constructor(props: {tweet: Tweet}) {
     super(props);
     this.state = {tweet: props.tweet};
-
-    this.openLink = this.openLink.bind(this);
   }
   render() {
     const tweet = this.state.tweet
@@ -17,7 +15,7 @@ export class PrettyTweet extends React.Component<{tweet: Tweet},{tweet: Tweet}> 
     for (let property of tweet.entities.urls) {
       const elements = text.split(property.url)
       fragments.push(React.createElement(React.Fragment,{key: fragments.length},this.breakLine(elements[0])))
-      fragments.push(React.createElement("a",{key: fragments.length,href: property.expanded_url,onClick: this.openLink},property.display_url))
+      fragments.push(React.createElement("a",{key: fragments.length,href: property.expanded_url,onClick: openLinkOnAnchor},property.display_url))
 
       text = elements[1]
     }
@@ -28,10 +26,6 @@ export class PrettyTweet extends React.Component<{tweet: Tweet},{tweet: Tweet}> 
     return (
       <React.Fragment>{fragments}</React.Fragment>
     )
-  }
-  private openLink(event: React.MouseEvent<HTMLAnchorElement>) {
-    event.preventDefault();
-    shell.openExternal(event.currentTarget.href);
   }
   private breakLine(text: string) {
     const elements = text.split(/(?:\r\n|\r|\n)/)
