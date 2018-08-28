@@ -1,8 +1,10 @@
 'use strict'
 
-import { app, BrowserWindow } from 'electron'
+import { app, BrowserWindow,Menu } from 'electron'
 import * as path from 'path'
 import { format as formatUrl } from 'url'
+
+require('dotenv').config();
 
 const isDevelopment = process.env.NODE_ENV !== 'production'
 
@@ -12,7 +14,7 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 let mainWindow
 
 function createMainWindow() {
-  const window = new BrowserWindow()
+  const window = new BrowserWindow({title: "The Moody Blues"})
 
   if (isDevelopment) {
     window.webContents.openDevTools()
@@ -61,4 +63,28 @@ app.on('activate', () => {
 // create main BrowserWindow when electron is ready
 app.on('ready', () => {
   mainWindow = createMainWindow()
+
+  const template = [
+    {
+      label: app.getName(),
+      submenu: [
+        {role: 'about'}
+      ]
+    },
+    {
+      label: 'Timeline',
+      submenu: [
+        {
+          label: 'reload',
+          accelerator: 'Command+r',
+          click() {
+            mainWindow.webContents.send('reload',{});
+          }
+        },
+      ]
+    }
+  ]
+
+  const menu = Menu.buildFromTemplate(template)
+  Menu.setApplicationMenu(menu)
 })
