@@ -13,10 +13,22 @@ authorization.authorize((twitter) => {
   const storage = require("electron-json-storage");
 
   ipcRenderer.on('reload',(event: string,arugments: any) => {
-    twitter.get('statuses/home_timeline',{count: 200,exclude_replies: true,include_entities: true,tweet_mode: 'extended'},(error: string,tweets: Tweet[],response: any) => {
-      if (error) throw error;
+    let option = {
+      count: 200,
+      exclude_replies: true,
+      include_entities: true,
+      tweet_mode: 'extended'
+    }
+    if (timeline.current!.state.tweets.length > 0) {
+      option['since_id'] = timeline.current!.state.tweets[0].id_str
+    }
 
-      timeline.current!.setState({tweets: tweets});
+    twitter.get('statuses/home_timeline',option,(error: string,tweets: Tweet[],response: any) => {
+      if (error) throw error;
+      console.log(`${tweets.length} tweets`)
+
+      const all = tweets.concat(timeline.current!.state.tweets);
+      timeline.current!.setState({tweets: all});
     })
   });
   ipcRenderer.on('closed',(event: string,arugments: any) => {
