@@ -31,7 +31,11 @@ function createMainWindow() {
     }))
   }
 
+  window.on('close', () => {
+    window.webContents.send('closed',null);
+  })
   window.on('closed', () => {
+
     mainWindow = null
   })
 
