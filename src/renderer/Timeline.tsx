@@ -55,7 +55,7 @@ export class Timeline extends React.Component<Property,Property> {
                 <img src={tweet.user.profile_image_url_https} className="tweeter" />
                 {retweet && <img src={retweet.user.profile_image_url_https} className="retweeter" />}
               </div>
-              <div>
+              <div className='tweet'>
                 <div>
                   <div>@{tweet.user.screen_name}</div>
                   <p><PrettyTweet tweet={tweet} /></p>
