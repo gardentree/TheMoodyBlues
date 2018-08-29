@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "date-fns": "^1.29.0",
     "electron-json-storage": "^4.1.2",
     "electron-store": "^2.0.0",
     "fs": "^0.0.1-security",

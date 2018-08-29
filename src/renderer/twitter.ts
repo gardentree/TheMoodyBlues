@@ -16,6 +16,7 @@ export interface Tweet {
     }[];
   };
   since_id: string;
+  created_at: string;
 }
 interface User {
   id_str: string;

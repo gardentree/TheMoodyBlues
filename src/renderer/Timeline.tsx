@@ -4,6 +4,7 @@ import './timeline.scss';
 import {PrettyTweet} from "./PrettyTweet";
 import {Tweet} from "./twitter";
 import {openLinkOnAnchor} from "./tools"
+import * as DateUtility from "date-fns"
 
 interface Property {
   tweets: Tweet[];
@@ -57,7 +58,10 @@ export class Timeline extends React.Component<Property,Property> {
               </div>
               <div className='tweet'>
                 <div>
-                  <div>@{tweet.user.screen_name}</div>
+                  <div className='meta'>
+                    <div className='screen_name'>@{tweet.user.screen_name}</div>
+                    <div className='created_at'>{Timeline.prettyTime(tweet.created_at)}</div>
+                  </div>
                   <p><PrettyTweet tweet={tweet} /></p>
                   {medias && <div>{medias}</div>}
                 </div>
@@ -79,5 +83,20 @@ export class Timeline extends React.Component<Property,Property> {
         </ul>
       </div>
     );
+  }
+
+  static prettyTime(source: string): string {
+    const date = DateUtility.parse(source);
+    const now = new Date();
+
+    let format;
+    if (DateUtility.format(now,'YYYY-MM-DD') == DateUtility.format(date,'YYYY-MM-DD')) {
+      format = 'HH:mm:ss';
+    }
+    else {
+      format = 'YYYY-MM-DD HH:mm:ss';
+    }
+
+    return DateUtility.format(date,format)
   }
 }

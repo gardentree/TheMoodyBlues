@@ -25,6 +25,19 @@ ul.timeline {
     }
     .tweet {
       width: 100%;
+
+      .meta {
+        display: table;
+        border-collapse: collapse;
+        width: 100%;
+
+        & > div {
+          display: table-cell;
+        }
+        .created_at {
+          text-align: right;
+        }
+      }
     }
     & p {
       margin: 0;
