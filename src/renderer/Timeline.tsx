@@ -66,7 +66,7 @@ export class Timeline extends React.Component<Property,Property> {
                   {medias && <div>{medias}</div>}
                 </div>
                 {quote && <div className="quote"><div>@{quote.user.screen_name}</div><p><PrettyTweet tweet={quote} /></p></div>}
-                {retweet && <div>{retweet.user.screen_name} retweeted</div>}
+                {retweet && <div className='retweeter'>{retweet.user.screen_name} retweeted</div>}
               </div>
             </div>
           </li>
