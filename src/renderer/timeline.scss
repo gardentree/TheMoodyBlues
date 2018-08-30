@@ -67,14 +67,15 @@ ul.timeline {
     right: 0;
     top: 24px;
   }
-  img.photo {
-    height: 48px;
-    width: 48px;
-    object-fit: cover;
-    vertical-align: bottom;
-
-    & + img.photo {
+  a.photo {
+    & + a.photo {
       margin-left: 8px;
+    }
+    img {
+      height: 48px;
+      width: 48px;
+      object-fit: cover;
+      vertical-align: bottom;
     }
   }
 }

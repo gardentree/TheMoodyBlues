@@ -37,8 +37,8 @@ export class Timeline extends React.Component<Property,Property> {
       if (tweet.extended_entities !== undefined) {
         medias = tweet.extended_entities.media.map((media) => {
           return (
-            <a key={media.id_str} href={media.media_url_https} onClick={openLinkOnAnchor}>
-              <img src={media.media_url_https} className="photo" />
+            <a key={media.id_str} className="photo" href={media.media_url_https} onClick={openLinkOnAnchor}>
+              <img src={media.media_url_https} />
             </a>
           )
         })
