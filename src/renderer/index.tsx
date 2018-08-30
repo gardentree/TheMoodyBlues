@@ -5,8 +5,14 @@ import {Tweet} from "./twitter";
 import {Timeline} from "./Timeline";
 import {ipcRenderer} from 'electron';
 
-const authorization = new Authorization({});
+const changeFontSize = (offset: number) => {
+  const size = window.getComputedStyle(document.body).fontSize;if (size === null) throw "font size is null";
+  const matcher = size.match(/(\d+)px/);if (matcher === null) throw size;
 
+  document.body.style.fontSize = `${Number(matcher[1]) + offset}px`;
+};
+
+const authorization = new Authorization({});
 authorization.authorize((twitter) => {
   let timeline: Timeline|null;
 
@@ -30,6 +36,15 @@ authorization.authorize((twitter) => {
       const all = tweets.concat(timeline!.state.tweets);
       timeline!.setState({tweets: all});
     })
+  });
+  ipcRenderer.on('zoom in',(event: string,arugments: any) => {
+    changeFontSize(1)
+  });
+  ipcRenderer.on('zoom out',(event: string,arugments: any) => {
+    changeFontSize(-1)
+  });
+  ipcRenderer.on('zoom reset',(event: string,arugments: any) => {
+    document.body.style.fontSize = null;
   });
   ipcRenderer.on('closed',(event: string,arugments: any) => {
     storage.set('tweets',timeline!.state.tweets,(error: string) => {

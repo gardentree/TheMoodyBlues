@@ -85,6 +85,27 @@ app.on('ready', () => {
             mainWindow.webContents.send('reload',{});
           }
         },
+        {
+          label: 'zoom in',
+          accelerator: 'Command+Plus',
+          click() {
+            mainWindow.webContents.send('zoom in',{});
+          }
+        },
+        {
+          label: 'zoom out',
+          accelerator: 'Command+-',
+          click() {
+            mainWindow.webContents.send('zoom out',{});
+          }
+        },
+        {
+          label: 'zoom reset',
+          accelerator: 'Command+0',
+          click() {
+            mainWindow.webContents.send('zoom reset',{});
+          }
+        },
       ]
     }
   ]
