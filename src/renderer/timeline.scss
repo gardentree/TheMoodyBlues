@@ -69,6 +69,10 @@ ul.timeline {
       border: solid 1px #dedede;
       margin-top: 8px;
       padding: 8px;
+
+      .screen_name {
+        font-size: 85%;
+      }
     }
   }
   a.photo {
