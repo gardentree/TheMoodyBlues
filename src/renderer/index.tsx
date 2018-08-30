@@ -8,7 +8,7 @@ import {ipcRenderer} from 'electron';
 const authorization = new Authorization({});
 
 authorization.authorize((twitter) => {
-  let timeline = React.createRef<Timeline>();
+  let timeline: Timeline|null;
 
   const storage = require("electron-json-storage");
 
@@ -19,20 +19,20 @@ authorization.authorize((twitter) => {
       include_entities: true,
       tweet_mode: 'extended'
     }
-    if (timeline.current!.state.tweets.length > 0) {
-      option['since_id'] = timeline.current!.state.tweets[0].id_str
+    if (timeline!.state.tweets.length > 0) {
+      option['since_id'] = timeline!.state.tweets[0].id_str
     }
 
     twitter.get('statuses/home_timeline',option,(error: string,tweets: Tweet[],response: any) => {
       if (error) throw error;
       console.log(`${tweets.length} tweets`)
 
-      const all = tweets.concat(timeline.current!.state.tweets);
-      timeline.current!.setState({tweets: all});
+      const all = tweets.concat(timeline!.state.tweets);
+      timeline!.setState({tweets: all});
     })
   });
   ipcRenderer.on('closed',(event: string,arugments: any) => {
-    storage.set('tweets',timeline.current!.state.tweets,(error: string) => {
+    storage.set('tweets',timeline!.state.tweets,(error: string) => {
       if (error) throw error;
     })
   });
@@ -41,7 +41,7 @@ authorization.authorize((twitter) => {
     if (error) throw error;
 
     ReactDOM.render(
-      <Timeline ref={timeline} tweets={tweets} />,
+      <Timeline ref={(reference) => {timeline = reference}} tweets={tweets} />,
       document.getElementById("app")
     );
   });
