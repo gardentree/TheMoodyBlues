@@ -49,23 +49,24 @@ ul.timeline {
 
     .avatar {
       position: relative;
+
+      img.tweeter {
+        width: 48px;
+        display: block;
+      }
+      img.retweeter {
+        position:: absolute;
+        width: 24px;
+        display: block;
+        right: 0;
+        top: 24px;
+      }
     }
     .quote {
       border: solid 1px #dedede;
       margin-top: 8px;
       padding: 8px;
     }
-  }
-  img.tweeter {
-    width: 48px;
-    display: block;
-  }
-  img.retweeter {
-    position:: absolute;
-    width: 24px;
-    display: block;
-    right: 0;
-    top: 24px;
   }
   a.photo {
     & + a.photo {
