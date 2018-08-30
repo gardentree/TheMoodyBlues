@@ -30,12 +30,12 @@ ul.timeline {
         display: table;
         border-collapse: collapse;
         width: 100%;
+        font-size: 85%;
 
         & > div {
           display: table-cell;
         }
         .screen_name {
-          font-size: 90%;
           font-weight: bold;
         }
         .created_at {
@@ -43,7 +43,7 @@ ul.timeline {
         }
       }
       .retweeter {
-        font-size: 90%;
+        font-size: 85%;
       }
     }
     & p {
