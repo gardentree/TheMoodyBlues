@@ -10,7 +10,7 @@ export class PrettyTweet extends React.Component<{tweet: Tweet},{tweet: Tweet}> 
   render() {
     const tweet = this.state.tweet
 
-    let text = tweet.full_text.slice(tweet.display_text_range[0],tweet.display_text_range[1])
+    let text = Array.from(tweet.full_text).slice(tweet.display_text_range[0],tweet.display_text_range[1]).join('');
     let fragments: JSX.Element[] = []
     for (let property of tweet.entities.urls) {
       const elements = text.split(property.url)
