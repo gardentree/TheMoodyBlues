@@ -55,7 +55,9 @@ authorization.authorize((twitter) => {
   storage.get('tweets', function(error: string,tweets: Tweet[]) {
     if (error) {
       console.log(error);
-      tweets = [];
+    }
+    if (!Array.isArray(tweets)) {
+      tweets = []
     }
 
     ReactDOM.render(
