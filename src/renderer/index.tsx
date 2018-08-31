@@ -53,7 +53,10 @@ authorization.authorize((twitter) => {
   });
 
   storage.get('tweets', function(error: string,tweets: Tweet[]) {
-    if (error) throw error;
+    if (error) {
+      console.log(error);
+      tweets = [];
+    }
 
     ReactDOM.render(
       <Timeline ref={(reference) => {timeline = reference}} tweets={tweets} />,
