@@ -52,7 +52,7 @@ export class Timeline extends React.Component<Property,Property> {
         >
           <li key={tweet_status.id_str}>
             <div>
-              <div className="avatar">
+              <div className={`avatar${retweet ? ' retweet':null}`}>
                 <img src={tweet.user.profile_image_url_https} className="tweeter" />
                 {retweet && <img src={retweet.user.profile_image_url_https} className="retweeter" />}
               </div>

@@ -16,6 +16,7 @@ ul.timeline {
 
     & > div {
       display: table;
+      table-layout: fixed;
       border-collapse: separate;
       border-spacing: 8px;
     }
@@ -59,18 +60,29 @@ ul.timeline {
     }
 
     .avatar {
-      position: relative;
+      img {
+        border-radius: 4px;
+      }
 
       img.tweeter {
+        display: block;
         width: 48px;
-        display: block;
       }
-      img.retweeter {
-        position:: absolute;
-        width: 24px;
-        display: block;
-        right: 0;
-        top: 24px;
+
+      &.retweet {
+        position: relative;
+
+        img.tweeter {
+          width: 36px;
+          margin-right: 12px;
+        }
+        img.retweeter {
+          position:: absolute;
+          width: 24px;
+          display: block;
+          right: 0;
+          top: 24px;
+        }
       }
     }
     .quote {
