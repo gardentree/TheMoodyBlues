@@ -42,12 +42,16 @@ ul.timeline {
           text-align: right;
         }
       }
+      p {
+        margin: 0;
+      }
+      .media {
+        margin-top: 8px;
+      }
       .retweeter {
+        margin-top: 8px;
         font-size: 90%;
       }
-    }
-    & p {
-      margin: 0;
     }
 
     .avatar {
@@ -68,7 +72,7 @@ ul.timeline {
     .quote {
       border: solid 1px #dedede;
       margin-top: 8px;
-      padding: 8px;
+      padding: 4px;
 
       .screen_name {
         font-size: 90%;

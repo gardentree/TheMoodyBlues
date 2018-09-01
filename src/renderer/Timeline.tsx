@@ -63,7 +63,7 @@ export class Timeline extends React.Component<Property,Property> {
                     <div className='created_at'>{Timeline.prettyTime(tweet.created_at)}</div>
                   </div>
                   <p><PrettyTweet tweet={tweet} /></p>
-                  {medias && <div>{medias}</div>}
+                  {medias && <div className='media'>{medias}</div>}
                 </div>
                 {quote && <div className="quote"><div className='screen_name'>@{quote.user.screen_name}</div><p><PrettyTweet tweet={quote} /></p></div>}
                 {retweet && <div className='retweeter'>{retweet.user.screen_name} retweeted</div>}
