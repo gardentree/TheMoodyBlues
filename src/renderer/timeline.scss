@@ -44,6 +44,10 @@ ul.timeline {
       }
       p {
         margin: 0;
+
+        br + br {
+          display: none;
+        }
       }
       .media {
         margin-top: 8px;
