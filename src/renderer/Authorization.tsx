@@ -37,7 +37,7 @@ export class Authorization extends React.Component<{},{}> {
     throw new Error();
   }
 
-  public authorize(callback: (twitter: any) => void) {
+  public authorize(callback: (twitter: any,screen_name: string) => void) {
     const ElectronStore = require('electron-store');
     const store = new ElectronStore();
 
@@ -54,7 +54,7 @@ export class Authorization extends React.Component<{},{}> {
       })
       twitter.get('account/verify_credentials',{},(error: any,json: any,response: any) => {
         console.log(json);
-        callback(twitter);
+        callback(twitter,json.screen_name);
       });
     }
 

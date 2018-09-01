@@ -3,7 +3,7 @@ import * as ReactDOM from "react-dom";
 import {Authorization} from "./Authorization";
 import {Tweet} from "./twitter";
 import {Timeline} from "./Timeline";
-import {ipcRenderer} from 'electron';
+import {ipcRenderer,remote} from 'electron';
 
 const changeFontSize = (offset: number) => {
   const size = window.getComputedStyle(document.body).fontSize;if (size === null) throw "font size is null";
@@ -13,7 +13,10 @@ const changeFontSize = (offset: number) => {
 };
 
 const authorization = new Authorization({});
-authorization.authorize((twitter) => {
+authorization.authorize((twitter: any,screen_name: string) => {
+  const browser = remote.getCurrentWindow();
+  browser.setTitle(`The Moody Blues (${screen_name})`);
+
   let timeline: Timeline|null;
 
   const storage = require("electron-json-storage");
