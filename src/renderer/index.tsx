@@ -18,7 +18,7 @@ authorization.authorize((twitter) => {
 
   const storage = require("electron-json-storage");
 
-  ipcRenderer.on('reload',(event: string,arugments: any) => {
+  const reload = (event: string,arugments: any) => {
     let option = {
       count: 200,
       exclude_replies: true,
@@ -36,7 +36,9 @@ authorization.authorize((twitter) => {
       const all = tweets.concat(timeline!.state.tweets);
       timeline!.setState({tweets: all});
     })
-  });
+  };
+
+  ipcRenderer.on('reload',reload);
   ipcRenderer.on('zoom in',(event: string,arugments: any) => {
     changeFontSize(1)
   });
@@ -64,6 +66,10 @@ authorization.authorize((twitter) => {
       <Timeline ref={(reference) => {timeline = reference}} tweets={tweets} />,
       document.getElementById("app")
     );
+
+    setInterval(() => {
+      reload('timer',null);
+    },120 * 1000);
   });
 });
 
