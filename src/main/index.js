@@ -14,7 +14,20 @@ process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 let mainWindow
 
 function createMainWindow() {
-  const window = new BrowserWindow({title: "The Moody Blues"})
+  const windowKeeper = require('electron-window-state');
+  const windowState = windowKeeper({
+    defaultWidth: 1000,
+    defaultHeight: 800
+  });
+
+  const window = new BrowserWindow({
+    title:  "The Moody Blues",
+    x:      windowState.x,
+    y:      windowState.y,
+    width:  windowState.width,
+    height: windowState.height,
+  })
+  windowState.manage(window);
 
   if (isDevelopment) {
     window.webContents.openDevTools()
