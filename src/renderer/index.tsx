@@ -34,7 +34,11 @@ authorization.authorize((twitter: any,screen_name: string) => {
 
     twitter.get('statuses/home_timeline',option,(error: string,tweets: Tweet[],response: any) => {
       if (error) throw error;
-      console.log(`${tweets.length} tweets`)
+      if (tweets.length <= 0) return;
+
+      new Notification('The Moody Blues',{
+        body: `${tweets.length} new tweets`
+      })
 
       const all = tweets.concat(timeline!.state.tweets);
       timeline!.setState({tweets: all});
