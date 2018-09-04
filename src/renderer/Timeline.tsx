@@ -2,8 +2,8 @@ import * as React from "react";
 import {CSSTransition,TransitionGroup} from "react-transition-group";
 import './timeline.scss';
 import {PrettyTweet} from "./PrettyTweet";
-import {Tweet} from "./twitter";
-import {openLinkOnAnchor} from "./tools"
+import {MediaBox} from "./MediaBox";
+import {Tweet,Media} from "./twitter";
 import * as DateUtility from "date-fns"
 
 interface Property {
@@ -33,15 +33,9 @@ export class Timeline extends React.Component<Property,Property> {
         quote = tweet.quoted_status
       }
 
-      let medias: any|null = null;
+      let medias: Media[] = [];
       if (tweet.extended_entities !== undefined) {
-        medias = tweet.extended_entities.media.map((media) => {
-          return (
-            <a key={media.id_str} className="photo" href={media.media_url_https} onClick={openLinkOnAnchor}>
-              <img src={media.media_url_https} />
-            </a>
-          )
-        })
+        medias = tweet.extended_entities.media
       }
 
       return (
@@ -63,7 +57,7 @@ export class Timeline extends React.Component<Property,Property> {
                     <div className='created_at'>{Timeline.prettyTime(tweet.created_at)}</div>
                   </div>
                   <p><PrettyTweet tweet={tweet} /></p>
-                  {medias && <div className='media'>{medias}</div>}
+                  {medias && <MediaBox medias={medias} />}
                 </div>
                 {quote && <div className="quote"><div className='screen_name'>@{quote.user.screen_name}</div><p><PrettyTweet tweet={quote} /></p></div>}
                 {retweet && <div className='retweeter'>{retweet.user.screen_name} retweeted</div>}

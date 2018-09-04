@@ -18,12 +18,12 @@ export interface Tweet {
   since_id: string;
   created_at: string;
 }
-interface User {
+export interface User {
   id_str: string;
   profile_image_url_https: string;
   screen_name: string;
 }
-interface Media {
+export interface Media {
   id_str: string;
   media_url_https: string;
 }
