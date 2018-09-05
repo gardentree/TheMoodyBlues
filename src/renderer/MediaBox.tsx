@@ -34,11 +34,22 @@ export class MediaBox extends React.Component<{medias: Media[]},{medias: Media[]
     })
 
     const elements = this.state.medias.map((media) => {
-      return (
-        <div key={media.id_str}>
-          <img src={media.media_url_https} />
-        </div>
-      )
+      switch (media.type) {
+        case 'video':
+          const variants = media.video_info.variants.slice().sort((a,b) => (b.bitrate||0) - (a.bitrate||0))
+          return (
+            <div key={media.id_str}>
+              <video src={variants[0].url} poster={media.media_url_https} preload='metadata' playsInline controls controlsList="nodownload" />
+            </div>
+          )
+        case 'photo':
+        default:
+          return (
+            <div key={media.id_str}>
+              <img src={media.media_url_https} />
+            </div>
+          )
+      }
     })
 
     return (

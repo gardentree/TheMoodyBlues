@@ -26,4 +26,11 @@ export interface User {
 export interface Media {
   id_str: string;
   media_url_https: string;
+  type: string;
+  video_info: {
+    variants: {
+      url: string;
+      bitrate: number;
+    }[]
+  }
 }
