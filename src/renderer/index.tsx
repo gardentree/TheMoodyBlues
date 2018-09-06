@@ -36,9 +36,13 @@ authorization.authorize((twitter: any,screen_name: string) => {
       if (error) throw error;
       if (tweets.length <= 0) return;
 
-      new Notification('The Moody Blues',{
-        body: `${tweets.length} new tweets`
-      })
+      var growly = require('growly');
+      for (let tweet of tweets.slice(0,20)) {
+        growly.notify(tweet.full_text,{
+          title: tweet.user.screen_name,
+          icon: tweet.user.profile_image_url_https,
+        });
+      }
 
       const all = tweets.concat(timeline!.state.tweets);
       timeline!.setState({tweets: all});
