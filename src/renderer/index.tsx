@@ -24,7 +24,6 @@ authorization.authorize((twitter: any,screen_name: string) => {
   const reload = (event: string,arugments: any) => {
     let option = {
       count: 200,
-      exclude_replies: true,
       include_entities: true,
       tweet_mode: 'extended'
     }
