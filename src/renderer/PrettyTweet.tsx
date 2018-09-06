@@ -32,7 +32,7 @@ export class PrettyTweet extends React.Component<{tweet: Tweet},{tweet: Tweet}> 
 
     return (
       elements.map((element,index) => {
-        const span = (element) ? (<span>{element}</span>):null;
+        const span = (element) ? (<span dangerouslySetInnerHTML={{__html: element}} />):null;
         const br = (elements.length > (index + 1)) ? (<br/>):null;
 
         return (<React.Fragment key={index}>{span}{br}</React.Fragment>)
