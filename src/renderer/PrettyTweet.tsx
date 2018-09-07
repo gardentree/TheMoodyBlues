@@ -17,7 +17,7 @@ export class PrettyTweet extends React.Component<{tweet: Tweet},{tweet: Tweet}> 
       fragments.push(React.createElement(React.Fragment,{key: fragments.length},this.breakLine(elements[0])))
       fragments.push(React.createElement("a",{key: fragments.length,href: property.expanded_url,onClick: openLinkOnAnchor},property.display_url))
 
-      text = elements[1]
+      text = elements.slice(1,elements.length).join(property.url)
     }
     if (text !== undefined) {
       fragments.push(React.createElement(React.Fragment,{key: fragments.length},this.breakLine(text)))
