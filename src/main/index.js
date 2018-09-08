@@ -22,6 +22,7 @@ function createMainWindow() {
 
   const window = new BrowserWindow({
     title:  "The Moody Blues",
+    titleBarStyle: 'hidden',
     x:      windowState.x,
     y:      windowState.y,
     width:  windowState.width,
@@ -44,9 +45,6 @@ function createMainWindow() {
     }))
   }
 
-  window.on('close', () => {
-    window.webContents.send('closed',null);
-  })
   window.on('closed', () => {
 
     mainWindow = null

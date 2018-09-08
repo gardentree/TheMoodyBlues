@@ -1,14 +1,21 @@
 body {
-  font-family: 'Hiragino Kaku Gothic ProN';
-  font-size: 12px;
-  color: #5f5f5f;
   margin: 0;
 }
 
+header {
+  -webkit-app-region: drag;
+}
+
 ul.timeline {
+  color: #5f5f5f;
+  line-height: normal;
   list-style: none;
   margin: 0;
   padding-left: 0;
+
+  a {
+    cursor: auto;
+  }
 
   li {
     border-bottom: solid 1px #dedede;
@@ -129,5 +136,22 @@ ul.timeline {
   .carousel .slide video {
     height: 100%;
     max-width: 100%;
+  }
+}
+
+form.search {
+  padding: 8px 20px;
+
+  input {
+    padding: 0 5px;
+  }
+}
+
+.window-content {
+  font-family: 'Hiragino Kaku Gothic ProN';
+  font-size: 12px;
+
+  .contents {
+    width: 100%;
   }
 }

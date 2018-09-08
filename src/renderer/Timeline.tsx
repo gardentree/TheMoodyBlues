@@ -1,112 +1,85 @@
-import {remote,shell} from 'electron'
 import * as React from "react";
-import {CSSTransition,TransitionGroup} from "react-transition-group";
-import './timeline.scss';
-import {PrettyTweet} from "./PrettyTweet";
-import {MediaBox} from "./MediaBox";
-import {Tweet,Media} from "./twitter";
-import * as DateUtility from "date-fns"
+import {TweetList} from "./TweetList";
+import {Tweet} from "./twitter";
 
 interface Property {
-  tweets: Tweet[];
+  twitter: any;
 }
 
-export class Timeline extends React.Component<Property,Property> {
+const storage = require("electron-json-storage");
+export class Timeline extends React.Component<Property,{tweets: Tweet[]}> {
+  private timer: any|null;
+
   constructor(property: Property) {
     super(property);
 
-    this.state = {tweets: property.tweets};
+    this.state = {tweets: []};
 
-    this.openContextMenu = this.openContextMenu.bind(this);
+    this.timer = null
   }
 
-  openContextMenu(event: React.SyntheticEvent<HTMLElement>) {
-    const url: string = event.currentTarget.dataset.url!;
+  componentDidMount() {
+    storage.get('tweets',(error: string,tweets: Tweet[]) => {
+      if (error) {
+        console.log(error);
+      }
+      if (!Array.isArray(tweets)) {
+        tweets = []
+      }
 
-    const {Menu,MenuItem} = remote;
-    const menu = new Menu();
-    menu.append(new MenuItem({label: 'ブラウザで開く',click() {
-      shell.openExternal(url);
-    }}))
+      this.setState({tweets: tweets});
 
-    menu.popup({})
+      this.timer = setTimeout(() => {
+        this.reorder();
+      },120 * 1000);
+    });
   }
 
   render() {
-    const items = this.state.tweets.map((tweet_status) => {
-      let tweet: Tweet,retweet: Tweet|null;
-      if (tweet_status.retweeted_status === undefined) {
-        tweet = tweet_status
-        retweet = null
-      }
-      else {
-        tweet = tweet_status.retweeted_status!
-        retweet = tweet_status
-      }
-
-      let quote: Tweet|null = null;
-      if (tweet.quoted_status !== undefined) {
-        quote = tweet.quoted_status
-      }
-
-      let medias: Media[] = [];
-      if (tweet.extended_entities !== undefined) {
-        medias = tweet.extended_entities.media
-      }
-
-      return (
-        <CSSTransition
-          key={tweet_status.id_str}
-          classNames="fade"
-          timeout={300}
-        >
-          <li key={tweet_status.id_str} data-url={`https://twitter.com/${tweet_status.user.screen_name}/status/${tweet_status.id_str}`} onContextMenu={this.openContextMenu}>
-            <div>
-              <div className={`avatar${retweet ? ' retweet':''}`}>
-                <img src={tweet.user.profile_image_url_https} className="tweeter" />
-                {retweet && <img src={retweet.user.profile_image_url_https} className="retweeter" />}
-              </div>
-              <div className='tweet'>
-                <div>
-                  <div className='meta'>
-                    <div className='screen_name'>@{tweet.user.screen_name}</div>
-                    <div className='created_at'>{Timeline.prettyTime(tweet.created_at)}</div>
-                  </div>
-                  <p><PrettyTweet tweet={tweet} /></p>
-                  {medias && <MediaBox medias={medias} />}
-                </div>
-                {quote && <div className="quote"><div className='screen_name'>@{quote.user.screen_name}</div><p><PrettyTweet tweet={quote} /></p></div>}
-                {retweet && <div className='retweeter'>Retweeted by {retweet.user.screen_name}</div>}
-              </div>
-            </div>
-          </li>
-        </CSSTransition>
-      )
-    });
-
-    return (
-      <div>
-        <ul className="timeline">
-          <TransitionGroup>
-            { items }
-          </TransitionGroup>
-        </ul>
-      </div>
-    );
+    return (<TweetList tweets={this.state.tweets} />)
   }
 
-  static prettyTime(source: string): string {
-    const date = DateUtility.parse(source);
-    const now = new Date();
-
-    let format;
-    if (DateUtility.format(now,'YYYY-MM-DD') == DateUtility.format(date,'YYYY-MM-DD')) {
-      format = 'HH:mm:ss';
-    }
-    else {
-      format = 'YYYY-MM-DD HH:mm:ss';
+  public reload() {
+    this.reorder();
+  }
+  private reorder() {
+    if (this.timer) {
+      clearTimeout(this.timer);
+      this.timer = null;
     }
 
-    return DateUtility.format(date,format)
+    let option = {
+      count: 200,
+      include_entities: true,
+      tweet_mode: 'extended'
+    }
+    if (this.state.tweets.length > 0) {
+      option['since_id'] = this.state.tweets[0].id_str
+    }
+
+    this.props.twitter.get('statuses/home_timeline',option,(error: string,tweets: Tweet[],response: any) => {
+      if (error) throw error;
+
+      if (tweets.length > 0) {
+        var growly = require('growly');
+        for (let tweet of tweets.slice(0,20)) {
+          growly.notify(tweet.full_text,{
+            title: tweet.user.screen_name,
+            icon: tweet.user.profile_image_url_https,
+          });
+        }
+
+        const all = tweets.concat(this.state.tweets);
+        this.setState({tweets: all});
+
+        storage.set('tweets',all,(error: string) => {
+          if (error) throw error;
+        })
+      }
+
+      this.timer = setTimeout(() => {
+        this.reorder();
+      },120 * 1000);
+    })
   }
 }
