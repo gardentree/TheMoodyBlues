@@ -55,6 +55,13 @@ ul.timeline {
         br + br {
           display: none;
         }
+
+        span.hashtag {
+          text-decoration: underline;
+        }
+        span.mention {
+          text-decoration: underline;
+        }
       }
       .media {
         margin-top: 8px;

@@ -3,30 +3,90 @@ import {Tweet} from "./twitter";
 import {openLinkOnAnchor} from "./tools"
 import {decodeHTML} from "./tools";
 
-export class PrettyTweet extends React.Component<{tweet: Tweet},{tweet: Tweet}> {
+interface TweetElement {
+  category: string
+  entity: any
+}
+
+export class PrettyTweet extends React.Component<{tweet: Tweet},{}> {
+  private elements: TweetElement[]
+
   constructor(props: {tweet: Tweet}) {
     super(props);
-    this.state = {tweet: props.tweet};
+
+    this.elements = PrettyTweet.parseElements(this.props.tweet)
   }
   render() {
-    const tweet = this.state.tweet
-
-    let text = Array.from(decodeHTML(tweet.full_text)).slice(tweet.display_text_range[0],tweet.display_text_range[1]).join('');
     let fragments: JSX.Element[] = []
-    for (let property of tweet.entities.urls) {
-      const elements = text.split(property.url)
-      fragments.push(React.createElement(React.Fragment,{key: fragments.length},this.breakLine(elements[0])))
-      fragments.push(React.createElement("a",{key: fragments.length,href: property.expanded_url,onClick: openLinkOnAnchor},property.display_url))
-
-      text = elements.slice(1,elements.length).join(property.url)
-    }
-    if (text !== undefined) {
-      fragments.push(React.createElement(React.Fragment,{key: fragments.length},this.breakLine(text)))
+    for (let element of this.elements) {
+      const entity = element.entity
+      switch (element.category) {
+        case 'string':
+          fragments.push(React.createElement(
+            React.Fragment,
+            {key: fragments.length},
+            this.breakLine(element.entity)
+          ));
+          break;
+        case 'hashtags':
+          fragments.push(React.createElement(
+            'span',
+            {key: fragments.length,className: 'hashtag'},
+            `#${entity.text}`
+          ));
+          break;
+        case 'user_mentions':
+          fragments.push(React.createElement(
+            'span',
+            {key: fragments.length,className: 'mention'},
+            `@${entity.screen_name}`
+          ));
+          break;
+        case 'urls':
+          fragments.push(React.createElement(
+            "a",
+            {key: fragments.length,href: entity.expanded_url,onClick: openLinkOnAnchor},
+            entity.display_url
+          ))
+          break;
+        case 'media':
+          break;
+      }
     }
 
     return (
       <React.Fragment>{fragments}</React.Fragment>
     )
+  }
+  private static parseElements(tweet: Tweet): TweetElement[] {
+    let entities: {category: string,entity: any}[] = []
+    for (let category of ['hashtags','user_mentions','urls','media']) {
+      if (!tweet.entities[category]) continue;
+
+      entities = entities.concat(tweet.entities[category].map((entity: any) => ({category: category,entity: entity})))
+    }
+    if (entities.length > 0) {
+      entities.sort((a,b) => a.entity.indices[0] - b.entity.indices[0]);
+    }
+
+    const characters = Array.from(decodeHTML(tweet.full_text))
+    let elements = []
+    let start = 0
+    for (let entity of entities) {
+      if (start < entity.entity.indices[0]) {
+        const element = characters.slice(start,entity.entity.indices[0]).join('')
+        elements.push({category: 'string',entity: element})
+      }
+      elements.push(entity)
+
+      start = entity.entity.indices[1]
+    }
+    if (start < characters.length) {
+      const element = characters.slice(start,characters.length).join('')
+      elements.push({category: 'string',entity: element})
+    }
+
+    return elements
   }
   private breakLine(text: string) {
     const elements = text.split(/(?:\r\n|\r|\n)/)
