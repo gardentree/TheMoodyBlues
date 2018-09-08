@@ -25,7 +25,7 @@ export class PrettyTweet extends React.Component<{tweet: Tweet},{}> {
           fragments.push(React.createElement(
             React.Fragment,
             {key: fragments.length},
-            this.breakLine(element.entity)
+            PrettyTweet.breakLine(element.entity)
           ));
           break;
         case 'hashtags':
@@ -88,7 +88,7 @@ export class PrettyTweet extends React.Component<{tweet: Tweet},{}> {
 
     return elements
   }
-  private breakLine(text: string) {
+  private static breakLine(text: string): JSX.Element[] {
     const elements = text.split(/(?:\r\n|\r|\n)/)
 
     return (
