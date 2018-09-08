@@ -69,7 +69,7 @@ export class Timeline extends React.Component<Property,{tweets: Tweet[]}> {
           });
         }
 
-        const all = tweets.concat(this.state.tweets);
+        const all = tweets.concat(this.state.tweets).slice(0,400);
         this.setState({tweets: all});
 
         storage.set('tweets',all,(error: string) => {
