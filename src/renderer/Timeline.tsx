@@ -1,6 +1,7 @@
 import * as React from "react";
 import {TweetList} from "./TweetList";
 import {Tweet} from "./twitter";
+import {decodeHTML} from "./tools";
 
 interface Property {
   twitter: any;
@@ -63,7 +64,7 @@ export class Timeline extends React.Component<Property,{tweets: Tweet[]}> {
       if (tweets.length > 0) {
         var growly = require('growly');
         for (let tweet of tweets.slice(0,20)) {
-          growly.notify(tweet.full_text,{
+          growly.notify(decodeHTML(tweet.full_text),{
             title: tweet.user.screen_name,
             icon: tweet.user.profile_image_url_https,
           });

@@ -1,6 +1,7 @@
 import * as React from "react";
 import {Tweet} from "./twitter";
 import {openLinkOnAnchor} from "./tools"
+import {decodeHTML} from "./tools";
 
 export class PrettyTweet extends React.Component<{tweet: Tweet},{tweet: Tweet}> {
   constructor(props: {tweet: Tweet}) {
@@ -10,7 +11,7 @@ export class PrettyTweet extends React.Component<{tweet: Tweet},{tweet: Tweet}> 
   render() {
     const tweet = this.state.tweet
 
-    let text = Array.from(tweet.full_text).slice(tweet.display_text_range[0],tweet.display_text_range[1]).join('');
+    let text = Array.from(decodeHTML(tweet.full_text)).slice(tweet.display_text_range[0],tweet.display_text_range[1]).join('');
     let fragments: JSX.Element[] = []
     for (let property of tweet.entities.urls) {
       const elements = text.split(property.url)
@@ -32,7 +33,7 @@ export class PrettyTweet extends React.Component<{tweet: Tweet},{tweet: Tweet}> 
 
     return (
       elements.map((element,index) => {
-        const span = (element) ? (<span dangerouslySetInnerHTML={{__html: element}} />):null;
+        const span = (element) ? (<span>{element}</span>):null;
         const br = (elements.length > (index + 1)) ? (<br/>):null;
 
         return (<React.Fragment key={index}>{span}{br}</React.Fragment>)
