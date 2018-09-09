@@ -6,11 +6,11 @@ interface Property {
   twitter: any;
 }
 interface Form extends HTMLFormElement {
-  text: HTMLInputElement;
+  query: HTMLInputElement;
 }
 
 export class Search extends React.Component<Property,{tweets: Tweet[]}> {
-  private text: string|null
+  private query: string|null
   private timer: any|null;
 
   constructor(property: Property) {
@@ -26,7 +26,7 @@ export class Search extends React.Component<Property,{tweets: Tweet[]}> {
     event.preventDefault();
 
     const form: Form = event.target as Form;
-    this.text = form.text.value;
+    this.query = form.query.value;
 
     this.setState({tweets: []});
     this.reorder();
@@ -37,7 +37,7 @@ export class Search extends React.Component<Property,{tweets: Tweet[]}> {
       <div>
         <div className='toolbar'>
           <form className='search' onSubmit={this.handleSubmit}>
-            <input className='form-control' type='search' name='text' />
+            <input className='form-control' type='search' name='query' />
           </form>
         </div>
         <div>
@@ -47,8 +47,8 @@ export class Search extends React.Component<Property,{tweets: Tweet[]}> {
     )
   }
 
-  public search(text: string) {
-    this.text = text;
+  public search(query: string) {
+    this.query = query;
 
     this.setState({tweets: []});
     this.reorder();
@@ -62,10 +62,10 @@ export class Search extends React.Component<Property,{tweets: Tweet[]}> {
       clearTimeout(this.timer);
       this.timer = null;
     }
-    if (this.text == null||this.text.length <= 0) return;
+    if (this.query == null||this.query.length <= 0) return;
 
     let option = {
-      q: `${this.text} -rt`,
+      q: `${this.query} -rt`,
       count: 100,
       include_entities: true,
       tweet_mode: 'extended'

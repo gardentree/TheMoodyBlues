@@ -45,10 +45,10 @@ export class Principal extends React.Component<Property,{current: string,style: 
   }
 
   componentDidMount() {
-    OperationTower.listen('search',(text: string) => {
+    OperationTower.listen('search',(query: string) => {
       this.setState({current: Search.name})
 
-      this.contents[Search.name].search(text);
+      this.contents[Search.name].search(query);
     })
   }
 
