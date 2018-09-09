@@ -20,6 +20,25 @@ ul.timeline {
   li {
     border-bottom: solid 1px #dedede;
 
+    &.focus {
+      color: white;
+      background-color: #458ade;
+
+      .tweet {
+        p {
+          span.hashtag {
+            text-decoration: underline;
+          }
+          span.mention {
+            text-decoration: underline;
+          }
+          a {
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+
     & > div {
       display: table;
       table-layout: fixed;
@@ -57,10 +76,14 @@ ul.timeline {
         }
 
         span.hashtag {
-          text-decoration: underline;
+          cursor: pointer;
         }
         span.mention {
-          text-decoration: underline;
+          cursor: pointer;
+        }
+        a {
+          color: inherit;
+          text-decoration: none;
         }
       }
       .media {
