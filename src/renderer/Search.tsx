@@ -9,14 +9,13 @@ interface Form extends HTMLFormElement {
   query: HTMLInputElement;
 }
 
-export class Search extends React.Component<Property,{tweets: Tweet[]}> {
-  private query: string|null
+export class Search extends React.Component<Property,{tweets: Tweet[],query: string}> {
   private timer: any|null;
 
   constructor(property: Property) {
     super(property)
 
-    this.state = {tweets: []};
+    this.state = {tweets: [],query: ''};
 
     this.timer = null
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -26,10 +25,7 @@ export class Search extends React.Component<Property,{tweets: Tweet[]}> {
     event.preventDefault();
 
     const form: Form = event.target as Form;
-    this.query = form.query.value;
-
-    this.setState({tweets: []});
-    this.reorder();
+    this.search(form.query.value);
   }
 
   render() {
@@ -37,7 +33,7 @@ export class Search extends React.Component<Property,{tweets: Tweet[]}> {
       <div>
         <div className='toolbar'>
           <form className='search' onSubmit={this.handleSubmit}>
-            <input className='form-control' type='search' name='query' />
+            <input className='form-control' type='search' name='query' value={this.state.query} />
           </form>
         </div>
         <div>
@@ -48,29 +44,27 @@ export class Search extends React.Component<Property,{tweets: Tweet[]}> {
   }
 
   public search(query: string) {
-    this.query = query;
-
-    this.setState({tweets: []});
-    this.reorder();
+    this.setState({tweets: [],query: query});
+    this.reorder(query,false);
   }
 
   public reload() {
-    this.reorder();
+    this.reorder(this.state.query,true);
   }
-  private reorder() {
+  private reorder(query: string,addition: boolean) {
     if (this.timer) {
       clearTimeout(this.timer);
       this.timer = null;
     }
-    if (this.query == null||this.query.length <= 0) return;
+    if (query.length <= 0) return;
 
     let option = {
-      q: `${this.query} -rt`,
+      q: `${query} -rt`,
       count: 100,
       include_entities: true,
       tweet_mode: 'extended'
     }
-    if (this.state.tweets.length > 0) {
+    if (addition && this.state.tweets.length > 0) {
       option['since_id'] = this.state.tweets[0].id_str
     }
 
@@ -84,7 +78,7 @@ export class Search extends React.Component<Property,{tweets: Tweet[]}> {
       }
 
       this.timer = setTimeout(() => {
-        this.reorder();
+        this.reorder(query,true);
       },60 * 1000);
     })
   }
