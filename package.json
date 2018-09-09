@@ -16,7 +16,6 @@
     "react-dom": "^16.4.2",
     "react-modal": "^3.5.1",
     "react-responsive-carousel": "^3.1.41",
-    "react-transition-group": "^2.4.0",
     "source-map-support": "^0.5.9",
     "twitter": "^1.7.1"
   },
