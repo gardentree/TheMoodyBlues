@@ -170,7 +170,9 @@ form.search {
 }
 
 .window-content {
-  font-family: 'Hiragino Kaku Gothic ProN';
+  font-family: 'Hiragino Sans';
+  -webkit-font-smoothing: antialiased;
+
   font-size: 12px;
 
   .contents {
