@@ -7,6 +7,10 @@ interface Property {
   twitter: any;
 }
 
+const ElectronStore = require('electron-store');
+const store = new ElectronStore();
+const mutes: string[] = store.get('mutes')
+
 const storage = require("electron-json-storage");
 export class Timeline extends React.Component<Property,{tweets: twitter.Tweet[]}> {
   private timer: any|null;
@@ -65,6 +69,13 @@ export class Timeline extends React.Component<Property,{tweets: twitter.Tweet[]}
 
     this.props.twitter.get('statuses/home_timeline',option,(error: string,tweets: twitter.Tweet[],response: any) => {
       if (error) throw error;
+
+      tweets = tweets.filter((tweet) => {
+        if (!mutes.every(mute => tweet.full_text.toLowerCase().indexOf(mute) < 0)) return false;
+        if (!mutes.every(mute => tweet.entities.urls.every(entity => entity.display_url.indexOf(mute) < 0))) return false;
+
+        return true;
+      });
 
       if (tweets.length > 0) {
         var growly = require('growly');
