@@ -2,10 +2,16 @@ import * as React from "react";
 import {Tweet} from "./twitter";
 import {openLinkOnAnchor} from "./tools"
 import {decodeHTML} from "./tools";
+import {OperationTower} from "./OperationTower";
 
 interface TweetElement {
   category: string
   entity: any
+}
+
+function search(event: React.SyntheticEvent) {
+  const target = event.target as HTMLElement;
+  OperationTower.emit('search',target.textContent);
 }
 
 export class PrettyTweet extends React.Component<{tweet: Tweet},{}> {
@@ -31,7 +37,7 @@ export class PrettyTweet extends React.Component<{tweet: Tweet},{}> {
         case 'hashtags':
           fragments.push(React.createElement(
             'span',
-            {key: fragments.length,className: 'hashtag'},
+            {key: fragments.length,className: 'hashtag',onClick: search},
             `#${entity.text}`
           ));
           break;

@@ -47,6 +47,13 @@ export class Search extends React.Component<Property,{tweets: Tweet[]}> {
     )
   }
 
+  public search(text: string) {
+    this.text = text;
+
+    this.setState({tweets: []});
+    this.reorder();
+  }
+
   public reload() {
     this.reorder();
   }

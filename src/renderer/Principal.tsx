@@ -2,6 +2,7 @@ import {ipcRenderer} from 'electron';
 import * as React from "react";
 import {Timeline} from "./Timeline";
 import {Search} from "./Search";
+import {OperationTower} from "./OperationTower";
 
 interface Property {
   twitter: any
@@ -41,6 +42,14 @@ export class Principal extends React.Component<Property,{current: string,style: 
     else {
       this.setState({style: {fontSize: 'inherit'}})
     }
+  }
+
+  componentDidMount() {
+    OperationTower.listen('search',(text: string) => {
+      this.setState({current: Search.name})
+
+      this.contents[Search.name].search(text);
+    })
   }
 
   render() {
