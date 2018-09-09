@@ -1,8 +1,8 @@
 import * as React from "react";
-import {Tweet} from "./twitter";
 import {openLinkOnAnchor} from "./tools"
 import {decodeHTML} from "./tools";
 import {OperationTower} from "./OperationTower";
+import * as twitter from "./twitter";
 
 interface TweetElement {
   category: string
@@ -14,10 +14,10 @@ function search(event: React.SyntheticEvent) {
   OperationTower.emit('search',target.textContent);
 }
 
-export class PrettyTweet extends React.Component<{tweet: Tweet},{}> {
+export class PrettyTweet extends React.Component<{tweet: twitter.Tweet},{}> {
   private elements: TweetElement[]
 
-  constructor(props: {tweet: Tweet}) {
+  constructor(props: {tweet: twitter.Tweet}) {
     super(props);
 
     this.elements = PrettyTweet.parseElements(this.props.tweet)
@@ -64,7 +64,7 @@ export class PrettyTweet extends React.Component<{tweet: Tweet},{}> {
       <React.Fragment>{fragments}</React.Fragment>
     )
   }
-  private static parseElements(tweet: Tweet): TweetElement[] {
+  private static parseElements(tweet: twitter.Tweet): TweetElement[] {
     let entities: {category: string,entity: any}[] = []
     for (let category of ['hashtags','user_mentions','urls','media']) {
       if (!tweet.entities[category]) continue;

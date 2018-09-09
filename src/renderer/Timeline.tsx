@@ -1,6 +1,6 @@
 import * as React from "react";
 import {TweetList} from "./TweetList";
-import {Tweet} from "./twitter";
+import * as twitter from "./twitter";
 import {decodeHTML} from "./tools";
 
 interface Property {
@@ -8,7 +8,7 @@ interface Property {
 }
 
 const storage = require("electron-json-storage");
-export class Timeline extends React.Component<Property,{tweets: Tweet[]}> {
+export class Timeline extends React.Component<Property,{tweets: twitter.Tweet[]}> {
   private timer: any|null;
 
   constructor(property: Property) {
@@ -20,7 +20,7 @@ export class Timeline extends React.Component<Property,{tweets: Tweet[]}> {
   }
 
   componentDidMount() {
-    storage.get('tweets',(error: string,tweets: Tweet[]) => {
+    storage.get('tweets',(error: string,tweets: twitter.Tweet[]) => {
       if (error) {
         console.log(error);
       }
@@ -58,7 +58,7 @@ export class Timeline extends React.Component<Property,{tweets: Tweet[]}> {
       option['since_id'] = this.state.tweets[0].id_str
     }
 
-    this.props.twitter.get('statuses/home_timeline',option,(error: string,tweets: Tweet[],response: any) => {
+    this.props.twitter.get('statuses/home_timeline',option,(error: string,tweets: twitter.Tweet[],response: any) => {
       if (error) throw error;
 
       if (tweets.length > 0) {

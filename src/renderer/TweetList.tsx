@@ -2,11 +2,11 @@ import {remote,shell} from 'electron'
 import * as React from "react";
 import {PrettyTweet} from "./PrettyTweet";
 import {MediaBox} from "./MediaBox";
-import {Tweet,Media} from "./twitter";
 import * as DateUtility from "date-fns"
+import * as twitter from "./twitter";
 
 interface Property {
-  tweets: Tweet[];
+  tweets: twitter.Tweet[];
 }
 
 export class TweetList extends React.Component<Property,{}> {
@@ -30,7 +30,7 @@ export class TweetList extends React.Component<Property,{}> {
 
   render() {
     const items = this.props.tweets.map((tweet_status) => {
-      let tweet: Tweet,retweet: Tweet|null;
+      let tweet: twitter.Tweet,retweet: twitter.Tweet|null;
       if (tweet_status.retweeted_status === undefined) {
         tweet = tweet_status
         retweet = null
@@ -40,12 +40,12 @@ export class TweetList extends React.Component<Property,{}> {
         retweet = tweet_status
       }
 
-      let quote: Tweet|null = null;
+      let quote: twitter.Tweet|null = null;
       if (tweet.quoted_status !== undefined) {
         quote = tweet.quoted_status
       }
 
-      let medias: Media[] = [];
+      let medias: twitter.Media[] = [];
       if (tweet.extended_entities !== undefined) {
         medias = tweet.extended_entities.media
       }

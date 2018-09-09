@@ -1,6 +1,6 @@
 import * as React from "react";
 import {TweetList} from "./TweetList";
-import {Tweet} from "./twitter";
+import * as twitter from "./twitter";
 
 interface Property {
   twitter: any;
@@ -9,7 +9,7 @@ interface Form extends HTMLFormElement {
   query: HTMLInputElement;
 }
 
-export class Search extends React.Component<Property,{tweets: Tweet[],query: string}> {
+export class Search extends React.Component<Property,{tweets: twitter.Tweet[],query: string}> {
   private timer: any|null;
 
   constructor(property: Property) {
@@ -68,7 +68,7 @@ export class Search extends React.Component<Property,{tweets: Tweet[],query: str
       option['since_id'] = this.state.tweets[0].id_str
     }
 
-    this.props.twitter.get('search/tweets',option,(error: string,tweets: Tweet[],response: any) => {
+    this.props.twitter.get('search/tweets',option,(error: string,tweets: twitter.Tweet[],response: any) => {
       tweets = tweets['statuses'];
       if (error) throw error;
 
