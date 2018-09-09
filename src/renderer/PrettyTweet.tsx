@@ -31,28 +31,28 @@ export class PrettyTweet extends React.Component<{tweet: twitter.Tweet},{}> {
           fragments.push(React.createElement(
             React.Fragment,
             {key: fragments.length},
-            PrettyTweet.breakLine(element.entity)
+            PrettyTweet.breakLine(decodeHTML(element.entity))
           ));
           break;
         case 'hashtags':
           fragments.push(React.createElement(
             'span',
             {key: fragments.length,className: 'hashtag',onClick: search},
-            `#${entity.text}`
+            `#${decodeHTML(entity.text)}`
           ));
           break;
         case 'user_mentions':
           fragments.push(React.createElement(
             'span',
             {key: fragments.length,className: 'mention'},
-            `@${entity.screen_name}`
+            `@${decodeHTML(entity.screen_name)}`
           ));
           break;
         case 'urls':
           fragments.push(React.createElement(
             "a",
             {key: fragments.length,href: entity.expanded_url,onClick: openLinkOnAnchor},
-            entity.display_url
+            decodeHTML(entity.display_url)
           ))
           break;
         case 'media':
@@ -75,7 +75,7 @@ export class PrettyTweet extends React.Component<{tweet: twitter.Tweet},{}> {
       entities.sort((a,b) => a.entity.indices[0] - b.entity.indices[0]);
     }
 
-    const characters = Array.from(decodeHTML(tweet.full_text))
+    const characters = Array.from(tweet.full_text)
     let elements = []
     let start = 0
     for (let entity of entities) {
