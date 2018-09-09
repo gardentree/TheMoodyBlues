@@ -85,38 +85,38 @@ app.on('ready', () => {
       ]
     },
     {
-      label: 'Timeline',
+      label: 'View',
       submenu: [
         {
-          label: 'reload',
+          label: 'Reload',
           accelerator: 'Command+r',
           click() {
             mainWindow.webContents.send('reload',{});
           }
         },
         {
-          label: 'zoom in',
+          label: 'Zoom In',
           accelerator: 'Command+Plus',
           click() {
             mainWindow.webContents.send('zoom in',{});
           }
         },
         {
-          label: 'zoom out',
+          label: 'Zoom Out',
           accelerator: 'Command+-',
           click() {
             mainWindow.webContents.send('zoom out',{});
           }
         },
         {
-          label: 'zoom reset',
+          label: 'Zoom Reset',
           accelerator: 'Command+0',
           click() {
             mainWindow.webContents.send('zoom reset',{});
           }
         },
       ]
-    }
+    },
   ]
 
   const menu = Menu.buildFromTemplate(template)
