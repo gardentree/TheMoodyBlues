@@ -22,6 +22,7 @@ function createMainWindow() {
 
   const window = new BrowserWindow({
     title:  "The Moody Blues",
+    acceptFirstMouse: true,
     titleBarStyle: 'hidden',
     x:      windowState.x,
     y:      windowState.y,
