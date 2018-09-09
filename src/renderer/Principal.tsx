@@ -29,6 +29,9 @@ export class Principal extends React.Component<Property,{current: string,style: 
     ipcRenderer.on('reload',(event: string,arugments: any) => {
       this.contents[this.state.current].reload();
     });
+    ipcRenderer.on('force reload',(event: string,arugments: any) => {
+      this.contents[this.state.current].forceReload();
+    });
   }
 
   changeFontSize(offset: number|null) {

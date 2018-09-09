@@ -51,6 +51,9 @@ export class Search extends React.Component<Property,{tweets: twitter.Tweet[],qu
   public reload() {
     this.reorder(this.state.query,true);
   }
+  public forceReload() {
+    this.reload();
+  }
   private reorder(query: string,addition: boolean) {
     if (this.timer) {
       clearTimeout(this.timer);

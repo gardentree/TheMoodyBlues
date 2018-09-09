@@ -95,6 +95,13 @@ app.on('ready', () => {
           }
         },
         {
+          label: 'Force Reload',
+          accelerator: 'Shift+Command+r',
+          click() {
+            mainWindow.webContents.send('force reload',{});
+          }
+        },
+        {
           label: 'Zoom In',
           accelerator: 'Command+Plus',
           click() {

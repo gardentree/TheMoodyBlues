@@ -43,6 +43,11 @@ export class Timeline extends React.Component<Property,{tweets: twitter.Tweet[]}
   public reload() {
     this.reorder();
   }
+  public forceReload() {
+    this.setState({tweets: []});
+    this.reload();
+  }
+
   private reorder() {
     if (this.timer) {
       clearTimeout(this.timer);
