@@ -33,7 +33,7 @@ export class Search extends React.Component<Property,{tweets: twitter.Tweet[],qu
       <div>
         <div className='toolbar'>
           <form className='search' onSubmit={this.handleSubmit}>
-            <input className='form-control' type='search' name='query' value={this.state.query} />
+            <input className='form-control' type='search' name='query' value={this.state.query} onChange={event => this.setState({query: event.target.value})} />
           </form>
         </div>
         <div>
