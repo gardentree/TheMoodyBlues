@@ -1,4 +1,5 @@
 export interface Tweet {
+  id: number;
   id_str: string;
   full_text: string;
   user: User;

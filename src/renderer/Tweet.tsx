@@ -7,6 +7,7 @@ import * as twitter from "./twitter";
 
 interface Property {
   source: twitter.Tweet;
+  unread: boolean;
 }
 
 export class Tweet extends React.Component<Property,{}> {
@@ -51,7 +52,7 @@ export class Tweet extends React.Component<Property,{}> {
 
     return (
       <div data-url={`https://twitter.com/${this.props.source.user.screen_name}/status/${this.props.source.id_str}`} onContextMenu={this.openContextMenu}>
-        <div className={`avatar${retweet ? ' retweet':''}`}>
+        <div className={`avatar${retweet ? ' retweet':''}${this.props.unread ? ' unread':''}`}>
           <img src={tweet.user.profile_image_url_https} className="tweeter" />
           {retweet && <img src={retweet.user.profile_image_url_https} className="retweeter" />}
         </div>
