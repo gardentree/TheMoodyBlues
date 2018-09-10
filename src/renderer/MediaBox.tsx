@@ -53,7 +53,7 @@ export class MediaBox extends React.Component<{medias: twitter.Media[]},{medias:
     })
 
     return (
-      <div>
+      <div onClick={event => event.stopPropagation()}>
         <div className='media' onClick={this.openModal}>{medias}</div>
         <Modal
           isOpen={this.state.modalIsOpen}
