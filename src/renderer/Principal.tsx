@@ -36,7 +36,7 @@ export class Principal extends React.Component<Property,{current: string,style: 
 
   changeFontSize(offset: number|null) {
     if (offset) {
-      const content = document.getElementsByClassName('contents')[0]
+      const content = document.getElementById('principal')
       const size = window.getComputedStyle(content).fontSize;if (size === null) throw "font size is null";
       const matcher = size.match(/(\d+)px/);if (matcher === null) throw size;
 
@@ -59,7 +59,7 @@ export class Principal extends React.Component<Property,{current: string,style: 
     const components = [Timeline,Search]
 
     return (
-      <div className="window">
+      <div id='principal' className="window" style={this.state.style}>
         <header className="toolbar toolbar-header">
           <h1 className="title">The Moody Blues</h1>
         </header>
@@ -73,26 +73,22 @@ export class Principal extends React.Component<Property,{current: string,style: 
             })
           }
         </div>
-        <div className="window-content">
-          <div className='contents' style={this.state.style}>
-            {
-              components.map((component) => {
-                return (
-                  <div key={component.name} style={{display: this.state.current == component.name ? 'block':'none'}}>
-                    {
-                      React.createElement(
-                         component as React.ClassType<any,any,any>,{
-                          twitter: this.props.twitter,
-                          ref: (reference) => {this.contents[component.name] = reference},
-                        }
-                      )
+        {
+          components.map((component) => {
+            return (
+              <div key={component.name} className="window-content" style={{display: this.state.current == component.name ? 'block':'none'}} data-name={component.name}>
+                {
+                  React.createElement(
+                     component as React.ClassType<any,any,any>,{
+                      twitter: this.props.twitter,
+                      ref: (reference) => {this.contents[component.name] = reference},
                     }
-                  </div>
-                )
-              })
-            }
-          </div>
-        </div>
+                  )
+                }
+              </div>
+            )
+          })
+        }
       </div>
     )
   }

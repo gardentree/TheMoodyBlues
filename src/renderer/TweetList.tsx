@@ -19,14 +19,10 @@ export class TweetList extends React.Component<Property,{focus: string|null,late
   setFocus(event: React.SyntheticEvent<HTMLElement>) {
     this.setState({focus: event.currentTarget.dataset.id!});
   }
-  scrolling(event: Event): void {
+  scrolling(event: React.SyntheticEvent<HTMLElement>): void {
     if ((event.target as HTMLElement).scrollTop <= 0 && this.props.tweets.length > 0 && this.state.latest < this.props.tweets[0].id) {
       this.setState({latest: this.props.tweets[0].id});
     }
-  }
-
-  componentDidMount() {
-    window.addEventListener('scroll',this.scrolling,true);
   }
 
   render() {
@@ -39,9 +35,11 @@ export class TweetList extends React.Component<Property,{focus: string|null,late
     });
 
     return (
-      <ul className="timeline">
-        {elements}
-      </ul>
+      <div style={{overflowY: 'auto',height: '100%'}} onScroll={this.scrolling}>
+        <ul className="timeline">
+          {elements}
+        </ul>
+      </div>
     );
   }
 
@@ -49,9 +47,5 @@ export class TweetList extends React.Component<Property,{focus: string|null,late
     if (this.state.latest <= 0 && this.props.tweets.length > 0) {
       this.setState({latest: this.props.tweets[0].id});
     }
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('scroll',this.scrolling);
   }
 }

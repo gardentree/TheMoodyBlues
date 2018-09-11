@@ -30,16 +30,16 @@ export class Search extends React.Component<Property,{tweets: twitter.Tweet[],qu
 
   render() {
     return (
-      <div>
+      <React.Fragment>
         <div className='toolbar'>
           <form className='search' onSubmit={this.handleSubmit}>
             <input className='form-control' type='search' name='query' value={this.state.query} onChange={event => this.setState({query: event.target.value})} />
           </form>
         </div>
-        <div>
+        <div style={{height: '100%'}}>
           <TweetList tweets={this.state.tweets} />
         </div>
-      </div>
+      </React.Fragment>
     )
   }
 

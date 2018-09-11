@@ -178,13 +178,11 @@ form.search {
   }
 }
 
-.window-content {
-  font-family: 'Hiragino Sans';
-  -webkit-font-smoothing: antialiased;
-
+.window {
   font-size: 12px;
 
-  .contents {
-    width: 100%;
+  .window-content {
+    font-family: 'Hiragino Sans';
+    -webkit-font-smoothing: antialiased;
   }
 }
