@@ -53,22 +53,24 @@ export class MediaBox extends React.Component<{medias: twitter.Media[]},{medias:
     })
 
     return (
-      <div onClick={event => event.stopPropagation()}>
+      <React.Fragment>
         <div className='media' onClick={this.openModal}>{medias}</div>
-        <Modal
-          isOpen={this.state.modalIsOpen}
-          onRequestClose={this.closeModal}
-        >
-          <div className='modal-container'>
-            <Carousel
-              showArrows={true}
-              showThumbs={false}
-            >
-              {elements}
-            </Carousel>
-          </div>
-        </Modal>
-      </div>
+        <div onClick={event => event.stopPropagation()}>
+          <Modal
+            isOpen={this.state.modalIsOpen}
+            onRequestClose={this.closeModal}
+          >
+            <div className='modal-container'>
+              <Carousel
+                showArrows={true}
+                showThumbs={false}
+              >
+                {elements}
+              </Carousel>
+            </div>
+          </Modal>
+        </div>
+      </React.Fragment>
     );
   }
 }
