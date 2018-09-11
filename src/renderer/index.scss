@@ -123,9 +123,10 @@ ul.timeline {
       }
 
       &.unread:after {
+        font-family: "photon-entypo";
         position:: absolute;
         font-size: 14px;
-        content: '●';
+        content: '\e8ae';
         color: #4372e0;
         right: 2px;
         top: 30px;
