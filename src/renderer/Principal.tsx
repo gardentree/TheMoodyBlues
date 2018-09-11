@@ -37,7 +37,7 @@ export class Principal extends React.Component<Property,{current: string,style: 
   changeFontSize(offset: number|null) {
     if (offset) {
       const content = document.getElementById('principal')
-      const size = window.getComputedStyle(content).fontSize;if (size === null) throw "font size is null";
+      const size = window.getComputedStyle(content!).fontSize;if (size === null) throw "font size is null";
       const matcher = size.match(/(\d+)px/);if (matcher === null) throw size;
 
       this.setState({style: {fontSize: `${Number(matcher[1]) + offset}px`}})
