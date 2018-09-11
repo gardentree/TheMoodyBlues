@@ -20,7 +20,8 @@ ul.timeline {
   li {
     border-bottom: solid 1px #dedede;
 
-    &.focus {
+    &:focus {
+      outline: none;
       color: white;
       background-color: #458ade;
 
