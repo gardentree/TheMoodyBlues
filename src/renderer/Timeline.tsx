@@ -9,7 +9,7 @@ interface Property {
 
 const ElectronStore = require('electron-store');
 const store = new ElectronStore();
-const mutes: string[] = store.get('mutes')
+const mutes: string[] = store.get('mutes')||[]
 
 const storage = require("electron-json-storage");
 export class Timeline extends React.Component<Property,{tweets: twitter.Tweet[]}> {
