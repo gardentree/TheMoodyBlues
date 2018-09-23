@@ -1,27 +1,31 @@
 import * as React from "react";
-import {openLinkOnAnchor} from "./tools"
-import {decodeHTML} from "./tools";
-import {OperationTower} from "./OperationTower";
-import * as twitter from "./twitter";
+import {openLinkOnAnchor,decodeHTML} from "../others/tools";
+import * as twitter from "../others/twitter";
+
+import {connect} from 'react-redux'
+import * as actions from '../actions'
 
 interface TweetElement {
   category: string
   entity: any
 }
 
-function search(event: React.SyntheticEvent) {
-  const target = event.target as HTMLElement;
-  OperationTower.emit('search',target.textContent);
-}
-
-export class PrettyTweet extends React.Component<{tweet: twitter.Tweet},{}> {
+class PrettyTweet extends React.Component<any,any> {
   private elements: TweetElement[]
 
   constructor(props: {tweet: twitter.Tweet}) {
     super(props);
 
     this.elements = PrettyTweet.parseElements(this.props.tweet)
+
+    this.clickHashtag = this.clickHashtag.bind(this);
   }
+
+  clickHashtag(event: React.SyntheticEvent) {
+    const target = event.target as HTMLElement;
+    this.props.dispatch(actions.searchTweets(target.textContent!));
+  }
+
   render() {
     let fragments: JSX.Element[] = []
     for (let element of this.elements) {
@@ -37,7 +41,7 @@ export class PrettyTweet extends React.Component<{tweet: twitter.Tweet},{}> {
         case 'hashtags':
           fragments.push(React.createElement(
             'span',
-            {key: fragments.length,className: 'hashtag',onClick: search},
+            {key: fragments.length,className: 'hashtag',onClick: this.clickHashtag},
             `#${decodeHTML(entity.text)}`
           ));
           break;
@@ -107,3 +111,5 @@ export class PrettyTweet extends React.Component<{tweet: twitter.Tweet},{}> {
     )
   }
 }
+
+export default connect()(PrettyTweet);

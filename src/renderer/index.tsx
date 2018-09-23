@@ -1,19 +1,38 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import {Authorization} from "./Authorization";
-import {Principal} from "./Principal";
-import {remote} from 'electron';
+import {createStore,applyMiddleware} from 'redux'
+import createSagaMiddleware from 'redux-saga'
+import rootReducer from './modules/reducer'
+import rootSaga from './sagas'
+import {Provider} from 'react-redux'
+import Principal from "./components/Principal";
+import keybinds from './helpers/keybinds';
+import authorize from './helpers/authentication';
+
 import 'photon/dist/css/photon.css'
 import './index.scss';
 
-const authorization = new Authorization({});
-authorization.authorize((twitter: any,screen_name: string) => {
-  const browser = remote.getCurrentWindow();
-  browser.setTitle(`The Moody Blues (${screen_name})`);
+const main = (twitter: any) => {
+  const sagaMiddleware = createSagaMiddleware()
+  const store = createStore(rootReducer,applyMiddleware(sagaMiddleware))
+
+  sagaMiddleware.run(rootSaga)
+
+  keybinds(store);
+  store.getState()['account'] = twitter;
 
   ReactDOM.render(
-    <Principal twitter={twitter}/>,
+    <Provider store={store}>
+      <Principal />
+    </Provider>,
     document.getElementById("app")
   );
-});
+}
 
+(async () => {
+  const client = await new Promise((resolve,reject) => {
+    resolve(authorize());
+  })
+
+  main(client);
+})();

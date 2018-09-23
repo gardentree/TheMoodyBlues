@@ -1,9 +1,9 @@
 import {remote,shell} from 'electron'
 import * as React from "react";
-import {PrettyTweet} from "./PrettyTweet";
+import PrettyTweet from "./PrettyTweet";
 import {MediaBox} from "./MediaBox";
 import * as DateUtility from "date-fns"
-import * as twitter from "./twitter";
+import * as twitter from "../others/twitter";
 
 interface Property {
   source: twitter.Tweet;

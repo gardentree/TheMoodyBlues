@@ -1,6 +1,6 @@
 import * as React from "react";
-import {Tweet} from "./tweet";
-import * as twitter from "./twitter";
+import {Tweet} from "./Tweet";
+import * as twitter from "../others/twitter";
 
 interface Property {
   tweets: twitter.Tweet[];

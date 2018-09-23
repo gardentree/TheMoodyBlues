@@ -11,7 +11,7 @@ const isDevelopment = process.env.NODE_ENV !== 'production'
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
 
 // global reference to mainWindow (necessary to prevent window from being garbage collected)
-let mainWindow
+let mainWindow: BrowserWindow|null
 
 function createMainWindow() {
   const windowKeeper = require('electron-window-state');
@@ -47,7 +47,6 @@ function createMainWindow() {
   }
 
   window.on('closed', () => {
-
     mainWindow = null
   })
 
@@ -91,35 +90,35 @@ app.on('ready', () => {
           label: 'Reload',
           accelerator: 'Command+r',
           click() {
-            mainWindow.webContents.send('reload',{});
+            mainWindow!.webContents.send('reload',{});
           }
         },
         {
           label: 'Force Reload',
           accelerator: 'Shift+Command+r',
           click() {
-            mainWindow.webContents.send('force reload',{});
+            mainWindow!.webContents.send('force_reload',{});
           }
         },
         {
           label: 'Zoom In',
           accelerator: 'Command+Plus',
           click() {
-            mainWindow.webContents.send('zoom in',{});
+            mainWindow!.webContents.send('zoom_in',{});
           }
         },
         {
           label: 'Zoom Out',
           accelerator: 'Command+-',
           click() {
-            mainWindow.webContents.send('zoom out',{});
+            mainWindow!.webContents.send('zoom_out',{});
           }
         },
         {
           label: 'Zoom Reset',
           accelerator: 'Command+0',
           click() {
-            mainWindow.webContents.send('zoom reset',{});
+            mainWindow!.webContents.send('zoom_reset',{});
           }
         },
       ]
