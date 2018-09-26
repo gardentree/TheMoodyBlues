@@ -1,19 +1,16 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
 import {connect} from 'react-redux'
 import * as screen from "../modules/screen";
 import Timeline from "./Timeline";
 import Search from "./Search";
-import SubContent from "./SubContent";
-import {update as updateSubContent} from "../modules/subcontents";
+import SubContents from "./SubContents";
 
 class Principal extends React.Component<any,any> {
   render() {
     const contents = [Timeline,Search]
     const current = this.props.current
 
-    const {subcontents} = this.props;
-    const container = document.querySelector(`.window-content[data-name='${current}']`)!;
+    const container = `.window-content[data-name='${current}']`;
 
     return (
       <div id='principal' className="window">
@@ -44,12 +41,7 @@ class Principal extends React.Component<any,any> {
             )
           })
         }
-        {
-          subcontents.tweets && ReactDOM.createPortal(
-            <SubContent tweets={subcontents.tweets} onClose={() => this.props.dispatch(updateSubContent(null))} />
-            ,container
-          )
-        }
+        <SubContents container={container} />
       </div>
     )
   }
@@ -58,7 +50,6 @@ class Principal extends React.Component<any,any> {
 const mapStateToProps = (state: any) => {
   return {
     current: state.screen.name||Timeline.name,
-    subcontents: state.subcontents,
   }
 }
 export default connect(mapStateToProps)(Principal);
