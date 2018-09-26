@@ -191,58 +191,109 @@ describe(reorder.name, () => {
     });
   });
 
-  it("Search", () => {
-    return expectSaga(reorder, {
-      payload: {},
-      meta: {
-        force: false,
-      },
-    })
-      .provide([
-        {
-          select() {
-            return {
-              account: {
-                search: () => {
-                  return [{id_str: "1"}];
-                },
-              },
-              screen: {
-                name: "Search",
-              },
-              contents: {
-                Search: {tweets: [{id_str: "old_1"}], query: "くえりー"},
-              },
-            };
-          },
+  describe("Search", () => {
+    it("normal", () => {
+      return expectSaga(reorder, {
+        payload: {},
+        meta: {
+          force: false,
         },
-        {
-          call(effect: any, next: any) {
-            switch (effect.fn.name) {
-              case "search":
-                expect(effect.args[0]).to.equal("くえりー");
-                expect(effect.args[1]).to.equal("old_1");
-                return [{id_str: "new_1"}, {id_str: "new_2"}];
-              default:
-                expect.fail(effect.fn.name);
-                return;
-            }
-          },
-        },
-      ])
-      .put({
-        type: "SYSTEM_UPDATE_TWEETS",
-        payload: {tweets: [{id_str: "new_1"}, {id_str: "new_2"}, {id_str: "old_1"}], query: "くえりー"},
-        meta: {name: "Search"},
-        error: false,
       })
-      .run()
-      .then((result) => {
-        const {effects} = result;
+        .provide([
+          {
+            select() {
+              return {
+                account: {
+                  search: () => {
+                    return [{id_str: "1"}];
+                  },
+                },
+                screen: {
+                  name: "Search",
+                },
+                contents: {
+                  Search: {tweets: [{id_str: "old_1"}], query: "くえりー"},
+                },
+              };
+            },
+          },
+          {
+            call(effect: any, next: any) {
+              switch (effect.fn.name) {
+                case "search":
+                  expect(effect.args[0]).to.equal("くえりー");
+                  expect(effect.args[1]).to.equal("old_1");
+                  return [{id_str: "new_1"}, {id_str: "new_2"}];
+                default:
+                  expect.fail(effect.fn.name);
+                  return;
+              }
+            },
+          },
+        ])
+        .put({
+          type: "Search_STOP_TIMER",
+        })
+        .put({
+          type: "SYSTEM_UPDATE_TWEETS",
+          payload: {tweets: [{id_str: "new_1"}, {id_str: "new_2"}, {id_str: "old_1"}], query: "くえりー"},
+          meta: {name: "Search"},
+          error: false,
+        })
+        .put({
+          type: "Search_START_TIMER",
+        })
+        .run()
+        .then((result) => {
+          const {effects} = result;
 
-        expect(effects.put).to.be.undefined;
-        expect(effects.call).to.have.lengthOf(1);
-      });
+          expect(effects.put).to.be.undefined;
+          expect(effects.call).to.have.lengthOf(1);
+        });
+    });
+    it("query is blank", () => {
+      return expectSaga(reorder, {
+        payload: {},
+        meta: {
+          force: false,
+        },
+      })
+        .provide([
+          {
+            select() {
+              return {
+                account: {
+                  search: () => {
+                    return [{id_str: "1"}];
+                  },
+                },
+                screen: {
+                  name: "Search",
+                },
+                contents: {
+                  Search: {tweets: [{id_str: "old_1"}], query: ""},
+                },
+              };
+            },
+          },
+        ])
+        .put({
+          type: "Search_STOP_TIMER",
+        })
+        .put({
+          type: "SYSTEM_UPDATE_TWEETS",
+          payload: {tweets: [], query: ""},
+          meta: {name: "Search"},
+          error: false,
+        })
+        .run()
+        .then((result) => {
+          const {effects} = result;
+
+          expect(effects.put).to.be.undefined;
+          expect(effects.call).to.be.undefined;
+        });
+    });
   });
 
   it("assign screen", () => {
@@ -281,10 +332,16 @@ describe(reorder.name, () => {
         },
       ])
       .put({
+        type: "Search_STOP_TIMER",
+      })
+      .put({
         type: "SYSTEM_UPDATE_TWEETS",
         payload: {tweets: [], query: "くえりー"},
         meta: {name: "Search"},
         error: false,
+      })
+      .put({
+        type: "Search_START_TIMER",
       })
       .run()
       .then((result) => {
@@ -316,12 +373,6 @@ describe(searchTweets.name, () => {
         payload: null,
         meta: {force: true, screen: "Search"},
         error: false,
-      })
-      .put({
-        type: "Search_STOP_TIMER",
-      })
-      .put({
-        type: "Search_START_TIMER",
       })
       .run();
   });

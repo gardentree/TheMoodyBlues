@@ -62,11 +62,19 @@ class SearchSaga extends ComponentSaga {
     yield fork(runTimer, Search.name, 60 * 1000);
   }
   *order(action: Action) {
-    const query = this.content.query;
-    const tweets = yield call(this.account.search, query, this.latest());
-    const newTweets = tweets.concat(this.content.tweets).slice(0, 400);
+    yield put({type: `${Search.name}_STOP_TIMER`});
 
-    yield put(contents.update(newTweets, Search.name, {query: query}));
+    const query = this.content.query;
+    if (query.length > 0) {
+      const tweets = yield call(this.account.search, query, this.latest());
+      const newTweets = tweets.concat(this.content.tweets).slice(0, 400);
+
+      yield put(contents.update(newTweets, Search.name, {query: query}));
+
+      yield put({type: `${Search.name}_START_TIMER`});
+    } else {
+      yield put(contents.update([], Search.name, {query: query}));
+    }
   }
 }
 
@@ -113,8 +121,6 @@ function* searchTweets(action: Action) {
   yield put(screen.select(Search.name));
   yield put(contents.update([], Search.name, {query: payload.query}));
   yield put(contents.reload(true, Search.name));
-
-  yield restartTimer(Search.name);
 }
 
 function* runTimer(screen: string, interval: number) {
