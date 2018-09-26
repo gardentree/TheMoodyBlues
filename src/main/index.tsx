@@ -76,11 +76,25 @@ app.on('activate', () => {
 app.on('ready', () => {
   mainWindow = createMainWindow()
 
-  const template = [
+  const template: Electron.MenuItemConstructorOptions[] = [
     {
       label: app.getName(),
       submenu: [
         {role: 'about'}
+      ]
+    },
+    {
+      label: "Edit",
+      submenu: [
+        {role: 'undo'},
+        {role: 'redo'},
+        {type: 'separator'},
+        {role: 'cut'},
+        {role: 'copy'},
+        {role: 'paste'},
+        {role: 'pasteandmatchstyle'},
+        {role: 'delete'},
+        {role: 'selectall'}
       ]
     },
     {

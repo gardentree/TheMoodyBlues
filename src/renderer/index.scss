@@ -37,6 +37,9 @@ ul.timeline {
             text-decoration: underline;
           }
         }
+        *::selection {
+          background: white;
+        }
       }
     }
 
@@ -52,6 +55,10 @@ ul.timeline {
     }
     .tweet {
       width: 100%;
+
+      * {
+        user-select: text;
+      }
 
       .meta {
         display: table;
