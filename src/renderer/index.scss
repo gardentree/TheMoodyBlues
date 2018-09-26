@@ -122,7 +122,7 @@ ul.timeline {
           margin-right: 12px;
         }
         img.retweeter {
-          position:: absolute;
+          position: absolute;
           width: 24px;
           display: block;
           right: 0;
@@ -132,9 +132,9 @@ ul.timeline {
 
       &.unread:after {
         font-family: "photon-entypo";
-        position:: absolute;
+        position: absolute;
         font-size: 14px;
-        content: '\e8ae';
+        content: "\e8ae";
         color: #4372e0;
         right: 2px;
         top: 30px;
@@ -165,7 +165,8 @@ ul.timeline {
 .modal-container {
   height: 100%;
 
-  div,ul {
+  div,
+  ul {
     height: 100%;
   }
 
@@ -191,14 +192,14 @@ form.search {
   font-size: 12px;
 
   .window-content {
-    font-family: 'Hiragino Sans';
+    font-family: "Hiragino Sans";
     -webkit-font-smoothing: antialiased;
   }
 }
 
 .subcontent {
   position: absolute;
-  background-color: rgba(255,255,255,1);
+  background-color: rgba(255, 255, 255, 1);
   top: 0;
   bottom: 0;
   left: 0;

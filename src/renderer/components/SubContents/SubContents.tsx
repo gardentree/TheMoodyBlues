@@ -5,29 +5,28 @@ import * as twitter from "../../others/twitter";
 
 interface Property {
   container: string;
-  tweets?: twitter.Tweet[]|null;
+  tweets?: twitter.Tweet[] | null;
   onClose?(): any;
-};
+}
 
-const SubContents: React.SFC<Property> = ({container,tweets,onClose}) => {
-  const display = tweets ? 'block':'none';
+const SubContents: React.SFC<Property> = ({container, tweets, onClose}) => {
+  const display = tweets ? "block" : "none";
 
   if (!tweets) return null;
 
   const contents = ReactDOM.createPortal(
-    <div className='subcontent' style={{display: display}}>
-      <div className='header'>
+    <div className="subcontent" style={{display: display}}>
+      <div className="header">
         <button className="btn btn-default">
-          <span className="icon icon-cancel" onClick={onClose}></span>
+          <span className="icon icon-cancel" onClick={onClose} />
         </button>
       </div>
       <TweetList tweets={tweets!} />
-    </div>
-  ,document.querySelector(container)!)
+    </div>,
+    document.querySelector(container)!
+  );
 
-  return (
-    <React.Fragment>{contents}</React.Fragment>
-  )
+  return <React.Fragment>{contents}</React.Fragment>;
 };
 
 export default SubContents;

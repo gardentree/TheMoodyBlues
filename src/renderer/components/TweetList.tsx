@@ -6,11 +6,11 @@ interface Property {
   tweets: twitter.Tweet[];
 }
 
-export class TweetList extends React.Component<Property,{latest: number}> {
+export class TweetList extends React.Component<Property, {latest: number}> {
   constructor(property: Property) {
     super(property);
 
-    this.state = {latest: 0}
+    this.state = {latest: 0};
 
     this.scrolling = this.scrolling.bind(this);
   }
@@ -27,14 +27,12 @@ export class TweetList extends React.Component<Property,{latest: number}> {
         <li key={tweet.id_str} data-id={tweet.id_str} tabIndex={-1}>
           <Tweet source={tweet} unread={this.state.latest > 0 && tweet.id > this.state.latest} />
         </li>
-      )
+      );
     });
 
     return (
-      <div style={{overflowY: 'auto',height: '100%'}} onScroll={this.scrolling}>
-        <ul className="timeline">
-          {elements}
-        </ul>
+      <div style={{overflowY: "auto", height: "100%"}} onScroll={this.scrolling}>
+        <ul className="timeline">{elements}</ul>
       </div>
     );
   }

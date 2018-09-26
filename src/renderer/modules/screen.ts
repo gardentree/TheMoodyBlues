@@ -1,18 +1,18 @@
-import Action from '../others/action';
+import Action from "../others/action";
 
-const SELECT_CONTENT = 'SELECT_CONTENT'
+const SELECT_CONTENT = "SELECT_CONTENT";
 
 const initialState = {
-  name: null
-}
-export default function reducer(state = initialState,action: Action) {
+  name: null,
+};
+export default function reducer(state = initialState, action: Action) {
   switch (action.type) {
     case SELECT_CONTENT:
       return {
-        name: action.payload.name
-      }
+        name: action.payload.name,
+      };
     default:
-      return state
+      return state;
   }
 }
 
@@ -21,4 +21,4 @@ export const select = (name: string) => ({
   payload: {name: name},
   meta: null,
   error: false,
-})
+});

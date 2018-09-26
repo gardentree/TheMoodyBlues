@@ -1,22 +1,22 @@
 import * as React from "react";
-import {connect} from 'react-redux'
+import {connect} from "react-redux";
 import User from "./User";
-import {openLinkOnAnchor,decodeHTML} from "../others/tools";
+import {openLinkOnAnchor, decodeHTML} from "../others/tools";
 import * as twitter from "../others/twitter";
-import * as actions from '../actions'
+import * as actions from "../actions";
 
 interface TweetElement {
-  category: string
-  entity: any
+  category: string;
+  entity: any;
 }
 
-class PrettyTweet extends React.Component<any,any> {
-  private elements: TweetElement[]
+class PrettyTweet extends React.Component<any, any> {
+  private elements: TweetElement[];
 
   constructor(props: {tweet: twitter.Tweet}) {
     super(props);
 
-    this.elements = PrettyTweet.parseElements(this.props.tweet)
+    this.elements = PrettyTweet.parseElements(this.props.tweet);
 
     this.clickHashtag = this.clickHashtag.bind(this);
   }
@@ -27,84 +27,73 @@ class PrettyTweet extends React.Component<any,any> {
   }
 
   render() {
-    let fragments: JSX.Element[] = []
+    let fragments: JSX.Element[] = [];
     for (let element of this.elements) {
-      const entity = element.entity
+      const entity = element.entity;
       switch (element.category) {
-        case 'string':
-          fragments.push(React.createElement(
-            React.Fragment,
-            {key: fragments.length},
-            PrettyTweet.breakLine(decodeHTML(element.entity))
-          ));
+        case "string":
+          fragments.push(React.createElement(React.Fragment, {key: fragments.length}, PrettyTweet.breakLine(decodeHTML(element.entity))));
           break;
-        case 'hashtags':
-          fragments.push(React.createElement(
-            'span',
-            {key: fragments.length,className: 'hashtag',onClick: this.clickHashtag},
-            `#${decodeHTML(entity.text)}`
-          ));
+        case "hashtags":
+          fragments.push(React.createElement("span", {key: fragments.length, className: "hashtag", onClick: this.clickHashtag}, `#${decodeHTML(entity.text)}`));
           break;
-        case 'user_mentions':
+        case "user_mentions":
           fragments.push(<User key={fragments.length} screenName={entity.screen_name} />);
           break;
-        case 'urls':
-          fragments.push(React.createElement(
-            "a",
-            {key: fragments.length,href: entity.expanded_url,onClick: openLinkOnAnchor},
-            decodeHTML(entity.display_url)
-          ))
+        case "urls":
+          fragments.push(React.createElement("a", {key: fragments.length, href: entity.expanded_url, onClick: openLinkOnAnchor}, decodeHTML(entity.display_url)));
           break;
-        case 'media':
+        case "media":
           break;
       }
     }
 
-    return (
-      <React.Fragment>{fragments}</React.Fragment>
-    )
+    return <React.Fragment>{fragments}</React.Fragment>;
   }
   private static parseElements(tweet: twitter.Tweet): TweetElement[] {
-    let entities: {category: string,entity: any}[] = []
-    for (let category of ['hashtags','user_mentions','urls','media']) {
+    let entities: {category: string; entity: any}[] = [];
+    for (let category of ["hashtags", "user_mentions", "urls", "media"]) {
       if (!tweet.entities[category]) continue;
 
-      entities = entities.concat(tweet.entities[category].map((entity: any) => ({category: category,entity: entity})))
+      entities = entities.concat(tweet.entities[category].map((entity: any) => ({category: category, entity: entity})));
     }
     if (entities.length > 0) {
-      entities.sort((a,b) => a.entity.indices[0] - b.entity.indices[0]);
+      entities.sort((a, b) => a.entity.indices[0] - b.entity.indices[0]);
     }
 
-    const characters = Array.from(tweet.full_text)
-    let elements = []
-    let start = 0
+    const characters = Array.from(tweet.full_text);
+    let elements = [];
+    let start = 0;
     for (let entity of entities) {
       if (start < entity.entity.indices[0]) {
-        const element = characters.slice(start,entity.entity.indices[0]).join('')
-        elements.push({category: 'string',entity: element})
+        const element = characters.slice(start, entity.entity.indices[0]).join("");
+        elements.push({category: "string", entity: element});
       }
-      elements.push(entity)
+      elements.push(entity);
 
-      start = entity.entity.indices[1]
+      start = entity.entity.indices[1];
     }
     if (start < characters.length) {
-      const element = characters.slice(start,characters.length).join('')
-      elements.push({category: 'string',entity: element})
+      const element = characters.slice(start, characters.length).join("");
+      elements.push({category: "string", entity: element});
     }
 
-    return elements
+    return elements;
   }
   private static breakLine(text: string): JSX.Element[] {
-    const elements = text.split(/(?:\r\n|\r|\n)/)
+    const elements = text.split(/(?:\r\n|\r|\n)/);
 
-    return (
-      elements.map((element,index) => {
-        const span = (element) ? (<span>{element}</span>):null;
-        const br = (elements.length > (index + 1)) ? (<br/>):null;
+    return elements.map((element, index) => {
+      const span = element ? <span>{element}</span> : null;
+      const br = elements.length > index + 1 ? <br /> : null;
 
-        return (<React.Fragment key={index}>{span}{br}</React.Fragment>)
-      })
-    )
+      return (
+        <React.Fragment key={index}>
+          {span}
+          {br}
+        </React.Fragment>
+      );
+    });
   }
 }
 

@@ -1,144 +1,133 @@
-'use strict'
+"use strict";
 
-import { app, BrowserWindow,Menu } from 'electron'
-import * as path from 'path'
-import { format as formatUrl } from 'url'
+import {app, BrowserWindow, Menu} from "electron";
+import * as path from "path";
+import {format as formatUrl} from "url";
 
-require('dotenv').config();
+require("dotenv").config();
 
-const isDevelopment = process.env.NODE_ENV !== 'production'
+const isDevelopment = process.env.NODE_ENV !== "production";
 
-process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = 'true';
+process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";
 
 // global reference to mainWindow (necessary to prevent window from being garbage collected)
-let mainWindow: BrowserWindow|null
+let mainWindow: BrowserWindow | null;
 
 function createMainWindow() {
-  const windowKeeper = require('electron-window-state');
+  const windowKeeper = require("electron-window-state");
   const windowState = windowKeeper({
     defaultWidth: 1000,
-    defaultHeight: 800
+    defaultHeight: 800,
   });
 
   const window = new BrowserWindow({
-    title:  "The Moody Blues",
+    title: "The Moody Blues",
     acceptFirstMouse: true,
-    titleBarStyle: 'hidden',
-    x:      windowState.x,
-    y:      windowState.y,
-    width:  windowState.width,
+    titleBarStyle: "hidden",
+    x: windowState.x,
+    y: windowState.y,
+    width: windowState.width,
     height: windowState.height,
-  })
+  });
   windowState.manage(window);
 
   if (isDevelopment) {
-    window.webContents.openDevTools()
+    window.webContents.openDevTools();
   }
 
   if (isDevelopment) {
-    window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`)
-  }
-  else {
-    window.loadURL(formatUrl({
-      pathname: path.join(__dirname, 'index.html'),
-      protocol: 'file',
-      slashes: true
-    }))
+    window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
+  } else {
+    window.loadURL(
+      formatUrl({
+        pathname: path.join(__dirname, "index.html"),
+        protocol: "file",
+        slashes: true,
+      })
+    );
   }
 
-  window.on('closed', () => {
-    mainWindow = null
-  })
+  window.on("closed", () => {
+    mainWindow = null;
+  });
 
-  window.webContents.on('devtools-opened', () => {
-    window.focus()
+  window.webContents.on("devtools-opened", () => {
+    window.focus();
     setImmediate(() => {
-      window.focus()
-    })
-  })
+      window.focus();
+    });
+  });
 
-  return window
+  return window;
 }
 
 // quit application when all windows are closed
-app.on('window-all-closed', () => {
-  app.quit()
-})
+app.on("window-all-closed", () => {
+  app.quit();
+});
 
-app.on('activate', () => {
+app.on("activate", () => {
   // on macOS it is common to re-create a window even after all windows have been closed
   if (mainWindow === null) {
-    mainWindow = createMainWindow()
+    mainWindow = createMainWindow();
   }
-})
+});
 
 // create main BrowserWindow when electron is ready
-app.on('ready', () => {
-  mainWindow = createMainWindow()
+app.on("ready", () => {
+  mainWindow = createMainWindow();
 
   const template: Electron.MenuItemConstructorOptions[] = [
     {
       label: app.getName(),
-      submenu: [
-        {role: 'about'}
-      ]
+      submenu: [{role: "about"}],
     },
     {
       label: "Edit",
-      submenu: [
-        {role: 'undo'},
-        {role: 'redo'},
-        {type: 'separator'},
-        {role: 'cut'},
-        {role: 'copy'},
-        {role: 'paste'},
-        {role: 'pasteandmatchstyle'},
-        {role: 'delete'},
-        {role: 'selectall'}
-      ]
+      submenu: [{role: "undo"}, {role: "redo"}, {type: "separator"}, {role: "cut"}, {role: "copy"}, {role: "paste"}, {role: "pasteandmatchstyle"}, {role: "delete"}, {role: "selectall"}],
     },
     {
-      label: 'View',
+      label: "View",
       submenu: [
         {
-          label: 'Reload',
-          accelerator: 'Command+r',
+          label: "Reload",
+          accelerator: "Command+r",
           click() {
-            mainWindow!.webContents.send('reload',{});
-          }
+            mainWindow!.webContents.send("reload", {});
+          },
         },
         {
-          label: 'Force Reload',
-          accelerator: 'Shift+Command+r',
+          label: "Force Reload",
+          accelerator: "Shift+Command+r",
           click() {
-            mainWindow!.webContents.send('force_reload',{});
-          }
+            mainWindow!.webContents.send("force_reload", {});
+          },
         },
         {
-          label: 'Zoom In',
-          accelerator: 'Command+Plus',
+          label: "Zoom In",
+          accelerator: "Command+Plus",
           click() {
-            mainWindow!.webContents.send('zoom_in',{});
-          }
+            mainWindow!.webContents.send("zoom_in", {});
+          },
         },
         {
-          label: 'Zoom Out',
-          accelerator: 'Command+-',
+          label: "Zoom Out",
+          accelerator: "Command+-",
           click() {
-            mainWindow!.webContents.send('zoom_out',{});
-          }
+            mainWindow!.webContents.send("zoom_out", {});
+          },
         },
         {
-          label: 'Zoom Reset',
-          accelerator: 'Command+0',
+          label: "Zoom Reset",
+          accelerator: "Command+0",
           click() {
-            mainWindow!.webContents.send('zoom_reset',{});
-          }
+            mainWindow!.webContents.send("zoom_reset", {});
+          },
         },
-      ]
+      ],
     },
-  ]
+  ];
 
-  const menu = Menu.buildFromTemplate(template)
-  Menu.setApplicationMenu(menu)
-})
+  const menu = Menu.buildFromTemplate(template);
+  Menu.setApplicationMenu(menu);
+});
