@@ -154,4 +154,10 @@ function* displayUserTimeline(action: Action) {
   yield put(subcontents.update(tweets));
 }
 
-export default [takeLatest(contents.RELOAD, reorder), takeLatest(actions.SEARCH_TWEETS, searchTweets), takeLatest(subcontents.DISPLAY_USER_TIMELINE, displayUserTimeline), takeEvery(actions.MOUNT_COMPONENT, initialize)];
+// prettier-ignore
+export default [
+  takeLatest(contents.RELOAD, reorder),
+  takeLatest(actions.SEARCH_TWEETS, searchTweets),
+  takeLatest(subcontents.DISPLAY_USER_TIMELINE, displayUserTimeline),
+  takeEvery(actions.MOUNT_COMPONENT, initialize)
+];
