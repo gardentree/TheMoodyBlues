@@ -17,8 +17,8 @@ const SubContents: React.SFC<Property> = ({container, tweets, onClose}) => {
   const contents = ReactDOM.createPortal(
     <div className="subcontent" style={{display: display}}>
       <div className="header">
-        <button className="btn btn-default">
-          <span className="icon icon-cancel" onClick={onClose} />
+        <button className="btn btn-default" onClick={onClose}>
+          <span className="icon icon-cancel" />
         </button>
       </div>
       <TweetList tweets={tweets!} />
