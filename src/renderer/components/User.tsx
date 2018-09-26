@@ -4,9 +4,9 @@ import * as subcontents from '../modules/subcontents'
 
 class User extends React.Component<any,{}> {
   render() {
-    const {screenName} = this.props;
+    const {screenName,key} = this.props;
     return (
-      <span className='mention' onClick={this.props.onClick}>
+      <span className='mention' onClick={this.props.onClick} key={key}>
         @{screenName}
       </span>
     )

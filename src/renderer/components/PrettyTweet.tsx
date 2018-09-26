@@ -1,8 +1,8 @@
 import * as React from "react";
+import {connect} from 'react-redux'
+import User from "./User";
 import {openLinkOnAnchor,decodeHTML} from "../others/tools";
 import * as twitter from "../others/twitter";
-
-import {connect} from 'react-redux'
 import * as actions from '../actions'
 
 interface TweetElement {
@@ -46,11 +46,7 @@ class PrettyTweet extends React.Component<any,any> {
           ));
           break;
         case 'user_mentions':
-          fragments.push(React.createElement(
-            'span',
-            {key: fragments.length,className: 'mention'},
-            `@${decodeHTML(entity.screen_name)}`
-          ));
+          fragments.push(<User key={fragments.length} screenName={entity.screen_name} />);
           break;
         case 'urls':
           fragments.push(React.createElement(
