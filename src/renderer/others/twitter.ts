@@ -74,5 +74,23 @@ export function setup(client: any) {
     })
   }
 
+  client.userTimeline = (name: string): Promise<Tweet[]> => {
+    let option: any = {
+      screen_name: name,
+      count: 100,
+      exclude_replies: true,
+      include_rts: true,
+      tweet_mode: 'extended',
+    }
+
+    return new Promise((resolve,reject) => {
+      client.get('statuses/user_timeline',option,(error: string,tweets: Tweet[],response: any) => {
+        if (error) return reject(error);
+
+        resolve(tweets);
+      })
+    })
+  }
+
   return client
 }

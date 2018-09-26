@@ -9,6 +9,7 @@ import Action from '../others/action';
 
 import * as contents from '../modules/contents';
 import * as screen from '../modules/screen';
+import * as subcontents from '../modules/subcontents';
 
 class ComponentSaga {
   account: any;
@@ -137,8 +138,16 @@ function* runTimer(screen: string,interval: number) {
   }
 }
 
+function* displayUserTimeline(action: Action) {
+  const {account} = yield select();
+
+  let tweets = yield call(account.userTimeline,action.payload.name);
+  yield put(subcontents.update(tweets));
+}
+
 export default [
   takeLatest(contents.RELOAD,reorder),
   takeLatest(actions.SEARCH_TWEETS,searchTweets),
+  takeLatest(subcontents.DISPLAY_USER_TIMELINE,displayUserTimeline),
   takeEvery(actions.MOUNT_COMPONENT,initialize),
 ]
