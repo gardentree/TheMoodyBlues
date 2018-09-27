@@ -8,12 +8,12 @@ import SubContents from "./SubContents";
 class Principal extends React.Component<any, any> {
   render() {
     const contents = [Timeline, Search];
-    const current = this.props.current;
+    const {current, style} = this.props;
 
     const container = `.window-content[data-name='${current}']`;
 
     return (
-      <div id="principal" className="window">
+      <div id="principal" className="window" style={style}>
         <header className="toolbar toolbar-header">
           <h1 className="title">The Moody Blues</h1>
         </header>
@@ -50,6 +50,7 @@ class Principal extends React.Component<any, any> {
 const mapStateToProps = (state: any) => {
   return {
     current: state.screen.name || Timeline.name,
+    style: state.style,
   };
 };
 export default connect(mapStateToProps)(Principal);
