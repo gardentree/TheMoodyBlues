@@ -77,6 +77,7 @@ app.on("activate", () => {
 app.on("ready", () => {
   mainWindow = createMainWindow();
 
+  // prettier-ignore
   const template: Electron.MenuItemConstructorOptions[] = [
     {
       label: app.getName(),
@@ -84,7 +85,17 @@ app.on("ready", () => {
     },
     {
       label: "Edit",
-      submenu: [{role: "undo"}, {role: "redo"}, {type: "separator"}, {role: "cut"}, {role: "copy"}, {role: "paste"}, {role: "pasteandmatchstyle"}, {role: "delete"}, {role: "selectall"}],
+      submenu: [
+        {role: "undo"},
+        {role: "redo"},
+        {type: "separator"},
+        {role: "cut"},
+        {role: "copy"},
+        {role: "paste"},
+        {role: "pasteandmatchstyle"},
+        {role: "delete"},
+        {role: "selectall"}
+      ],
     },
     {
       label: "View",
