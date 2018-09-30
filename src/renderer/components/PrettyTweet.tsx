@@ -1,7 +1,8 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import UserIdentifier from "./UserIdentifier";
-import {openLinkOnAnchor, decodeHTML} from "../others/tools";
+import ExternalLink from "./ExternalLink";
+import {decodeHTML} from "../others/tools";
 import * as twitter from "../others/twitter";
 import * as actions from "../actions";
 
@@ -41,7 +42,7 @@ class PrettyTweet extends React.Component<any, any> {
           fragments.push(<UserIdentifier key={fragments.length} identifier={entity.screen_name} />);
           break;
         case "urls":
-          fragments.push(React.createElement("a", {key: fragments.length, href: entity.expanded_url, onClick: openLinkOnAnchor}, decodeHTML(entity.display_url)));
+          fragments.push(<ExternalLink key={fragments.length} link={entity.expanded_url} />);
           break;
         case "media":
           break;
