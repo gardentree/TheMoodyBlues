@@ -1,7 +1,5 @@
 import {put, call, takeLatest, takeEvery, select, actionChannel, race, fork, take} from "redux-saga/effects";
 import * as actions from "../actions";
-import Timeline from "../components/Timeline";
-import Search from "../components/Search";
 import growl from "../helpers/growly";
 import mute from "../helpers/mute";
 import * as storage from "../others/storage";
@@ -32,11 +30,11 @@ class TimelineSaga extends ComponentSaga {
   *initialize(action: Action) {
     const tweets = yield call(storage.getTweets);
 
-    yield put(screen.select(Timeline.name));
+    yield put(screen.select("Timeline"));
     yield put(contents.update(tweets, action.payload.screen));
 
-    yield fork(runTimer, Timeline.name, 120 * 1000);
-    yield restartTimer(Timeline.name);
+    yield fork(runTimer, "Timeline", 120 * 1000);
+    yield restartTimer("Timeline");
   }
   *order(action: Action) {
     if (action.meta.force) this.content.tweets = [];
@@ -49,8 +47,8 @@ class TimelineSaga extends ComponentSaga {
 
     yield call(storage.setTweets, newTweets);
 
-    yield put(contents.update(newTweets, Timeline.name));
-    yield restartTimer(Timeline.name);
+    yield put(contents.update(newTweets, "Timeline"));
+    yield restartTimer("Timeline");
   }
 }
 class SearchSaga extends ComponentSaga {
@@ -59,21 +57,21 @@ class SearchSaga extends ComponentSaga {
   }
 
   *initialize(action: Action) {
-    yield fork(runTimer, Search.name, 60 * 1000);
+    yield fork(runTimer, "Search", 60 * 1000);
   }
   *order(action: Action) {
-    yield put({type: `${Search.name}_STOP_TIMER`});
+    yield put({type: `${"Search"}_STOP_TIMER`});
 
     const query = this.content.query;
     if (query.length > 0) {
       const tweets = yield call(this.account.search, query, this.latest());
       const newTweets = tweets.concat(this.content.tweets).slice(0, 400);
 
-      yield put(contents.update(newTweets, Search.name, {query: query}));
+      yield put(contents.update(newTweets, "Search", {query: query}));
 
-      yield put({type: `${Search.name}_START_TIMER`});
+      yield put({type: `${"Search"}_START_TIMER`});
     } else {
-      yield put(contents.update([], Search.name, {query: query}));
+      yield put(contents.update([], "Search", {query: query}));
     }
   }
 }
@@ -82,10 +80,10 @@ const getSaga = function(state: any, name: string) {
   const {account, contents} = state;
 
   switch (name) {
-    case Timeline.name:
-      return new TimelineSaga(account, contents[Timeline.name]);
-    case Search.name:
-      return new SearchSaga(account, contents[Search.name]);
+    case "Timeline":
+      return new TimelineSaga(account, contents["Timeline"]);
+    case "Search":
+      return new SearchSaga(account, contents["Search"]);
     default:
       throw new Error(name);
   }
@@ -118,9 +116,9 @@ function* restartTimer(name: string) {
 function* searchTweets(action: Action) {
   const {payload} = action;
 
-  yield put(screen.select(Search.name));
-  yield put(contents.update([], Search.name, {query: payload.query}));
-  yield put(contents.reload(true, Search.name));
+  yield put(screen.select("Search"));
+  yield put(contents.update([], "Search", {query: payload.query}));
+  yield put(contents.reload(true, "Search"));
 }
 
 function* runTimer(screen: string, interval: number) {

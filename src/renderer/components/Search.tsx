@@ -23,12 +23,12 @@ class Search extends React.Component<any, any> {
   }
 
   componentDidMount() {
-    this.props.dispatch(actions.mountComponent(Search.name));
+    this.props.dispatch(actions.mountComponent("Search"));
   }
 }
 
 const mapStateToProps = (state: any) => {
-  const content = state.contents[Search.name];
+  const content = state.contents["Search"];
   if (!content) return {tweets: []};
 
   return {
@@ -43,7 +43,7 @@ const mapDispatchToProps = {
 
 let container: any = Search;
 container = reduxForm({
-  form: Search.name,
+  form: "Search",
   enableReinitialize: true,
 })(container);
 container = connect(
@@ -51,5 +51,4 @@ container = connect(
   mapDispatchToProps
 )(container);
 
-Object.defineProperty(container, "name", {value: "Search"});
 export default container;

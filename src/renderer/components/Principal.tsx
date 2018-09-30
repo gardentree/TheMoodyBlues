@@ -7,7 +7,16 @@ import SubContents from "./SubContents";
 
 class Principal extends React.Component<any, any> {
   render() {
-    const contents = [Timeline, Search];
+    const contents = [
+      {
+        name: "Timeline",
+        component: Timeline,
+      },
+      {
+        name: "Search",
+        component: Search,
+      },
+    ];
     const {current, style} = this.props;
 
     const container = `.window-content[data-name='${current}']`;
@@ -18,24 +27,24 @@ class Principal extends React.Component<any, any> {
           <h1 className="title">The Moody Blues</h1>
         </header>
         <div className="tab-group">
-          {contents.map((content) => {
+          {contents.map(({name, component}) => {
             return (
               <div
-                key={content.name}
-                className={`tab-item${current == content.name ? " active" : ""}`}
+                key={name}
+                className={`tab-item${current == name ? " active" : ""}`}
                 onClick={() => {
-                  this.props.dispatch(screen.select(content.name));
+                  this.props.dispatch(screen.select(name));
                 }}
               >
-                {content.name}
+                {name}
               </div>
             );
           })}
         </div>
-        {contents.map((content) => {
+        {contents.map(({name, component}) => {
           return (
-            <div key={content.name} className="window-content" style={{display: current == content.name ? "block" : "none"}} data-name={content.name}>
-              {React.createElement(content as React.ClassType<any, any, any>, {
+            <div key={name} className="window-content" style={{display: current == name ? "block" : "none"}} data-name={name}>
+              {React.createElement(component as React.ClassType<any, any, any>, {
                 twitter: this.props.twitter,
               })}
             </div>
@@ -49,7 +58,7 @@ class Principal extends React.Component<any, any> {
 
 const mapStateToProps = (state: any) => {
   return {
-    current: state.screen.name || Timeline.name,
+    current: state.screen.name || "Timeline",
     style: state.style,
   };
 };
