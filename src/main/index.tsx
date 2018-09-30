@@ -4,8 +4,6 @@ import {app, BrowserWindow, Menu} from "electron";
 import * as path from "path";
 import {format as formatUrl} from "url";
 
-require("dotenv").config();
-
 const isDevelopment = process.env.NODE_ENV !== "production";
 
 process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";

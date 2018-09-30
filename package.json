@@ -63,5 +63,10 @@
     "ts-node": "^7.0.1",
     "typescript": "^3.0.1",
     "webpack": "^4.16.5"
+  },
+  "electronWebpack": {
+    "renderer": {
+      "webpackConfig": "renderer.webpack.js"
+    }
   }
 }
