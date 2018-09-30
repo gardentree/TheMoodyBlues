@@ -1,6 +1,6 @@
 import {remote, shell} from "electron";
 import * as React from "react";
-import User from "./User";
+import UserIdentifier from "./UserIdentifier";
 import PrettyTweet from "./PrettyTweet";
 import {MediaBox} from "./MediaBox";
 import * as DateUtility from "date-fns";
@@ -65,7 +65,7 @@ export class Tweet extends React.Component<Property, {}> {
           <div>
             <div className="meta">
               <div className="screen_name">
-                <User screenName={tweet.user.screen_name} />
+                <UserIdentifier identifier={tweet.user.screen_name} />
               </div>
               <div className="created_at">{Tweet.prettyTime(tweet.created_at)}</div>
             </div>
@@ -77,7 +77,7 @@ export class Tweet extends React.Component<Property, {}> {
           {quote && (
             <div className="quote">
               <div className="screen_name">
-                <User screenName={quote.user.screen_name} />
+                <UserIdentifier identifier={quote.user.screen_name} />
               </div>
               <p>
                 <PrettyTweet tweet={quote} />

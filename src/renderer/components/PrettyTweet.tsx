@@ -1,6 +1,6 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import User from "./User";
+import UserIdentifier from "./UserIdentifier";
 import {openLinkOnAnchor, decodeHTML} from "../others/tools";
 import * as twitter from "../others/twitter";
 import * as actions from "../actions";
@@ -38,7 +38,7 @@ class PrettyTweet extends React.Component<any, any> {
           fragments.push(React.createElement("span", {key: fragments.length, className: "hashtag", onClick: this.clickHashtag}, `#${decodeHTML(entity.text)}`));
           break;
         case "user_mentions":
-          fragments.push(<User key={fragments.length} screenName={entity.screen_name} />);
+          fragments.push(<UserIdentifier key={fragments.length} identifier={entity.screen_name} />);
           break;
         case "urls":
           fragments.push(React.createElement("a", {key: fragments.length, href: entity.expanded_url, onClick: openLinkOnAnchor}, decodeHTML(entity.display_url)));
