@@ -38,7 +38,7 @@ export class Tweet extends React.Component<Property, {}> {
       const source = this.props.source;
       menu.append(
         new MenuItem({
-          label: "JSONをコピー",
+          label: "JSON形式でコピー",
           click() {
             const {clipboard} = require("electron");
             clipboard.writeText(JSON.stringify(source, null, "  "));
