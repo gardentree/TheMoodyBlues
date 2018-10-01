@@ -1,23 +1,22 @@
 import * as React from "react";
-import {connect} from "react-redux";
-import UserIdentifier from "./UserIdentifier";
-import ExternalLink from "./ExternalLink";
-import {decodeHTML} from "../others/tools";
-import * as twitter from "../others/twitter";
-import * as actions from "../actions";
+import UserIdentifier from "../UserIdentifier";
+import ExternalLink from "../ExternalLink";
+import {decodeHTML} from "../../others/tools";
+import * as twitter from "../../others/twitter";
+import * as actions from "../../actions";
 
 interface TweetElement {
   category: string;
   entity: any;
 }
 
-class PrettyTweet extends React.Component<any, any> {
+export default class TweetBody extends React.Component<any, any> {
   private elements: TweetElement[];
 
   constructor(props: {tweet: twitter.Tweet}) {
     super(props);
 
-    this.elements = PrettyTweet.parseElements(this.props.tweet);
+    this.elements = TweetBody.parseElements(this.props.tweet);
 
     this.clickHashtag = this.clickHashtag.bind(this);
   }
@@ -33,7 +32,7 @@ class PrettyTweet extends React.Component<any, any> {
       const entity = element.entity;
       switch (element.category) {
         case "string":
-          fragments.push(React.createElement(React.Fragment, {key: fragments.length}, PrettyTweet.breakLine(decodeHTML(element.entity))));
+          fragments.push(React.createElement(React.Fragment, {key: fragments.length}, TweetBody.breakLine(decodeHTML(element.entity))));
           break;
         case "hashtags":
           fragments.push(React.createElement("span", {key: fragments.length, className: "hashtag", onClick: this.clickHashtag}, `#${decodeHTML(entity.text)}`));
@@ -62,7 +61,7 @@ class PrettyTweet extends React.Component<any, any> {
       entities.sort((a, b) => a.entity.indices[0] - b.entity.indices[0]);
     }
 
-    const characters = Array.from(tweet.full_text);
+    const characters = Array.from(tweet.full_text).slice(tweet.display_text_range[0], tweet.display_text_range[1]);
     let elements = [];
     let start = 0;
     for (let entity of entities) {
@@ -70,13 +69,22 @@ class PrettyTweet extends React.Component<any, any> {
         const element = characters.slice(start, entity.entity.indices[0]).join("");
         elements.push({category: "string", entity: element});
       }
-      elements.push(entity);
+      if (characters.length >= entity.entity.indices[0]) {
+        elements.push(entity);
+      }
 
       start = entity.entity.indices[1];
     }
     if (start < characters.length) {
       const element = characters.slice(start, characters.length).join("");
       elements.push({category: "string", entity: element});
+    }
+
+    if (tweet.quoted_status_permalink) {
+      const last = elements.slice(-1)[0];
+      if (last.category === "urls" && last.entity.url === tweet.quoted_status_permalink.url) {
+        elements.pop();
+      }
     }
 
     return elements;
@@ -97,5 +105,3 @@ class PrettyTweet extends React.Component<any, any> {
     });
   }
 }
-
-export default connect()(PrettyTweet);

@@ -10,14 +10,11 @@ export interface Tweet {
   };
   display_text_range: number[];
   entities: {
-    urls: {
-      url: string;
-      expanded_url: string;
-      display_url: string;
-    }[];
+    urls: URL[];
   };
   since_id: string;
   created_at: string;
+  quoted_status_permalink: URL;
 }
 export interface User {
   id_str: string;
@@ -34,6 +31,11 @@ export interface Media {
       bitrate: number;
     }[];
   };
+}
+export interface URL {
+  url: string;
+  expanded_url: string;
+  display_url: string;
 }
 
 export function setup(client: any) {
