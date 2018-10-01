@@ -32,6 +32,21 @@ export class Tweet extends React.Component<Property, {}> {
       })
     );
 
+    if (process.env.NODE_ENV === "development") {
+      menu.append(new MenuItem({type: "separator"}));
+
+      const source = this.props.source;
+      menu.append(
+        new MenuItem({
+          label: "JSONをコピー",
+          click() {
+            const {clipboard} = require("electron");
+            clipboard.writeText(JSON.stringify(source, null, "  "));
+          },
+        })
+      );
+    }
+
     menu.popup({});
   }
 
