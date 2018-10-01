@@ -4,12 +4,13 @@ import {openLinkOnAnchor} from "../../others/tools";
 
 interface Property {
   link: string;
+  text: string;
 }
 
-const ExternalLink: React.SFC<Property> = ({link}) => {
+const ExternalLink: React.SFC<Property> = ({link, text}) => {
   return (
     <a className="ExternalLink" href={link} onClick={openLinkOnAnchor}>
-      {link}
+      {text}
     </a>
   );
 };

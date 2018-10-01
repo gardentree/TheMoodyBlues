@@ -41,7 +41,7 @@ export default class TweetBody extends React.Component<any, any> {
           fragments.push(<UserIdentifier key={fragments.length} identifier={entity.screen_name} />);
           break;
         case "urls":
-          fragments.push(<ExternalLink key={fragments.length} link={entity.expanded_url} />);
+          fragments.push(<ExternalLink key={fragments.length} link={entity.expanded_url} text={entity.display_url} />);
           break;
         case "media":
           break;
