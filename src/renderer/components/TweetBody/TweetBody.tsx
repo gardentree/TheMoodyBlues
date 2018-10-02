@@ -6,6 +6,7 @@ import * as twitter from "../../others/twitter";
 
 interface Property {
   tweet: twitter.Tweet;
+  expand?: boolean;
   search: any;
 }
 interface TweetElement {
@@ -13,8 +14,8 @@ interface TweetElement {
   entity: any;
 }
 
-const TweetBody: React.SFC<Property> = ({tweet, search}) => {
-  const elements = parseElements(tweet);
+const TweetBody: React.SFC<Property> = ({tweet, expand = false, search}) => {
+  const elements = parseElements(tweet, expand);
 
   let fragments: JSX.Element[] = [];
   for (let element of elements) {
@@ -40,7 +41,7 @@ const TweetBody: React.SFC<Property> = ({tweet, search}) => {
   return <React.Fragment>{fragments}</React.Fragment>;
 };
 
-function parseElements(tweet: twitter.Tweet): TweetElement[] {
+function parseElements(tweet: twitter.Tweet, expand: boolean): TweetElement[] {
   let entities: {category: string; entity: any}[] = [];
   for (let category of ["hashtags", "user_mentions", "urls", "media"]) {
     if (!tweet.entities[category]) continue;
@@ -59,7 +60,7 @@ function parseElements(tweet: twitter.Tweet): TweetElement[] {
       const element = characters.slice(start, entity.entity.indices[0]).join("");
       elements.push({category: "string", entity: element});
     }
-    if (characters.length >= entity.entity.indices[0]) {
+    if (!expand || characters.length >= entity.entity.indices[0]) {
       elements.push(entity);
     }
 
@@ -70,7 +71,7 @@ function parseElements(tweet: twitter.Tweet): TweetElement[] {
     elements.push({category: "string", entity: element});
   }
 
-  if (tweet.quoted_status_permalink) {
+  if (expand && tweet.quoted_status_permalink) {
     const last = elements.slice(-1)[0];
     if (last.category === "urls" && last.entity.url === tweet.quoted_status_permalink.url) {
       elements.pop();

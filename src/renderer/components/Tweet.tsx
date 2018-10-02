@@ -85,7 +85,7 @@ export class Tweet extends React.Component<Property, {}> {
               <div className="created_at">{Tweet.prettyTime(tweet.created_at)}</div>
             </div>
             <p>
-              <TweetBody tweet={tweet} />
+              <TweetBody tweet={tweet} expand={true} />
             </p>
             {medias && <MediaBox medias={medias} />}
           </div>
