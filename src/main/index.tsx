@@ -79,7 +79,10 @@ app.on("ready", () => {
   const template: Electron.MenuItemConstructorOptions[] = [
     {
       label: app.getName(),
-      submenu: [{role: "about"}],
+      submenu: [
+        {role: "about"},
+        {role: 'quit'},
+      ],
     },
     {
       label: "Edit",
@@ -98,6 +101,20 @@ app.on("ready", () => {
     {
       label: "View",
       submenu: [
+        {
+          label: "Focus Latest Tweet",
+          accelerator: "0",
+          click() {
+            mainWindow!.webContents.send("focus_latest_tweet", {});
+          },
+        },
+        {
+          label: "Focus Unread Tweet",
+          accelerator: "9",
+          click() {
+            mainWindow!.webContents.send("focus_unread_tweet", {});
+          },
+        },
         {
           label: "Reload",
           accelerator: "Command+r",

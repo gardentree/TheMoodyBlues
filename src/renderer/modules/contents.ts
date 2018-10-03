@@ -27,3 +27,19 @@ export const reload = (force: boolean, screen: string | null) => ({
   meta: {force: force, screen: screen},
   error: false,
 });
+
+export const FOCUS_LATEST_TWEET = "FOCUS_LATEST_TWEET";
+export const focusLatestTweet = () => ({
+  type: FOCUS_LATEST_TWEET,
+  payload: null,
+  meta: null,
+  error: false,
+});
+
+export const FOCUS_UNREAD_TWEET = "FOCUS_UNREAD_TWEET";
+export const focusUnreadTweet = () => ({
+  type: FOCUS_UNREAD_TWEET,
+  payload: null,
+  meta: null,
+  error: false,
+});

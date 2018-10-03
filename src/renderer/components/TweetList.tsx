@@ -23,9 +23,10 @@ export class TweetList extends React.Component<Property, {latest: number}> {
 
   render() {
     const elements = this.props.tweets.map((tweet) => {
+      const unread = this.state.latest > 0 && tweet.id > this.state.latest;
       return (
-        <li key={tweet.id_str} data-id={tweet.id_str} tabIndex={-1}>
-          <Tweet source={tweet} unread={this.state.latest > 0 && tweet.id > this.state.latest} />
+        <li key={tweet.id_str} data-id={tweet.id_str} className={unread ? "unread" : undefined} tabIndex={-1}>
+          <Tweet source={tweet} unread={unread} />
         </li>
       );
     });

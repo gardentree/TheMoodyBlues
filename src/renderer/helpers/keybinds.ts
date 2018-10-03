@@ -3,6 +3,13 @@ import * as contents from "../modules/contents";
 import * as style from "../modules/style";
 
 export default function(store: any) {
+  ipcRenderer.on("focus_latest_tweet", (event: string, arugments: any) => {
+    store.dispatch(contents.focusLatestTweet());
+  });
+  ipcRenderer.on("focus_unread_tweet", (event: string, arugments: any) => {
+    store.dispatch(contents.focusUnreadTweet());
+  });
+
   ipcRenderer.on("zoom_in", (event: string, arugments: any) => {
     store.dispatch(style.zoomIn());
   });
