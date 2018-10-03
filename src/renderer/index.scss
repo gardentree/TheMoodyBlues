@@ -206,3 +206,11 @@ form.search {
     padding: 3px;
   }
 }
+
+.carousel {
+  .slide > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+}
