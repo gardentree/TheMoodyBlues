@@ -52,7 +52,7 @@ function parseElements(tweet: twitter.Tweet, expand: boolean): TweetElement[] {
     entities.sort((a, b) => a.entity.indices[0] - b.entity.indices[0]);
   }
 
-  const characters = Array.from(tweet.full_text).slice(tweet.display_text_range[0], tweet.display_text_range[1]);
+  const characters = Array.from(tweet.full_text);
   let elements = [];
   let start = 0;
   for (let entity of entities) {
@@ -60,7 +60,7 @@ function parseElements(tweet: twitter.Tweet, expand: boolean): TweetElement[] {
       const element = characters.slice(start, entity.entity.indices[0]).join("");
       elements.push({category: "string", entity: element});
     }
-    if (!expand || characters.length >= entity.entity.indices[0]) {
+    if (!expand || tweet.display_text_range[1] >= entity.entity.indices[0]) {
       elements.push(entity);
     }
 

@@ -9,6 +9,27 @@ import TweetBody from "../../../../src/renderer/components/TweetBody/TweetBody";
 configure({adapter: new Adapter()});
 
 describe("<TweetBody />", () => {
+  describe("with mention", () => {
+    it("expand", () => {
+      // @ts-ignore
+      const json: twitter.Tweet = {
+        full_text: "@foo てすとぉ",
+        display_text_range: [5, 9],
+        entities: {
+          user_mentions: [
+            {
+              indices: [0, 4],
+            },
+          ],
+          urls: [],
+        },
+      };
+
+      const wrapper = shallow(<TweetBody tweet={json} expand={true} />);
+      expect(wrapper.text()).to.equal("<Connect(UserIdentifier) /> てすとぉ");
+    });
+  });
+
   describe("with indices", () => {
     // @ts-ignore
     const json: twitter.Tweet = {
@@ -29,12 +50,12 @@ describe("<TweetBody />", () => {
     it("expand", () => {
       const wrapper = shallow(<TweetBody tweet={json} expand={true} />);
 
-      expect(wrapper.text()).to.equal("てすとぉ");
+      expect(wrapper.text()).to.equal("てすとぉ ");
     });
     it("collapse", () => {
       const wrapper = shallow(<TweetBody tweet={json} />);
 
-      expect(wrapper.text()).to.equal("てすとぉ<ExternalLink />");
+      expect(wrapper.text()).to.equal("てすとぉ <ExternalLink />");
     });
   });
 
@@ -98,12 +119,12 @@ describe("<TweetBody />", () => {
     it("expand", () => {
       const wrapper = shallow(<TweetBody tweet={json} expand={true} />);
 
-      expect(wrapper.text()).to.equal("てすとぉ");
+      expect(wrapper.text()).to.equal("てすとぉ ");
     });
     it("collapse", () => {
       const wrapper = shallow(<TweetBody tweet={json} />);
 
-      expect(wrapper.text()).to.equal("てすとぉ<ExternalLink />");
+      expect(wrapper.text()).to.equal("てすとぉ <ExternalLink />");
     });
   });
 });

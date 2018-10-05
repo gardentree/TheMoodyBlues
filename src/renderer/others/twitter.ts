@@ -10,6 +10,9 @@ export interface Tweet {
   };
   display_text_range: number[];
   entities: {
+    user_mentions: {
+      indices: number[];
+    };
     urls: URL[];
   };
   since_id: string;
