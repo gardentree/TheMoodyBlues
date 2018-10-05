@@ -1,12 +1,12 @@
 import * as twitter from "../others/twitter";
+import * as preferences from "./preferences";
 
-const ElectronStore = require("electron-store");
-const mutes: string[] = new ElectronStore().get("mutes") || [];
+const keywords = preferences.getMuteKeywords();
 
 export default function mute(tweets: twitter.Tweet[]): twitter.Tweet[] {
   return tweets.filter((tweet) => {
-    if (!mutes.every((mute) => tweet.full_text.toLowerCase().indexOf(mute) < 0)) return false;
-    if (!mutes.every((mute) => tweet.entities.urls.every((entity) => entity.display_url.indexOf(mute) < 0))) return false;
+    if (!keywords.every((keyword) => tweet.full_text.toLowerCase().indexOf(keyword) < 0)) return false;
+    if (!keywords.every((keyword) => tweet.entities.urls.every((entity) => entity.display_url.indexOf(keyword) < 0))) return false;
 
     return true;
   });

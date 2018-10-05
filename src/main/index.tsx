@@ -46,7 +46,7 @@ function createMainWindow() {
   }
 
   window.on("closed", () => {
-    mainWindow = null;
+    app.quit();
   });
 
   window.webContents.on("devtools-opened", () => {
@@ -58,11 +58,6 @@ function createMainWindow() {
 
   return window;
 }
-
-// quit application when all windows are closed
-app.on("window-all-closed", () => {
-  app.quit();
-});
 
 app.on("activate", () => {
   // on macOS it is common to re-create a window even after all windows have been closed
@@ -81,6 +76,13 @@ app.on("ready", () => {
       label: app.getName(),
       submenu: [
         {role: "about"},
+        {
+          label: "Preferences...",
+          accelerator: "Command+,",
+          click() {
+            openPreferences();
+          },
+        },
         {role: 'quit'},
       ],
     },
@@ -157,3 +159,26 @@ app.on("ready", () => {
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
 });
+
+let preferences: BrowserWindow | null;
+function openPreferences() {
+  if (preferences) {
+    preferences.focus();
+    return;
+  }
+
+  preferences = new BrowserWindow({
+    title: "Preferences",
+    titleBarStyle: "hidden",
+    width: 640,
+    height: 480,
+  });
+  if (isDevelopment) {
+    preferences.webContents.openDevTools();
+  }
+  preferences.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}?preferences`);
+
+  preferences.on("closed", () => {
+    preferences = null;
+  });
+}

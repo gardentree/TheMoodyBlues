@@ -1,0 +1,19 @@
+.PreferencesMute {
+  ul {
+    list-style-type: none;
+    padding-left: 0;
+
+    li {
+      display: inline-block;
+      border: solid 1px #dedede;
+      border-radius: 4px;
+      padding: 4px;
+      margin-top: 4px;
+
+      &:first-child,
+      & + li {
+        margin-right: 4px;
+      }
+    }
+  }
+}
