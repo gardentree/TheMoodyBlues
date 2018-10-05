@@ -1,5 +1,4 @@
 import * as React from "react";
-import "./ExternalLink.scss";
 import {openLinkOnAnchor} from "../../others/tools";
 
 interface Property {

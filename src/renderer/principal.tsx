@@ -9,9 +9,6 @@ import Principal from "./components/Principal";
 import keybinds from "./helpers/keybinds";
 import authorize from "./helpers/authentication";
 
-import "photon/dist/css/photon.css";
-import "./index.scss";
-
 export default function launch() {
   (async () => {
     const client = await new Promise((resolve, reject) => {

@@ -1,5 +1,4 @@
 import * as React from "react";
-import "./UserIdentifier.scss";
 
 interface Property {
   identifier: string;

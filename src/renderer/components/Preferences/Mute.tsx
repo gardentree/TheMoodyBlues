@@ -1,5 +1,4 @@
 import * as React from "react";
-import "./Mute.scss";
 import * as preferences from "../../helpers/preferences";
 
 interface Form extends HTMLFormElement {
