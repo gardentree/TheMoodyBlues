@@ -27,7 +27,7 @@
     "compile": "electron-webpack",
     "dist": "yarn compile && electron-builder",
     "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
-    "test": "NODE_ENV=test TS_NODE_PROJECT=tsconfig.test.json ./node_modules/.bin/electron-mocha --renderer --require ts-node/register --require ignore-styles",
+    "test": "NODE_ENV=test TS_NODE_PROJECT=tsconfig.test.json ./node_modules/.bin/electron-mocha --renderer --require ts-node/register/transpile-only --require ignore-styles",
     "test:all": "yarn test 'test/**/*.{ts,tsx}'"
   },
   "devDependencies": {

@@ -6,7 +6,7 @@ function execute(command) {
   exec(command, function(error, stdout, stderr) {
     console.log(stdout);
 
-    console.error(stderr);
+    if (error) console.error(error);
   });
 }
 
