@@ -5,7 +5,7 @@ import {mountComponent} from "../modules/home";
 
 class Timeline extends React.Component<any, any> {
   render() {
-    return <TweetList tweets={this.props.tweets} />;
+    return <TweetList tweets={this.props.tweets} lastReadID={this.props.lastReadID} />;
   }
 
   componentDidMount() {
@@ -19,6 +19,7 @@ const mapStateToProps = (state: any) => {
   if (!contents["Timeline"]) return {tweets: []};
   return {
     tweets: contents["Timeline"].tweets || [],
+    lastReadID: contents["Timeline"].lastReadID || 0,
   };
 };
 const container = connect(mapStateToProps)(Timeline);

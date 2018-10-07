@@ -28,7 +28,10 @@ class TimelineSaga extends ComponentSaga {
     const tweets = yield call(storage.getTweets);
 
     yield put(home.selectTab("Timeline"));
-    yield put(home.updateTweets(tweets, action.payload.tab));
+    if (tweets.length > 0) {
+      yield put(home.updateTweets(tweets, action.payload.tab));
+      yield put(home.read(tweets[0].id));
+    }
 
     yield fork(runTimer, "Timeline", 120 * 1000);
     yield restartTimer("Timeline");
@@ -65,6 +68,9 @@ class SearchSaga extends ComponentSaga {
       const newTweets = tweets.concat(this.content.tweets).slice(0, 400);
 
       yield put(home.updateTweets(newTweets, "Search", {query: query}));
+      if (tweets.length > 0 && this.content.tweets.length <= 0) {
+        yield put(home.read(tweets[0].id));
+      }
 
       yield put({type: `${"Search"}_START_TIMER`});
     } else {

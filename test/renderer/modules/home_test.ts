@@ -36,12 +36,71 @@ describe(reducer.name, () => {
       },
     });
   });
+  it(home.updateTweets.toString(), () => {
+    expect(
+      reducer(
+        {
+          ...template,
+          tab: "a",
+          contents: {
+            a: {
+              tweets: [{id: 1}],
+              lastReadID: 0,
+            },
+          },
+        },
+        home.updateTweets([{id: 2}, {id: 1}], "a")
+      )
+    ).to.deep.equal({
+      tab: "a",
+      contents: {
+        a: {
+          tweets: [{id: 2}, {id: 1}],
+          lastReadID: 0,
+        },
+      },
+      subcontents: {},
+      style: {
+        fontSize: "12px",
+      },
+    });
+  });
 
   it("updateTweetsInSubContents", () => {
     expect(reducer(undefined, home.updateTweetsInSubContents([]))).to.deep.equal({
       tab: null,
       contents: {},
       subcontents: {tweets: []},
+      style: {
+        fontSize: "12px",
+      },
+    });
+  });
+
+  it(home.read.toString(), () => {
+    expect(
+      reducer(
+        {
+          ...template,
+          tab: "a",
+          contents: {
+            a: {
+              tweets: [{id: 1}],
+              lastReadID: 0,
+            },
+          },
+        },
+        home.read(1)
+      )
+    ).to.deep.equal({
+      tab: "a",
+      contents: {
+        a: {
+          tweets: [{id: 1}],
+          lastReadID: 1,
+        },
+      },
+      subcontents: {},
       style: {
         fontSize: "12px",
       },

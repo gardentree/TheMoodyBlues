@@ -18,7 +18,7 @@ describe(initialize.name, () => {
         },
         {
           call(effect: any, next: any) {
-            return [];
+            return [{id: 1}];
           },
         },
         {
@@ -34,8 +34,12 @@ describe(initialize.name, () => {
       })
       .put({
         type: "UPDATE_TWEETS",
-        payload: {tweets: []},
+        payload: {tweets: [{id: 1}]},
         meta: {tab: "Timeline"},
+      })
+      .put({
+        type: "READ",
+        payload: {lastReadID: 1},
       })
       .put({
         type: "Timeline_STOP_TIMER",

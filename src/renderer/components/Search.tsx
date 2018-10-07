@@ -16,7 +16,7 @@ class Search extends React.Component<any, any> {
           </form>
         </div>
         <div style={{height: "100%"}}>
-          <TweetList tweets={this.props.tweets} />
+          <TweetList tweets={this.props.tweets} lastReadID={this.props.lastReadID} />
         </div>
       </React.Fragment>
     );
@@ -35,6 +35,7 @@ const mapStateToProps = (state: any) => {
   return {
     tweets: content.tweets || [],
     query: content.query,
+    lastReadID: content.lastReadID || 0,
     initialValues: {query: content.query},
   };
 };

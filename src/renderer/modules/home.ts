@@ -1,6 +1,8 @@
 import {createActions, handleActions} from "redux-actions";
 
-export const {selectTab, updateTweets, updateTweetsInSubContents, zoomIn, zoomOut, zoomReset} = createActions({
+const objectAssignDeep = require(`object-assign-deep`);
+
+export const {selectTab, updateTweets, updateTweetsInSubContents, read, zoomIn, zoomOut, zoomReset} = createActions({
   SELECT_TAB: (tab) => ({
     tab: tab,
   }),
@@ -14,6 +16,9 @@ export const {selectTab, updateTweets, updateTweetsInSubContents, zoomIn, zoomOu
     }),
   ],
   UPDATE_TWEETS_IN_SUB_CONTENTS: (tweets) => ({tweets: tweets}),
+  READ: (lastReadID) => ({
+    lastReadID: lastReadID,
+  }),
   ZOOM_IN: () => {},
   ZOOM_OUT: () => {},
   ZOOM_RESET: () => {},
@@ -25,17 +30,24 @@ export default handleActions<any, any, any>(
       ...state,
       tab: action.payload.tab,
     }),
-    [updateTweets.toString()]: (state, action) => ({
-      ...state,
-      contents: {
-        ...state.contents,
-        [action.meta.tab]: action.payload,
-      },
-    }),
+    [updateTweets.toString()]: (state, action) => {
+      return objectAssignDeep.noMutate(state, {
+        contents: {
+          [action.meta.tab]: action.payload,
+        },
+      });
+    },
     [updateTweetsInSubContents.toString()]: (state, action) => ({
       ...state,
       subcontents: action.payload,
     }),
+    [read.toString()]: (state, action) => {
+      return objectAssignDeep.noMutate(state, {
+        contents: {
+          [state.tab]: action.payload,
+        },
+      });
+    },
     [zoomIn.toString()]: (state, action) => ({
       ...state,
       style: {fontSize: fontSize(state.style, 1)},
