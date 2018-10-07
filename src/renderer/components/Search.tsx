@@ -1,7 +1,7 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {Field, reduxForm} from "redux-form";
-import {TweetList} from "./TweetList";
+import TweetList from "./TweetList";
 import {mountComponent, searchTweets} from "../modules/home";
 
 class Search extends React.Component<any, any> {

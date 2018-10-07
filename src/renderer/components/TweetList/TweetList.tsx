@@ -1,12 +1,12 @@
 import * as React from "react";
-import {Tweet} from "./Tweet";
-import * as twitter from "../others/twitter";
+import {Tweet} from "../Tweet";
+import * as twitter from "../../others/twitter";
 
 interface Property {
   tweets: twitter.Tweet[];
 }
 
-export class TweetList extends React.Component<Property, {latest: number}> {
+export default class TweetList extends React.Component<Property, {latest: number}> {
   constructor(property: Property) {
     super(property);
 

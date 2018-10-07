@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
-import {TweetList} from "../TweetList";
+import TweetList from "../TweetList";
 import * as twitter from "../../others/twitter";
 
 interface Property {

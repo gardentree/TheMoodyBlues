@@ -1,6 +1,6 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import {TweetList} from "./TweetList";
+import TweetList from "./TweetList";
 import {mountComponent} from "../modules/home";
 
 class Timeline extends React.Component<any, any> {
