@@ -1,14 +1,16 @@
 import {connect} from "react-redux";
 import Component from "./SubContents";
-import * as subcontents from "../../modules/subcontents";
+import {updateTweetsInSubContents} from "../../modules/home";
 
 const mapStateToProps = (state: any) => {
+  const {subcontents} = state.home;
+
   return {
-    tweets: state.subcontents.tweets || null,
+    tweets: subcontents.tweets || null,
   };
 };
 const mapDispatchToProps = {
-  onClose: () => subcontents.update(null),
+  onClose: () => updateTweetsInSubContents(null),
 };
 export default connect(
   mapStateToProps,

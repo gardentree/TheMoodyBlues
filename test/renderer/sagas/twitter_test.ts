@@ -6,11 +6,14 @@ const [initialize, reorder, searchTweets] = rewires("renderer/sagas/twitter", ["
 
 describe(initialize.name, () => {
   it("Timeline", () => {
-    return expectSaga(initialize, {payload: {screen: "Timeline"}})
+    return expectSaga(initialize, {payload: {tab: "Timeline"}})
       .provide([
         {
           select() {
-            return {account: {}};
+            return {
+              account: {},
+              home: {},
+            };
           },
         },
         {
@@ -26,16 +29,13 @@ describe(initialize.name, () => {
         },
       ])
       .put({
-        type: "SELECT_CONTENT",
-        payload: {name: "Timeline"},
-        meta: null,
-        error: false,
+        type: "SELECT_TAB",
+        payload: {tab: "Timeline"},
       })
       .put({
-        type: "SYSTEM_UPDATE_TWEETS",
+        type: "UPDATE_TWEETS",
         payload: {tweets: []},
-        meta: {name: "Timeline"},
-        error: false,
+        meta: {tab: "Timeline"},
       })
       .put({
         type: "Timeline_STOP_TIMER",
@@ -53,11 +53,14 @@ describe(initialize.name, () => {
       });
   });
   it("Search", () => {
-    return expectSaga(initialize, {payload: {screen: "Search"}})
+    return expectSaga(initialize, {payload: {tab: "Search"}})
       .provide([
         {
           select() {
-            return {account: {}};
+            return {
+              account: {},
+              home: {},
+            };
           },
         },
       ])
@@ -90,11 +93,11 @@ describe(reorder.name, () => {
                     return [{id_str: "1"}];
                   },
                 },
-                screen: {
-                  name: "Timeline",
-                },
-                contents: {
-                  Timeline: {tweets: [{id_str: "old_1"}]},
+                home: {
+                  tab: "Timeline",
+                  contents: {
+                    Timeline: {tweets: [{id_str: "old_1"}]},
+                  },
                 },
               };
             },
@@ -116,10 +119,9 @@ describe(reorder.name, () => {
           },
         ])
         .put({
-          type: "SYSTEM_UPDATE_TWEETS",
+          type: "UPDATE_TWEETS",
           payload: {tweets: [{id_str: "new_1"}, {id_str: "new_2"}, {id_str: "old_1"}]},
-          meta: {name: "Timeline"},
-          error: false,
+          meta: {tab: "Timeline"},
         })
         .put({type: "Timeline_STOP_TIMER"})
         .put({type: "Timeline_START_TIMER"})
@@ -148,11 +150,11 @@ describe(reorder.name, () => {
                     return [{id_str: "1"}];
                   },
                 },
-                screen: {
-                  name: "Timeline",
-                },
-                contents: {
-                  Timeline: {tweets: [{id_str: "old_1"}]},
+                home: {
+                  tab: "Timeline",
+                  contents: {
+                    Timeline: {tweets: [{id_str: "old_1"}]},
+                  },
                 },
               };
             },
@@ -174,10 +176,9 @@ describe(reorder.name, () => {
           },
         ])
         .put({
-          type: "SYSTEM_UPDATE_TWEETS",
+          type: "UPDATE_TWEETS",
           payload: {tweets: [{id_str: "new_1"}, {id_str: "new_2"}]},
-          meta: {name: "Timeline"},
-          error: false,
+          meta: {tab: "Timeline"},
         })
         .put({type: "Timeline_STOP_TIMER"})
         .put({type: "Timeline_START_TIMER"})
@@ -208,11 +209,11 @@ describe(reorder.name, () => {
                     return [{id_str: "1"}];
                   },
                 },
-                screen: {
-                  name: "Search",
-                },
-                contents: {
-                  Search: {tweets: [{id_str: "old_1"}], query: "くえりー"},
+                home: {
+                  tab: "Search",
+                  contents: {
+                    Search: {tweets: [{id_str: "old_1"}], query: "くえりー"},
+                  },
                 },
               };
             },
@@ -235,10 +236,9 @@ describe(reorder.name, () => {
           type: "Search_STOP_TIMER",
         })
         .put({
-          type: "SYSTEM_UPDATE_TWEETS",
+          type: "UPDATE_TWEETS",
           payload: {tweets: [{id_str: "new_1"}, {id_str: "new_2"}, {id_str: "old_1"}], query: "くえりー"},
-          meta: {name: "Search"},
-          error: false,
+          meta: {tab: "Search"},
         })
         .put({
           type: "Search_START_TIMER",
@@ -267,11 +267,11 @@ describe(reorder.name, () => {
                     return [{id_str: "1"}];
                   },
                 },
-                screen: {
-                  name: "Search",
-                },
-                contents: {
-                  Search: {tweets: [{id_str: "old_1"}], query: ""},
+                home: {
+                  tab: "Search",
+                  contents: {
+                    Search: {tweets: [{id_str: "old_1"}], query: ""},
+                  },
                 },
               };
             },
@@ -281,10 +281,9 @@ describe(reorder.name, () => {
           type: "Search_STOP_TIMER",
         })
         .put({
-          type: "SYSTEM_UPDATE_TWEETS",
+          type: "UPDATE_TWEETS",
           payload: {tweets: [], query: ""},
-          meta: {name: "Search"},
-          error: false,
+          meta: {tab: "Search"},
         })
         .run()
         .then((result) => {
@@ -296,10 +295,10 @@ describe(reorder.name, () => {
     });
   });
 
-  it("assign screen", () => {
+  it("assign tab", () => {
     return expectSaga(reorder, {
       payload: {},
-      meta: {force: false, screen: "Search"},
+      meta: {force: false, tab: "Search"},
     })
       .provide([
         {
@@ -310,11 +309,11 @@ describe(reorder.name, () => {
                   return [];
                 },
               },
-              screen: {
-                name: "Timeline",
-              },
-              contents: {
-                Search: {tweets: [], query: "くえりー"},
+              home: {
+                tab: "Timeline",
+                contents: {
+                  Search: {tweets: [], query: "くえりー"},
+                },
               },
             };
           },
@@ -335,10 +334,9 @@ describe(reorder.name, () => {
         type: "Search_STOP_TIMER",
       })
       .put({
-        type: "SYSTEM_UPDATE_TWEETS",
+        type: "UPDATE_TWEETS",
         payload: {tweets: [], query: "くえりー"},
-        meta: {name: "Search"},
-        error: false,
+        meta: {tab: "Search"},
       })
       .put({
         type: "Search_START_TIMER",
@@ -357,22 +355,18 @@ describe(searchTweets.name, () => {
   it("normal", () => {
     return expectSaga(searchTweets, {payload: {query: "くえりー"}})
       .put({
-        type: "SELECT_CONTENT",
-        payload: {name: "Search"},
-        meta: null,
-        error: false,
+        type: "SELECT_TAB",
+        payload: {tab: "Search"},
       })
       .put({
-        type: "SYSTEM_UPDATE_TWEETS",
+        type: "UPDATE_TWEETS",
         payload: {tweets: [], query: "くえりー"},
-        meta: {name: "Search"},
-        error: false,
+        meta: {tab: "Search"},
       })
       .put({
         type: "RELOAD",
         payload: null,
-        meta: {force: true, screen: "Search"},
-        error: false,
+        meta: {force: true, tab: "Search"},
       })
       .run();
   });

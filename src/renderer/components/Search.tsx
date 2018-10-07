@@ -2,7 +2,7 @@ import * as React from "react";
 import {connect} from "react-redux";
 import {Field, reduxForm} from "redux-form";
 import {TweetList} from "./TweetList";
-import * as actions from "../actions";
+import {mountComponent, searchTweets} from "../modules/home";
 
 class Search extends React.Component<any, any> {
   render() {
@@ -23,12 +23,13 @@ class Search extends React.Component<any, any> {
   }
 
   componentDidMount() {
-    this.props.dispatch(actions.mountComponent("Search"));
+    this.props.dispatch(mountComponent("Search"));
   }
 }
 
 const mapStateToProps = (state: any) => {
-  const content = state.contents["Search"];
+  const {contents} = state.home;
+  const content = contents["Search"];
   if (!content) return {tweets: []};
 
   return {
@@ -38,7 +39,7 @@ const mapStateToProps = (state: any) => {
   };
 };
 const mapDispatchToProps = {
-  search: (values: any) => actions.searchTweets(values.query),
+  search: (values: any) => searchTweets(values.query),
 };
 
 let container: any = Search;

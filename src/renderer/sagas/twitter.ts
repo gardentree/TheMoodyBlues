@@ -1,13 +1,10 @@
 import {put, call, takeLatest, takeEvery, select, actionChannel, race, fork, take} from "redux-saga/effects";
-import * as actions from "../actions";
 import growl from "../helpers/growly";
 import mute from "../helpers/mute";
 import * as storage from "../others/storage";
 import Action from "../others/action";
 
-import * as contents from "../modules/contents";
-import * as screen from "../modules/screen";
-import * as subcontents from "../modules/subcontents";
+import * as home from "../modules/home";
 
 class ComponentSaga {
   account: any;
@@ -30,8 +27,8 @@ class TimelineSaga extends ComponentSaga {
   *initialize(action: Action) {
     const tweets = yield call(storage.getTweets);
 
-    yield put(screen.select("Timeline"));
-    yield put(contents.update(tweets, action.payload.screen));
+    yield put(home.selectTab("Timeline"));
+    yield put(home.updateTweets(tweets, action.payload.tab));
 
     yield fork(runTimer, "Timeline", 120 * 1000);
     yield restartTimer("Timeline");
@@ -47,7 +44,7 @@ class TimelineSaga extends ComponentSaga {
 
     yield call(storage.setTweets, newTweets);
 
-    yield put(contents.update(newTweets, "Timeline"));
+    yield put(home.updateTweets(newTweets, "Timeline"));
     yield restartTimer("Timeline");
   }
 }
@@ -67,23 +64,23 @@ class SearchSaga extends ComponentSaga {
       const tweets = yield call(this.account.search, query, this.latest());
       const newTweets = tweets.concat(this.content.tweets).slice(0, 400);
 
-      yield put(contents.update(newTweets, "Search", {query: query}));
+      yield put(home.updateTweets(newTweets, "Search", {query: query}));
 
       yield put({type: `${"Search"}_START_TIMER`});
     } else {
-      yield put(contents.update([], "Search", {query: query}));
+      yield put(home.updateTweets([], "Search", {query: query}));
     }
   }
 }
 
 const getSaga = function(state: any, name: string) {
-  const {account, contents} = state;
+  const {account, home} = state;
 
   switch (name) {
     case "Timeline":
-      return new TimelineSaga(account, contents["Timeline"]);
+      return new TimelineSaga(account, home.contents["Timeline"]);
     case "Search":
-      return new SearchSaga(account, contents["Search"]);
+      return new SearchSaga(account, home.contents["Search"]);
     default:
       throw new Error(name);
   }
@@ -92,20 +89,21 @@ const getSaga = function(state: any, name: string) {
 function* initialize(action: Action) {
   const {payload} = action;
   const state = yield select();
+  const home = state.home;
 
-  if (!state.contents) state.contents = {};
-  state.contents[payload.screen] = {};
+  if (!home.contents) home.contents = {};
+  home.contents[payload.tab] = {};
 
-  yield getSaga(state, payload.screen).initialize(action);
+  yield getSaga(state, payload.tab).initialize(action);
 }
 
 function* reorder(action: Action) {
-  const {screen} = yield select();
+  const {tab} = (yield select()).home;
 
-  yield order(action.meta.screen || screen.name, action);
+  yield order(action.meta.tab || tab, action);
 }
-function* order(screenName: string, action: Action) {
-  yield getSaga(yield select(), screenName).order(action);
+function* order(tab: string, action: Action) {
+  yield getSaga(yield select(), tab).order(action);
 }
 
 function* restartTimer(name: string) {
@@ -116,13 +114,13 @@ function* restartTimer(name: string) {
 function* searchTweets(action: Action) {
   const {payload} = action;
 
-  yield put(screen.select("Search"));
-  yield put(contents.update([], "Search", {query: payload.query}));
-  yield put(contents.reload(true, "Search"));
+  yield put(home.selectTab("Search"));
+  yield put(home.updateTweets([], "Search", {query: payload.query}));
+  yield put(home.reload(true, "Search"));
 }
 
-function* runTimer(screen: string, interval: number) {
-  const channel = yield actionChannel(`${screen}_START_TIMER`);
+function* runTimer(tab: string, interval: number) {
+  const channel = yield actionChannel(`${tab}_START_TIMER`);
 
   const wait = (ms: number) =>
     new Promise((resolve) => {
@@ -131,7 +129,7 @@ function* runTimer(screen: string, interval: number) {
   while (yield take(channel)) {
     while (true) {
       const winner = yield race({
-        stopped: take(`${screen}_STOP_TIMER`),
+        stopped: take(`${tab}_STOP_TIMER`),
         tick: call(wait, interval),
       });
 
@@ -139,8 +137,8 @@ function* runTimer(screen: string, interval: number) {
         break;
       }
 
-      yield put(contents.reload(false, screen));
-      console.log(`reload ${screen}: ${new Date()}`);
+      yield put(home.reload(false, tab));
+      console.log(`reload ${tab}: ${new Date()}`);
     }
   }
 }
@@ -149,13 +147,13 @@ function* displayUserTimeline(action: Action) {
   const {account} = yield select();
 
   let tweets = yield call(account.userTimeline, action.payload.name);
-  yield put(subcontents.update(tweets));
+  yield put(home.updateTweetsInSubContents(tweets));
 }
 
 // prettier-ignore
 export default [
-  takeLatest(contents.RELOAD, reorder),
-  takeLatest(actions.SEARCH_TWEETS, searchTweets),
-  takeLatest(subcontents.DISPLAY_USER_TIMELINE, displayUserTimeline),
-  takeEvery(actions.MOUNT_COMPONENT, initialize)
+  takeLatest(home.reload, reorder),
+  takeLatest(home.searchTweets, searchTweets),
+  takeLatest(home.displayUserTimeline, displayUserTimeline),
+  takeEvery(home.mountComponent, initialize)
 ];

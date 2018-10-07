@@ -1,11 +1,11 @@
 import {connect} from "react-redux";
 import Component from "./UserIdentifier";
-import * as subcontents from "../../modules/subcontents";
+import {displayUserTimeline} from "../../modules/home";
 
 const mapDispatchToProps = {
   showUserTimeline: (event: React.SyntheticEvent) => {
     const target = event.target as HTMLElement;
-    return subcontents.displayUserTimeline(target.textContent!);
+    return displayUserTimeline(target.textContent!);
   },
 };
 

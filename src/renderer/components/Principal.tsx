@@ -1,6 +1,6 @@
 import * as React from "react";
 import {connect} from "react-redux";
-import * as screen from "../modules/screen";
+import {selectTab} from "../modules/home";
 import Timeline from "./Timeline";
 import Search from "./Search";
 import SubContents from "./SubContents";
@@ -33,7 +33,7 @@ class Principal extends React.Component<any, any> {
                 key={name}
                 className={`tab-item${current == name ? " active" : ""}`}
                 onClick={() => {
-                  this.props.dispatch(screen.select(name));
+                  this.props.dispatch(selectTab(name));
                 }}
               >
                 {name}
@@ -57,9 +57,10 @@ class Principal extends React.Component<any, any> {
 }
 
 const mapStateToProps = (state: any) => {
+  const {tab, style} = state.home;
   return {
-    current: state.screen.name || "Timeline",
-    style: state.style,
+    current: tab,
+    style: style,
   };
 };
 export default connect(mapStateToProps)(Principal);

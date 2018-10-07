@@ -1,7 +1,7 @@
 import * as React from "react";
 import {connect} from "react-redux";
 import {TweetList} from "./TweetList";
-import * as actions from "../actions";
+import {mountComponent} from "../modules/home";
 
 class Timeline extends React.Component<any, any> {
   render() {
@@ -9,14 +9,16 @@ class Timeline extends React.Component<any, any> {
   }
 
   componentDidMount() {
-    this.props.dispatch(actions.mountComponent("Timeline"));
+    this.props.dispatch(mountComponent("Timeline"));
   }
 }
 
 const mapStateToProps = (state: any) => {
-  if (!state.contents["Timeline"]) return {tweets: []};
+  const {contents} = state.home;
+
+  if (!contents["Timeline"]) return {tweets: []};
   return {
-    tweets: state.contents["Timeline"].tweets || [],
+    tweets: contents["Timeline"].tweets || [],
   };
 };
 const container = connect(mapStateToProps)(Timeline);

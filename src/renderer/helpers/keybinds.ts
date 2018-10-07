@@ -1,28 +1,27 @@
 import {ipcRenderer} from "electron";
-import * as contents from "../modules/contents";
-import * as style from "../modules/style";
+import {focusLatestTweet, focusUnreadTweet, zoomIn, zoomOut, zoomReset, reload} from "../modules/home";
 
 export default function(store: any) {
   ipcRenderer.on("focus_latest_tweet", (event: string, arugments: any) => {
-    store.dispatch(contents.focusLatestTweet());
+    store.dispatch(focusLatestTweet());
   });
   ipcRenderer.on("focus_unread_tweet", (event: string, arugments: any) => {
-    store.dispatch(contents.focusUnreadTweet());
+    store.dispatch(focusUnreadTweet());
   });
 
   ipcRenderer.on("zoom_in", (event: string, arugments: any) => {
-    store.dispatch(style.zoomIn());
+    store.dispatch(zoomIn());
   });
   ipcRenderer.on("zoom_out", (event: string, arugments: any) => {
-    store.dispatch(style.zoomOut());
+    store.dispatch(zoomOut());
   });
   ipcRenderer.on("zoom_reset", (event: string, arugments: any) => {
-    store.dispatch(style.zoomReset());
+    store.dispatch(zoomReset());
   });
   ipcRenderer.on("reload", (event: string, arugments: any) => {
-    store.dispatch(contents.reload(false, null));
+    store.dispatch(reload(false, null));
   });
   ipcRenderer.on("force_reload", (event: string, arugments: any) => {
-    store.dispatch(contents.reload(true, null));
+    store.dispatch(reload(true, null));
   });
 }
