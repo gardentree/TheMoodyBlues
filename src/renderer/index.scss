@@ -193,20 +193,6 @@ form.search {
   }
 }
 
-.subcontent {
-  position: absolute;
-  background-color: rgba(255, 255, 255, 1);
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-
-  & > .header {
-    background-color: #d4d2d4;
-    padding: 3px;
-  }
-}
-
 .carousel {
   .slide > div {
     display: flex;

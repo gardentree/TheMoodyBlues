@@ -4,7 +4,7 @@ import * as home from "../../modules/home";
 import * as twitter from "../../others/twitter";
 
 const mapStateToProps = (state: any) => {
-  const {tab, style, contents} = state.home;
+  const {tab, style, contents, subcontents} = state.home;
 
   let unreads = {};
   if (contents) {
@@ -21,6 +21,7 @@ const mapStateToProps = (state: any) => {
     current: tab,
     style: style,
     unreads: unreads,
+    subcontents: subcontents,
   };
 };
 const mapDispatchToProps = {

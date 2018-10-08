@@ -2,12 +2,14 @@ import * as React from "react";
 import Timeline from "../Timeline";
 import Search from "../Search";
 import SubContents from "../SubContents";
+import {CSSTransition} from "react-transition-group";
 
 interface Property {
   current: string;
   style: any;
   unreads: any;
   onClick: any;
+  subcontents: any;
 }
 
 export default class Principal extends React.Component<Property, any> {
@@ -25,7 +27,6 @@ export default class Principal extends React.Component<Property, any> {
   render() {
     const {current, style, unreads, onClick} = this.props;
 
-    const container = `.window-content[data-name='${current}']`;
     return (
       <div id="principal" className="window Principal" style={style}>
         <header className="toolbar toolbar-header">
@@ -44,13 +45,18 @@ export default class Principal extends React.Component<Property, any> {
           })}
         </div>
         {this.contents.map(({name, component}) => {
+          const display = !!this.props.subcontents.tweets;
           return (
             <div key={name} className="window-content" style={{display: current == name ? "block" : "none"}} data-name={name}>
               {React.createElement(component as React.ClassType<any, any, any>, {})}
+
+              <CSSTransition timeout={300} classNames="fade" in={display}>
+                <div className="subcontents" />
+              </CSSTransition>
             </div>
           );
         })}
-        <SubContents container={container} />
+        <SubContents container={`.window-content[data-name='${current}'] > .subcontents`} />
       </div>
     );
   }

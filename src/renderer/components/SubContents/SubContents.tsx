@@ -10,12 +10,10 @@ interface Property {
 }
 
 const SubContents: React.SFC<Property> = ({container, tweets, onClose}) => {
-  const display = tweets ? "block" : "none";
-
   if (!tweets) return null;
 
   const contents = ReactDOM.createPortal(
-    <div className="subcontent" style={{display: display}}>
+    <div className="SubContents">
       <div className="header">
         <button className="btn btn-default" onClick={onClose}>
           <span className="icon icon-cancel" />
@@ -26,7 +24,7 @@ const SubContents: React.SFC<Property> = ({container, tweets, onClose}) => {
     document.querySelector(container)!
   );
 
-  return <React.Fragment>{contents}</React.Fragment>;
+  return contents;
 };
 
 export default SubContents;
