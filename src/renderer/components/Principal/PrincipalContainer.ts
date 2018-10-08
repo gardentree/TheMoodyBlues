@@ -24,7 +24,7 @@ const mapStateToProps = (state: any) => {
   };
 };
 const mapDispatchToProps = {
-  onClick: (event: React.SyntheticEvent<HTMLElement>) => home.selectTab(event.currentTarget.textContent),
+  onClick: (event: React.SyntheticEvent<HTMLElement>) => home.selectTab(event.currentTarget.dataset.name),
 };
 export default connect(
   mapStateToProps,

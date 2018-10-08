@@ -36,7 +36,7 @@ export default class Principal extends React.Component<Property, any> {
             const unread = unreads[name];
 
             return (
-              <div key={name} className={`tab-item${current == name ? " active" : ""}`} onClick={onClick}>
+              <div key={name} className={`tab-item${current == name ? " active" : ""}`} data-name={name} onClick={onClick}>
                 {name}
                 {unread && <span className="unread_badge">{unread}</span>}
               </div>
