@@ -2,9 +2,9 @@ import * as React from "react";
 import {configure, shallow} from "enzyme";
 import * as Adapter from "enzyme-adapter-react-16";
 import {expect} from "chai";
-import * as twitter from "../../../../src/renderer/others/twitter";
+import * as twitter from "../../../../../src/renderer/others/twitter";
 
-import TweetBody from "../../../../src/renderer/components/TweetBody/TweetBody";
+import TweetBody from "../../../../../src/renderer/components/Tweet/TweetBody/TweetBody";
 
 configure({adapter: new Adapter()});
 

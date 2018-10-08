@@ -1,8 +1,8 @@
 import * as React from "react";
 import UserIdentifier from "../UserIdentifier";
 import ExternalLink from "../ExternalLink";
-import {decodeHTML} from "../../others/tools";
-import * as twitter from "../../others/twitter";
+import {decodeHTML} from "../../../others/tools";
+import * as twitter from "../../../others/twitter";
 
 interface Property {
   tweet: twitter.Tweet;

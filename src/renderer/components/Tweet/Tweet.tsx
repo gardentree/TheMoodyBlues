@@ -1,8 +1,8 @@
 import {remote, shell} from "electron";
 import * as React from "react";
-import UserIdentifier from "../UserIdentifier";
-import TweetBody from "../TweetBody";
-import MediaBox from "../MediaBox";
+import UserIdentifier from "./UserIdentifier";
+import TweetBody from "./TweetBody";
+import MediaBox from "./MediaBox";
 import * as DateUtility from "date-fns";
 import * as twitter from "../../others/twitter";
 
