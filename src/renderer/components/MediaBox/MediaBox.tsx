@@ -1,18 +1,21 @@
 import * as React from "react";
 import * as Modal from "react-modal";
 import {Carousel} from "react-responsive-carousel";
-import * as twitter from "../others/twitter";
+import * as twitter from "../../others/twitter";
 
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 if (process.env.NODE_ENV !== "test") Modal.setAppElement("#app");
-// ariaHideApp={ !process.env.NODE_ENV === 'test' }
 
-export class MediaBox extends React.Component<{medias: twitter.Media[]}, {medias: twitter.Media[]; modalIsOpen: boolean}> {
-  constructor(property: {medias: twitter.Media[]}) {
+interface Property {
+  medias: twitter.Media[];
+}
+
+export default class MediaBox extends React.Component<Property, {modalIsOpen: boolean}> {
+  constructor(property: Property) {
     super(property);
 
-    this.state = {medias: property.medias, modalIsOpen: false};
+    this.state = {modalIsOpen: false};
 
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
@@ -26,13 +29,14 @@ export class MediaBox extends React.Component<{medias: twitter.Media[]}, {medias
   }
 
   render() {
-    if (this.state.medias.length <= 0) return <div />;
+    const {medias} = this.props;
+    if (medias.length <= 0) return <div />;
 
-    const medias = this.state.medias.map((media) => {
+    const thumbnails = medias.map((media) => {
       return <img key={media.id_str} className="photo" src={media.media_url_https} />;
     });
 
-    const elements = this.state.medias.map((media) => {
+    const elements = medias.map((media) => {
       switch (media.type) {
         case "video":
           const variants = media.video_info.variants.slice().sort((a: any, b: any) => (b.bitrate || 0) - (a.bitrate || 0));
@@ -54,7 +58,7 @@ export class MediaBox extends React.Component<{medias: twitter.Media[]}, {medias
     return (
       <React.Fragment>
         <div className="media" onClick={this.openModal}>
-          {medias}
+          {thumbnails}
         </div>
         <div onClick={(event) => event.stopPropagation()}>
           <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.closeModal}>
