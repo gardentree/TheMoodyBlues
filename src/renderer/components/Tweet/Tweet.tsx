@@ -1,17 +1,17 @@
 import {remote, shell} from "electron";
 import * as React from "react";
-import UserIdentifier from "./UserIdentifier";
-import TweetBody from "./TweetBody";
-import MediaBox from "./MediaBox";
+import UserIdentifier from "../UserIdentifier";
+import TweetBody from "../TweetBody";
+import MediaBox from "../MediaBox";
 import * as DateUtility from "date-fns";
-import * as twitter from "../others/twitter";
+import * as twitter from "../../others/twitter";
 
 interface Property {
   source: twitter.Tweet;
   unread: boolean;
 }
 
-export class Tweet extends React.Component<Property, {}> {
+export default class Tweet extends React.Component<Property, {}> {
   constructor(property: Property) {
     super(property);
 
@@ -51,13 +51,15 @@ export class Tweet extends React.Component<Property, {}> {
   }
 
   render() {
+    const {source, unread} = this.props;
+
     let tweet: twitter.Tweet, retweet: twitter.Tweet | null;
-    if (this.props.source.retweeted_status === undefined) {
-      tweet = this.props.source;
+    if (source.retweeted_status === undefined) {
+      tweet = source;
       retweet = null;
     } else {
-      tweet = this.props.source.retweeted_status!;
-      retweet = this.props.source;
+      tweet = source.retweeted_status!;
+      retweet = source;
     }
 
     let quote: twitter.Tweet | null = null;
@@ -71,8 +73,8 @@ export class Tweet extends React.Component<Property, {}> {
     }
 
     return (
-      <div data-url={`https://twitter.com/${this.props.source.user.screen_name}/status/${this.props.source.id_str}`} onContextMenu={this.openContextMenu}>
-        <div className={`avatar${retweet ? " retweet" : ""}${this.props.unread ? " unread" : ""}`}>
+      <div data-url={`https://twitter.com/${source.user.screen_name}/status/${source.id_str}`} onContextMenu={this.openContextMenu}>
+        <div className={`avatar${retweet ? " retweet" : ""}${unread ? " unread" : ""}`}>
           <img src={tweet.user.profile_image_url_https} className="tweeter" />
           {retweet && <img src={retweet.user.profile_image_url_https} className="retweeter" />}
         </div>

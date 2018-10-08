@@ -1,5 +1,5 @@
 import * as React from "react";
-import {Tweet} from "../Tweet";
+import Tweet from "../Tweet";
 import * as twitter from "../../others/twitter";
 
 interface Property {
