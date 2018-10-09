@@ -1,5 +1,5 @@
 import * as React from "react";
-import {configure, shallow} from "enzyme";
+import {configure, shallow, render} from "enzyme";
 import * as Adapter from "enzyme-adapter-react-16";
 import {expect} from "chai";
 import * as twitter from "../../../../../src/renderer/others/twitter";
@@ -125,6 +125,37 @@ describe("<TweetBody />", () => {
       const wrapper = shallow(<TweetBody tweet={json} />);
 
       expect(wrapper.text()).to.equal("てすとぉ <ExternalLink />");
+    });
+  });
+
+  describe("media", () => {
+    // @ts-ignore
+    const json: twitter.Tweet = {
+      full_text: "てすとぉ。 https://t.co/test",
+      display_text_range: [0, 5],
+      entities: {
+        media: [
+          {
+            indices: [5, 23],
+            media_url: "http://pbs.twimg.com/media/test.jpg",
+            media_url_https: "https://pbs.twimg.com/media/test.jpg",
+            url: "https://t.co/test",
+            display_url: "pic.twitter.com/test",
+            expanded_url: "https://twitter.com/test/status/1/photo/1",
+          },
+        ],
+      },
+    };
+
+    it("expand", () => {
+      const wrapper = render(<TweetBody tweet={json} expand={true} />);
+
+      expect(wrapper.text()).to.equal("てすとぉ。");
+    });
+    it("collapse", () => {
+      const wrapper = render(<TweetBody tweet={json} />);
+
+      expect(wrapper.text()).to.equal("てすとぉ。pic.twitter.com/test");
     });
   });
 });

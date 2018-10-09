@@ -34,6 +34,9 @@ const TweetBody: React.SFC<Property> = ({tweet, expand = false, search}) => {
         fragments.push(<ExternalLink key={fragments.length} link={entity.expanded_url} text={entity.display_url} />);
         break;
       case "media":
+        if (!expand) {
+          fragments.push(<ExternalLink key={fragments.length} link={entity.media_url_https} text={entity.display_url} />);
+        }
         break;
     }
   }
