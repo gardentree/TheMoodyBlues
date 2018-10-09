@@ -54,4 +54,5 @@ class Mute extends React.Component<{}, {keywords: string[]}> {
   }
 }
 
+Object.defineProperty(Mute, "name", {value: "Mute"});
 export default Mute;

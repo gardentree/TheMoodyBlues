@@ -1,8 +1,6 @@
 "use strict";
 
 import {app, BrowserWindow, Menu} from "electron";
-import * as path from "path";
-import {format as formatUrl} from "url";
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
@@ -33,17 +31,7 @@ function createMainWindow() {
     window.webContents.openDevTools();
   }
 
-  if (isDevelopment) {
-    window.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}`);
-  } else {
-    window.loadURL(
-      formatUrl({
-        pathname: path.join(__dirname, "index.html"),
-        protocol: "file",
-        slashes: true,
-      })
-    );
-  }
+  load(window);
 
   window.on("closed", () => {
     app.quit();
@@ -173,12 +161,21 @@ function openPreferences() {
     width: 640,
     height: 480,
   });
+
+  load(preferences, "?preferences");
   if (isDevelopment) {
     preferences.webContents.openDevTools();
   }
-  preferences.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}?preferences`);
 
   preferences.on("closed", () => {
     preferences = null;
   });
+}
+
+function load(target: BrowserWindow, query = "") {
+  if (isDevelopment) {
+    target.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}${query}`);
+  } else {
+    target.loadURL(`file://${__dirname}/index.html${query}`);
+  }
 }
