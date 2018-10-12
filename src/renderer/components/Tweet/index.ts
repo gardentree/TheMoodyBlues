@@ -1,3 +1,3 @@
-import Component from "./Tweet";
+import Container from "./TweetContainer";
 
-export default Component;
+export default Container;

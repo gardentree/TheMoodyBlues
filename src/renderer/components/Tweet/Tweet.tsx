@@ -9,6 +9,7 @@ import * as twitter from "../../others/twitter";
 interface Property {
   source: twitter.Tweet;
   unread: boolean;
+  search: any;
 }
 
 export default class Tweet extends React.Component<Property, {}> {
@@ -21,6 +22,8 @@ export default class Tweet extends React.Component<Property, {}> {
   openContextMenu(event: React.SyntheticEvent<HTMLElement>) {
     const url: string = event.currentTarget.dataset.url!;
 
+    const {search, source} = this.props;
+
     const {Menu, MenuItem} = remote;
     const menu = new Menu();
     menu.append(
@@ -32,10 +35,19 @@ export default class Tweet extends React.Component<Property, {}> {
       })
     );
 
+    const keyword = window.getSelection().toString();
+    menu.append(
+      new MenuItem({
+        label: `"${keyword}"を検索`,
+        click() {
+          search(keyword);
+        },
+      })
+    );
+
     if (process.env.NODE_ENV === "development") {
       menu.append(new MenuItem({type: "separator"}));
 
-      const source = this.props.source;
       menu.append(
         new MenuItem({
           label: "JSON形式でコピー",
