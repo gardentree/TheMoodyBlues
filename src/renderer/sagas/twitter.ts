@@ -62,7 +62,7 @@ class SearchSaga extends ComponentSaga {
   *order(action: Action) {
     yield put({type: `${"Search"}_STOP_TIMER`});
 
-    const query = this.content.query;
+    const query = this.content.query || "";
     if (query.length > 0) {
       const tweets = yield call(this.account.search, query, this.latest());
       const newTweets = tweets.concat(this.content.tweets).slice(0, 400);
