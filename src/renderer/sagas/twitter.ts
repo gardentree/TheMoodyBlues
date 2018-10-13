@@ -32,6 +32,8 @@ class TimelineSaga extends ComponentSaga {
     if (tweets.length > 0) {
       yield put(home.updateTweets(tweets, action.payload.tab));
       yield put(home.read(tweets[0].id));
+    } else {
+      yield put(home.updateTweets([], action.payload.tab));
     }
 
     yield fork(runTimer, "Timeline", 120 * 1000);
