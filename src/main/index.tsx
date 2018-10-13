@@ -4,6 +4,8 @@ import {app, BrowserWindow, Menu} from "electron";
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
+require("electron-log").info(`start: ${process.env.NODE_ENV}`);
+
 process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";
 
 // global reference to mainWindow (necessary to prevent window from being garbage collected)

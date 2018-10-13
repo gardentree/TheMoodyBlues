@@ -3,8 +3,9 @@ import growl from "../helpers/growly";
 import mute from "../helpers/mute";
 import * as storage from "../others/storage";
 import Action from "../others/action";
-
 import * as home from "../modules/home";
+
+const logger = require("electron-log");
 
 class ComponentSaga {
   account: any;
@@ -156,10 +157,21 @@ function* displayUserTimeline(action: Action) {
   yield put(home.updateTweetsInSubContents(tweets));
 }
 
+const wrap = (saga: any) =>
+  function*(action: Action) {
+    logger.info(action);
+    try {
+      yield call(saga, action);
+    } catch (error) {
+      logger.error(error);
+      yield put(home.alarm(error));
+    }
+  };
+
 // prettier-ignore
 export default [
-  takeLatest(home.reload, reorder),
-  takeLatest(home.searchTweets, searchTweets),
-  takeLatest(home.displayUserTimeline, displayUserTimeline),
-  takeEvery(home.mountComponent, initialize)
+  takeLatest(home.reload, wrap(reorder)),
+  takeLatest(home.searchTweets, wrap(searchTweets)),
+  takeLatest(home.displayUserTimeline, wrap(displayUserTimeline)),
+  takeEvery(home.mountComponent, wrap(initialize))
 ];

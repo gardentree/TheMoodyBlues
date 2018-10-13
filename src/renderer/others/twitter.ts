@@ -42,6 +42,7 @@ export interface URL {
   indices?: number[];
 }
 
+const logger = require("electron-log");
 export function setup(client: any) {
   client.get = client.get.bind(client);
 
@@ -53,9 +54,14 @@ export function setup(client: any) {
     };
     if (since_id) option.since_id = since_id;
 
+    logger.info(option);
     return new Promise((resolve, reject) => {
       client.get("statuses/home_timeline", option, (error: string, tweets: Tweet[], response: any) => {
-        if (error) return reject(error);
+        if (error) {
+          logger.error(error);
+          return reject(error);
+        }
+        logger.info(`home_timeline ${tweets.length}tweets`);
 
         resolve(tweets);
       });
