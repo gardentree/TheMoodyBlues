@@ -285,9 +285,8 @@ describe(reorder.name, () => {
           type: "Search_STOP_TIMER",
         })
         .put({
-          type: "UPDATE_TWEETS",
-          payload: {tweets: [], query: ""},
-          meta: {tab: "Search"},
+          type: "SETUP_SEARCH",
+          payload: {query: ""},
         })
         .run()
         .then((result) => {
@@ -363,9 +362,8 @@ describe(searchTweets.name, () => {
         payload: {tab: "Search"},
       })
       .put({
-        type: "UPDATE_TWEETS",
-        payload: {tweets: [], query: "くえりー"},
-        meta: {tab: "Search"},
+        type: "SETUP_SEARCH",
+        payload: {query: "くえりー"},
       })
       .put({
         type: "RELOAD",

@@ -77,7 +77,7 @@ class SearchSaga extends ComponentSaga {
 
       yield put({type: `${"Search"}_START_TIMER`});
     } else {
-      yield put(home.updateTweets([], "Search", {query: query}));
+      yield put(home.setupSearch(""));
     }
   }
 }
@@ -121,10 +121,10 @@ function* restartTimer(name: string) {
 }
 
 function* searchTweets(action: Action) {
-  const {payload} = action;
+  const {query} = action.payload;
 
   yield put(home.selectTab("Search"));
-  yield put(home.updateTweets([], "Search", {query: payload.query}));
+  yield put(home.setupSearch(query));
   yield put(home.reload(true, "Search"));
 }
 

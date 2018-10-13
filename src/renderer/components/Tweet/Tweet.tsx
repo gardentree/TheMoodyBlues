@@ -35,7 +35,10 @@ export default class Tweet extends React.Component<Property, {}> {
       })
     );
 
-    const keyword = window.getSelection().toString();
+    const keyword = window
+      .getSelection()
+      .toString()
+      .trim();
     menu.append(
       new MenuItem({
         label: `"${keyword}"を検索`,

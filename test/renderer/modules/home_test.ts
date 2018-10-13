@@ -137,4 +137,46 @@ describe(reducer.name, () => {
       tab: null,
     });
   });
+
+  describe(home.setupSearch.toString(), () => {
+    it("compile", () => {
+      expect(reducer(template, home.setupSearch("くえりー"))).to.deep.equal({
+        contents: {
+          Search: {
+            tweets: [],
+            query: "くえりー",
+          },
+        },
+        subcontents: {},
+        tab: null,
+        style: {fontSize: "12px"},
+      });
+    });
+    it("trim query", () => {
+      expect(reducer(template, home.setupSearch(" く え り ー "))).to.deep.equal({
+        contents: {
+          Search: {
+            tweets: [],
+            query: "く え り ー",
+          },
+        },
+        subcontents: {},
+        tab: null,
+        style: {fontSize: "12px"},
+      });
+    });
+    it("when query is null", () => {
+      expect(reducer(template, home.setupSearch(null))).to.deep.equal({
+        contents: {
+          Search: {
+            tweets: [],
+            query: "",
+          },
+        },
+        subcontents: {},
+        tab: null,
+        style: {fontSize: "12px"},
+      });
+    });
+  });
 });
