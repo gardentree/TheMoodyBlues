@@ -90,7 +90,7 @@ export function setup(client: any) {
     let option: any = {
       screen_name: name,
       count: 100,
-      exclude_replies: true,
+      exclude_replies: false,
       include_rts: true,
       tweet_mode: "extended",
     };
