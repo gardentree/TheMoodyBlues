@@ -39,14 +39,16 @@ export default class Tweet extends React.Component<Property, {}> {
       .getSelection()
       .toString()
       .trim();
-    menu.append(
-      new MenuItem({
-        label: `"${keyword}"を検索`,
-        click() {
-          search(keyword);
-        },
-      })
-    );
+    if (keyword.length > 0) {
+      menu.append(
+        new MenuItem({
+          label: `"${keyword}"を検索`,
+          click() {
+            search(keyword);
+          },
+        })
+      );
+    }
 
     if (process.env.NODE_ENV === "development") {
       menu.append(new MenuItem({type: "separator"}));
