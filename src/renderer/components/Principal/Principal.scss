@@ -9,6 +9,10 @@
     border-radius: 8px;
   }
 
+  .window-content {
+    overflow: hidden;
+  }
+
   .subcontents {
     display: none;
     position: absolute;

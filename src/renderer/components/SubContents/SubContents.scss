@@ -1,6 +1,13 @@
 .SubContents {
-  & > .header {
-    background-color: #d4d2d4;
+  height: 100%;
+  margin-top: 30px;
+
+  .header {
+    position: fixed;
+    top: 48px;
+    left: 0;
+    right: 0;
     padding: 3px;
+    background-color: #d4d2d4;
   }
 }
