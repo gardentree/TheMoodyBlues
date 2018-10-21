@@ -11,9 +11,10 @@ class Mute extends React.Component<{}, {keywords: string[]}> {
   handleSubmit = (event: React.SyntheticEvent<Form>) => {
     event.preventDefault();
 
-    const keyword = event.currentTarget.keyword.value;
+    const keyword = event.currentTarget.keyword.value.toLowerCase();
     this.state.keywords.push(keyword);
     this.state.keywords.sort();
+    this.state.keywords = [...new Set(this.state.keywords)];
 
     preferences.setMuteKeywords(this.state.keywords);
 
