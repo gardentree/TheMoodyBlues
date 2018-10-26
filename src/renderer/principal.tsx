@@ -8,6 +8,7 @@ import {Provider} from "react-redux";
 import Principal from "./components/Principal";
 import keybinds from "./helpers/keybinds";
 import authorize from "./helpers/authentication";
+import {createLogger} from "redux-logger";
 
 export default function launch() {
   (async () => {
@@ -21,7 +22,7 @@ export default function launch() {
 
 function setup(twitter: any) {
   const sagaMiddleware = createSagaMiddleware();
-  const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
+  const store = createStore(rootReducer, applyMiddleware(sagaMiddleware, createLogger()));
 
   sagaMiddleware.run(rootSaga);
 

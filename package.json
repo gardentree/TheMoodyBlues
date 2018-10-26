@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@types/redux-logger": "^3.0.6",
     "date-fns": "^1.29.0",
     "electron-json-storage": "^4.1.2",
     "electron-log": "^2.2.17",
@@ -22,6 +23,7 @@
     "redux": "^4.0.0",
     "redux-actions": "^2.6.1",
     "redux-form": "^7.4.2",
+    "redux-logger": "^3.0.6",
     "redux-saga": "^0.16.0",
     "source-map-support": "^0.5.9",
     "twitter": "^1.7.1"
