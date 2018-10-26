@@ -1,5 +1,5 @@
 import {put, call, actionChannel, race, take} from "redux-saga/effects";
-import Action from "../../others/action";
+import ActionType from "../../types/action";
 import * as home from "../../modules/home";
 
 export default abstract class ComponentSaga {
@@ -11,8 +11,8 @@ export default abstract class ComponentSaga {
     this.content = content;
   }
 
-  abstract initialize(action: Action): IterableIterator<any>;
-  abstract order(action: Action): IterableIterator<any>;
+  abstract initialize(action: ActionType): IterableIterator<any>;
+  abstract order(action: ActionType): IterableIterator<any>;
 
   protected *runTimer(tab: string, interval: number) {
     const channel = yield actionChannel(`${tab}_START_TIMER`);

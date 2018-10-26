@@ -1,11 +1,11 @@
 import {put, call, takeLatest, takeEvery, select} from "redux-saga/effects";
 import getSaga from "./contents";
-import Action from "../others/action";
+import ActionType from "../types/action";
 import * as home from "../modules/home";
 
 const logger = require("electron-log");
 
-function* initialize(action: Action) {
+function* initialize(action: ActionType) {
   const {payload} = action;
   const state = yield select();
   const home = state.home;
@@ -16,16 +16,16 @@ function* initialize(action: Action) {
   yield getSaga(state, payload.tab).initialize(action);
 }
 
-function* reorder(action: Action) {
+function* reorder(action: ActionType) {
   const {tab} = (yield select()).home;
 
   yield order(action.meta.tab || tab, action);
 }
-function* order(tab: string, action: Action) {
+function* order(tab: string, action: ActionType) {
   yield getSaga(yield select(), tab).order(action);
 }
 
-function* searchTweets(action: Action) {
+function* searchTweets(action: ActionType) {
   const {query} = action.payload;
 
   yield put(home.selectTab("Search"));
@@ -33,14 +33,14 @@ function* searchTweets(action: Action) {
   yield put(home.reload(true, "Search"));
 }
 
-function* displayUserTimeline(action: Action) {
+function* displayUserTimeline(action: ActionType) {
   const {account} = yield select();
 
   let tweets = yield call(account.userTimeline, action.payload.name);
   yield put(home.updateTweetsInSubContents(tweets));
 }
 
-function* displayConversation(action: Action) {
+function* displayConversation(action: ActionType) {
   const {account} = yield select();
 
   let tweets = yield call(account.conversation, action.payload.tweet);
@@ -48,7 +48,7 @@ function* displayConversation(action: Action) {
 }
 
 const wrap = (saga: any) =>
-  function*(action: Action) {
+  function*(action: ActionType) {
     logger.info(action);
     try {
       yield call(saga, action);

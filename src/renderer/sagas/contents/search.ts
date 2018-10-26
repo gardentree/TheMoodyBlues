@@ -1,6 +1,6 @@
 import {put, call, fork} from "redux-saga/effects";
 import ComponentSaga from "./abstract";
-import Action from "../../others/action";
+import ActionType from "../../types/action";
 import * as home from "../../modules/home";
 
 const NAME = "Search";
@@ -10,10 +10,10 @@ export default class SearchSaga extends ComponentSaga {
     super(account, content);
   }
 
-  *initialize(action: Action) {
+  *initialize(action: ActionType) {
     yield fork(this.runTimer, NAME, 60 * 1000);
   }
-  *order(action: Action) {
+  *order(action: ActionType) {
     yield put({type: `${NAME}_STOP_TIMER`});
 
     const query = this.content.query || "";

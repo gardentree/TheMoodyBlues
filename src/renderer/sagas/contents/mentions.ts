@@ -1,6 +1,6 @@
 import {put, call, fork} from "redux-saga/effects";
 import ComponentSaga from "./abstract";
-import Action from "../../others/action";
+import ActionType from "../../types/action";
 import * as home from "../../modules/home";
 import * as storage from "../../helpers/storage";
 
@@ -9,7 +9,7 @@ export default class MentionsSaga extends ComponentSaga {
     super(account, content);
   }
 
-  *initialize(action: Action) {
+  *initialize(action: ActionType) {
     const tweets = yield call(storage.getTweets, "Mentions");
 
     if (tweets.length > 0) {
@@ -22,7 +22,7 @@ export default class MentionsSaga extends ComponentSaga {
     yield fork(this.runTimer, "Mentions", 60 * 1000);
     yield this.restartTimer("Mentions");
   }
-  *order(action: Action) {
+  *order(action: ActionType) {
     if (action.meta.force) this.content.tweets = [];
 
     const tweets = yield call(this.account.mentionsTimeline, this.latest());

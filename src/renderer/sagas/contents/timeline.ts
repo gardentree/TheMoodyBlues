@@ -1,6 +1,6 @@
 import {put, call, fork} from "redux-saga/effects";
 import ComponentSaga from "./abstract";
-import Action from "../../others/action";
+import ActionType from "../../types/action";
 import * as home from "../../modules/home";
 import * as storage from "../../helpers/storage";
 import mute from "../../helpers/mute";
@@ -11,7 +11,7 @@ export default class TimelineSaga extends ComponentSaga {
     super(account, content);
   }
 
-  *initialize(action: Action) {
+  *initialize(action: ActionType) {
     const tweets = yield call(storage.getTweets, "Timeline");
 
     yield put(home.selectTab("Timeline"));
@@ -25,7 +25,7 @@ export default class TimelineSaga extends ComponentSaga {
     yield fork(this.runTimer, "Timeline", 120 * 1000);
     yield this.restartTimer("Timeline");
   }
-  *order(action: Action) {
+  *order(action: ActionType) {
     if (action.meta.force) this.content.tweets = [];
 
     let tweets = yield call(this.account.timeline, this.latest());
