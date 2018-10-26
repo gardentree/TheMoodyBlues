@@ -4,10 +4,10 @@ import UserIdentifier from "./UserIdentifier";
 import TweetBody from "./TweetBody";
 import MediaBox from "./MediaBox";
 import * as DateUtility from "date-fns";
-import * as twitter from "../../others/twitter";
+import {TweetType, MediaType} from "../../types/twitter";
 
 interface Property {
-  source: twitter.Tweet;
+  source: TweetType;
   unread: boolean;
   search: any;
   converse: any;
@@ -80,7 +80,7 @@ export default class Tweet extends React.Component<Property, {}> {
   render() {
     const {source, unread} = this.props;
 
-    let tweet: twitter.Tweet, retweet: twitter.Tweet | null;
+    let tweet: TweetType, retweet: TweetType | null;
     if (source.retweeted_status === undefined) {
       tweet = source;
       retweet = null;
@@ -89,12 +89,12 @@ export default class Tweet extends React.Component<Property, {}> {
       retweet = source;
     }
 
-    let quote: twitter.Tweet | null = null;
+    let quote: TweetType | null = null;
     if (tweet.quoted_status !== undefined) {
       quote = tweet.quoted_status;
     }
 
-    let medias: twitter.Media[] = [];
+    let medias: MediaType[] = [];
     if (tweet.extended_entities !== undefined) {
       medias = tweet.extended_entities.media;
     }

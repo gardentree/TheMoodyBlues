@@ -1,9 +1,9 @@
-import * as twitter from "../others/twitter";
+import {TweetType} from "../types/twitter";
 import {decodeHTML} from "../others/tools";
 
 const growly = require("growly");
 
-export default function growl(tweets: twitter.Tweet[]) {
+export default function growl(tweets: TweetType[]) {
   if (process.env.NODE_ENV === "test") return;
   if (tweets.length <= 0) return;
 

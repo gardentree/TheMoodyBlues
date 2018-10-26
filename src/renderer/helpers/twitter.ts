@@ -1,47 +1,4 @@
-export interface Tweet {
-  id: number;
-  id_str: string;
-  full_text: string;
-  user: User;
-  retweeted_status?: Tweet;
-  quoted_status?: Tweet;
-  extended_entities?: {
-    media: Media[];
-  };
-  display_text_range: number[];
-  entities: {
-    user_mentions: {
-      indices: number[];
-    };
-    urls: URL[];
-  };
-  since_id: string;
-  created_at: string;
-  quoted_status_permalink: URL;
-  in_reply_to_status_id_str: string;
-}
-export interface User {
-  id_str: string;
-  profile_image_url_https: string;
-  screen_name: string;
-}
-export interface Media {
-  id_str: string;
-  media_url_https: string;
-  type: string;
-  video_info: {
-    variants: {
-      url: string;
-      bitrate: number;
-    }[];
-  };
-}
-export interface URL {
-  url: string;
-  expanded_url: string;
-  display_url: string;
-  indices?: number[];
-}
+import {TweetType} from "../types/twitter";
 
 const logger = require("electron-log");
 export function setup(client: any) {
@@ -57,7 +14,7 @@ export function setup(client: any) {
 
     logger.info(option);
     return new Promise((resolve, reject) => {
-      client.get("statuses/home_timeline", option, (error: string, tweets: Tweet[], response: any) => {
+      client.get("statuses/home_timeline", option, (error: string, tweets: TweetType[], response: any) => {
         if (error) {
           logger.error(error);
           return reject(error);
@@ -87,7 +44,7 @@ export function setup(client: any) {
     });
   };
 
-  client.userTimeline = (name: string): Promise<Tweet[]> => {
+  client.userTimeline = (name: string): Promise<TweetType[]> => {
     let option: any = {
       screen_name: name,
       count: 100,
@@ -97,7 +54,7 @@ export function setup(client: any) {
     };
 
     return new Promise((resolve, reject) => {
-      client.get("statuses/user_timeline", option, (error: string, tweets: Tweet[], response: any) => {
+      client.get("statuses/user_timeline", option, (error: string, tweets: TweetType[], response: any) => {
         if (error) return reject(error);
 
         resolve(tweets);
@@ -114,7 +71,7 @@ export function setup(client: any) {
     if (since_id) option.since_id = since_id;
 
     return new Promise((resolve, reject) => {
-      client.get("statuses/mentions_timeline", option, (error: string, tweets: Tweet[], response: any) => {
+      client.get("statuses/mentions_timeline", option, (error: string, tweets: TweetType[], response: any) => {
         if (error) return reject(error);
 
         resolve(tweets);
@@ -122,10 +79,10 @@ export function setup(client: any) {
     });
   };
 
-  client.conversation = (criterion: Tweet) => {
+  client.conversation = (criterion: TweetType) => {
     return new Promise((resolve, reject) => {
       (async () => {
-        var tweets: Tweet[] = await new Promise<Tweet[]>((resolve, reject) => {
+        var tweets: TweetType[] = await new Promise<TweetType[]>((resolve, reject) => {
           let option: any = {
             q: `to:${criterion.user.screen_name} -rt`,
             count: 200,
@@ -139,7 +96,7 @@ export function setup(client: any) {
               return reject(error);
             }
 
-            let tweets: Tweet[] = body["statuses"];
+            let tweets: TweetType[] = body["statuses"];
             resolve(tweets.filter((tweet) => criterion.id_str === tweet.in_reply_to_status_id_str));
           });
         });
@@ -147,14 +104,14 @@ export function setup(client: any) {
         tweets.push(criterion);
         var target = criterion;
         for (var i = 0; !!target.in_reply_to_status_id_str && i < 20; i++) {
-          target = await new Promise<Tweet>((resolve, reject) => {
+          target = await new Promise<TweetType>((resolve, reject) => {
             let option: any = {
               id: target.in_reply_to_status_id_str,
               include_entities: true,
               tweet_mode: "extended",
             };
 
-            client.get("statuses/show", option, (error: string, tweet: Tweet, response: any) => {
+            client.get("statuses/show", option, (error: string, tweet: TweetType, response: any) => {
               if (error) {
                 return reject(error);
               }

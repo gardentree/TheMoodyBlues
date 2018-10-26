@@ -1,11 +1,11 @@
 import {connect} from "react-redux";
 import Component from "./Tweet";
-import * as twitter from "../../others/twitter";
+import {TweetType} from "../../types/twitter";
 import {searchTweets, displayConversation} from "../../modules/home";
 
 const mapDispatchToProps = {
   search: (keyword: string) => searchTweets(keyword),
-  converse: (tweet: twitter.Tweet) => displayConversation(tweet),
+  converse: (tweet: TweetType) => displayConversation(tweet),
 };
 export default connect(
   null,

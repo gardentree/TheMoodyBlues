@@ -1,9 +1,9 @@
 import * as React from "react";
 import TweetList from "../TweetList";
-import * as twitter from "../../others/twitter";
+import {TweetType} from "../../types/twitter";
 
 interface Property {
-  tweets: twitter.Tweet[];
+  tweets: TweetType[];
   lastReadID: number;
   didMount: any;
 }

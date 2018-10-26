@@ -1,14 +1,14 @@
 import * as React from "react";
 import * as Modal from "react-modal";
 import {Carousel} from "react-responsive-carousel";
-import * as twitter from "../../../others/twitter";
+import {MediaType} from "../../../types/twitter";
 
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 if (process.env.NODE_ENV !== "test") Modal.setAppElement("#app");
 
 interface Property {
-  medias: twitter.Media[];
+  medias: MediaType[];
 }
 
 export default class MediaBox extends React.Component<Property, {modalIsOpen: boolean}> {

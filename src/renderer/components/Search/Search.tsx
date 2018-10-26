@@ -1,10 +1,10 @@
 import * as React from "react";
 import TweetList from "../TweetList";
 import {Field} from "redux-form";
-import * as twitter from "../../others/twitter";
+import {TweetType} from "../../types/twitter";
 
 interface Property {
-  tweets: twitter.Tweet[];
+  tweets: TweetType[];
   lastReadID: number;
   initialValues: {query: string};
   hasQuery: boolean;

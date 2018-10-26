@@ -2,7 +2,7 @@ import {shell} from "electron";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {OAuth} from "oauth";
-import {setup} from "../others/twitter";
+import {setup} from "../helpers/twitter";
 
 const ElectronStore = require("electron-store");
 const store = new ElectronStore();

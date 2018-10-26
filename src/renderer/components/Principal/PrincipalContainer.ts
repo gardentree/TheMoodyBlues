@@ -1,7 +1,7 @@
 import {connect} from "react-redux";
 import Component from "./Principal";
 import * as home from "../../modules/home";
-import * as twitter from "../../others/twitter";
+import {TweetType} from "../../types/twitter";
 
 const mapStateToProps = (state: any) => {
   const {tab, style, contents, subcontents} = state.home;
@@ -10,7 +10,7 @@ const mapStateToProps = (state: any) => {
   if (contents) {
     Object.entries(contents).forEach(([tab, content]) => {
       const {tweets, lastReadID} = content as any;
-      let count = tweets ? tweets.filter((tweet: twitter.Tweet) => tweet.id > lastReadID).length : 0;
+      let count = tweets ? tweets.filter((tweet: TweetType) => tweet.id > lastReadID).length : 0;
       if (count <= 0) count = null;
 
       unreads[tab] = count;

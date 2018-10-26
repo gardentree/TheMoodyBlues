@@ -1,11 +1,11 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import TweetList from "../TweetList";
-import * as twitter from "../../others/twitter";
+import {TweetType} from "../../types/twitter";
 
 interface Property {
   container: string;
-  tweets?: twitter.Tweet[] | null;
+  tweets?: TweetType[] | null;
   onClose?(): any;
 }
 

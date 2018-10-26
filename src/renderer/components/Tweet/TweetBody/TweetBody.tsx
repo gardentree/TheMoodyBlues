@@ -2,10 +2,10 @@ import * as React from "react";
 import UserIdentifier from "../UserIdentifier";
 import ExternalLink from "../ExternalLink";
 import {decodeHTML} from "../../../others/tools";
-import * as twitter from "../../../others/twitter";
+import {TweetType} from "../../../types/twitter";
 
 interface Property {
-  tweet: twitter.Tweet;
+  tweet: TweetType;
   expand?: boolean;
   search: any;
 }
@@ -44,7 +44,7 @@ const TweetBody: React.SFC<Property> = ({tweet, expand = false, search}) => {
   return <React.Fragment>{fragments}</React.Fragment>;
 };
 
-function parseElements(tweet: twitter.Tweet, expand: boolean): TweetElement[] {
+function parseElements(tweet: TweetType, expand: boolean): TweetElement[] {
   let entities: {category: string; entity: any}[] = [];
   for (let category of ["hashtags", "user_mentions", "urls", "media"]) {
     if (!tweet.entities[category]) continue;

@@ -1,10 +1,10 @@
 import * as React from "react";
 import Tweet from "../Tweet";
-import * as twitter from "../../others/twitter";
+import {TweetType} from "../../types/twitter";
 import {CSSTransition, TransitionGroup} from "react-transition-group";
 
 interface Property {
-  tweets: twitter.Tweet[];
+  tweets: TweetType[];
   lastReadID: number;
   onScroll: any;
 }
