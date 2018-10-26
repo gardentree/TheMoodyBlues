@@ -104,5 +104,22 @@ export function setup(client: any) {
     });
   };
 
+  client.mentionsTimeline = (since_id: string | null) => {
+    let option: any = {
+      count: 200,
+      include_entities: true,
+      tweet_mode: "extended",
+    };
+    if (since_id) option.since_id = since_id;
+
+    return new Promise((resolve, reject) => {
+      client.get("statuses/mentions_timeline", option, (error: string, tweets: Tweet[], response: any) => {
+        if (error) return reject(error);
+
+        resolve(tweets);
+      });
+    });
+  };
+
   return client;
 }

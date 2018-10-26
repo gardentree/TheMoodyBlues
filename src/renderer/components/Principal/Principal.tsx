@@ -22,6 +22,10 @@ export default class Principal extends React.Component<Property, any> {
       name: "Search",
       component: Search,
     },
+    {
+      name: "Mentions",
+      component: Timeline("Mentions"),
+    },
   ];
 
   render() {
