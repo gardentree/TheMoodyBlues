@@ -2,9 +2,9 @@ import * as twitter from "../others/twitter";
 
 const storage = require("electron-json-storage");
 
-export function getTweets() {
+export function getTweets(name: string) {
   return new Promise((resolve, reject) => {
-    storage.get("tweets", (error: string, tweets: twitter.Tweet[]) => {
+    storage.get(`${name}.tweets`, (error: string, tweets: twitter.Tweet[]) => {
       if (error) return reject(error);
       if (!Array.isArray(tweets)) {
         tweets = [];
@@ -15,9 +15,9 @@ export function getTweets() {
   });
 }
 
-export function setTweets(tweets: twitter.Tweet[]) {
+export function setTweets(name: string, tweets: twitter.Tweet[]) {
   return new Promise((resolve, reject) => {
-    storage.set("tweets", tweets, (error: string) => {
+    storage.set(`${name}.tweets`, tweets, (error: string) => {
       if (error) return reject(error);
 
       resolve();

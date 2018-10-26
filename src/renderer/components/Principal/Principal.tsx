@@ -16,7 +16,7 @@ export default class Principal extends React.Component<Property, any> {
   contents = [
     {
       name: "Timeline",
-      component: Timeline,
+      component: Timeline("Timeline"),
     },
     {
       name: "Search",
