@@ -1,5 +1,5 @@
 import * as React from "react";
-import {openLinkOnAnchor} from "../../../others/tools";
+import {openLinkOnAnchor} from "../../../helpers/tools";
 
 interface Property {
   link: string;

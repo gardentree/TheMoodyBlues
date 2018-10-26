@@ -1,5 +1,5 @@
 import {TweetType} from "../types/twitter";
-import {decodeHTML} from "../others/tools";
+import {decodeHTML} from "./tools";
 
 const growly = require("growly");
 
