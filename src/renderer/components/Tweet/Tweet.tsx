@@ -10,6 +10,7 @@ interface Property {
   source: twitter.Tweet;
   unread: boolean;
   search: any;
+  converse: any;
 }
 
 export default class Tweet extends React.Component<Property, {}> {
@@ -22,7 +23,7 @@ export default class Tweet extends React.Component<Property, {}> {
   openContextMenu(event: React.SyntheticEvent<HTMLElement>) {
     const url: string = event.currentTarget.dataset.url!;
 
-    const {search, source} = this.props;
+    const {search, source, converse} = this.props;
 
     const {Menu, MenuItem} = remote;
     const menu = new Menu();
@@ -31,6 +32,15 @@ export default class Tweet extends React.Component<Property, {}> {
         label: "ブラウザで開く",
         click() {
           shell.openExternal(url);
+        },
+      })
+    );
+
+    menu.append(
+      new MenuItem({
+        label: "会話を表示",
+        click() {
+          converse(source.retweeted_status === undefined ? source : source.retweeted_status!);
         },
       })
     );

@@ -40,6 +40,13 @@ function* displayUserTimeline(action: Action) {
   yield put(home.updateTweetsInSubContents(tweets));
 }
 
+function* displayConversation(action: Action) {
+  const {account} = yield select();
+
+  let tweets = yield call(account.conversation, action.payload.tweet);
+  yield put(home.updateTweetsInSubContents(tweets));
+}
+
 const wrap = (saga: any) =>
   function*(action: Action) {
     logger.info(action);
@@ -56,5 +63,6 @@ export default [
   takeLatest(home.reload, wrap(reorder)),
   takeLatest(home.searchTweets, wrap(searchTweets)),
   takeLatest(home.displayUserTimeline, wrap(displayUserTimeline)),
+  takeLatest(home.displayConversation, wrap(displayConversation)),
   takeEvery(home.mountComponent, wrap(initialize))
 ];

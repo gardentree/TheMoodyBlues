@@ -98,11 +98,12 @@ function fontSize(style: any, offset: number) {
 }
 
 ////////////////////
-export const {reload, focusLatestTweet, focusUnreadTweet, displayUserTimeline, mountComponent, searchTweets, alarm} = createActions({
+export const {reload, focusLatestTweet, focusUnreadTweet, displayUserTimeline, displayConversation, mountComponent, searchTweets, alarm} = createActions({
   RELOAD: [(force, tab) => null, (force, tab) => ({force: force, tab: tab})],
   FOCUS_LATEST_TWEET: () => null,
   FOCUS_UNREAD_TWEET: () => null,
   DISPLAY_USER_TIMELINE: (name) => ({name: name}),
+  DISPLAY_CONVERSATION: (tweet) => ({tweet: tweet}),
   MOUNT_COMPONENT: (tab) => ({tab: tab}),
   SEARCH_TWEETS: (query) => ({query: query}),
   ALARM: (message) => ({message: message}),
