@@ -3,6 +3,7 @@ import Timeline from "../Timeline";
 import Search from "../Search";
 import SubContents from "../SubContents";
 import {CSSTransition} from "react-transition-group";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 interface Property {
   current: string;
@@ -10,6 +11,7 @@ interface Property {
   unreads: any;
   onClick: any;
   subcontents: any;
+  nowLoading: boolean;
 }
 
 export default class Principal extends React.Component<Property, any> {
@@ -29,7 +31,7 @@ export default class Principal extends React.Component<Property, any> {
   ];
 
   render() {
-    const {current, style, unreads, onClick} = this.props;
+    const {current, style, unreads, onClick, nowLoading} = this.props;
 
     return (
       <div id="principal" className="window Principal" style={style}>
@@ -60,6 +62,9 @@ export default class Principal extends React.Component<Property, any> {
             </div>
           );
         })}
+        <div className="loading" style={{display: nowLoading ? "flex" : "none"}}>
+          <FontAwesomeIcon icon="spinner" size="4x" spin />
+        </div>
         <SubContents container={`.window-content[data-name='${current}'] > .subcontents`} />
       </div>
     );

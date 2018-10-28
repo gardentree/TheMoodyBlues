@@ -9,6 +9,7 @@ const template = {
   style: {
     fontSize: "12px",
   },
+  nowLoading: false,
 };
 
 describe(reducer.name, () => {
@@ -20,6 +21,7 @@ describe(reducer.name, () => {
       style: {
         fontSize: "12px",
       },
+      nowLoading: false,
     });
   });
 
@@ -34,6 +36,7 @@ describe(reducer.name, () => {
       style: {
         fontSize: "12px",
       },
+      nowLoading: false,
     });
   });
   it(home.updateTweets.toString(), () => {
@@ -63,6 +66,7 @@ describe(reducer.name, () => {
       style: {
         fontSize: "12px",
       },
+      nowLoading: false,
     });
   });
 
@@ -74,6 +78,7 @@ describe(reducer.name, () => {
       style: {
         fontSize: "12px",
       },
+      nowLoading: false,
     });
   });
 
@@ -104,6 +109,7 @@ describe(reducer.name, () => {
       style: {
         fontSize: "12px",
       },
+      nowLoading: false,
     });
   });
 
@@ -115,6 +121,7 @@ describe(reducer.name, () => {
       contents: {},
       subcontents: {},
       tab: null,
+      nowLoading: false,
     });
   });
   it("zoomOut", () => {
@@ -125,6 +132,7 @@ describe(reducer.name, () => {
       contents: {},
       subcontents: {},
       tab: null,
+      nowLoading: false,
     });
   });
   it("zoomReset", () => {
@@ -135,6 +143,7 @@ describe(reducer.name, () => {
       contents: {},
       subcontents: {},
       tab: null,
+      nowLoading: false,
     });
   });
 
@@ -150,6 +159,7 @@ describe(reducer.name, () => {
         subcontents: {},
         tab: null,
         style: {fontSize: "12px"},
+        nowLoading: false,
       });
     });
     it("trim query", () => {
@@ -163,6 +173,7 @@ describe(reducer.name, () => {
         subcontents: {},
         tab: null,
         style: {fontSize: "12px"},
+        nowLoading: false,
       });
     });
     it("when query is null", () => {
@@ -176,6 +187,7 @@ describe(reducer.name, () => {
         subcontents: {},
         tab: null,
         style: {fontSize: "12px"},
+        nowLoading: false,
       });
     });
   });

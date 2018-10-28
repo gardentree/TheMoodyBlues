@@ -2,7 +2,7 @@ import {createActions, handleActions} from "redux-actions";
 
 const objectAssignDeep = require(`object-assign-deep`);
 
-export const {selectTab, updateTweets, updateTweetsInSubContents, read, zoomIn, zoomOut, zoomReset, setupSearch} = createActions({
+export const {selectTab, updateTweets, updateTweetsInSubContents, read, zoomIn, zoomOut, zoomReset, setupSearch, showLoading} = createActions({
   SELECT_TAB: (tab) => ({
     tab: tab,
   }),
@@ -24,6 +24,9 @@ export const {selectTab, updateTweets, updateTweetsInSubContents, read, zoomIn, 
   ZOOM_RESET: () => {},
   SETUP_SEARCH: (query) => ({
     query: query,
+  }),
+  SHOW_LOADING: (nowLoading: boolean) => ({
+    nowLoading: nowLoading,
   }),
 });
 
@@ -77,6 +80,10 @@ export default handleActions<any, any, any>(
         },
       });
     },
+    [showLoading.toString()]: (state, action) => ({
+      ...state,
+      nowLoading: action.payload.nowLoading,
+    }),
   },
   {
     tab: null,
@@ -85,6 +92,7 @@ export default handleActions<any, any, any>(
     style: {
       fontSize: "12px",
     },
+    nowLoading: false,
   }
 );
 

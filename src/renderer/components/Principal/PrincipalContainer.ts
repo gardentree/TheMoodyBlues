@@ -4,7 +4,7 @@ import * as home from "../../modules/home";
 import {TweetType} from "../../types/twitter";
 
 const mapStateToProps = (state: any) => {
-  const {tab, style, contents, subcontents} = state.home;
+  const {tab, style, contents, subcontents, nowLoading} = state.home;
 
   let unreads = {};
   if (contents) {
@@ -22,6 +22,7 @@ const mapStateToProps = (state: any) => {
     style: style,
     unreads: unreads,
     subcontents: subcontents,
+    nowLoading: nowLoading,
   };
 };
 const mapDispatchToProps = {
