@@ -1,4 +1,4 @@
-import {put, call, fork} from "redux-saga/effects";
+import {put, call, spawn} from "redux-saga/effects";
 import ComponentSaga from "./abstract";
 import ActionType from "../../types/action";
 import * as home from "../../modules/home";
@@ -11,7 +11,7 @@ export default class SearchSaga extends ComponentSaga {
   }
 
   *initialize(action: ActionType) {
-    yield fork(this.runTimer, NAME, 60 * 1000);
+    yield spawn(this.runTimer, NAME, 60 * 1000);
   }
   *order(action: ActionType) {
     yield put({type: `${NAME}_STOP_TIMER`});

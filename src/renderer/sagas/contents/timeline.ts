@@ -1,4 +1,4 @@
-import {put, call, fork} from "redux-saga/effects";
+import {put, call, spawn} from "redux-saga/effects";
 import ComponentSaga from "./abstract";
 import ActionType from "../../types/action";
 import * as home from "../../modules/home";
@@ -22,7 +22,7 @@ export default class TimelineSaga extends ComponentSaga {
       yield put(home.updateTweets([], action.payload.tab));
     }
 
-    yield fork(this.runTimer, "Timeline", 120 * 1000);
+    yield spawn(this.runTimer, "Timeline", 120 * 1000);
     yield this.restartTimer("Timeline");
   }
   *order(action: ActionType) {

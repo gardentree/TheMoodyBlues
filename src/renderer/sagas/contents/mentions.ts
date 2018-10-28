@@ -1,4 +1,4 @@
-import {put, call, fork} from "redux-saga/effects";
+import {put, call, spawn} from "redux-saga/effects";
 import ComponentSaga from "./abstract";
 import ActionType from "../../types/action";
 import * as home from "../../modules/home";
@@ -19,7 +19,7 @@ export default class MentionsSaga extends ComponentSaga {
       yield put(home.updateTweets([], action.payload.tab));
     }
 
-    yield fork(this.runTimer, "Mentions", 60 * 1000);
+    yield spawn(this.runTimer, "Mentions", 60 * 1000);
     yield this.restartTimer("Mentions");
   }
   *order(action: ActionType) {

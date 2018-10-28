@@ -27,7 +27,7 @@ describe(TimelineSaga.name, () => {
             },
           },
           {
-            fork(effect: any, next: any) {
+            spawn(effect: any, next: any) {
               expect(effect.fn.name).to.equal("runTimer");
               expect(effect.args).to.deep.equal([NAME, 120 * 1000]);
             },
@@ -72,7 +72,7 @@ describe(TimelineSaga.name, () => {
             },
           },
           {
-            fork(effect: any, next: any) {
+            spawn(effect: any, next: any) {
               expect(effect.fn.name).to.equal("runTimer");
               expect(effect.args).to.deep.equal([NAME, 120 * 1000]);
             },
