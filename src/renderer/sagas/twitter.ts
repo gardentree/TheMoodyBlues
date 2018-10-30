@@ -51,9 +51,11 @@ const wrap = (saga: any) =>
   function*(action: ActionType) {
     logger.info(action);
     try {
-      yield put(home.showLoading(true));
+      const loading = !action.meta || !action.meta.silently;
+
+      if (loading) yield put(home.showLoading(true));
       yield call(saga, action);
-      yield put(home.showLoading(false));
+      if (loading) yield put(home.showLoading(false));
     } catch (error) {
       logger.error(error);
       yield put(home.alarm(error));

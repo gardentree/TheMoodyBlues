@@ -32,7 +32,7 @@ export default abstract class ComponentSaga {
           break;
         }
 
-        yield put(home.reload(false, tab));
+        yield put(home.reload(false, tab, true));
         console.log(`reload ${tab}: ${new Date()}`);
       }
     }

@@ -75,7 +75,7 @@ describe(searchTweets.name, () => {
       .put({
         type: "RELOAD",
         payload: null,
-        meta: {force: true, tab: "Search"},
+        meta: {force: true, tab: "Search", silently: false},
       })
       .run();
   });
