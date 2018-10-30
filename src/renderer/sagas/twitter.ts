@@ -30,7 +30,7 @@ function* searchTweets(action: ActionType) {
 
   yield put(home.selectTab("Search"));
   yield put(home.setupSearch(query));
-  yield put(home.reload(true, "Search"));
+  yield reorder(home.reload(true, "Search", true) as ActionType);
 }
 
 function* displayUserTimeline(action: ActionType) {

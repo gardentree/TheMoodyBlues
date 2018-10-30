@@ -64,6 +64,18 @@ describe(reorder.name, () => {
 describe(searchTweets.name, () => {
   it("normal", () => {
     return expectSaga(searchTweets, {payload: {query: "くえりー"}})
+      .provide({
+        select() {
+          return {
+            home: {
+              tab: "Timeline",
+              contents: {
+                Search: {tweets: [], query: ""},
+              },
+            },
+          };
+        },
+      })
       .put({
         type: "SELECT_TAB",
         payload: {tab: "Search"},
@@ -73,10 +85,18 @@ describe(searchTweets.name, () => {
         payload: {query: "くえりー"},
       })
       .put({
-        type: "RELOAD",
-        payload: null,
-        meta: {force: true, tab: "Search", silently: false},
+        type: "Search_STOP_TIMER",
       })
-      .run();
+      .put({
+        type: "SETUP_SEARCH",
+        payload: {query: ""},
+      })
+      .run()
+      .then((result) => {
+        const {effects} = result;
+
+        expect(effects.put).to.be.undefined;
+        expect(effects.call).to.be.undefined;
+      });
   });
 });
