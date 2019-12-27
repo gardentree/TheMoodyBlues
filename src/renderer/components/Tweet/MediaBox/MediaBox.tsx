@@ -63,7 +63,7 @@ export default class MediaBox extends React.Component<Property, {modalIsOpen: bo
         <div onClick={(event) => event.stopPropagation()}>
           <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.closeModal}>
             <div className="modal-container">
-              <Carousel showArrows={true} showThumbs={false}>
+              <Carousel showArrows={true} showThumbs={false} showIndicators={false}>
                 {elements}
               </Carousel>
             </div>
