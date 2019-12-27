@@ -45,10 +45,7 @@ export default class Tweet extends React.Component<Property, {}> {
       })
     );
 
-    const keyword = window
-      .getSelection()
-      .toString()
-      .trim();
+    const keyword = (window.getSelection() || "").toString().trim();
     if (keyword.length > 0) {
       menu.append(
         new MenuItem({
@@ -135,14 +132,14 @@ export default class Tweet extends React.Component<Property, {}> {
   }
 
   static prettyTime(source: string): string {
-    const date = DateUtility.parse(source);
+    const date = DateUtility.parse(source, "E MMM d H:m:s x yyyy", new Date());
     const now = new Date();
 
     let format;
-    if (DateUtility.format(now, "YYYY-MM-DD") == DateUtility.format(date, "YYYY-MM-DD")) {
+    if (DateUtility.format(now, "yyyy-MM-dd") == DateUtility.format(date, "yyyy-MM-dd")) {
       format = "HH:mm:ss";
     } else {
-      format = "YYYY-MM-DD HH:mm:ss";
+      format = "yyyy-MM-dd HH:mm:ss";
     }
 
     return DateUtility.format(date, format);

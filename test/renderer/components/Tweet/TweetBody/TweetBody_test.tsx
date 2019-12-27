@@ -26,7 +26,7 @@ describe("<TweetBody />", () => {
       };
 
       const wrapper = shallow(<TweetBody tweet={json} expand={true} />);
-      expect(wrapper.text()).to.equal("<Connect(UserIdentifier) /> てすとぉ");
+      expect(wrapper.text()).to.equal(" てすとぉ");
     });
   });
 

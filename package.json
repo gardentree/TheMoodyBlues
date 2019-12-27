@@ -85,6 +85,11 @@
   "electronWebpack": {
     "renderer": {
       "webpackConfig": "renderer.webpack.js"
-    }
+    },
+    "whiteListedModules": [
+      "react-dom",
+      "react-redux",
+      "redux-form"
+    ]
   }
 }

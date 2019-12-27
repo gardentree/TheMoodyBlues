@@ -1,8 +1,5 @@
 body {
   margin: 0;
-}
-
-header {
   -webkit-app-region: drag;
 }
 
@@ -38,6 +35,7 @@ form.search {
   .window-content {
     font-family: "Hiragino Sans";
     -webkit-font-smoothing: antialiased;
+    -webkit-app-region: no-drag;
   }
 }
 

@@ -17,5 +17,6 @@
     "noUnusedLocals": true
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "build", "scripts", "acceptance-tests", "webpack", "jest", "src/setupTests.ts"]
+  "exclude": ["node_modules", "build", "scripts", "acceptance-tests", "webpack", "jest", "src/setupTests.ts"],
+  "extends": "./node_modules/electron-webpack/tsconfig-base.json"
 }

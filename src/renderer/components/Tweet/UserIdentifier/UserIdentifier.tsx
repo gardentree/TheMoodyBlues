@@ -2,7 +2,7 @@ import * as React from "react";
 
 interface Property {
   identifier: string;
-  showUserTimeline(): any;
+  showUserTimeline(event: React.SyntheticEvent): any;
 }
 
 const UserIdentifier: React.SFC<Property> = ({identifier, showUserTimeline}) => {
