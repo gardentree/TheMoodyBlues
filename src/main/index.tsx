@@ -1,6 +1,7 @@
 "use strict";
 
 import {app, BrowserWindow, Menu} from "electron";
+import installExtension, {REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS} from "electron-devtools-installer";
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
@@ -12,6 +13,10 @@ process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";
 let mainWindow: BrowserWindow | null;
 
 function createMainWindow() {
+  installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS])
+    .then((name) => console.log(name))
+    .catch((err) => console.log(err));
+
   const windowKeeper = require("electron-window-state");
   const windowState = windowKeeper({
     defaultWidth: 1000,
@@ -30,7 +35,9 @@ function createMainWindow() {
   windowState.manage(window);
 
   if (isDevelopment) {
-    window.webContents.openDevTools();
+    window.webContents.once("dom-ready", () => {
+      window.webContents.openDevTools();
+    });
   }
 
   load(window);
