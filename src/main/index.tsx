@@ -88,6 +88,7 @@ app.on("ready", () => {
       label: "Edit",
       submenu: [
         {role: "copy"},
+        {role: "paste"},
       ],
     },
     {
