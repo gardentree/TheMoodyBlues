@@ -158,6 +158,7 @@ function openPreferences() {
   }
 
   preferences = new BrowserWindow({
+    webPreferences: {nodeIntegration: true},
     title: "Preferences",
     titleBarStyle: "hidden",
     width: 640,
