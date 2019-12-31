@@ -67,6 +67,7 @@
         }
         p {
           margin: 0;
+          word-break: break-all;
 
           br + br {
             display: none;
