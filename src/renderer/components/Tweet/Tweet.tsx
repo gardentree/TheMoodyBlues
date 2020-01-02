@@ -90,6 +90,10 @@ export default class Tweet extends React.Component<Property, {}> {
     if (tweet.quoted_status !== undefined) {
       quote = tweet.quoted_status;
     }
+    let quoted_medias: MediaType[] = [];
+    if (quote && quote.extended_entities) {
+      quoted_medias = quote.extended_entities.media;
+    }
 
     let medias: MediaType[] = [];
     if (tweet.extended_entities !== undefined) {
@@ -123,6 +127,7 @@ export default class Tweet extends React.Component<Property, {}> {
               <p>
                 <TweetBody tweet={quote} />
               </p>
+              {quoted_medias && <MediaBox medias={quoted_medias} />}
             </div>
           )}
           {retweet && <div className="retweeter">Retweeted by {retweet.user.screen_name}</div>}

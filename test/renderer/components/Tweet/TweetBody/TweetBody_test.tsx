@@ -55,7 +55,7 @@ describe("<TweetBody />", () => {
     it("collapse", () => {
       const wrapper = shallow(<TweetBody tweet={json} />);
 
-      expect(wrapper.text()).to.equal("てすとぉ <ExternalLink />");
+      expect(wrapper.text()).to.equal("てすとぉ ");
     });
   });
 
@@ -124,7 +124,7 @@ describe("<TweetBody />", () => {
     it("collapse", () => {
       const wrapper = shallow(<TweetBody tweet={json} />);
 
-      expect(wrapper.text()).to.equal("てすとぉ <ExternalLink />");
+      expect(wrapper.text()).to.equal("てすとぉ ");
     });
   });
 

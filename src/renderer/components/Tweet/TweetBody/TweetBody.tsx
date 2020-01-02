@@ -63,7 +63,7 @@ function parseElements(tweet: TweetType, expand: boolean): TweetElement[] {
       const element = characters.slice(start, entity.entity.indices[0]).join("");
       elements.push({category: "string", entity: element});
     }
-    if (!expand || tweet.display_text_range[1] >= entity.entity.indices[0]) {
+    if (tweet.display_text_range[1] >= entity.entity.indices[0]) {
       elements.push(entity);
     }
 
