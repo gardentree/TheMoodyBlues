@@ -6,25 +6,24 @@ function execute(command) {
   exec(command, function(error, stdout, stderr) {
     console.log(stdout);
 
-    if (error) console.error(error);
+    if (error) {
+      console.error(stderr);
+    }
   });
 }
 
 gulp.task("test", function() {
   execute("yarn test:all");
 
-  gulp.watch(["src/**/*.{ts,tsx}", "test/**/*_test.{ts,tsx}"], function(event) {
-    console.log(`${event.type}: ${event.path}`);
-
-    var relative = event.path.slice(process.cwd().length);
-
+  const watcher = gulp.watch(["src/**/*.{ts,tsx}", "test/**/*_test.{ts,tsx}"]);
+  watcher.on("change", function(path) {
     var command;
-    if (relative.match(/^\/test/)) {
-      command = `yarn test '${event.path}'`;
+    if (path.match(/^test/)) {
+      command = `yarn test '${path}'`;
     } else {
-      var matcher = relative.match(/^\/src\/(.+)\.(ts|tsx)$/);
+      var matcher = path.match(/^src\/(.+)\.(ts|tsx)$/);
       if (matcher) {
-        var test = `${process.cwd()}/test/${matcher[1]}_test.${matcher[2]}`;
+        var test = `test/${matcher[1]}_test.${matcher[2]}`;
         if (fs.existsSync(test)) {
           command = `yarn test '${test}'`;
         } else {
@@ -35,6 +34,7 @@ gulp.task("test", function() {
       }
     }
 
+    execute("clear");
     execute(command);
   });
 });
