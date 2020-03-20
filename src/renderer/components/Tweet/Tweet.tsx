@@ -101,7 +101,7 @@ export default class Tweet extends React.Component<Property, {}> {
     }
 
     return (
-      <div data-url={`https://twitter.com/${source.user.screen_name}/status/${source.id_str}`} onContextMenu={this.openContextMenu}>
+      <div data-url={`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`} onContextMenu={this.openContextMenu}>
         <div className={`avatar${retweet ? " retweet" : ""}${unread ? " unread" : ""}`}>
           <img src={tweet.user.profile_image_url_https} className="tweeter" />
           {retweet && <img src={retweet.user.profile_image_url_https} className="retweeter" />}
