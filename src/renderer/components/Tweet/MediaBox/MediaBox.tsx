@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as Modal from "react-modal";
+import Modal from "react-modal";
 import {Carousel} from "react-responsive-carousel";
 import {MediaType} from "../../../types/twitter";
 

@@ -6,8 +6,9 @@
 # testing
 /coverage
 
-# distribution
-/dist
+# workspace
+/build
+/distribution
 
 # misc
 .DS_Store

@@ -20,12 +20,13 @@
     "strict": true,
     "strictNullChecks": true,
     "suppressImplicitAnyIndexErrors": true,
-    "target": "es2017"
+    "target": "esnext"
   },
   "ts-node": {
     "compilerOptions": {
       "target": "esnext",
       "module": "commonjs"
     }
-  }
+  },
+  "include": ["../src/**/*"]
 }

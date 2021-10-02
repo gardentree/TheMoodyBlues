@@ -179,9 +179,5 @@ function openPreferences() {
 }
 
 function load(target: BrowserWindow, query = "") {
-  if (isDevelopment) {
-    target.loadURL(`http://localhost:${process.env.ELECTRON_WEBPACK_WDS_PORT}${query}`);
-  } else {
-    target.loadURL(`file://${__dirname}/index.html${query}`);
-  }
+  target.loadURL(`file://${__dirname}/index.html${query}`);
 }

@@ -2,6 +2,7 @@
   "name": "TheMoodyBlues",
   "version": "0.1.0",
   "private": true,
+  "main": "build/main.js",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.7",
     "@fortawesome/free-brands-svg-icons": "^5.4.2",
@@ -34,11 +35,11 @@
     "twitter": "^1.7.1"
   },
   "scripts": {
-    "dev": "electron-webpack dev",
-    "compile": "electron-webpack",
-    "dist": "yarn compile && electron-builder",
-    "dist:dir": "yarn dist --dir -c.compression=store -c.mac.identity=null",
-    "test": "NODE_ENV=test TS_NODE_PROJECT=tsconfig.test.json ./node_modules/.bin/electron-mocha --renderer --require ts-node/register/transpile-only --require ignore-styles",
+    "dev": "yarn compile && electron .",
+    "dist": "yarn compile --mode production && yarn package",
+    "compile": "webpack",
+    "package": "electron-builder",
+    "test": "NODE_ENV=test TS_NODE_PROJECT=tsconfig/test.json ./node_modules/.bin/electron-mocha --renderer --require ts-node/register/transpile-only --require ignore-styles",
     "test:all": "yarn test 'test/**/*.{ts,tsx}'"
   },
   "devDependencies": {
@@ -49,6 +50,7 @@
     "@types/enzyme-adapter-react-16": "^1.0.3",
     "@types/gulp": "^4.0.5",
     "@types/jest": "^24.0.25",
+    "@types/mini-css-extract-plugin": "^2.3.0",
     "@types/node": "^13.1.1",
     "@types/oauth": "^0.9.0",
     "@types/react": "^16.4.10",
@@ -63,33 +65,40 @@
     "@types/rewire": "^2.5.28",
     "chai": "^4.1.2",
     "child_process": "^1.0.2",
+    "commander": "^8.2.0",
+    "css-loader": "^6.3.0",
     "dotenv": "^8.2.0",
     "electron": "^7.1.7",
     "electron-builder": "^21.2.0",
     "electron-mocha": "^8.1.2",
-    "electron-webpack": "^2.1.2",
-    "electron-webpack-ts": "^3.2.0",
     "enzyme": "^3.6.0",
     "enzyme-adapter-react-16": "^1.5.0",
     "gulp": "^4.0.2",
     "gulp-exec": "^4.0.0",
+    "html-webpack-plugin": "^5.3.2",
     "ignore-styles": "^5.0.1",
+    "mini-css-extract-plugin": "^2.3.0",
     "node-sass": "^4.9.3",
     "redux-saga-test-plan": "^4.0.0-rc.3",
     "rewire": "^4.0.1",
     "sass-loader": "^8.0.0",
+    "ts-loader": "^9.2.6",
     "ts-node": "^8.5.4",
     "typescript": "^3.0.1",
-    "webpack": "^4.16.5"
+    "webpack": "^5.55.1",
+    "webpack-cli": "^4.8.0"
   },
-  "electronWebpack": {
-    "renderer": {
-      "webpackConfig": "renderer.webpack.js"
+  "build": {
+    "appId": "com.electron.themoodyblues",
+    "files": ["build/**/*", "icon.*"],
+    "extraMetadata": {
+      "main": "build/main.js"
     },
-    "whiteListedModules": [
-      "react-dom",
-      "react-redux",
-      "redux-form"
-    ]
+    "directories": {
+      "output": "distribution"
+    },
+    "mac": {
+      "target": "dir"
+    }
   }
 }
