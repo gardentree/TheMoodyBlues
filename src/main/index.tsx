@@ -47,10 +47,12 @@ function createMainWindow() {
     app.quit();
   });
 
-  window.webContents.on("devtools-opened", () => {
-    window.focus();
-    setImmediate(() => {
+  window.webContents.on("did-frame-finish-load", () => {
+    window.webContents.on("devtools-opened", () => {
       window.focus();
+      setImmediate(() => {
+        window.focus();
+      });
     });
   });
 
