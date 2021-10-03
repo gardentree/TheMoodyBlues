@@ -1,6 +1,7 @@
 import {put, call, spawn} from "redux-saga/effects";
 import ComponentSaga from "./abstract";
 import ActionType from "../../types/action";
+import {TweetType} from "../../types/twitter";
 import * as home from "../../modules/home";
 import * as storage from "../../helpers/storage";
 import mute from "../../helpers/mute";
@@ -12,7 +13,7 @@ export default class TimelineSaga extends ComponentSaga {
   }
 
   *initialize(action: ActionType) {
-    const tweets = yield call(storage.getTweets, "Timeline");
+    const tweets: TweetType[] = yield call(storage.getTweets, "Timeline");
 
     yield put(home.selectTab("Timeline"));
     if (tweets.length > 0) {
@@ -28,7 +29,7 @@ export default class TimelineSaga extends ComponentSaga {
   *order(action: ActionType) {
     if (action.meta.force) this.content.tweets = [];
 
-    let tweets = yield call(this.account.timeline, this.latest());
+    let tweets: TweetType[] = yield call(this.account.timeline, this.latest());
     if (tweets.length > 0) {
       tweets = mute(tweets);
       growl(tweets);

@@ -11,19 +11,19 @@ export default abstract class ComponentSaga {
     this.content = content;
   }
 
-  abstract initialize(action: ActionType): IterableIterator<any>;
-  abstract order(action: ActionType): IterableIterator<any>;
+  abstract initialize(action: ActionType): any;
+  abstract order(action: ActionType): any;
 
   protected *runTimer(tab: string, interval: number) {
-    const channel = yield actionChannel(`${tab}_START_TIMER`);
+    const channel: string = yield actionChannel(`${tab}_START_TIMER`);
 
     const wait = (ms: number) =>
-      new Promise((resolve) => {
+      new Promise<void>((resolve) => {
         setTimeout(() => resolve(), ms);
       });
-    while (yield take(channel)) {
+    while ((yield take(channel)) as ReturnType<typeof take>) {
       while (true) {
-        const winner = yield race({
+        const winner: {stopped: boolean; tick: any} = yield race({
           stopped: take(`${tab}_STOP_TIMER`),
           tick: call(wait, interval),
         });

@@ -1,6 +1,7 @@
 import {put, call, spawn} from "redux-saga/effects";
 import ComponentSaga from "./abstract";
 import ActionType from "../../types/action";
+import {TweetType} from "../../types/twitter";
 import * as home from "../../modules/home";
 
 const NAME = "Search";
@@ -18,7 +19,7 @@ export default class SearchSaga extends ComponentSaga {
 
     const query = this.content.query || "";
     if (query.length > 0) {
-      const tweets = yield call(this.account.search, query, this.latest());
+      const tweets: TweetType[] = yield call(this.account.search, query, this.latest());
       const newTweets = tweets.concat(this.content.tweets).slice(0, 400);
 
       yield put(home.updateTweets(newTweets, NAME, {query: query}));

@@ -1,6 +1,7 @@
 import {put, call, spawn} from "redux-saga/effects";
 import ComponentSaga from "./abstract";
 import ActionType from "../../types/action";
+import {TweetType} from "../../types/twitter";
 import * as home from "../../modules/home";
 import * as storage from "../../helpers/storage";
 
@@ -10,7 +11,7 @@ export default class MentionsSaga extends ComponentSaga {
   }
 
   *initialize(action: ActionType) {
-    const tweets = yield call(storage.getTweets, "Mentions");
+    const tweets: TweetType[] = yield call(storage.getTweets, "Mentions");
 
     if (tweets.length > 0) {
       yield put(home.updateTweets(tweets, action.payload.tab));
@@ -25,7 +26,7 @@ export default class MentionsSaga extends ComponentSaga {
   *order(action: ActionType) {
     if (action.meta.force) this.content.tweets = [];
 
-    const tweets = yield call(this.account.mentionsTimeline, this.latest());
+    const tweets: TweetType[] = yield call(this.account.mentionsTimeline, this.latest());
     if (tweets.length > 0) {
       const newTweets = tweets.concat(this.content.tweets).slice(0, 400);
 

@@ -16,7 +16,7 @@ export function getTweets(name: string) {
 }
 
 export function setTweets(name: string, tweets: TweetType[]) {
-  return new Promise((resolve, reject) => {
+  return new Promise<void>((resolve, reject) => {
     storage.set(`${name}.tweets`, tweets, (error: string) => {
       if (error) return reject(error);
 
