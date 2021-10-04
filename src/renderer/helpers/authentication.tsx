@@ -3,15 +3,13 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {OAuth} from "oauth";
 import {setup} from "../helpers/twitter";
-
-const ElectronStore = require("electron-store");
-const store = new ElectronStore();
+import * as storage from "../helpers/storage";
 
 const oauth = new OAuth("https://api.twitter.com/oauth/request_token", "https://api.twitter.com/oauth/access_token", process.env.CONSUMER_KEY!, process.env.CONSUMER_SECRET!, "1.0A", null, "HMAC-SHA1");
 
 function loadClient(): any | null {
-  const accessKey = store.get("access_token_key");
-  const accessSecret = store.get("access_token_secret");
+  const accessKey = storage.getAccessKey();
+  const accessSecret = storage.getAccessSecret();
 
   if (accessKey === void 0 || accessSecret === void 0) {
     return null;
@@ -109,8 +107,8 @@ export default async function authorize() {
   const verifier = await getVerifier();
   const accessToken = await getAccessToken(requestToken, verifier);
 
-  store.set("access_token_key", accessToken.key);
-  store.set("access_token_secret", accessToken.secret);
+  storage.setAccessKey(accessToken.key);
+  storage.setAccessSecret(accessToken.secret);
 
   return createClient(accessToken);
 }

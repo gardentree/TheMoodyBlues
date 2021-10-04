@@ -1,12 +1,12 @@
 import * as React from "react";
-import * as preferences from "../../helpers/preferences";
+import * as storage from "../../helpers/storage";
 
 interface Form extends HTMLFormElement {
   keyword: HTMLInputElement;
 }
 
 class Mute extends React.Component<{}, {keywords: string[]}> {
-  state = {keywords: preferences.getMuteKeywords()};
+  state = {keywords: storage.getMuteKeywords()};
 
   handleSubmit = (event: React.SyntheticEvent<Form>) => {
     event.preventDefault();
@@ -16,7 +16,7 @@ class Mute extends React.Component<{}, {keywords: string[]}> {
     this.state.keywords.sort();
     this.state.keywords = [...new Set(this.state.keywords)];
 
-    preferences.setMuteKeywords(this.state.keywords);
+    storage.setMuteKeywords(this.state.keywords);
 
     event.currentTarget.keyword.value = "";
     this.setState({keywords: this.state.keywords});
@@ -28,7 +28,7 @@ class Mute extends React.Component<{}, {keywords: string[]}> {
       const index = this.state.keywords.indexOf(keyword);
       this.state.keywords.splice(index, 1);
 
-      preferences.setMuteKeywords(this.state.keywords);
+      storage.setMuteKeywords(this.state.keywords);
       this.setState({keywords: this.state.keywords});
     }
   };

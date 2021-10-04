@@ -1,4 +1,4 @@
-import {remote, shell} from "electron";
+import {Menu, MenuItem, shell} from "electron";
 import * as React from "react";
 import UserIdentifier from "./UserIdentifier";
 import TweetBody from "./TweetBody";
@@ -25,7 +25,6 @@ export default class Tweet extends React.Component<Property, {}> {
 
     const {search, source, converse} = this.props;
 
-    const {Menu, MenuItem} = remote;
     const menu = new Menu();
     menu.append(
       new MenuItem({

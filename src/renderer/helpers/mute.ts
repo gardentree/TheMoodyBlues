@@ -1,7 +1,7 @@
 import {TweetType} from "../types/twitter";
-import * as preferences from "./preferences";
+import * as storage from "./storage";
 
-const keywords = preferences.getMuteKeywords();
+const keywords = storage.getMuteKeywords();
 
 export default function mute(tweets: TweetType[]): TweetType[] {
   return tweets.filter((tweet) => {

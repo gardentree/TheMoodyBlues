@@ -24,7 +24,10 @@ function createMainWindow() {
   });
 
   const window = new BrowserWindow({
-    webPreferences: {nodeIntegration: true},
+    webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: false,
+    },
     title: "The Moody Blues",
     acceptFirstMouse: true,
     titleBarStyle: "hidden",
