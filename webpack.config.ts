@@ -41,20 +41,6 @@ const main: Configuration = {
   module: {
     rules: [typescript],
   },
-  resolve: {
-    fallback: {
-      assert: false,
-      constants: false,
-      http: false,
-      https: false,
-      os: false,
-      path: false,
-      querystring: false,
-      stream: false,
-      url: false,
-      util: false,
-    },
-  },
 };
 const renderer: Configuration = {
   mode: mode,
@@ -77,18 +63,6 @@ const renderer: Configuration = {
   },
   resolve: {
     extensions: [".js", ".ts", ".tsx"],
-    fallback: {
-      assert: false,
-      constants: false,
-      http: false,
-      https: false,
-      os: false,
-      path: false,
-      querystring: false,
-      stream: false,
-      url: false,
-      util: false,
-    },
   },
   plugins: [
     new MiniCssExtractPlugin(),
