@@ -1,18 +1,17 @@
 .TweetList {
   ol.timeline {
-    color: #5f5f5f;
     line-height: normal;
     list-style: none;
     margin: 0;
     padding-left: 0;
 
     li {
-      border-bottom: solid 1px #dedede;
+      border-bottom: solid 1px var(--line-color);
 
       &:focus {
         outline: none;
         color: white;
-        background-color: #458ade;
+        background-color: var(--focus-color);
 
         .tweet {
           p {
@@ -131,7 +130,7 @@
         }
       }
       .quote {
-        border: solid 1px #dedede;
+        border: solid 1px var(--line-color);
         margin-top: 8px;
         padding: 4px;
 
