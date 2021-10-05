@@ -10,8 +10,7 @@ dotenv.config();
 const mode = (() => {
   const program = new Command();
 
-  program.option("--mode <value>", "compile mode", "development");
-  program.parse(process.argv);
+  program.allowUnknownOption().option("--mode <value>", "compile mode", "development").parse(process.argv);
 
   return program.opts().mode;
 })();
@@ -42,7 +41,7 @@ const main: Configuration = {
     rules: [typescript],
   },
 };
-const renderer: Configuration = {
+const renderer: any = {
   mode: mode,
   target: "electron-renderer",
   entry: {
@@ -72,6 +71,9 @@ const renderer: Configuration = {
     }),
     new webpack.EnvironmentPlugin(["CONSUMER_KEY", "CONSUMER_SECRET"]),
   ],
+  devServer: {
+    static: path.join(__dirname, "./build"),
+  },
 };
 
 export default [main, renderer];

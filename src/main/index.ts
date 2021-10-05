@@ -182,5 +182,9 @@ function openPreferences() {
 }
 
 function load(target: BrowserWindow, query = "") {
-  target.loadURL(`file://${__dirname}/index.html${query}`);
+  if (isDevelopment) {
+    target.loadURL("http://localhost:8080/");
+  } else {
+    target.loadURL(`file://${__dirname}/index.html${query}`);
+  }
 }

@@ -34,7 +34,9 @@
     "twitter": "^1.7.1"
   },
   "scripts": {
-    "dev": "yarn compile && electron .",
+    "dev": "run-p dev:*",
+    "dev:serve": "webpack-dev-server --hot",
+    "dev:launch": "wait-on http://localhost:8080 && electron .",
     "dist": "yarn compile --mode production && yarn package",
     "compile": "webpack",
     "package": "electron-builder",
@@ -86,15 +88,15 @@
     "ts-loader": "^9.2.6",
     "ts-node": "^10.2.1",
     "typescript": "^4.4.3",
+    "wait-on": "^6.0.0",
     "webpack": "^5.56.1",
-    "webpack-cli": "^4.8.0"
+    "webpack-cli": "^4.8.0",
+    "webpack-dev-server": "^4.3.0",
+    "yarn-run-all": "^3.1.1"
   },
   "build": {
     "appId": "com.electron.themoodyblues",
-    "files": [
-      "build/**/*",
-      "icon.*"
-    ],
+    "files": ["build/**/*", "icon.*"],
     "extraMetadata": {
       "main": "build/main.js"
     },
