@@ -1,7 +1,5 @@
 import {put, call, takeLatest, takeEvery, select} from "redux-saga/effects";
 import getSaga from "./contents";
-import ActionType from "../types/action";
-import {TweetType} from "../types/twitter";
 import * as home from "../modules/home";
 
 const logger = require("electron-log");

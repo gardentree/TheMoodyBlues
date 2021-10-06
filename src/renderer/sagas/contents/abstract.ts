@@ -1,5 +1,4 @@
 import {put, call, actionChannel, race, take} from "redux-saga/effects";
-import ActionType from "../../types/action";
 import * as home from "../../modules/home";
 
 export default abstract class ComponentSaga {

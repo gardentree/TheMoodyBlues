@@ -1,7 +1,6 @@
 import * as pathname from "path";
 import ElectronStore from "electron-store";
 import storage from "electron-json-storage";
-import {TweetType} from "../types/twitter";
 
 const userDataDirectory = (() => {
   for (const key of process.argv) {

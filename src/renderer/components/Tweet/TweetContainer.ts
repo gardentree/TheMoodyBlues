@@ -1,6 +1,5 @@
 import {connect} from "react-redux";
 import Component from "./Tweet";
-import {TweetType} from "../../types/twitter";
 import {searchTweets, displayConversation} from "../../modules/home";
 
 const mapDispatchToProps = {

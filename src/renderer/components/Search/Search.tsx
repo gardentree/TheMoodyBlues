@@ -1,7 +1,6 @@
 import * as React from "react";
 import TweetList from "../TweetList";
 import {Field} from "redux-form";
-import {TweetType} from "../../types/twitter";
 
 interface Property {
   tweets: TweetType[];

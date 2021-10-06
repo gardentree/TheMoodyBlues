@@ -1,7 +1,6 @@
 import * as React from "react";
 import Modal from "react-modal";
 import {Carousel} from "react-responsive-carousel";
-import {MediaType} from "../../../types/twitter";
 
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 

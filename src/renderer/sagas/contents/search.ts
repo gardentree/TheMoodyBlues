@@ -1,7 +1,5 @@
 import {put, call, spawn} from "redux-saga/effects";
 import ComponentSaga from "./abstract";
-import ActionType from "../../types/action";
-import {TweetType} from "../../types/twitter";
 import * as home from "../../modules/home";
 
 const NAME = "Search";

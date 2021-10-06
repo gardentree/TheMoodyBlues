@@ -1,5 +1,3 @@
-import ActionType from "../types/action";
-
 const SELECT = "SELECT";
 
 const initialState = null;

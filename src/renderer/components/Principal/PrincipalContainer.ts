@@ -1,7 +1,6 @@
 import {connect} from "react-redux";
 import Component from "./Principal";
 import * as home from "../../modules/home";
-import {TweetType} from "../../types/twitter";
 
 const mapStateToProps = (state: any) => {
   const {tab, style, contents, subcontents, nowLoading} = state.home;
@@ -28,7 +27,4 @@ const mapStateToProps = (state: any) => {
 const mapDispatchToProps = {
   onClick: (event: React.SyntheticEvent<HTMLElement>) => home.selectTab(event.currentTarget.dataset.name),
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Component);
+export default connect(mapStateToProps, mapDispatchToProps)(Component);

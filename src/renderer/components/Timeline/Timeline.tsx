@@ -1,6 +1,5 @@
 import * as React from "react";
 import TweetList from "../TweetList";
-import {TweetType} from "../../types/twitter";
 
 interface Property {
   tweets: TweetType[];

@@ -1,5 +1,4 @@
 import {takeLatest, takeEvery} from "redux-saga/effects";
-import ActionType from "../types/action";
 import * as home from "../modules/home";
 
 function focusLatestTweet(action: ActionType) {

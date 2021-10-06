@@ -1,4 +1,4 @@
-export interface TweetType {
+interface TweetType {
   id: number;
   id_str: string;
   full_text: string;
@@ -20,12 +20,12 @@ export interface TweetType {
   quoted_status_permalink: URLType;
   in_reply_to_status_id_str: string;
 }
-export interface UserType {
+interface UserType {
   id_str: string;
   profile_image_url_https: string;
   screen_name: string;
 }
-export interface MediaType {
+interface MediaType {
   id_str: string;
   media_url_https: string;
   type: string;
@@ -36,7 +36,7 @@ export interface MediaType {
     }[];
   };
 }
-export interface URLType {
+interface URLType {
   url: string;
   expanded_url: string;
   display_url: string;

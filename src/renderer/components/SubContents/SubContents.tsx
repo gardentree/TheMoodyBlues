@@ -1,7 +1,6 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import TweetList from "../TweetList";
-import {TweetType} from "../../types/twitter";
 
 interface Property {
   container: string;

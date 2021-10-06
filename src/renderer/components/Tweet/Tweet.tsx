@@ -4,7 +4,6 @@ import UserIdentifier from "./UserIdentifier";
 import TweetBody from "./TweetBody";
 import MediaBox from "./MediaBox";
 import * as DateUtility from "date-fns";
-import {TweetType, MediaType} from "../../types/twitter";
 
 interface Property {
   source: TweetType;

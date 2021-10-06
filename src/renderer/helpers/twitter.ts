@@ -1,5 +1,3 @@
-import {TweetType} from "../types/twitter";
-
 const logger = require("electron-log");
 export function setup(client: any) {
   client.get = client.get.bind(client);

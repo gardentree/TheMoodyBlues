@@ -2,7 +2,6 @@ import * as React from "react";
 import UserIdentifier from "../UserIdentifier";
 import ExternalLink from "../ExternalLink";
 import {decodeHTML} from "../../../helpers/tools";
-import {TweetType} from "../../../types/twitter";
 
 interface Property {
   tweet: TweetType;

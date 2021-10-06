@@ -1,4 +1,3 @@
-import {TweetType} from "../types/twitter";
 import * as storage from "./storage";
 
 const keywords = storage.getMuteKeywords();
