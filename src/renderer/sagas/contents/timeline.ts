@@ -3,7 +3,8 @@ import ComponentSaga from "./abstract";
 import * as home from "../../modules/home";
 import * as storage from "../../helpers/storage";
 import mute from "../../helpers/mute";
-import growl from "../../helpers/growly";
+
+const {TheMoodyBlues} = window;
 
 export default class TimelineSaga extends ComponentSaga {
   constructor(account: any, content: any) {
@@ -30,7 +31,7 @@ export default class TimelineSaga extends ComponentSaga {
     let tweets: TweetType[] = yield call(this.account.timeline, this.latest());
     if (tweets.length > 0) {
       tweets = mute(tweets);
-      growl(tweets);
+      TheMoodyBlues.growl(tweets);
 
       const newTweets = tweets.concat(this.content.tweets).slice(0, 400);
 

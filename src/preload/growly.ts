@@ -1,6 +1,5 @@
-import {decodeHTML} from "./tools";
-
-const growly = require("growly");
+import growly from "growly";
+import {decodeHTML} from "../renderer/helpers/tools";
 
 export default function growl(tweets: TweetType[]) {
   if (process.env.NODE_ENV === "test") return;

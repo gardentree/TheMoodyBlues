@@ -2,7 +2,7 @@ import {put, call, takeLatest, takeEvery, select} from "redux-saga/effects";
 import getSaga from "./contents";
 import * as home from "../modules/home";
 
-const logger = require("electron-log");
+const {TheMoodyBlues} = window;
 
 interface StateType {
   home: any;
@@ -52,7 +52,7 @@ function* displayConversation(action: ActionType) {
 
 const wrap = (saga: any) =>
   function* (action: ActionType) {
-    logger.info(action);
+    TheMoodyBlues.logger.info(action);
     try {
       const loading = !action.meta || !action.meta.silently;
 
@@ -60,7 +60,7 @@ const wrap = (saga: any) =>
       yield call(saga, action);
       if (loading) yield put(home.showLoading(false));
     } catch (error) {
-      logger.error(error);
+      TheMoodyBlues.logger.error(error);
       yield put(home.alarm(error));
     }
   };

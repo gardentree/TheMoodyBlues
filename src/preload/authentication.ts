@@ -1,9 +1,8 @@
 import {shell} from "electron";
-import * as React from "react";
-import * as ReactDOM from "react-dom";
 import {OAuth} from "oauth";
-import {setup} from "../helpers/twitter";
-import * as storage from "../helpers/storage";
+import {setup} from "./twitter";
+import storage from "./storage";
+import Twitter from "twitter";
 
 const oauth = new OAuth("https://api.twitter.com/oauth/request_token", "https://api.twitter.com/oauth/access_token", process.env.CONSUMER_KEY!, process.env.CONSUMER_SECRET!, "1.0A", null, "HMAC-SHA1");
 
@@ -24,10 +23,9 @@ interface Token {
 }
 
 function createClient(accessToken: Token): any {
-  const Twitter = require("twitter");
   return setup(
     new Twitter({
-      consumer_key: process.env.CONSUMER_KEY,
+      consumer_key: process.env.CONSUMER_KEY!,
       consumer_secret: process.env.CONSUMER_SECRET!,
       access_token_key: accessToken.key,
       access_token_secret: accessToken.secret,
@@ -54,51 +52,7 @@ function getAccessToken(requestToken: Token, verifier: string) {
   });
 }
 
-function getVerifier() {
-  return new Promise<string>((resolve, reject) => {
-    const callback = (verifier: string) => {
-      resolve(verifier);
-    };
-    ReactDOM.render(<VerifierForm callback={callback} />, document.getElementById("app"));
-  });
-}
-
-interface Form extends HTMLFormElement {
-  pin: HTMLInputElement;
-}
-class VerifierForm extends React.Component<any, any> {
-  constructor(props: {callback: string}) {
-    super(props);
-
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
-
-  handleSubmit(event: React.SyntheticEvent): void {
-    event.preventDefault();
-
-    const form: Form = event.target as Form;
-    this.props.callback(form.pin.value);
-  }
-
-  render() {
-    return (
-      <div className="window">
-        <header className="toolbar toolbar-header">
-          <h1 className="title">The Moody Blues</h1>
-        </header>
-        <form onSubmit={this.handleSubmit}>
-          <label>
-            Pin Code:
-            <input type="text" name="pin" />
-          </label>
-          <input type="submit" value="Submit" />
-        </form>
-      </div>
-    );
-  }
-}
-
-export default async function authorize() {
+export default async function authorize(getVerifier: () => string) {
   const client = loadClient();
   if (client) return client;
 

@@ -1,4 +1,5 @@
-const logger = require("electron-log");
+import logger from "electron-log";
+
 export function setup(client: any) {
   client.get = client.get.bind(client);
 

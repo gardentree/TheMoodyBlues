@@ -1,4 +1,3 @@
-import {Menu, MenuItem, shell} from "electron";
 import * as React from "react";
 import UserIdentifier from "./UserIdentifier";
 import TweetBody from "./TweetBody";
@@ -8,9 +7,9 @@ import * as DateUtility from "date-fns";
 interface Property {
   source: TweetType;
   unread: boolean;
-  search: any;
-  converse: any;
 }
+
+const {TheMoodyBlues} = window;
 
 export default class Tweet extends React.Component<Property, {}> {
   constructor(property: Property) {
@@ -20,56 +19,13 @@ export default class Tweet extends React.Component<Property, {}> {
   }
 
   openContextMenu(event: React.SyntheticEvent<HTMLElement>) {
-    const url: string = event.currentTarget.dataset.url!;
-
-    const {search, source, converse} = this.props;
-
-    const menu = new Menu();
-    menu.append(
-      new MenuItem({
-        label: "ブラウザで開く",
-        click() {
-          shell.openExternal(url);
-        },
-      })
-    );
-
-    menu.append(
-      new MenuItem({
-        label: "会話を表示",
-        click() {
-          converse(source.retweeted_status === undefined ? source : source.retweeted_status!);
-        },
-      })
-    );
+    // const url: string = event.currentTarget.dataset.url!;
+    //
+    const {source} = this.props;
 
     const keyword = (window.getSelection() || "").toString().trim();
-    if (keyword.length > 0) {
-      menu.append(
-        new MenuItem({
-          label: `"${keyword}"を検索`,
-          click() {
-            search(keyword);
-          },
-        })
-      );
-    }
 
-    if (process.env.NODE_ENV === "development") {
-      menu.append(new MenuItem({type: "separator"}));
-
-      menu.append(
-        new MenuItem({
-          label: "JSON形式でコピー",
-          click() {
-            const {clipboard} = require("electron");
-            clipboard.writeText(JSON.stringify(source, null, "  "));
-          },
-        })
-      );
-    }
-
-    menu.popup({});
+    TheMoodyBlues.openTweetMenu({tweet: source, keyword: keyword});
   }
 
   render() {

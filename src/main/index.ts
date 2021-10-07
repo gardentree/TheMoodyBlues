@@ -1,7 +1,8 @@
 "use strict";
 
-import {app, BrowserWindow, Menu} from "electron";
+import {app, BrowserWindow, Menu, ipcMain} from "electron";
 import installExtension, {REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS} from "electron-devtools-installer";
+import * as pathname from "path";
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
@@ -25,8 +26,7 @@ function createMainWindow() {
 
   const window = new BrowserWindow({
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: false,
+      preload: pathname.join(__dirname, "preload.js"),
     },
     title: "The Moody Blues",
     acceptFirstMouse: true,
@@ -188,3 +188,43 @@ function load(target: BrowserWindow, query = "") {
     target.loadURL(`file://${__dirname}/index.html${query}`);
   }
 }
+
+ipcMain.on("openTweetMenu", (event, context: TweetMenuType) => {
+  const mainWindow = BrowserWindow.fromWebContents(event.sender)!;
+
+  const template: Electron.MenuItemConstructorOptions[] = [
+    {
+      label: "ブラウザで開く",
+      click() {
+        mainWindow.webContents.send("open_tweet_in_browser", context);
+      },
+    },
+    {
+      label: "会話を表示",
+      click() {
+        mainWindow.webContents.send("show_conversation_for_tweet", context);
+      },
+    },
+  ];
+
+  if (context.keyword.length > 0) {
+    template.push({
+      label: `"${context.keyword}"を検索`,
+      click() {
+        mainWindow.webContents.send("search", context);
+      },
+    });
+  }
+
+  if (process.env.NODE_ENV === "development") {
+    template.push({
+      label: "JSON形式でコピー",
+      click() {
+        mainWindow.webContents.send("copy_tweet_in_json", context);
+      },
+    });
+  }
+
+  const menu = Menu.buildFromTemplate(template);
+  menu.popup({window: mainWindow});
+});

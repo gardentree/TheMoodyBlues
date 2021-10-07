@@ -24,6 +24,9 @@ const typescript = {
       configFile: `tsconfig/${mode}.json`,
     },
   },
+  resolve: {
+    extensions: [".js", ".ts", ".tsx"],
+  },
 };
 
 const main: Configuration = {
@@ -41,9 +44,24 @@ const main: Configuration = {
     rules: [typescript],
   },
 };
+const preload: Configuration = {
+  mode: mode,
+  target: "electron-preload",
+  entry: {
+    preload: "./src/preload/index.ts",
+  },
+  output: {
+    filename: "[name].js",
+    path: path.resolve(__dirname, "./build"),
+  },
+  module: {
+    rules: [typescript],
+  },
+  plugins: [new webpack.EnvironmentPlugin(["CONSUMER_KEY", "CONSUMER_SECRET"])],
+};
 const renderer: any = {
   mode: mode,
-  target: "electron-renderer",
+  target: "web",
   entry: {
     renderer: "./src/renderer/index.ts",
   },
@@ -60,20 +78,16 @@ const renderer: any = {
       },
     ],
   },
-  resolve: {
-    extensions: [".js", ".ts", ".tsx"],
-  },
   plugins: [
     new MiniCssExtractPlugin(),
     new HtmlWebpackPlugin({
       template: "./src/renderer/index.html",
       filename: "index.html",
     }),
-    new webpack.EnvironmentPlugin(["CONSUMER_KEY", "CONSUMER_SECRET"]),
   ],
   devServer: {
     static: path.join(__dirname, "./build"),
   },
 };
 
-export default [main, renderer];
+export default [main, preload, renderer];

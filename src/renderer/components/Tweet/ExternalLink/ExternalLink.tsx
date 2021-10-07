@@ -1,10 +1,16 @@
 import * as React from "react";
-import {openLinkOnAnchor} from "../../../helpers/tools";
 
 interface Property {
   link: string;
   text: string;
 }
+
+const {TheMoodyBlues} = window;
+
+const openLinkOnAnchor = function (event: React.MouseEvent<HTMLAnchorElement>) {
+  event.preventDefault();
+  TheMoodyBlues.openExternal(event.currentTarget.href);
+};
 
 const ExternalLink: React.SFC<Property> = ({link, text}) => {
   return (
