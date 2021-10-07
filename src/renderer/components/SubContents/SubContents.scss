@@ -2,7 +2,11 @@
   height: 100%;
   margin-top: 30px;
 
+  color: var(--text-color);
+  background-color: var(--background-color);
+
   .header {
+    filter: var(--filter);
     position: fixed;
     top: 48px;
     left: 0;

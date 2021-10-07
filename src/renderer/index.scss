@@ -45,9 +45,14 @@ body {
 
 form.search {
   padding: 8px 20px;
+  filter: var(--filter);
 
   input {
     padding: 0 5px;
+    color: var(--text-color);
+    background-color: var(--background-color);
+  }
+  input[type="text"] {
   }
 }
 

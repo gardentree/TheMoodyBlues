@@ -4,9 +4,29 @@
     <meta charset="utf-8">
   </head>
   <body>
-    <script>
-      global = globalThis //<- this should be enough
-    </script>
-    <div id="app"></div>
+    <div id="app">
+      <style>
+        html,body,#app {
+          height: 100%;
+          margin: 0;
+        }
+
+        .container {
+          color: white;
+          background-color: black;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: 100%;
+        }
+        .splash {
+        }
+      </style>
+      <div class="container">
+        <div class="splash">
+          Now Loading...
+        </div>
+      </div>
+    </div>
   </body>
 </html>
