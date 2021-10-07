@@ -3,10 +3,11 @@
 import {app, BrowserWindow, Menu, ipcMain} from "electron";
 import installExtension, {REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS} from "electron-devtools-installer";
 import * as pathname from "path";
+import logger from "electron-log";
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
-require("electron-log").info(`start: ${process.env.NODE_ENV}`);
+logger.info(`start: ${process.env.NODE_ENV}`);
 
 process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";
 
@@ -216,7 +217,7 @@ ipcMain.on("openTweetMenu", (event, context: TweetMenuType) => {
     });
   }
 
-  if (process.env.NODE_ENV === "development") {
+  if (isDevelopment) {
     template.push({
       label: "JSON形式でコピー",
       click() {
