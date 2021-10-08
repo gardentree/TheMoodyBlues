@@ -38,7 +38,6 @@ const main: Configuration = {
   output: {
     filename: "[name].js",
     path: path.resolve(__dirname, "./build"),
-    clean: true,
   },
   module: {
     rules: [typescript],
