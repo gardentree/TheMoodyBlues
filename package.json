@@ -39,7 +39,7 @@
     "dev:launch": "wait-on http://localhost:8080 && electron .",
     "dist": "yarn compile --mode production && yarn package",
     "compile": "webpack",
-    "package": "electron-builder",
+    "package": "electron-builder --c.buildVersion=`git rev-parse --short HEAD`",
     "test": "NODE_ENV=test TS_NODE_PROJECT=tsconfig/test.json ./node_modules/.bin/electron-mocha --renderer --require ts-node/register/transpile-only --require ignore-styles",
     "test:all": "yarn test 'test/**/*.{ts,tsx}'"
   },
