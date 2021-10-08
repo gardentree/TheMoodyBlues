@@ -43,16 +43,17 @@ body {
   }
 }
 
-form.search {
-  padding: 8px 20px;
-  filter: var(--filter);
-
-  input {
-    padding: 0 5px;
+form {
+  input.form-control {
     color: var(--text-color);
     background-color: var(--background-color);
   }
-  input[type="text"] {
+}
+form.search {
+  padding: 8px 20px;
+
+  input {
+    padding: 0 5px;
   }
 }
 
@@ -71,6 +72,9 @@ form.search {
   .toolbar,
   .tab-group {
     filter: var(--filter);
+    form {
+      filter: var(--filter);
+    }
   }
 }
 

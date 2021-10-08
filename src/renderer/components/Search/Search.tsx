@@ -22,7 +22,7 @@ export default class Search extends React.Component<Property, any> {
         <div className="toolbar">
           <form className="search" onSubmit={handleSubmit(search)}>
             <div className="field">
-              <Field name="query" component="input" type="search" />
+              <Field name="query" component="input" type="search" className="form-control" />
               <span
                 className="icon icon-cancel-circled"
                 style={{display: hasQuery ? "inline-block" : "none"}}

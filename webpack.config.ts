@@ -63,6 +63,7 @@ const renderer: any = {
   target: "web",
   entry: {
     renderer: "./src/renderer/index.ts",
+    preferences: "./src/renderer/preferences/index.tsx",
   },
   output: {
     filename: "[name].js",
@@ -82,6 +83,12 @@ const renderer: any = {
     new HtmlWebpackPlugin({
       template: "./src/renderer/index.html",
       filename: "index.html",
+      inject: false,
+    }),
+    new HtmlWebpackPlugin({
+      template: "./src/renderer/preferences/index.html",
+      filename: "preferences.html",
+      inject: false,
     }),
   ],
   devServer: {

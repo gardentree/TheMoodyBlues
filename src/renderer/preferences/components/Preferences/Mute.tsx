@@ -1,5 +1,6 @@
 import * as React from "react";
-import * as storage from "../../helpers/storage";
+
+const {storage} = window.TheMoodyBlues;
 
 interface Form extends HTMLFormElement {
   keyword: HTMLInputElement;

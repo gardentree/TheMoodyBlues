@@ -4,6 +4,9 @@ import {app, BrowserWindow, Menu, ipcMain} from "electron";
 import installExtension, {REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS} from "electron-devtools-installer";
 import * as pathname from "path";
 import logger from "electron-log";
+import ElectronStore from "electron-store";
+
+ElectronStore.initRenderer();
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
@@ -45,7 +48,7 @@ function createMainWindow() {
     });
   }
 
-  load(window);
+  load(window, "index.html");
 
   window.on("closed", () => {
     app.quit();
@@ -165,14 +168,16 @@ function openPreferences() {
   }
 
   preferences = new BrowserWindow({
-    webPreferences: {nodeIntegration: true},
+    webPreferences: {
+      preload: pathname.join(__dirname, "preload.js"),
+    },
     title: "Preferences",
     titleBarStyle: "hidden",
     width: 640,
     height: 480,
   });
 
-  load(preferences, "?preferences");
+  load(preferences, "preferences.html");
   if (isDevelopment) {
     preferences.webContents.openDevTools();
   }
@@ -182,11 +187,11 @@ function openPreferences() {
   });
 }
 
-function load(target: BrowserWindow, query = "") {
+function load(target: BrowserWindow, path: string) {
   if (isDevelopment) {
-    target.loadURL("http://localhost:8080/");
+    target.loadURL(`http://localhost:8080/${path}`);
   } else {
-    target.loadURL(`file://${__dirname}/index.html${query}`);
+    target.loadURL(`file://${__dirname}/${path}`);
   }
 }
 
