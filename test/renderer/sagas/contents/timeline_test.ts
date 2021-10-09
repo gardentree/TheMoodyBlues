@@ -1,6 +1,5 @@
 import {expectSaga} from "redux-saga-test-plan";
 import {expect} from "chai";
-import {rewires} from "../../../helper";
 import TimelineSaga from "../../../../src/renderer/sagas/contents/timeline.ts";
 
 const NAME = "Timeline";

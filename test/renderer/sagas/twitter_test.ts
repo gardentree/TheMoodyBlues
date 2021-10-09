@@ -1,6 +1,5 @@
 import {expectSaga} from "redux-saga-test-plan";
 import {expect} from "chai";
-import {rewires} from "../../helper";
 
 const [initialize, reorder, searchTweets] = rewires("renderer/sagas/twitter", ["initialize", "reorder", "searchTweets"]);
 

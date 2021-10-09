@@ -1,6 +1,5 @@
 import {expectSaga} from "redux-saga-test-plan";
 import {expect} from "chai";
-import {rewires} from "../../../helper";
 import MentionsSaga from "../../../../src/renderer/sagas/contents/mentions.ts";
 
 const NAME = "Mentions";
