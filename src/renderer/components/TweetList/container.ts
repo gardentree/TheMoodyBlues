@@ -1,5 +1,5 @@
 import {connect} from "react-redux";
-import Component from "./TweetList";
+import Component from "./component";
 import * as home from "../../modules/home";
 
 const mapDispatchToProps = (dispatch: any, ownProps: any) => ({

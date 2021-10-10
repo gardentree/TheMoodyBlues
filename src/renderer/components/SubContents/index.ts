@@ -1,3 +1,3 @@
-import Container from "./SubContentsContainer";
+import Container from "./container";
 
 export default Container;

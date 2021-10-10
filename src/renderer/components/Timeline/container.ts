@@ -1,5 +1,5 @@
 import {connect} from "react-redux";
-import Component from "./Timeline";
+import Component from "./component";
 import * as home from "../../modules/home";
 
 export default (name: string) => {

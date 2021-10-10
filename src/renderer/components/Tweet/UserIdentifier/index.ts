@@ -1,3 +1,3 @@
-import Container from "./UserIdentifierContainer";
+import Container from "./container";
 
 export default Container;

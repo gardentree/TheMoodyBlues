@@ -1,3 +1,3 @@
-import Container from "./TimelineContainer";
+import Container from "./container";
 
 export default Container;

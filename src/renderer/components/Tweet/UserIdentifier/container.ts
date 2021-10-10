@@ -1,5 +1,5 @@
 import {connect} from "react-redux";
-import Component from "./UserIdentifier";
+import Component from "./component";
 import {displayUserTimeline} from "../../../modules/home";
 
 const mapDispatchToProps = {
@@ -9,7 +9,4 @@ const mapDispatchToProps = {
   },
 };
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(Component);
+export default connect(null, mapDispatchToProps)(Component);

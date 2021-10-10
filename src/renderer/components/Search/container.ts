@@ -1,5 +1,5 @@
 import {connect} from "react-redux";
-import Component from "./Search";
+import Component from "./component";
 import {reduxForm, formValueSelector} from "redux-form";
 import * as home from "../../modules/home";
 

@@ -1,3 +1,3 @@
-import Container from "./TweetListContainer";
+import Container from "./container";
 
 export default Container;

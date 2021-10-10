@@ -1,5 +1,5 @@
 import {connect} from "react-redux";
-import Component from "./SubContents";
+import Component from "./component";
 import {updateTweetsInSubContents} from "../../modules/home";
 
 const mapStateToProps = (state: any) => {

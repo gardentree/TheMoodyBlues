@@ -1,3 +1,3 @@
-import Container from "./PrincipalContainer";
+import Container from "./container";
 
 export default Container;

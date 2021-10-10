@@ -4,7 +4,7 @@ import Adapter from "enzyme-adapter-react-16";
 import {expect} from "chai";
 import * as twitter from "../../../../../src/renderer/others/twitter";
 
-import TweetBody from "../../../../../src/renderer/components/Tweet/TweetBody/TweetBody";
+import TweetBody from "../../../../../src/renderer/components/Tweet/TweetBody/component";
 
 configure({adapter: new Adapter()});
 

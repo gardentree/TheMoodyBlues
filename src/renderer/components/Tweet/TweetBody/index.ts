@@ -1,3 +1,3 @@
-import Container from "./TweetBodyContainer";
+import Container from "./container";
 
 export default Container;
