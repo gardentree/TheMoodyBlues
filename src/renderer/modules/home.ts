@@ -1,6 +1,10 @@
 import {createActions, handleActions} from "redux-actions";
+import deepmerge from "deepmerge";
+import {isPlainObject} from "is-plain-object";
 
-const objectAssignDeep = require(`object-assign-deep`);
+function merge(...values: any[]): any {
+  return deepmerge.all(values, {isMergeableObject: isPlainObject});
+}
 
 export const {selectTab, updateTweets, updateTweetsInSubContents, read, zoomIn, zoomOut, zoomReset, setupSearch, showLoading} = createActions({
   SELECT_TAB: (tab) => ({
@@ -37,7 +41,7 @@ export default handleActions<any, any, any>(
       tab: action.payload.tab,
     }),
     [updateTweets.toString()]: (state, action) => {
-      return objectAssignDeep.noMutate(state, {
+      return merge(state, {
         contents: {
           [action.meta.tab]: action.payload,
         },
@@ -48,7 +52,7 @@ export default handleActions<any, any, any>(
       subcontents: action.payload,
     }),
     [read.toString()]: (state, action) => {
-      return objectAssignDeep.noMutate(state, {
+      return merge(state, {
         contents: {
           [state.tab]: action.payload,
         },
@@ -74,7 +78,7 @@ export default handleActions<any, any, any>(
         query = "";
       }
 
-      return objectAssignDeep.noMutate(state, {
+      return merge(state, {
         contents: {
           Search: {tweets: [], query: query},
         },

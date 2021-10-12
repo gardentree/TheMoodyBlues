@@ -2,6 +2,27 @@ import {expect} from "chai";
 import {default as reducer} from "../../../src/renderer/modules/home";
 import * as home from "../../../src/renderer/modules/home";
 
+const timelines = new Map([
+  [
+    "timeline",
+    {
+      name: "Timeline",
+      component: "Timeline",
+      interval: 120,
+      way: "timeline",
+    },
+  ],
+  [
+    "mentions",
+    {
+      name: "Mentions",
+      component: "Timeline",
+      interval: 60,
+      way: "mentionsTimeline",
+    },
+  ],
+]);
+
 const template = {
   tab: null,
   contents: {},
@@ -10,6 +31,7 @@ const template = {
     fontSize: "12px",
   },
   nowLoading: false,
+  timelines,
 };
 
 describe(reducer.name, () => {
@@ -22,6 +44,7 @@ describe(reducer.name, () => {
         fontSize: "12px",
       },
       nowLoading: false,
+      timelines,
     });
   });
 
@@ -37,6 +60,7 @@ describe(reducer.name, () => {
         fontSize: "12px",
       },
       nowLoading: false,
+      timelines,
     });
   });
   it(home.updateTweets.toString(), () => {
@@ -67,6 +91,7 @@ describe(reducer.name, () => {
         fontSize: "12px",
       },
       nowLoading: false,
+      timelines,
     });
   });
 
@@ -79,6 +104,7 @@ describe(reducer.name, () => {
         fontSize: "12px",
       },
       nowLoading: false,
+      timelines,
     });
   });
 
@@ -110,6 +136,7 @@ describe(reducer.name, () => {
         fontSize: "12px",
       },
       nowLoading: false,
+      timelines,
     });
   });
 
@@ -122,6 +149,7 @@ describe(reducer.name, () => {
       subcontents: {},
       tab: null,
       nowLoading: false,
+      timelines,
     });
   });
   it("zoomOut", () => {
@@ -133,6 +161,7 @@ describe(reducer.name, () => {
       subcontents: {},
       tab: null,
       nowLoading: false,
+      timelines,
     });
   });
   it("zoomReset", () => {
@@ -144,6 +173,7 @@ describe(reducer.name, () => {
       subcontents: {},
       tab: null,
       nowLoading: false,
+      timelines,
     });
   });
 
@@ -160,6 +190,7 @@ describe(reducer.name, () => {
         tab: null,
         style: {fontSize: "12px"},
         nowLoading: false,
+        timelines,
       });
     });
     it("trim query", () => {
@@ -174,6 +205,7 @@ describe(reducer.name, () => {
         tab: null,
         style: {fontSize: "12px"},
         nowLoading: false,
+        timelines,
       });
     });
     it("when query is null", () => {
@@ -188,6 +220,7 @@ describe(reducer.name, () => {
         tab: null,
         style: {fontSize: "12px"},
         nowLoading: false,
+        timelines,
       });
     });
   });
