@@ -66,6 +66,7 @@
     "@types/redux-form": "^8.2.0",
     "@types/redux-saga": "^0.10.5",
     "@types/rewire": "^2.5.28",
+    "@types/twitter": "^1.7.1",
     "chai": "^4.1.2",
     "child_process": "^1.0.2",
     "commander": "^8.2.0",
