@@ -15,22 +15,22 @@ interface Property {
 }
 
 export default class Principal extends React.Component<Property, any> {
-  contents = [
-    {
-      name: "Timeline",
-      component: Timeline("Timeline"),
-    },
-    {
-      name: "Search",
-      component: Search,
-    },
-    {
-      name: "Mentions",
-      component: Timeline("Mentions"),
-    },
-  ];
-
   render() {
+    const contents = [
+      {
+        name: "Timeline",
+        component: Timeline,
+      },
+      {
+        name: "Search",
+        component: Search,
+      },
+      {
+        name: "Mentions",
+        component: Timeline,
+      },
+    ];
+
     const {current, style, unreads, onClick, nowLoading} = this.props;
 
     return (
@@ -39,7 +39,7 @@ export default class Principal extends React.Component<Property, any> {
           <h1 className="title">The Moody Blues</h1>
         </header>
         <div className="tab-group">
-          {this.contents.map(({name, component}) => {
+          {contents.map(({name}) => {
             const unread = unreads[name];
 
             return (
@@ -50,11 +50,11 @@ export default class Principal extends React.Component<Property, any> {
             );
           })}
         </div>
-        {this.contents.map(({name, component}) => {
+        {contents.map(({name, component}) => {
           const display = !!this.props.subcontents.tweets;
           return (
             <div key={name} className="window-content" style={{display: current == name ? "block" : "none"}} data-name={name}>
-              {React.createElement(component as React.ClassType<any, any, any>, {})}
+              {React.createElement(component, {name: name})}
 
               <CSSTransition timeout={300} classNames="fade" in={display}>
                 <div className="subcontents" />

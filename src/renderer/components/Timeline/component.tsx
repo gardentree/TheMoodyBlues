@@ -1,11 +1,18 @@
 import * as React from "react";
 import TweetList from "../TweetList";
 
-interface Property {
+export interface OwnProperty {
+  name: string;
+}
+export interface StateProperty {
   tweets: TweetType[];
   lastReadID: number;
+}
+export interface DispatchProperty {
   didMount: any;
 }
+
+type Property = OwnProperty & StateProperty & DispatchProperty;
 
 export default class Timeline extends React.Component<Property, {}> {
   render() {
