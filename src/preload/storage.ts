@@ -45,9 +45,9 @@ exports = {
     setStore("mute.keywords", keywords);
   },
 
-  getTweets: (name: string) => {
+  getTweets: (identity: string) => {
     return new Promise((resolve, reject) => {
-      storage.get(`${name}.tweets`, (error: string, data: object) => {
+      storage.get(`${identity}.tweets`, (error: string, data: object) => {
         if (error) return reject(error);
 
         let tweets: TweetType[];
@@ -61,9 +61,9 @@ exports = {
       });
     });
   },
-  setTweets: (name: string, tweets: TweetType[]) => {
+  setTweets: (identity: string, tweets: TweetType[]) => {
     return new Promise<void>((resolve, reject) => {
-      storage.set(`${name}.tweets`, tweets, (error: string) => {
+      storage.set(`${identity}.tweets`, tweets, (error: string) => {
         if (error) return reject(error);
 
         resolve();
