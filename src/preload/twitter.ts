@@ -129,5 +129,37 @@ export function setup(client: any) {
     });
   };
 
+  client.lists = () => {
+    return new Promise((resolve, reject) => {
+      const option = {};
+      client.get("lists/list.json", option, (error: string, lists: any, response: any) => {
+        if (error) {
+          logger.error(error);
+          return reject(error);
+        }
+
+        resolve(lists);
+      });
+    });
+  };
+  client.timeline_of_list = (list_id: string, since_id: string | null) => {
+    const option: any = {
+      list_id: list_id,
+      count: 200,
+      include_entities: true,
+    };
+    if (since_id) option.since_id = since_id;
+
+    return new Promise((resolve, reject) => {
+      client.get("lists/statuses.json", option, (error: string, tweets: TweetType[], response: any) => {
+        if (error) {
+          return reject(error);
+        }
+
+        resolve(tweets);
+      });
+    });
+  };
+
   return client;
 }
