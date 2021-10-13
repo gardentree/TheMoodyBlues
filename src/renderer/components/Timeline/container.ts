@@ -3,20 +3,20 @@ import Component from "./component";
 import {OwnProperty, StateProperty, DispatchProperty} from "./component";
 import * as home from "../../modules/home";
 
-const mapStateToProps = (state: any, own: OwnProperty): StateProperty => {
-  const {contents} = state.home;
-  const content = contents[own.name];
+const mapStateToProps = (state: TheMoodyBlues.State, own: OwnProperty): StateProperty => {
+  const {timelines} = state.home;
+  const timeline = timelines.get(own.identity);
 
-  if (!content) return {tweets: [], lastReadID: 0};
+  if (!timeline) return {tweets: [], lastReadID: 0};
 
   return {
-    tweets: content.tweets || [],
-    lastReadID: content.lastReadID || 0,
+    tweets: timeline.tweets || [],
+    lastReadID: timeline.state.lastReadID || 0,
   };
 };
 const mapDispatchToProps = (dispatch: any, own: OwnProperty): DispatchProperty => {
   return {
-    didMount: () => dispatch(home.mountComponent(own.name)),
+    didMount: () => dispatch(home.mountComponent(own.identity)),
   };
 };
 

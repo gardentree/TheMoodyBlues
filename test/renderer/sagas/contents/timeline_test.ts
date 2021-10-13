@@ -2,10 +2,12 @@ import {expectSaga} from "redux-saga-test-plan";
 import {expect} from "chai";
 import TimelineSaga from "../../../../src/renderer/sagas/contents/timeline.ts";
 
-const NAME = "Timeline";
+const newTarget = (tweets: TweetType[], timeline: TheMoodyBlues.Timeline) => {
+  const account = {
+    [timeline.meta.way]: () => tweets,
+  };
 
-const newTarget = (account, contents) => {
-  const target = new TimelineSaga(account, contents);
+  const target = new TimelineSaga(account, timeline);
 
   target.initialize = target.initialize.bind(target);
   target.order = target.order.bind(target);
@@ -16,9 +18,24 @@ const newTarget = (account, contents) => {
 describe(TimelineSaga.name, () => {
   describe("#initialize", () => {
     it("when have cache", () => {
-      const target = newTarget();
+      const identity = "home";
+      const title = "Home";
 
-      return expectSaga(target.initialize, {payload: {tab: NAME}})
+      const target = newTarget([], {
+        meta: {
+          identity: identity,
+          title: title,
+          component: "Timeline",
+          interval: 120,
+          way: "timeline",
+        },
+        tweets: [],
+        state: {
+          lastReadID: 0,
+        },
+      });
+
+      return expectSaga(target.initialize, {payload: {identity: identity}})
         .provide([
           {
             call(effect: any, next: any) {
@@ -28,28 +45,18 @@ describe(TimelineSaga.name, () => {
           {
             spawn(effect: any, next: any) {
               expect(effect.fn.name).to.equal("runTimer");
-              expect(effect.args).to.deep.equal([NAME, 120 * 1000]);
+              expect(effect.args).to.deep.equal([identity, 120 * 1000]);
             },
           },
         ])
         .put({
-          type: "SELECT_TAB",
-          payload: {tab: NAME},
-        })
-        .put({
           type: "UPDATE_TWEETS",
           payload: {tweets: [{id: 1}]},
-          meta: {tab: NAME},
+          meta: {identity: identity},
         })
         .put({
           type: "READ",
           payload: {lastReadID: 1},
-        })
-        .put({
-          type: `${NAME}_STOP_TIMER`,
-        })
-        .put({
-          type: `${NAME}_START_TIMER`,
         })
         .run()
         .then((result) => {
@@ -61,9 +68,24 @@ describe(TimelineSaga.name, () => {
         });
     });
     it("when no cache", () => {
-      const target = newTarget();
+      const identity = "home";
+      const title = "Home";
 
-      return expectSaga(target.initialize, {payload: {tab: NAME}})
+      const target = newTarget([], {
+        meta: {
+          identity: "home",
+          title: title,
+          component: "Timeline",
+          interval: 120,
+          way: "timeline",
+        },
+        tweets: [],
+        state: {
+          lastReadID: 0,
+        },
+      });
+
+      return expectSaga(target.initialize, {payload: {identity: identity}})
         .provide([
           {
             call(effect: any, next: any) {
@@ -73,24 +95,14 @@ describe(TimelineSaga.name, () => {
           {
             spawn(effect: any, next: any) {
               expect(effect.fn.name).to.equal("runTimer");
-              expect(effect.args).to.deep.equal([NAME, 120 * 1000]);
+              expect(effect.args).to.deep.equal([identity, 120 * 1000]);
             },
           },
         ])
         .put({
-          type: "SELECT_TAB",
-          payload: {tab: NAME},
-        })
-        .put({
           type: "UPDATE_TWEETS",
           payload: {tweets: []},
-          meta: {tab: NAME},
-        })
-        .put({
-          type: `${NAME}_STOP_TIMER`,
-        })
-        .put({
-          type: `${NAME}_START_TIMER`,
+          meta: {identity: identity},
         })
         .run()
         .then((result) => {
@@ -105,12 +117,22 @@ describe(TimelineSaga.name, () => {
 
   describe("#order", () => {
     it("when reload", () => {
-      const target = newTarget(
-        {
-          timeline: () => {},
+      const identity = "home";
+      const title = "Home";
+
+      const target = newTarget([], {
+        meta: {
+          identity: "home",
+          title: title,
+          component: "Timeline",
+          interval: 120,
+          way: "timeline",
         },
-        {tweets: [{id_str: "old_1"}]}
-      );
+        tweets: [{id_str: "old_1"}],
+        state: {
+          lastReadID: 0,
+        },
+      });
 
       return expectSaga(target.order, {
         payload: {},
@@ -126,7 +148,7 @@ describe(TimelineSaga.name, () => {
                   expect(effect.args[0]).to.equal("old_1");
                   return [{id_str: "new_1"}, {id_str: "new_2"}];
                 case "setTweets":
-                  expect(effect.args[0]).to.equal(NAME);
+                  expect(effect.args[0]).to.equal(identity);
                   expect(effect.args[1]).to.deep.equal([{id_str: "new_1"}, {id_str: "new_2"}, {id_str: "old_1"}]);
                   return;
                 default:
@@ -139,10 +161,10 @@ describe(TimelineSaga.name, () => {
         .put({
           type: "UPDATE_TWEETS",
           payload: {tweets: [{id_str: "new_1"}, {id_str: "new_2"}, {id_str: "old_1"}]},
-          meta: {tab: NAME},
+          meta: {identity: identity},
         })
-        .put({type: `${NAME}_STOP_TIMER`})
-        .put({type: `${NAME}_START_TIMER`})
+        .put({type: `${identity}_STOP_TIMER`})
+        .put({type: `${identity}_START_TIMER`})
         .run()
         .then((result) => {
           const {effects} = result;
@@ -153,12 +175,22 @@ describe(TimelineSaga.name, () => {
     });
 
     it("when force reload", () => {
-      const target = newTarget(
-        {
-          timeline: () => {},
+      const identity = "home";
+      const title = "Home";
+
+      const target = newTarget([], {
+        meta: {
+          identity: "home",
+          title: title,
+          component: "Timeline",
+          interval: 120,
+          way: "timeline",
         },
-        {tweets: [{id_str: "old_1"}]}
-      );
+        tweets: [{id_str: "old_1"}],
+        state: {
+          lastReadID: 0,
+        },
+      });
 
       return expectSaga(target.order, {
         payload: {},
@@ -174,7 +206,7 @@ describe(TimelineSaga.name, () => {
                   expect(effect.args[0]).to.equal(null);
                   return [{id_str: "new_1"}, {id_str: "new_2"}];
                 case "setTweets":
-                  expect(effect.args[0]).to.equal(NAME);
+                  expect(effect.args[0]).to.equal(identity);
                   expect(effect.args[1]).to.deep.equal([{id_str: "new_1"}, {id_str: "new_2"}]);
                   return;
                 default:
@@ -187,10 +219,10 @@ describe(TimelineSaga.name, () => {
         .put({
           type: "UPDATE_TWEETS",
           payload: {tweets: [{id_str: "new_1"}, {id_str: "new_2"}]},
-          meta: {tab: NAME},
+          meta: {identity: identity},
         })
-        .put({type: `${NAME}_STOP_TIMER`})
-        .put({type: `${NAME}_START_TIMER`})
+        .put({type: `${identity}_STOP_TIMER`})
+        .put({type: `${identity}_START_TIMER`})
         .run()
         .then((result) => {
           const {effects} = result;
@@ -201,12 +233,22 @@ describe(TimelineSaga.name, () => {
     });
 
     it("when no new tweets", () => {
-      const target = newTarget(
-        {
-          timeline: () => {},
+      const identity = "home";
+      const title = "Home";
+
+      const target = newTarget([], {
+        meta: {
+          identity: "home",
+          title: title,
+          component: "Timeline",
+          interval: 120,
+          way: "timeline",
         },
-        {tweets: [{id_str: "old_1"}]}
-      );
+        tweets: [{id_str: "old_1"}],
+        state: {
+          lastReadID: 0,
+        },
+      });
 
       return expectSaga(target.order, {
         payload: {},
@@ -228,8 +270,8 @@ describe(TimelineSaga.name, () => {
             },
           },
         ])
-        .put({type: `${NAME}_STOP_TIMER`})
-        .put({type: `${NAME}_START_TIMER`})
+        .put({type: `${identity}_STOP_TIMER`})
+        .put({type: `${identity}_START_TIMER`})
         .run()
         .then((result) => {
           const {effects} = result;

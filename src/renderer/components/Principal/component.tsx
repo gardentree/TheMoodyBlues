@@ -12,26 +12,24 @@ interface Property {
   onClick: any;
   subcontents: any;
   nowLoading: boolean;
+  timelines: Map<string, TheMoodyBlues.Timeline>;
+  didMount: any;
 }
+
+const componets = new Map([
+  ["Timeline", Timeline],
+  ["Search", Search],
+]);
 
 export default class Principal extends React.Component<Property, any> {
   render() {
-    const contents = [
-      {
-        name: "Timeline",
-        component: Timeline,
-      },
-      {
-        name: "Search",
-        component: Search,
-      },
-      {
-        name: "Mentions",
-        component: Timeline,
-      },
-    ];
+    const {current, style, unreads, onClick, nowLoading, timelines} = this.props;
 
-    const {current, style, unreads, onClick, nowLoading} = this.props;
+    const contents: {identity: string; title: string; component: any}[] = Array.from(timelines.entries()).map(([identity, timeline]) => ({
+      identity: identity,
+      title: timeline.meta.title,
+      component: componets.get(timeline.meta.component),
+    }));
 
     return (
       <div id="principal" className="window Principal" style={style}>
@@ -39,22 +37,22 @@ export default class Principal extends React.Component<Property, any> {
           <h1 className="title">The Moody Blues</h1>
         </header>
         <div className="tab-group">
-          {contents.map(({name}) => {
-            const unread = unreads[name];
+          {contents.map(({identity, title}) => {
+            const unread = unreads[identity];
 
             return (
-              <div key={name} className={`tab-item${current == name ? " active" : ""}`} data-name={name} onClick={onClick}>
-                {name}
+              <div key={identity} className={`tab-item${current == identity ? " active" : ""}`} data-name={identity} onClick={onClick}>
+                {title}
                 {unread && <span className="unread_badge">{unread}</span>}
               </div>
             );
           })}
         </div>
-        {contents.map(({name, component}) => {
+        {contents.map(({identity, component}) => {
           const display = !!this.props.subcontents.tweets;
           return (
-            <div key={name} className="window-content" style={{display: current == name ? "block" : "none"}} data-name={name}>
-              {React.createElement(component, {name: name})}
+            <div key={identity} className="window-content" style={{display: current == identity ? "block" : "none"}} data-name={identity}>
+              {React.createElement(component, {identity: identity})}
 
               <CSSTransition timeout={300} classNames="fade" in={display}>
                 <div className="subcontents" />
@@ -68,5 +66,9 @@ export default class Principal extends React.Component<Property, any> {
         <SubContents container={`.window-content[data-name='${current}'] > .subcontents`} />
       </div>
     );
+  }
+  componentDidMount() {
+    const {timelines} = this.props;
+    this.props.didMount(timelines.keys().next().value);
   }
 }

@@ -5,9 +5,11 @@ const [initialize, reorder, searchTweets] = rewires("renderer/sagas/twitter", ["
 
 describe(reorder.name, () => {
   it("assign tab", () => {
+    const timelines = new Map([["search", {meta: {identity: "search", component: "Search"}, tweets: [], state: {query: "くえりー"}}]]);
+
     return expectSaga(reorder, {
       payload: {},
-      meta: {force: false, tab: "Search"},
+      meta: {force: false, tab: "search"},
     })
       .provide([
         {
@@ -20,9 +22,7 @@ describe(reorder.name, () => {
               },
               home: {
                 tab: "Timeline",
-                contents: {
-                  Search: {tweets: [], query: "くえりー"},
-                },
+                timelines: timelines,
               },
             };
           },
@@ -40,15 +40,15 @@ describe(reorder.name, () => {
         },
       ])
       .put({
-        type: "Search_STOP_TIMER",
+        type: "search_STOP_TIMER",
       })
       .put({
         type: "UPDATE_TWEETS",
         payload: {tweets: [], query: "くえりー"},
-        meta: {tab: "Search"},
+        meta: {identity: "search"},
       })
       .put({
-        type: "Search_START_TIMER",
+        type: "search_START_TIMER",
       })
       .run()
       .then((result) => {
@@ -61,41 +61,62 @@ describe(reorder.name, () => {
 });
 
 describe(searchTweets.name, () => {
+  const timelines = new Map([
+    [
+      "search",
+      {
+        meta: {identity: "search", component: "Search"},
+        tweets: [],
+        state: {
+          query: "くえりー",
+        },
+      },
+    ],
+  ]);
+
   it("normal", () => {
-    return expectSaga(searchTweets, {payload: {query: "くえりー"}})
+    return expectSaga(searchTweets, {payload: {query: "くえりー"}, meta: {identity: "search"}})
       .provide({
         select() {
           return {
+            account: {
+              search: () => {
+                return [];
+              },
+            },
             home: {
               tab: "Timeline",
-              contents: {
-                Search: {tweets: [], query: ""},
-              },
+              timelines: timelines,
             },
           };
         },
       })
       .put({
         type: "SELECT_TAB",
-        payload: {tab: "Search"},
+        payload: {identity: "search"},
       })
       .put({
         type: "SETUP_SEARCH",
         payload: {query: "くえりー"},
+        meta: {identity: "search"},
       })
       .put({
-        type: "Search_STOP_TIMER",
+        type: "search_STOP_TIMER",
       })
       .put({
-        type: "SETUP_SEARCH",
-        payload: {query: ""},
+        type: "UPDATE_TWEETS",
+        payload: {tweets: [], query: "くえりー"},
+        meta: {identity: "search"},
+      })
+      .put({
+        type: "search_START_TIMER",
       })
       .run()
       .then((result) => {
         const {effects} = result;
 
         expect(effects.put).to.be.undefined;
-        expect(effects.call).to.be.undefined;
+        expect(effects.call).to.have.lengthOf(1);
       });
   });
 });

@@ -1,20 +1,23 @@
-import {put, call, actionChannel, race, take} from "redux-saga/effects";
+import {put, call, actionChannel, race, take, spawn} from "redux-saga/effects";
 import * as home from "../../modules/home";
 
 export default abstract class ComponentSaga {
   account: any;
-  content: any;
+  timeline: TheMoodyBlues.Timeline;
 
-  constructor(account: any, content: any) {
+  constructor(account: any, timeline: TheMoodyBlues.Timeline) {
     this.account = account;
-    this.content = content;
+    this.timeline = timeline;
   }
 
-  abstract initialize(action: ActionType): any;
+  abstract initialize(action: TheMoodyBlues.HomeAction): any;
   abstract order(action: ActionType): any;
 
-  protected *runTimer(tab: string, interval: number) {
-    const channel: string = yield actionChannel(`${tab}_START_TIMER`);
+  protected *spawnTimer() {
+    yield spawn(this.runTimer, this.timeline.meta.identity, this.timeline.meta.interval * 1000);
+  }
+  protected *runTimer(identity: string, interval: number) {
+    const channel: string = yield actionChannel(`${identity}_START_TIMER`);
 
     const wait = (ms: number) =>
       new Promise<void>((resolve) => {
@@ -23,7 +26,7 @@ export default abstract class ComponentSaga {
     while ((yield take(channel)) as ReturnType<typeof take>) {
       while (true) {
         const winner: {stopped: boolean; tick: any} = yield race({
-          stopped: take(`${tab}_STOP_TIMER`),
+          stopped: take(`${identity}_STOP_TIMER`),
           tick: call(wait, interval),
         });
 
@@ -31,17 +34,23 @@ export default abstract class ComponentSaga {
           break;
         }
 
-        yield put(home.reload(false, tab, true));
-        console.log(`reload ${tab}: ${new Date()}`);
+        yield put(home.reload(false, identity, true));
+        console.log(`reload ${identity}: ${new Date()}`);
       }
     }
   }
-  protected *restartTimer(name: string) {
-    yield put({type: `${name}_STOP_TIMER`});
-    yield put({type: `${name}_START_TIMER`});
+  protected *startTimer() {
+    yield put({type: `${this.timeline.meta.identity}_START_TIMER`});
+  }
+  protected *stopTimer() {
+    yield put({type: `${this.timeline.meta.identity}_STOP_TIMER`});
+  }
+  protected *restartTimer() {
+    yield this.stopTimer();
+    yield this.startTimer();
   }
 
-  protected latest(): string {
-    return this.content.tweets.length > 0 ? this.content.tweets[0].id_str : null;
+  protected latest(): string | null {
+    return this.timeline.tweets.length > 0 ? this.timeline.tweets[0].id_str : null;
   }
 }

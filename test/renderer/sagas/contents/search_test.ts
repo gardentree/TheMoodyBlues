@@ -2,10 +2,12 @@ import {expectSaga} from "redux-saga-test-plan";
 import {expect} from "chai";
 import SearchSaga from "../../../../src/renderer/sagas/contents/search.ts";
 
-const NAME = "Search";
+const newTarget = (tweets: TweetType[], timeline: TheMoodyBlues.Timeline) => {
+  const account = {
+    [timeline.meta.way]: () => tweets,
+  };
 
-const newTarget = (account, contents) => {
-  const target = new SearchSaga(account, contents);
+  const target = new SearchSaga(account, timeline);
 
   target.initialize = target.initialize.bind(target);
   target.order = target.order.bind(target);
@@ -15,11 +17,25 @@ const newTarget = (account, contents) => {
 
 describe(SearchSaga.name, () => {
   describe("#initialize", () => {
-    it("when no cache", () => {
-      const target = new SearchSaga();
-      target.initialize = target.initialize.bind(target);
+    const identity = "search";
+    const title = identity;
 
-      return expectSaga(target.initialize, {payload: {tab: NAME}})
+    const target = newTarget([], {
+      meta: {
+        identity: identity,
+        title: title,
+        component: identity,
+        interval: 60,
+        way: "search",
+      },
+      tweets: [],
+      state: {
+        lastReadID: 0,
+      },
+    });
+
+    it("when no cache", () => {
+      return expectSaga(target.initialize, {payload: {identity: identity}})
         .run()
         .then((result) => {
           const {effects} = result;
@@ -33,14 +49,23 @@ describe(SearchSaga.name, () => {
 
   describe("#order", () => {
     it("normal", () => {
-      const target = newTarget(
-        {
-          search: () => {
-            return [{id_str: "1"}];
-          },
+      const identity = "search";
+      const title = identity;
+
+      const target = newTarget([{id_str: "1"}], {
+        meta: {
+          identity: identity,
+          title: title,
+          component: identity,
+          interval: 60,
+          way: "search",
         },
-        {tweets: [{id_str: "old_1"}], query: "くえりー"}
-      );
+        tweets: [{id_str: "old_1"}],
+        state: {
+          lastReadID: 0,
+          query: "くえりー",
+        },
+      });
 
       return expectSaga(target.order, {
         payload: {},
@@ -64,15 +89,15 @@ describe(SearchSaga.name, () => {
           },
         ])
         .put({
-          type: "Search_STOP_TIMER",
+          type: `${identity}_STOP_TIMER`,
         })
         .put({
           type: "UPDATE_TWEETS",
           payload: {tweets: [{id_str: "new_1"}, {id_str: "new_2"}, {id_str: "old_1"}], query: "くえりー"},
-          meta: {tab: "Search"},
+          meta: {identity: identity},
         })
         .put({
-          type: "Search_START_TIMER",
+          type: `${identity}_START_TIMER`,
         })
         .run()
         .then((result) => {
@@ -83,14 +108,23 @@ describe(SearchSaga.name, () => {
         });
     });
     it("query is blank", () => {
-      const target = newTarget(
-        {
-          search: () => {
-            return [{id_str: "1"}];
-          },
+      const identity = "search";
+      const title = identity;
+
+      const target = newTarget([{id_str: "1"}], {
+        meta: {
+          identity: identity,
+          title: title,
+          component: identity,
+          interval: 60,
+          way: "search",
         },
-        {tweets: [{id_str: "old_1"}], query: ""}
-      );
+        tweets: [{id_str: "old_1"}],
+        state: {
+          lastReadID: 0,
+          query: "",
+        },
+      });
 
       return expectSaga(target.order, {
         payload: {},
@@ -99,11 +133,12 @@ describe(SearchSaga.name, () => {
         },
       })
         .put({
-          type: "Search_STOP_TIMER",
+          type: `${identity}_STOP_TIMER`,
         })
         .put({
           type: "SETUP_SEARCH",
           payload: {query: ""},
+          meta: {identity: identity},
         })
         .run()
         .then((result) => {

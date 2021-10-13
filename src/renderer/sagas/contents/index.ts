@@ -1,19 +1,17 @@
 import TimelineSaga from "./timeline";
 import SearchSaga from "./search";
-import MentionsSaga from "./mentions";
 
-const getSaga = function(state: any, name: string) {
+const getSaga = function (state: TheMoodyBlues.State, identify: string) {
   const {account, home} = state;
+  const timeline = home.timelines.get(identify)!;
 
-  switch (name) {
+  switch (timeline.meta.component) {
     case "Timeline":
-      return new TimelineSaga(account, home.contents["Timeline"]);
+      return new TimelineSaga(account, timeline);
     case "Search":
-      return new SearchSaga(account, home.contents["Search"]);
-    case "Mentions":
-      return new MentionsSaga(account, home.contents["Mentions"]);
+      return new SearchSaga(account, timeline);
     default:
-      throw new Error(name);
+      throw new Error(identify);
   }
 };
 

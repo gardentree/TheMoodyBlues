@@ -1,17 +1,22 @@
 import * as React from "react";
 import TweetList from "../TweetList";
-import {Field} from "redux-form";
+import {Field, InjectedFormProps} from "redux-form";
 
-interface Property {
+export interface OwnProperty {
+  identity: string;
+  handleSubmit: any;
+}
+export interface StateProperty {
   tweets: TweetType[];
   lastReadID: number;
   initialValues: {query: string};
   hasQuery: boolean;
-  handleSubmit: any;
-  search: any;
-  reset: any;
-  didMount: any;
 }
+export interface DispatchProperty {
+  didMount: any;
+  search: any;
+}
+type Property = OwnProperty & StateProperty & DispatchProperty & InjectedFormProps;
 
 export default class Search extends React.Component<Property, any> {
   render() {

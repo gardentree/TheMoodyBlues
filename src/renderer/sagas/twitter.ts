@@ -4,36 +4,29 @@ import * as home from "../modules/home";
 
 const {TheMoodyBlues} = window;
 
-interface StateType {
-  home: any;
-}
-
-function* initialize(action: ActionType) {
+function* initialize(action: TheMoodyBlues.HomeAction) {
   const {payload} = action;
-  const state: StateType = yield select();
-  const home = state.home;
+  const state: TheMoodyBlues.State = yield select();
 
-  if (!home.contents) home.contents = {};
-  home.contents[payload.tab] = {};
-
-  yield getSaga(state, payload.tab).initialize(action);
+  yield getSaga(state, payload!.identity).initialize(action);
 }
 
 function* reorder(action: ActionType) {
-  const {tab} = ((yield select()) as StateType).home;
+  const {tab} = ((yield select()) as TheMoodyBlues.State).home;
 
   yield order(action.meta.tab || tab, action);
 }
 function* order(tab: string, action: ActionType) {
-  yield getSaga((yield select()) as StateType, tab).order(action);
+  yield getSaga((yield select()) as TheMoodyBlues.State, tab).order(action);
 }
 
 function* searchTweets(action: ActionType) {
   const {query} = action.payload;
+  const identity = "search"; //TODO 動的にする？
 
-  yield put(home.selectTab("Search"));
-  yield put(home.setupSearch(query));
-  yield reorder(home.reload(true, "Search", true) as ActionType);
+  yield put(home.selectTab(identity));
+  yield put(home.setupSearch(identity, query));
+  yield reorder(home.reload(true, identity, true) as ActionType);
 }
 
 function* displayUserTimeline(action: ActionType) {
@@ -59,8 +52,9 @@ const wrap = (saga: any) =>
       if (loading) yield put(home.showLoading(true));
       yield call(saga, action);
       if (loading) yield put(home.showLoading(false));
-    } catch (error) {
+    } catch (error: any) {
       TheMoodyBlues.logger.error(error);
+      TheMoodyBlues.logger.error(error.stack);
       yield put(home.alarm(error));
     }
   };

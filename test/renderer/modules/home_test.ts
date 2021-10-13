@@ -4,41 +4,70 @@ import * as home from "../../../src/renderer/modules/home";
 
 const timelines = new Map([
   [
-    "timeline",
+    "home",
     {
-      name: "Timeline",
-      component: "Timeline",
-      interval: 120,
-      way: "timeline",
+      meta: {
+        identity: "home",
+        title: "Home",
+        component: "Timeline",
+        interval: 120,
+        way: "timeline",
+      },
+      tweets: [],
+      state: {
+        lastReadID: 0,
+      },
+    },
+  ],
+  [
+    "search",
+    {
+      meta: {
+        identity: "search",
+        title: "Search",
+        component: "Search",
+        interval: 60,
+        way: "search",
+      },
+      tweets: [],
+      state: {
+        lastReadID: 0,
+      },
     },
   ],
   [
     "mentions",
     {
-      name: "Mentions",
-      component: "Timeline",
-      interval: 60,
-      way: "mentionsTimeline",
+      meta: {
+        identity: "mentions",
+        title: "Mentions",
+        component: "Timeline",
+        interval: 300,
+        way: "mentionsTimeline",
+      },
+      tweets: [],
+      state: {
+        lastReadID: 0,
+      },
     },
   ],
 ]);
 
 const template = {
   tab: null,
-  contents: {},
+  timelines,
   subcontents: {},
   style: {
     fontSize: "12px",
   },
   nowLoading: false,
-  timelines,
 };
 
 describe(reducer.name, () => {
   it("selectTab", () => {
-    expect(reducer(undefined, home.selectTab("abc"))).to.deep.equal({
-      tab: "abc",
-      contents: {},
+    expect(reducer(template, home.selectTab("home"))).to.deep.equal({
+      tab: "home",
+      timelines: {},
       subcontents: {},
       style: {
         fontSize: "12px",
@@ -49,94 +78,81 @@ describe(reducer.name, () => {
   });
 
   it("updateTweets", () => {
-    expect(reducer({...template, contents: {a: {tweets: []}}}, home.updateTweets([], "b"))).to.deep.equal({
-      contents: {
-        a: {tweets: []},
-        b: {tweets: []},
-      },
+    expect(reducer({...template, timelines}, home.updateTweets([], "home"))).to.deep.equal({
       tab: null,
+      timelines,
       subcontents: {},
       style: {
         fontSize: "12px",
       },
       nowLoading: false,
-      timelines,
     });
   });
   it(home.updateTweets.toString(), () => {
+    const oldTimelines = new Map(timelines);
+    oldTimelines.get("home").tweets = [{id: 1}];
+
+    const newTimelines = new Map(timelines);
+    newTimelines.get("home").tweets = [{id: 2}, {id: 1}];
+
     expect(
       reducer(
         {
           ...template,
-          tab: "a",
-          contents: {
-            a: {
-              tweets: [{id: 1}],
-              lastReadID: 0,
-            },
-          },
+          tab: "home",
+          timelines: oldTimelines,
         },
-        home.updateTweets([{id: 2}, {id: 1}], "a")
+        home.updateTweets([{id: 2}, {id: 1}], "home")
       )
     ).to.deep.equal({
-      tab: "a",
-      contents: {
-        a: {
-          tweets: [{id: 2}, {id: 1}],
-          lastReadID: 0,
-        },
-      },
+      tab: "home",
+      timelines: newTimelines,
       subcontents: {},
       style: {
         fontSize: "12px",
       },
       nowLoading: false,
-      timelines,
     });
   });
 
   it("updateTweetsInSubContents", () => {
-    expect(reducer(undefined, home.updateTweetsInSubContents([]))).to.deep.equal({
+    expect(reducer(template, home.updateTweetsInSubContents([]))).to.deep.equal({
       tab: null,
-      contents: {},
+      timelines,
       subcontents: {tweets: []},
       style: {
         fontSize: "12px",
       },
       nowLoading: false,
-      timelines,
     });
   });
 
   it(home.read.toString(), () => {
+    const oldTimelines = new Map(timelines);
+    oldTimelines.get("home").tweets = [{id: 1}];
+    oldTimelines.get("home").state = {lastReadID: 0};
+
+    const newTimelines = new Map(timelines);
+    newTimelines.get("home").tweets = [{id: 1}];
+    newTimelines.get("home").state = {lastReadID: 1};
+
     expect(
       reducer(
         {
           ...template,
-          tab: "a",
-          contents: {
-            a: {
-              tweets: [{id: 1}],
-              lastReadID: 0,
-            },
-          },
+          tab: "home",
+          timelines: oldTimelines,
         },
         home.read(1)
       )
     ).to.deep.equal({
-      tab: "a",
-      contents: {
-        a: {
-          tweets: [{id: 1}],
-          lastReadID: 1,
-        },
-      },
+      tab: "home",
+      timelines: newTimelines,
       subcontents: {},
       style: {
         fontSize: "12px",
       },
       nowLoading: false,
-      timelines,
     });
   });
 
@@ -145,9 +161,9 @@ describe(reducer.name, () => {
       style: {
         fontSize: "11px",
       },
-      contents: {},
-      subcontents: {},
       tab: null,
+      timelines: timelines,
+      subcontents: {},
       nowLoading: false,
       timelines,
     });
@@ -157,11 +173,10 @@ describe(reducer.name, () => {
       style: {
         fontSize: "9px",
       },
-      contents: {},
-      subcontents: {},
       tab: null,
+      timelines: timelines,
+      subcontents: {},
       nowLoading: false,
-      timelines,
     });
   });
   it("zoomReset", () => {
@@ -169,58 +184,48 @@ describe(reducer.name, () => {
       style: {
         fontSize: "12px",
       },
-      contents: {},
-      subcontents: {},
       tab: null,
+      timelines: timelines,
+      subcontents: {},
       nowLoading: false,
-      timelines,
     });
   });
 
   describe(home.setupSearch.toString(), () => {
     it("compile", () => {
-      expect(reducer(template, home.setupSearch("くえりー"))).to.deep.equal({
-        contents: {
-          Search: {
-            tweets: [],
-            query: "くえりー",
-          },
-        },
-        subcontents: {},
+      const newTimelines = new Map(timelines);
+      newTimelines.get("search").state = {query: "くえりー"};
+
+      expect(reducer(template, home.setupSearch("search", "くえりー"))).to.deep.equal({
         tab: null,
+        timelines: newTimelines,
+        subcontents: {},
         style: {fontSize: "12px"},
         nowLoading: false,
-        timelines,
       });
     });
     it("trim query", () => {
-      expect(reducer(template, home.setupSearch(" く え り ー "))).to.deep.equal({
-        contents: {
-          Search: {
-            tweets: [],
-            query: "く え り ー",
-          },
-        },
-        subcontents: {},
+      const newTimelines = new Map(timelines);
+      newTimelines.get("search").state = {query: "く え り ー"};
+
+      expect(reducer(template, home.setupSearch("search", " く え り ー "))).to.deep.equal({
         tab: null,
+        timelines: newTimelines,
+        subcontents: {},
         style: {fontSize: "12px"},
         nowLoading: false,
-        timelines,
       });
     });
     it("when query is null", () => {
-      expect(reducer(template, home.setupSearch(null))).to.deep.equal({
-        contents: {
-          Search: {
-            tweets: [],
-            query: "",
-          },
-        },
-        subcontents: {},
+      const newTimelines = new Map(timelines);
+      newTimelines.get("search").state = {query: ""};
+
+      expect(reducer(template, home.setupSearch("search", null))).to.deep.equal({
         tab: null,
+        timelines: newTimelines,
+        subcontents: {},
         style: {fontSize: "12px"},
         nowLoading: false,
-        timelines,
       });
     });
   });

@@ -2,7 +2,7 @@ import * as React from "react";
 import TweetList from "../TweetList";
 
 export interface OwnProperty {
-  name: string;
+  identity: string;
 }
 export interface StateProperty {
   tweets: TweetType[];

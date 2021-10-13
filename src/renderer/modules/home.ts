@@ -5,18 +5,26 @@ import {isPlainObject} from "is-plain-object";
 function merge(...values: any[]): any {
   return deepmerge.all(values, {isMergeableObject: isPlainObject});
 }
+function mergeTimeline(oldTimelines: Map<string, TheMoodyBlues.Timeline>, identity: string, newTimeline: any) {
+  const timelines = new Map(oldTimelines);
+  const timeline: TheMoodyBlues.Timeline = timelines.get(identity)!;
+
+  timelines.set(identity, merge(timeline, newTimeline));
+
+  return timelines;
+}
 
 export const {selectTab, updateTweets, updateTweetsInSubContents, read, zoomIn, zoomOut, zoomReset, setupSearch, showLoading} = createActions({
-  SELECT_TAB: (tab) => ({
-    tab: tab,
+  SELECT_TAB: (identity) => ({
+    identity: identity,
   }),
   UPDATE_TWEETS: [
-    (tweets, tab, options = undefined) => ({
+    (tweets, identity, options = undefined) => ({
       tweets: tweets,
       ...options,
     }),
-    (tweets, tab) => ({
-      tab: tab,
+    (tweets, identity) => ({
+      identity: identity,
     }),
   ],
   UPDATE_TWEETS_IN_SUB_CONTENTS: (tweets) => ({tweets: tweets}),
@@ -26,25 +34,28 @@ export const {selectTab, updateTweets, updateTweetsInSubContents, read, zoomIn, 
   ZOOM_IN: () => {},
   ZOOM_OUT: () => {},
   ZOOM_RESET: () => {},
-  SETUP_SEARCH: (query) => ({
-    query: query,
-  }),
+  SETUP_SEARCH: [
+    (identity: string, query: string) => ({
+      query: query,
+    }),
+    (identity: string, query: string) => ({
+      identity: identity,
+    }),
+  ],
   SHOW_LOADING: (nowLoading: boolean) => ({
     nowLoading: nowLoading,
   }),
 });
 
-export default handleActions<any, any, any>(
+export default handleActions<TheMoodyBlues.HomeState, any, any>(
   {
     [selectTab.toString()]: (state, action) => ({
       ...state,
-      tab: action.payload.tab,
+      tab: action.payload.identity,
     }),
     [updateTweets.toString()]: (state, action) => {
       return merge(state, {
-        contents: {
-          [action.meta.tab]: action.payload,
-        },
+        timelines: mergeTimeline(state.timelines, action.meta.identity, action.payload),
       });
     },
     [updateTweetsInSubContents.toString()]: (state, action) => ({
@@ -53,9 +64,7 @@ export default handleActions<any, any, any>(
     }),
     [read.toString()]: (state, action) => {
       return merge(state, {
-        contents: {
-          [state.tab]: action.payload,
-        },
+        timelines: mergeTimeline(state.timelines, state.tab, {state: action.payload}),
       });
     },
     [zoomIn.toString()]: (state, action) => ({
@@ -79,9 +88,12 @@ export default handleActions<any, any, any>(
       }
 
       return merge(state, {
-        contents: {
-          Search: {tweets: [], query: query},
-        },
+        timelines: mergeTimeline(state.timelines, action.meta.identity, {
+          tweets: [],
+          state: {
+            query: query,
+          },
+        }),
       });
     },
     [showLoading.toString()]: (state, action) => ({
@@ -90,8 +102,57 @@ export default handleActions<any, any, any>(
     }),
   },
   {
-    tab: null,
-    contents: {},
+    tab: "",
+    timelines: new Map([
+      [
+        "home",
+        {
+          meta: {
+            identity: "home",
+            title: "Home",
+            component: "Timeline",
+            interval: 120,
+            way: "timeline",
+          },
+          tweets: [],
+          state: {
+            lastReadID: 0,
+          },
+        },
+      ],
+      [
+        "search",
+        {
+          meta: {
+            identity: "search",
+            title: "Search",
+            component: "Search",
+            interval: 60,
+            way: "search",
+          },
+          tweets: [],
+          state: {
+            lastReadID: 0,
+          },
+        },
+      ],
+      [
+        "mentions",
+        {
+          meta: {
+            identity: "mentions",
+            title: "Mentions",
+            component: "Timeline",
+            interval: 300,
+            way: "mentionsTimeline",
+          },
+          tweets: [],
+          state: {
+            lastReadID: 0,
+          },
+        },
+      ],
+    ]),
     subcontents: {},
     style: {
       fontSize: "12px",
@@ -116,7 +177,7 @@ export const {reload, focusLatestTweet, focusUnreadTweet, displayUserTimeline, d
   FOCUS_UNREAD_TWEET: () => null,
   DISPLAY_USER_TIMELINE: (name) => ({name: name}),
   DISPLAY_CONVERSATION: (tweet) => ({tweet: tweet}),
-  MOUNT_COMPONENT: (tab) => ({tab: tab}),
+  MOUNT_COMPONENT: (identity) => ({identity: identity}),
   SEARCH_TWEETS: (query) => ({query: query}),
   ALARM: (message) => ({message: message}),
 });
