@@ -21,6 +21,7 @@ export default class TimelineSaga extends ComponentSaga {
     }
 
     yield this.spawnTimer();
+    yield this.startTimer();
   }
   *order(action: ActionType) {
     if (action.meta.force) this.timeline.tweets = [];

@@ -58,6 +58,9 @@ describe(TimelineSaga.name, () => {
           type: "READ",
           payload: {lastReadID: 1},
         })
+        .put({
+          type: `${identity}_START_TIMER`,
+        })
         .run()
         .then((result) => {
           const {effects} = result;
@@ -103,6 +106,9 @@ describe(TimelineSaga.name, () => {
           type: "UPDATE_TWEETS",
           payload: {tweets: []},
           meta: {identity: identity},
+        })
+        .put({
+          type: `${identity}_START_TIMER`,
         })
         .run()
         .then((result) => {
