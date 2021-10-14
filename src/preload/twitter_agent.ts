@@ -1,9 +1,7 @@
-import logger from "electron-log";
-
-export function setup(client: any) {
+export function setup(client: any): TwitterAgent {
   client.get = client.get.bind(client);
 
-  client.timeline = (since_id: string | null) => {
+  client.retrieveTimeline = (since_id: string | null) => {
     let option: any = {
       count: 200,
       include_entities: true,
@@ -11,14 +9,11 @@ export function setup(client: any) {
     };
     if (since_id) option.since_id = since_id;
 
-    logger.info(option);
     return new Promise((resolve, reject) => {
       client.get("statuses/home_timeline", option, (error: string, tweets: TweetType[], response: any) => {
         if (error) {
-          logger.error(error);
           return reject(error);
         }
-        logger.info(`home_timeline ${tweets.length}tweets`);
 
         resolve(tweets);
       });
@@ -43,7 +38,7 @@ export function setup(client: any) {
     });
   };
 
-  client.userTimeline = (name: string): Promise<TweetType[]> => {
+  client.retrieveTimelineOfUser = (name: string): Promise<TweetType[]> => {
     let option: any = {
       screen_name: name,
       count: 100,
@@ -61,7 +56,7 @@ export function setup(client: any) {
     });
   };
 
-  client.mentionsTimeline = (since_id: string | null) => {
+  client.retrieveMentions = (since_id: string | null) => {
     let option: any = {
       count: 200,
       include_entities: true,
@@ -78,7 +73,7 @@ export function setup(client: any) {
     });
   };
 
-  client.conversation = (criterion: TweetType) => {
+  client.retrieveConversation = (criterion: TweetType) => {
     return new Promise((resolve, reject) => {
       (async () => {
         var tweets: TweetType[] = await new Promise<TweetType[]>((resolve, reject) => {
@@ -134,7 +129,6 @@ export function setup(client: any) {
       const option = {};
       client.get("lists/list.json", option, (error: string, lists: any, response: any) => {
         if (error) {
-          logger.error(error);
           return reject(error);
         }
 
@@ -142,7 +136,7 @@ export function setup(client: any) {
       });
     });
   };
-  client.timeline_of_list = (list_id: string, since_id: string | null) => {
+  client.retrieveTimelineOfList = (list_id: string, since_id: string | null) => {
     const option: any = {
       list_id: list_id,
       count: 200,

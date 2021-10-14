@@ -1,7 +1,7 @@
 namespace TheMoodyBlues {
   interface State {
     home: HomeState;
-    account: any;
+    agent: TwitterAgent;
   }
 
   interface HomeState {
@@ -19,7 +19,7 @@ namespace TheMoodyBlues {
       title: string;
       component: "Timeline" | "Search";
       interval: number;
-      way: "timeline" | "search" | "mentionsTimeline";
+      way: "retrieveTimeline" | "search" | "retrieveMentions";
     };
     tweets: TweetType[];
     state: {

@@ -4,15 +4,15 @@ const initialState = null;
 export default function reducer(state = initialState, action: ActionType) {
   switch (action.type) {
     case SELECT:
-      return action.payload.account;
+      return action.payload.agent;
     default:
       return state;
   }
 }
 
-export const select = (account: any) => ({
+export const select = (agent: TwitterAgent) => ({
   type: SELECT,
-  payload: account,
+  payload: agent,
   meta: null,
   error: false,
 });

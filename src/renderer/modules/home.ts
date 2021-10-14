@@ -112,7 +112,7 @@ export default handleActions<TheMoodyBlues.HomeState, any, any>(
             title: "Home",
             component: "Timeline",
             interval: 120,
-            way: "timeline",
+            way: "retrieveTimeline",
           },
           tweets: [],
           state: {
@@ -144,7 +144,7 @@ export default handleActions<TheMoodyBlues.HomeState, any, any>(
             title: "Mentions",
             component: "Timeline",
             interval: 300,
-            way: "mentionsTimeline",
+            way: "retrieveMentions",
           },
           tweets: [],
           state: {

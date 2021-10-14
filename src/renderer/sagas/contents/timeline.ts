@@ -6,8 +6,8 @@ import mute from "../../helpers/mute";
 const {TheMoodyBlues} = window;
 
 export default class TimelineSaga extends ComponentSaga {
-  constructor(account: any, timeline: TheMoodyBlues.Timeline) {
-    super(account, timeline);
+  constructor(agent: TwitterAgent, timeline: TheMoodyBlues.Timeline) {
+    super(agent, timeline);
   }
 
   *initialize(action: TheMoodyBlues.HomeAction) {
@@ -25,7 +25,7 @@ export default class TimelineSaga extends ComponentSaga {
   *order(action: ActionType) {
     if (action.meta.force) this.timeline.tweets = [];
 
-    let tweets: TweetType[] = yield call(this.account[this.timeline.meta.way], this.latest());
+    let tweets: TweetType[] = yield call(this.agent[this.timeline.meta.way], this.latest());
     if (tweets.length > 0) {
       tweets = mute(tweets);
       TheMoodyBlues.growl(tweets);

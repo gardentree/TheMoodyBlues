@@ -43,7 +43,7 @@ const timelines = new Map([
         title: "Mentions",
         component: "Timeline",
         interval: 300,
-        way: "mentionsTimeline",
+        way: "retrieveMentions",
       },
       tweets: [],
       state: {

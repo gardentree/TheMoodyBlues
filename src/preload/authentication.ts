@@ -1,6 +1,6 @@
 import {shell} from "electron";
 import {OAuth} from "oauth";
-import {setup} from "./twitter";
+import {setup} from "./twitter_agent";
 import storage from "./storage";
 import Twitter from "twitter";
 

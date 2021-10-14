@@ -1,3 +1,13 @@
+interface TwitterAgent {
+  timeline(since_id: string | null): TweetType[];
+  search(query: string, since_id: string | null): TweetType[];
+  retrieveTimelineOfUser(name: string): TweetType[];
+  retrieveMentions(since_id: string | null): TweetType[];
+  retrieveConversation(criterion: TweetType): TweetType[];
+  lists(): string[];
+  retrieveTimelineOfList(list_id: string, since_id: string | null): TweetType[];
+}
+
 interface TweetType {
   id: number;
   id_str: string;

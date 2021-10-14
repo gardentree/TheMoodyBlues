@@ -30,16 +30,16 @@ function* searchTweets(action: ActionType) {
 }
 
 function* displayUserTimeline(action: ActionType) {
-  const {account} = yield select();
+  const {agent} = yield select();
 
-  let tweets: TweetType[] = yield call(account.userTimeline, action.payload.name);
+  let tweets: TweetType[] = yield call(agent.retrieveTimelineOfUser, action.payload.name);
   yield put(home.updateTweetsInSubContents(tweets));
 }
 
 function* displayConversation(action: ActionType) {
-  const {account} = yield select();
+  const {agent} = yield select();
 
-  let tweets: TweetType[] = yield call(account.conversation, action.payload.tweet);
+  let tweets: TweetType[] = yield call(agent.retrieveConversation, action.payload.tweet);
   yield put(home.updateTweetsInSubContents(tweets));
 }
 

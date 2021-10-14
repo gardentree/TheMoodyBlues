@@ -2,11 +2,11 @@ import {put, call, actionChannel, race, take, spawn} from "redux-saga/effects";
 import * as home from "../../modules/home";
 
 export default abstract class ComponentSaga {
-  account: any;
+  agent: TwitterAgent;
   timeline: TheMoodyBlues.Timeline;
 
-  constructor(account: any, timeline: TheMoodyBlues.Timeline) {
-    this.account = account;
+  constructor(agent: TwitterAgent, timeline: TheMoodyBlues.Timeline) {
+    this.agent = agent;
     this.timeline = timeline;
   }
 

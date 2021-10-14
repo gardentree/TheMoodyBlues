@@ -3,11 +3,11 @@ import {expect} from "chai";
 import SearchSaga from "../../../../src/renderer/sagas/contents/search.ts";
 
 const newTarget = (tweets: TweetType[], timeline: TheMoodyBlues.Timeline) => {
-  const account = {
+  const agent = {
     [timeline.meta.way]: () => tweets,
   };
 
-  const target = new SearchSaga(account, timeline);
+  const target = new SearchSaga(agent, timeline);
 
   target.initialize = target.initialize.bind(target);
   target.order = target.order.bind(target);

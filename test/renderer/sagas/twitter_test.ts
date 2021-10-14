@@ -15,7 +15,7 @@ describe(reorder.name, () => {
         {
           select() {
             return {
-              account: {
+              agent: {
                 search: () => {
                   return [];
                 },
@@ -79,7 +79,7 @@ describe(searchTweets.name, () => {
       .provide({
         select() {
           return {
-            account: {
+            agent: {
               search: () => {
                 return [];
               },

@@ -12,22 +12,22 @@ const {TheMoodyBlues} = window;
 
 export default function launch() {
   (async () => {
-    const client = await new Promise((resolve, reject) => {
+    const agent = await new Promise<TwitterAgent>((resolve, reject) => {
       resolve(TheMoodyBlues.authorize(getVerifier));
     });
 
-    setup(client);
+    setup(agent);
   })();
 }
 
-function setup(twitter: any) {
+function setup(agent: TwitterAgent) {
   const sagaMiddleware = createSagaMiddleware();
   const store = createStore(rootReducer, applyMiddleware(sagaMiddleware, createLogger()));
 
   sagaMiddleware.run(rootSaga);
 
   TheMoodyBlues.keybinds(store);
-  store.getState()["account"] = twitter;
+  store.getState()["agent"] = agent;
 
   ReactDOM.render(
     <Provider store={store}>

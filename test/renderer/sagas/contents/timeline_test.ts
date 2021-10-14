@@ -3,11 +3,11 @@ import {expect} from "chai";
 import TimelineSaga from "../../../../src/renderer/sagas/contents/timeline.ts";
 
 const newTarget = (tweets: TweetType[], timeline: TheMoodyBlues.Timeline) => {
-  const account = {
+  const agent = {
     [timeline.meta.way]: () => tweets,
   };
 
-  const target = new TimelineSaga(account, timeline);
+  const target = new TimelineSaga(agent, timeline);
 
   target.initialize = target.initialize.bind(target);
   target.order = target.order.bind(target);
