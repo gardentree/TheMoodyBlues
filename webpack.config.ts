@@ -94,6 +94,10 @@ const renderer: any = {
   devServer: {
     static: path.join(__dirname, "./build"),
   },
+  performance: {
+    maxAssetSize: 1024 * 1024,
+    maxEntrypointSize: 1024 * 1024,
+  },
 };
 
 export default [main, preload, renderer];
