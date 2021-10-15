@@ -141,6 +141,7 @@ export function setup(client: any): TwitterAgent {
       list_id: list_id,
       count: 200,
       include_entities: true,
+      tweet_mode: "extended",
     };
     if (since_id) option.since_id = since_id;
 
