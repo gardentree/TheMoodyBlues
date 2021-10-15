@@ -16,33 +16,64 @@ const userDataDirectory = (() => {
 const store = new ElectronStore({cwd: userDataDirectory});
 storage.setDataPath(pathname.join(userDataDirectory, "storage"));
 
-function getStore(key: string): string | string[] {
-  return store.get(key) as string | string[];
+function getStore(key: string): any {
+  return store.get(key);
 }
-function setStore(key: string, value: string | string[]) {
+function setStore(key: string, value: any) {
   store.set(key, value);
 }
 
 exports = {
   getAccessKey: (): string => {
-    return getStore("access_token_key") as string;
+    return getStore("access_token.key") as string;
   },
   setAccessKey: (value: string) => {
-    setStore("access_token_key", value);
+    setStore("access_token.key", value);
   },
 
   getAccessSecret: (): string => {
-    return getStore("access_token_secret") as string;
+    return getStore("access_token.secret") as string;
   },
   setAccessSecret: (value: string) => {
-    setStore("access_token_secret", value);
+    setStore("access_token.secret", value);
+  },
+
+  getTimelinePreferences: (): TheMoodyBlues.TimelinePreference[] => {
+    return (
+      (getStore("preferences.timelines") as TheMoodyBlues.TimelinePreference[]) || [
+        {
+          identity: "home",
+          title: "Home",
+          component: "Timeline",
+          interval: 120,
+          way: "retrieveTimeline",
+        },
+        {
+          identity: "search",
+          title: "Search",
+          component: "Search",
+          interval: 60,
+          way: "search",
+        },
+        {
+          identity: "mentions",
+          title: "Mentions",
+          component: "Timeline",
+          interval: 300,
+          way: "retrieveMentions",
+        },
+      ]
+    );
+  },
+  setTimelinePreferences: (timelines: TheMoodyBlues.TimelinePreference[]) => {
+    setStore("preferences.timelines", timelines);
   },
 
   getMuteKeywords: (): string[] => {
-    return (getStore("mute.keywords") as string[]) || [];
+    return (getStore("preferences.mute.keywords") as string[]) || [];
   },
   setMuteKeywords: (keywords: string[]) => {
-    setStore("mute.keywords", keywords);
+    setStore("preferences.mute.keywords", keywords);
   },
 
   getTweets: (identity: string) => {

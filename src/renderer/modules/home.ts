@@ -103,56 +103,7 @@ export default handleActions<TheMoodyBlues.HomeState, any, any>(
   },
   {
     tab: "",
-    timelines: new Map([
-      [
-        "home",
-        {
-          meta: {
-            identity: "home",
-            title: "Home",
-            component: "Timeline",
-            interval: 120,
-            way: "retrieveTimeline",
-          },
-          tweets: [],
-          state: {
-            lastReadID: 0,
-          },
-        },
-      ],
-      [
-        "search",
-        {
-          meta: {
-            identity: "search",
-            title: "Search",
-            component: "Search",
-            interval: 60,
-            way: "search",
-          },
-          tweets: [],
-          state: {
-            lastReadID: 0,
-          },
-        },
-      ],
-      [
-        "mentions",
-        {
-          meta: {
-            identity: "mentions",
-            title: "Mentions",
-            component: "Timeline",
-            interval: 300,
-            way: "retrieveMentions",
-          },
-          tweets: [],
-          state: {
-            lastReadID: 0,
-          },
-        },
-      ],
-    ]),
+    timelines: new Map(),
     subcontents: {},
     style: {
       fontSize: "12px",

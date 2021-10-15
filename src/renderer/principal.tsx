@@ -28,6 +28,7 @@ function setup(agent: TwitterAgent) {
 
   TheMoodyBlues.keybinds(store);
   store.getState()["agent"] = agent;
+  store.getState()["home"]["timelines"] = loadTimelines();
 
   ReactDOM.render(
     <Provider store={store}>
@@ -79,4 +80,20 @@ class VerifierForm extends React.Component<any, any> {
       </div>
     );
   }
+}
+
+function loadTimelines() {
+  const timelines = new Map();
+
+  for (const preference of TheMoodyBlues.storage.getTimelinePreferences()) {
+    timelines.set(preference.identity, {
+      preference: preference,
+      tweets: [],
+      state: {
+        lastReadID: 0,
+      },
+    });
+  }
+
+  return timelines;
 }
