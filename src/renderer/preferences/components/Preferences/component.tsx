@@ -1,5 +1,5 @@
 import * as React from "react";
-import Mute from "./Mute";
+import Mute from "../Mute";
 
 class Preferences extends React.Component<{}, {focus: string}> {
   state = {focus: Mute.name};
