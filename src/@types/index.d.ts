@@ -14,18 +14,20 @@ namespace TheMoodyBlues {
     nowLoading: boolean;
   }
   interface Timeline {
-    meta: {
-      identity: string;
-      title: string;
-      component: "Timeline" | "Search";
-      interval: number;
-      way: "retrieveTimeline" | "search" | "retrieveMentions";
-    };
+    preference: TimelinePreference;
     tweets: TweetType[];
     state: {
       lastReadID: number;
       query?: string;
     };
+  }
+  interface TimelinePreference {
+    identity: string;
+    title: string;
+    component: "Timeline" | "Search";
+    interval: number;
+    way: "retrieveTimeline" | "search" | "retrieveMentions" | "retrieveTimelineOfList";
+    parameters?: any[];
   }
 
   interface HomeAction {

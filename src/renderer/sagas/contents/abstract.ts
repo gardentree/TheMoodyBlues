@@ -14,7 +14,7 @@ export default abstract class ComponentSaga {
   abstract order(action: ActionType): any;
 
   protected *spawnTimer() {
-    yield spawn(this.runTimer, this.timeline.meta.identity, this.timeline.meta.interval * 1000);
+    yield spawn(this.runTimer, this.timeline.preference.identity, this.timeline.preference.interval * 1000);
   }
   protected *runTimer(identity: string, interval: number) {
     const channel: string = yield actionChannel(`${identity}_START_TIMER`);
@@ -40,10 +40,10 @@ export default abstract class ComponentSaga {
     }
   }
   protected *startTimer() {
-    yield put({type: `${this.timeline.meta.identity}_START_TIMER`});
+    yield put({type: `${this.timeline.preference.identity}_START_TIMER`});
   }
   protected *stopTimer() {
-    yield put({type: `${this.timeline.meta.identity}_STOP_TIMER`});
+    yield put({type: `${this.timeline.preference.identity}_STOP_TIMER`});
   }
   protected *restartTimer() {
     yield this.stopTimer();

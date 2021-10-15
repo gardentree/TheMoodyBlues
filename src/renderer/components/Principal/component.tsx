@@ -27,8 +27,8 @@ export default class Principal extends React.Component<Property, any> {
 
     const contents: {identity: string; title: string; component: any}[] = Array.from(timelines.entries()).map(([identity, timeline]) => ({
       identity: identity,
-      title: timeline.meta.title,
-      component: componets.get(timeline.meta.component),
+      title: timeline.preference.title,
+      component: componets.get(timeline.preference.component),
     }));
 
     return (

@@ -5,7 +5,7 @@ const getSaga = function (state: TheMoodyBlues.State, identify: string) {
   const {agent, home} = state;
   const timeline = home.timelines.get(identify)!;
 
-  switch (timeline.meta.component) {
+  switch (timeline.preference.component) {
     case "Timeline":
       return new TimelineSaga(agent, timeline);
     case "Search":
