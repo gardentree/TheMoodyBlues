@@ -26,7 +26,8 @@ export default class TimelineSaga extends ComponentSaga {
   *order(action: ActionType) {
     if (action.meta.force) this.timeline.tweets = [];
 
-    let tweets: TweetType[] = yield call(this.agent[this.timeline.meta.way], this.latest());
+    const parameters = (this.timeline.meta.parameters || []).concat(this.latest());
+    let tweets: TweetType[] = yield call(this.agent[this.timeline.meta.way], ...parameters);
     if (tweets.length > 0) {
       tweets = mute(tweets);
       TheMoodyBlues.growl(tweets);
