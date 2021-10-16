@@ -12,7 +12,10 @@ interface Window {
       getTweets(name: string);
       setTweets(name: string, tweets: TweetType[]);
     };
-    authorize: any;
+    agent: {
+      authorize(showVerifierForm: () => Promise<string>): Promise<TwitterAgent>;
+      call(): TwitterAgent | null;
+    };
     keybinds: any;
     growl: any;
     openTweetMenu: any;

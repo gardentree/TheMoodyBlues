@@ -13,7 +13,7 @@ const {TheMoodyBlues} = window;
 export default function launch() {
   (async () => {
     const agent = await new Promise<TwitterAgent>((resolve, reject) => {
-      resolve(TheMoodyBlues.authorize(getVerifier));
+      resolve(TheMoodyBlues.agent.authorize(showVerifierForm));
     });
 
     setup(agent);
@@ -38,7 +38,7 @@ function setup(agent: TwitterAgent) {
   );
 }
 
-function getVerifier() {
+function showVerifierForm() {
   return new Promise<string>((resolve, reject) => {
     const callback = (verifier: string) => {
       resolve(verifier);
