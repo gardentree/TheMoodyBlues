@@ -56,6 +56,11 @@ const preload: Configuration = {
   module: {
     rules: [typescript],
   },
+  resolve: {
+    alias: {
+      "@libraries": path.resolve(__dirname, "src/libraries"),
+    },
+  },
   plugins: [new webpack.EnvironmentPlugin(["CONSUMER_KEY", "CONSUMER_SECRET"])],
 };
 const renderer: any = {
@@ -77,6 +82,11 @@ const renderer: any = {
         use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
       },
     ],
+  },
+  resolve: {
+    alias: {
+      "@libraries": path.resolve(__dirname, "src/libraries"),
+    },
   },
   plugins: [
     new MiniCssExtractPlugin(),

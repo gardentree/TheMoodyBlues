@@ -2,6 +2,7 @@
   "compilerOptions": {
     "allowJs": true,
     "allowSyntheticDefaultImports": true,
+    "baseUrl": "../",
     "esModuleInterop": true,
     "experimentalDecorators": true,
     "forceConsistentCasingInFileNames": true,
@@ -16,6 +17,9 @@
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noUnusedLocals": true,
+    "paths": {
+      "@libraries/*": ["src/libraries/*"]
+    },
     "sourceMap": true,
     "strict": true,
     "strictNullChecks": true,
