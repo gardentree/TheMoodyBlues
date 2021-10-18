@@ -4,7 +4,7 @@ interface TwitterAgent {
   retrieveTimelineOfUser(name: string): TweetType[];
   retrieveMentions(since_id: string | null): TweetType[];
   retrieveConversation(criterion: TweetType): TweetType[];
-  lists(): string[];
+  lists(): Promise<Twitter.List[]>;
   retrieveTimelineOfList(list_id: string, since_id: string | null): TweetType[];
 }
 
@@ -51,4 +51,11 @@ interface URLType {
   expanded_url: string;
   display_url: string;
   indices?: number[];
+}
+
+namespace Twitter {
+  interface List {
+    id_str: string;
+    name: string;
+  }
 }

@@ -1,7 +1,7 @@
 import {shell} from "electron";
 import {OAuth} from "oauth";
 import storage from "./storage";
-import Twitter from "twitter";
+import TwitterClient from "twitter";
 
 function setup(client: any): TwitterAgent {
   client.get = client.get.bind(client);
@@ -129,7 +129,7 @@ function setup(client: any): TwitterAgent {
     });
   };
 
-  client.lists = () => {
+  client.lists = (): Promise<Twitter.List[]> => {
     return new Promise((resolve, reject) => {
       const option = {};
       client.get("lists/list.json", option, (error: string, lists: any, response: any) => {
@@ -184,7 +184,7 @@ interface Token {
 
 function createClient(accessToken: Token): any {
   return setup(
-    new Twitter({
+    new TwitterClient({
       consumer_key: process.env.CONSUMER_KEY!,
       consumer_secret: process.env.CONSUMER_SECRET!,
       access_token_key: accessToken.key,
