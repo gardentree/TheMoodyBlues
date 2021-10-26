@@ -38,9 +38,9 @@ exports = {
     setStore("access_token.secret", value);
   },
 
-  getTimelinePreferences: (): TheMoodyBlues.TimelinePreference[] => {
+  getTimelinePreferences: (): TheMoodyBlues.Store.TimelinePreference[] => {
     return (
-      (getStore("preferences.timelines") as TheMoodyBlues.TimelinePreference[]) || [
+      (getStore("preferences.timelines") as TheMoodyBlues.Store.TimelinePreference[]) || [
         {
           identity: "home",
           title: "Home",
@@ -65,7 +65,7 @@ exports = {
       ]
     );
   },
-  setTimelinePreferences: (timelines: TheMoodyBlues.TimelinePreference[]) => {
+  setTimelinePreferences: (timelines: TheMoodyBlues.Store.TimelinePreference[]) => {
     setStore("preferences.timelines", timelines);
   },
 

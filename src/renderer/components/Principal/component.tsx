@@ -12,7 +12,7 @@ interface Property {
   onClick: any;
   subcontents: any;
   nowLoading: boolean;
-  timelines: Map<string, TheMoodyBlues.Timeline>;
+  timelines: TheMoodyBlues.Store.TimelineMap;
   didMount: any;
 }
 
@@ -43,7 +43,7 @@ export default class Principal extends React.Component<Property, any> {
             return (
               <div key={identity} className={`tab-item${current == identity ? " active" : ""}`} data-name={identity} onClick={onClick}>
                 {title}
-                {unread && <span className="unread_badge">{unread}</span>}
+                {unread > 0 && <span className="unread_badge">{unread}</span>}
               </div>
             );
           })}

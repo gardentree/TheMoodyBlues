@@ -28,7 +28,7 @@ function setup(agent: TwitterAgent) {
 
   TheMoodyBlues.keybinds(store);
   store.getState()["agent"] = agent;
-  store.getState()["home"]["timelines"] = loadTimelines();
+  store.getState()["timelines"] = loadTimelines();
 
   ReactDOM.render(
     <Provider store={store}>
@@ -83,7 +83,7 @@ class VerifierForm extends React.Component<any, any> {
 }
 
 function loadTimelines() {
-  const timelines = new Map();
+  const timelines: TheMoodyBlues.Store.TimelineMap = new Map();
 
   for (const preference of TheMoodyBlues.storage.getTimelinePreferences()) {
     timelines.set(preference.identity, {

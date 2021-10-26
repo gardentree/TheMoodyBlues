@@ -2,9 +2,9 @@ import {expectSaga} from "redux-saga-test-plan";
 import {expect} from "chai";
 import SearchSaga from "../../../../src/renderer/sagas/contents/search.ts";
 
-const newTarget = (tweets: TweetType[], timeline: TheMoodyBlues.Timeline) => {
+const newTarget = (tweets: TweetType[], timeline: TheMoodyBlues.Store.Timeline) => {
   const agent = {
-    [timeline.meta.way]: () => tweets,
+    [timeline.preference.way]: () => tweets,
   };
 
   const target = new SearchSaga(agent, timeline);
@@ -21,7 +21,7 @@ describe(SearchSaga.name, () => {
     const title = identity;
 
     const target = newTarget([], {
-      meta: {
+      preference: {
         identity: identity,
         title: title,
         component: identity,
@@ -53,7 +53,7 @@ describe(SearchSaga.name, () => {
       const title = identity;
 
       const target = newTarget([{id_str: "1"}], {
-        meta: {
+        preference: {
           identity: identity,
           title: title,
           component: identity,
@@ -112,7 +112,7 @@ describe(SearchSaga.name, () => {
       const title = identity;
 
       const target = newTarget([{id_str: "1"}], {
-        meta: {
+        preference: {
           identity: identity,
           title: title,
           component: identity,

@@ -1,10 +1,10 @@
 import {connect} from "react-redux";
 import Component from "./component";
 import {OwnProperty, StateProperty, DispatchProperty} from "./component";
-import * as home from "../../modules/home";
+import * as timelines from "@modules/timelines";
 
-const mapStateToProps = (state: TheMoodyBlues.State, own: OwnProperty): StateProperty => {
-  const {timelines} = state.home;
+const mapStateToProps = (state: TheMoodyBlues.Store.State, own: OwnProperty): StateProperty => {
+  const {timelines} = state;
   const timeline = timelines.get(own.identity);
 
   if (!timeline) return {tweets: [], lastReadID: 0};
@@ -16,7 +16,7 @@ const mapStateToProps = (state: TheMoodyBlues.State, own: OwnProperty): StatePro
 };
 const mapDispatchToProps = (dispatch: any, own: OwnProperty): DispatchProperty => {
   return {
-    didMount: () => dispatch(home.mountComponent(own.identity)),
+    didMount: () => dispatch(timelines.mountComponent(own.identity)),
   };
 };
 

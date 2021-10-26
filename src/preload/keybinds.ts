@@ -1,5 +1,7 @@
 import {ipcRenderer, IpcRendererEvent, shell, clipboard} from "electron";
-import {focusLatestTweet, focusUnreadTweet, zoomIn, zoomOut, zoomReset, reload, searchTweets, displayConversation} from "../renderer/modules/home";
+import {focusLatestTweet, focusUnreadTweet, zoomIn, zoomOut, zoomReset} from "@modules/principal";
+import {reload, searchTweets} from "@modules/timelines";
+import {displayConversation} from "@modules/subcontents";
 
 export default function (store: any) {
   ipcRenderer.on("focus_latest_tweet", (event: IpcRendererEvent, arugments: any) => {

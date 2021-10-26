@@ -2,10 +2,10 @@ import {connect} from "react-redux";
 import Component from "./component";
 import {OwnProperty, StateProperty, DispatchProperty} from "./component";
 import {reduxForm, formValueSelector} from "redux-form";
-import * as home from "../../modules/home";
+import * as timelines from "@modules/timelines";
 
-const mapStateToProps = (state: TheMoodyBlues.State, own: OwnProperty): StateProperty => {
-  const {timelines} = state.home;
+const mapStateToProps = (state: TheMoodyBlues.Store.State, own: OwnProperty): StateProperty => {
+  const {timelines} = state;
   const timeline = timelines.get(own.identity)!;
 
   const selector = formValueSelector("Search");
@@ -20,8 +20,8 @@ const mapStateToProps = (state: TheMoodyBlues.State, own: OwnProperty): StatePro
 };
 const mapDispatchToProps = (dispatch: any, own: OwnProperty): DispatchProperty => {
   return {
-    search: (values: any) => dispatch(home.searchTweets(values.query)),
-    didMount: () => dispatch(home.mountComponent(own.identity)),
+    search: (values: any) => dispatch(timelines.searchTweets(values.query)),
+    didMount: () => dispatch(timelines.mountComponent(own.identity)),
   };
 };
 

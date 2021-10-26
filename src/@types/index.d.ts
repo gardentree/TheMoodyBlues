@@ -1,38 +1,48 @@
 namespace TheMoodyBlues {
-  interface State {
-    home: HomeState;
-    agent: TwitterAgent;
-  }
+  namespace Store {
+    interface State {
+      agent: TwitterAgent;
+      preference: Preference;
+      timelines: TimelineMap;
+      subcontents: SubContents;
+      principal: Principal;
+    }
+    type TimelineIdentity = string;
+    type TimelineMap = Map<TimelineIdentity, Timeline>;
+    interface Preference {
+      timelines: PreferenceMap;
+      mute_keywords: string[];
+    }
+    interface Timeline {
+      preference: TimelinePreference;
+      tweets: TweetType[];
+      state: {
+        lastReadID: number;
+        query?: string;
+      };
+    }
+    interface TimelinePreference {
+      identity: TimelineIdentity;
+      title: string;
+      component: "Timeline" | "Search";
+      interval: number;
+      way: "retrieveTimeline" | "search" | "retrieveMentions" | "retrieveTimelineOfList";
+      parameters?: any[];
+    }
+    type SubContents = any;
 
-  interface HomeState {
-    tab: string;
-    timelines: Map<string, Timeline>;
-    subcontents: any;
-    style: {
-      fontSize: string;
-    };
-    nowLoading: boolean;
-  }
-  interface Timeline {
-    preference: TimelinePreference;
-    tweets: TweetType[];
-    state: {
-      lastReadID: number;
-      query?: string;
-    };
-  }
-  interface TimelinePreference {
-    identity: string;
-    title: string;
-    component: "Timeline" | "Search";
-    interval: number;
-    way: "retrieveTimeline" | "search" | "retrieveMentions" | "retrieveTimelineOfList";
-    parameters?: any[];
+    interface Principal {
+      focused: TimelineIdentity;
+      nowLoading: boolean;
+      style: {
+        fontSize: string;
+      };
+    }
   }
 
   interface HomeAction {
     type: string;
-    payload?: {identity: string};
+    payload?: {identity: TimelineIdentity};
     meta: any | null;
     error: any;
   }

@@ -1,11 +1,11 @@
 import {put, call, actionChannel, race, take, spawn} from "redux-saga/effects";
-import * as home from "../../modules/home";
+import * as timelines from "@modules/timelines";
 
 export default abstract class ComponentSaga {
   agent: TwitterAgent;
-  timeline: TheMoodyBlues.Timeline;
+  timeline: TheMoodyBlues.Store.Timeline;
 
-  constructor(agent: TwitterAgent, timeline: TheMoodyBlues.Timeline) {
+  constructor(agent: TwitterAgent, timeline: TheMoodyBlues.Store.Timeline) {
     this.agent = agent;
     this.timeline = timeline;
   }
@@ -34,7 +34,7 @@ export default abstract class ComponentSaga {
           break;
         }
 
-        yield put(home.reload(false, identity, true));
+        yield put(timelines.reload(false, identity, true));
         console.log(`reload ${identity}: ${new Date()}`);
       }
     }

@@ -1,26 +1,27 @@
 import {connect} from "react-redux";
 import Component from "./component";
-import * as home from "../../modules/home";
+import * as principal from "@modules/principal";
 
-const mapStateToProps = (state: TheMoodyBlues.State) => {
-  const {tab, style, timelines, subcontents, nowLoading} = state.home;
+const mapStateToProps = (state: TheMoodyBlues.Store.State) => {
+  const {timelines, subcontents} = state;
+  const {focused, style, nowLoading} = state.principal;
 
   let unreads = {};
   if (timelines) {
-    Object.entries(timelines).forEach(([identity, timeline]) => {
+    for (const [identity, timeline] of timelines.entries()) {
       const {
         tweets,
         state: {lastReadID},
       } = timeline;
       let count = tweets ? tweets.filter((tweet: TweetType) => tweet.id > lastReadID).length : 0;
-      if (count <= 0) count = null;
+      if (count <= 0) count = 0;
 
       unreads[identity] = count;
-    });
+    }
   }
 
   return {
-    current: tab,
+    current: focused,
     style: style,
     unreads: unreads,
     subcontents: subcontents,
@@ -29,7 +30,7 @@ const mapStateToProps = (state: TheMoodyBlues.State) => {
   };
 };
 const mapDispatchToProps = {
-  onClick: (event: React.SyntheticEvent<HTMLElement>) => home.selectTab(event.currentTarget.dataset.name),
-  didMount: (identity: string) => home.selectTab(identity),
+  onClick: (event: React.SyntheticEvent<HTMLElement>) => principal.selectTab(event.currentTarget.dataset.name),
+  didMount: (identity: string) => principal.selectTab(identity),
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

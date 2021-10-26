@@ -1,9 +1,9 @@
 import TimelineSaga from "./timeline";
 import SearchSaga from "./search";
 
-const getSaga = function (state: TheMoodyBlues.State, identify: string) {
-  const {agent, home} = state;
-  const timeline = home.timelines.get(identify)!;
+const getSaga = function (state: TheMoodyBlues.Store.State, identify: string) {
+  const {agent, timelines} = state;
+  const timeline = timelines.get(identify)!;
 
   switch (timeline.preference.component) {
     case "Timeline":

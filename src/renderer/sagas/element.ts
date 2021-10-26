@@ -1,5 +1,5 @@
 import {takeLatest, takeEvery} from "redux-saga/effects";
-import * as home from "../modules/home";
+import * as principal from "@modules/principal";
 
 function focusLatestTweet(action: ActionType) {
   const container = getContainer();
@@ -28,9 +28,9 @@ function alarm(action: ActionType) {
 
 // prettier-ignore
 export default [
-  takeLatest(home.focusLatestTweet.toString(), focusLatestTweet),
-  takeLatest(home.focusUnreadTweet.toString(), focusUnreadTweet),
-  takeEvery(home.alarm.toString(), alarm),
+  takeLatest(principal.focusLatestTweet.toString(), focusLatestTweet),
+  takeLatest(principal.focusUnreadTweet.toString(), focusUnreadTweet),
+  takeEvery(principal.alarm.toString(), alarm),
 ];
 
 function getContainer(): Element {

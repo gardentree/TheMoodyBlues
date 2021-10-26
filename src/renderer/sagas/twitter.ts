@@ -1,46 +1,48 @@
 import {put, call, takeLatest, takeEvery, select} from "redux-saga/effects";
 import getSaga from "./contents";
-import * as home from "../modules/home";
+import * as timelines from "@modules/timelines";
+import * as subcontents from "@modules/subcontents";
+import * as principal from "@modules/principal";
 
 const {TheMoodyBlues} = window;
 
 function* initialize(action: TheMoodyBlues.HomeAction) {
   const {payload} = action;
-  const state: TheMoodyBlues.State = yield select();
+  const state: TheMoodyBlues.Store.State = yield select();
 
   yield getSaga(state, payload!.identity).initialize(action);
 }
 
 function* reorder(action: ActionType) {
-  const {tab} = ((yield select()) as TheMoodyBlues.State).home;
+  const {focused} = ((yield select()) as TheMoodyBlues.Store.State).principal;
 
-  yield order(action.meta.tab || tab, action);
+  yield order(action.meta.tab || focused, action);
 }
 function* order(tab: string, action: ActionType) {
-  yield getSaga((yield select()) as TheMoodyBlues.State, tab).order(action);
+  yield getSaga((yield select()) as TheMoodyBlues.Store.State, tab).order(action);
 }
 
 function* searchTweets(action: ActionType) {
   const {query} = action.payload;
   const identity = "search"; //TODO 動的にする？
 
-  yield put(home.selectTab(identity));
-  yield put(home.setupSearch(identity, query));
-  yield reorder(home.reload(true, identity, true) as ActionType);
+  yield put(principal.selectTab(identity));
+  yield put(timelines.setupSearch(identity, query));
+  yield reorder(timelines.reload(true, identity, true) as ActionType);
 }
 
 function* displayUserTimeline(action: ActionType) {
   const {agent} = yield select();
 
   let tweets: TweetType[] = yield call(agent.retrieveTimelineOfUser, action.payload.name);
-  yield put(home.updateTweetsInSubContents(tweets));
+  yield put(subcontents.updateTweetsInSubContents(tweets));
 }
 
 function* displayConversation(action: ActionType) {
   const {agent} = yield select();
 
   let tweets: TweetType[] = yield call(agent.retrieveConversation, action.payload.tweet);
-  yield put(home.updateTweetsInSubContents(tweets));
+  yield put(subcontents.updateTweetsInSubContents(tweets));
 }
 
 const wrap = (saga: any) =>
@@ -49,21 +51,21 @@ const wrap = (saga: any) =>
     try {
       const loading = !action.meta || !action.meta.silently;
 
-      if (loading) yield put(home.showLoading(true));
+      if (loading) yield put(principal.showLoading(true));
       yield call(saga, action);
-      if (loading) yield put(home.showLoading(false));
+      if (loading) yield put(principal.showLoading(false));
     } catch (error: any) {
       TheMoodyBlues.logger.error(error);
       TheMoodyBlues.logger.error(error.stack);
-      yield put(home.alarm(error));
+      yield put(principal.alarm(error));
     }
   };
 
 // prettier-ignore
 export default [
-  takeLatest(home.reload, wrap(reorder)),
-  takeLatest(home.searchTweets, wrap(searchTweets)),
-  takeLatest(home.displayUserTimeline, wrap(displayUserTimeline)),
-  takeLatest(home.displayConversation, wrap(displayConversation)),
-  takeEvery(home.mountComponent, wrap(initialize))
+  takeLatest(timelines.reload, wrap(reorder)),
+  takeLatest(timelines.searchTweets, wrap(searchTweets)),
+  takeLatest(subcontents.displayUserTimeline, wrap(displayUserTimeline)),
+  takeLatest(subcontents.displayConversation, wrap(displayConversation)),
+  takeEvery(timelines.mountComponent, wrap(initialize))
 ];

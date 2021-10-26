@@ -2,11 +2,16 @@ import * as React from "react";
 import Tweet from "../Tweet";
 import {CSSTransition, TransitionGroup} from "react-transition-group";
 
-interface Property {
+export interface OwnProperty {
+  identity: TheMoodyBlues.Store.TimelineIdentity;
   tweets: TweetType[];
   lastReadID: number;
+}
+export interface StateProperty {}
+export interface DispatchProperty {
   onScroll: any;
 }
+type Property = OwnProperty & StateProperty & DispatchProperty;
 
 export default class TweetList extends React.Component<Property, {}> {
   constructor(property: Property) {

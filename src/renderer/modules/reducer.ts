@@ -2,10 +2,14 @@ import {combineReducers} from "redux";
 import {reducer as formReducer} from "redux-form";
 
 import agent from "./agent";
-import home from "./home";
+import timelines from "./timelines";
+import subcontents from "./subcontents";
+import principal from "./principal";
 
 export default combineReducers({
   agent,
-  home,
+  timelines,
+  subcontents,
+  principal,
   form: formReducer,
 });

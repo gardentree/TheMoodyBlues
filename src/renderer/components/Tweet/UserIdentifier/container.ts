@@ -1,6 +1,6 @@
 import {connect} from "react-redux";
 import Component from "./component";
-import {displayUserTimeline} from "../../../modules/home";
+import {displayUserTimeline} from "@modules/subcontents";
 
 const mapDispatchToProps = {
   showUserTimeline: (event: React.SyntheticEvent) => {

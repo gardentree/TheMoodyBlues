@@ -3,7 +3,7 @@ import TweetList from "../TweetList";
 import {Field, InjectedFormProps} from "redux-form";
 
 export interface OwnProperty {
-  identity: string;
+  identity: TheMoodyBlues.Store.TimelineIdentity;
   handleSubmit: any;
 }
 export interface StateProperty {
@@ -20,7 +20,7 @@ type Property = OwnProperty & StateProperty & DispatchProperty & InjectedFormPro
 
 export default class Search extends React.Component<Property, any> {
   render() {
-    const {tweets, lastReadID, hasQuery, handleSubmit, search, reset} = this.props;
+    const {identity, tweets, lastReadID, hasQuery, handleSubmit, search, reset} = this.props;
 
     return (
       <div className="Search">
@@ -40,7 +40,7 @@ export default class Search extends React.Component<Property, any> {
           </form>
         </div>
         <div style={{height: "100%"}}>
-          <TweetList tweets={tweets} lastReadID={lastReadID} />
+          <TweetList identity={identity} tweets={tweets} lastReadID={lastReadID} />
         </div>
       </div>
     );

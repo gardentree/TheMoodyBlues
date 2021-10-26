@@ -2,9 +2,9 @@ import {expectSaga} from "redux-saga-test-plan";
 import {expect} from "chai";
 import TimelineSaga from "../../../../src/renderer/sagas/contents/timeline.ts";
 
-const newTarget = (tweets: TweetType[], timeline: TheMoodyBlues.Timeline) => {
+const newTarget = (tweets: TweetType[], timeline: TheMoodyBlues.Store.Timeline) => {
   const agent = {
-    [timeline.meta.way]: () => tweets,
+    [timeline.preference.way]: () => tweets,
   };
 
   const target = new TimelineSaga(agent, timeline);
@@ -22,7 +22,7 @@ describe(TimelineSaga.name, () => {
       const title = "Home";
 
       const target = newTarget([], {
-        meta: {
+        preference: {
           identity: identity,
           title: title,
           component: "Timeline",
@@ -57,6 +57,7 @@ describe(TimelineSaga.name, () => {
         .put({
           type: "READ",
           payload: {lastReadID: 1},
+          meta: {identity: identity},
         })
         .put({
           type: `${identity}_START_TIMER`,
@@ -75,7 +76,7 @@ describe(TimelineSaga.name, () => {
       const title = "Home";
 
       const target = newTarget([], {
-        meta: {
+        preference: {
           identity: "home",
           title: title,
           component: "Timeline",
@@ -127,7 +128,7 @@ describe(TimelineSaga.name, () => {
       const title = "Home";
 
       const target = newTarget([], {
-        meta: {
+        preference: {
           identity: "home",
           title: title,
           component: "Timeline",
@@ -185,7 +186,7 @@ describe(TimelineSaga.name, () => {
       const title = "Home";
 
       const target = newTarget([], {
-        meta: {
+        preference: {
           identity: "home",
           title: title,
           component: "Timeline",
@@ -243,7 +244,7 @@ describe(TimelineSaga.name, () => {
       const title = "Home";
 
       const target = newTarget([], {
-        meta: {
+        preference: {
           identity: "home",
           title: title,
           component: "Timeline",

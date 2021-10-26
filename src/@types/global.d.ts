@@ -7,8 +7,8 @@ interface Window {
       setAccessSecret(value: string);
       getMuteKeywords(): string[];
       setMuteKeywords(keywords: string[]);
-      getTimelinePreferences(): TheMoodyBlues.TimelinePreference[];
-      setTimelinePreferences(timelines: TheMoodyBlues.TimelinePreference[]);
+      getTimelinePreferences(): TheMoodyBlues.Store.TimelinePreference[];
+      setTimelinePreferences(timelines: TheMoodyBlues.Store.TimelinePreference[]);
       getTweets(name: string);
       setTweets(name: string, tweets: TweetType[]);
     };

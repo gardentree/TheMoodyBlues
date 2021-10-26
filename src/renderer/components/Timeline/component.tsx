@@ -16,9 +16,9 @@ type Property = OwnProperty & StateProperty & DispatchProperty;
 
 export default class Timeline extends React.Component<Property, {}> {
   render() {
-    const {tweets, lastReadID} = this.props;
+    const {identity, tweets, lastReadID} = this.props;
 
-    return <TweetList tweets={tweets} lastReadID={lastReadID} />;
+    return <TweetList identity={identity} tweets={tweets} lastReadID={lastReadID} />;
   }
 
   componentDidMount() {

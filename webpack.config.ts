@@ -58,6 +58,7 @@ const preload: Configuration = {
   },
   resolve: {
     alias: {
+      "@modules": path.resolve(__dirname, "src/renderer/modules"),
       "@libraries": path.resolve(__dirname, "src/libraries"),
     },
   },
@@ -85,6 +86,7 @@ const renderer: any = {
   },
   resolve: {
     alias: {
+      "@modules": path.resolve(__dirname, "src/renderer/modules"),
       "@libraries": path.resolve(__dirname, "src/libraries"),
     },
   },
