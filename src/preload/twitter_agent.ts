@@ -137,7 +137,7 @@ function setup(client: any): TwitterAgent {
           return reject(error);
         }
 
-        resolve(lists);
+        resolve(lists.reverse());
       });
     });
   };
