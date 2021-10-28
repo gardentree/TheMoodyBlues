@@ -94,7 +94,7 @@ function loadTimelines() {
       preference: preference,
       tweets: [],
       state: {
-        lastReadID: 0,
+        lastReadID: "",
       },
     });
   }

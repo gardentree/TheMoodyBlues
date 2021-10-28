@@ -13,7 +13,7 @@ const mapStateToProps = (state: TheMoodyBlues.Store.State, own: OwnProperty): St
 
   return {
     tweets: timeline.tweets || [],
-    lastReadID: timeline.state.lastReadID || 0,
+    lastReadID: timeline.state.lastReadID,
     initialValues: {query: timeline.state.query!},
     hasQuery: query && query.length > 0,
   };

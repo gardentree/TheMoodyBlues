@@ -8,7 +8,7 @@ export interface OwnProperty {
 }
 export interface StateProperty {
   tweets: TweetType[];
-  lastReadID: number;
+  lastReadID: string;
   initialValues: {query: string};
   hasQuery: boolean;
 }

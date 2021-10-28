@@ -5,7 +5,7 @@ import {CSSTransition, TransitionGroup} from "react-transition-group";
 export interface OwnProperty {
   identity: TheMoodyBlues.Store.TimelineIdentity;
   tweets: TweetType[];
-  lastReadID: number;
+  lastReadID: string | null;
 }
 export interface StateProperty {}
 export interface DispatchProperty {
@@ -21,7 +21,7 @@ export default class TweetList extends React.Component<Property, {}> {
   render() {
     const {tweets, lastReadID, onScroll} = this.props;
     const elements = tweets.map((tweet) => {
-      const unread = lastReadID > 0 && tweet.id > lastReadID;
+      const unread = lastReadID != null && tweet.id_str > lastReadID;
       return (
         <CSSTransition key={tweet.id_str} timeout={500} classNames="fade">
           <li data-id={tweet.id_str} className={unread ? "unread" : undefined} tabIndex={-1}>

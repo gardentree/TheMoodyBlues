@@ -5,13 +5,11 @@ import * as timelines from "@modules/timelines";
 
 const mapStateToProps = (state: TheMoodyBlues.Store.State, own: OwnProperty): StateProperty => {
   const {timelines} = state;
-  const timeline = timelines.get(own.identity);
-
-  if (!timeline) return {tweets: [], lastReadID: 0};
+  const timeline = timelines.get(own.identity)!;
 
   return {
     tweets: timeline.tweets || [],
-    lastReadID: timeline.state.lastReadID || 0,
+    lastReadID: timeline.state.lastReadID,
   };
 };
 const mapDispatchToProps = (dispatch: any, own: OwnProperty): DispatchProperty => {

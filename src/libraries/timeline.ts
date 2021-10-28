@@ -74,7 +74,7 @@ export function overwrite(oldTimelineMap: TheMoodyBlues.Store.TimelineMap) {
       newTimeline = {
         preference: preference,
         tweets: [],
-        state: {lastReadID: 0},
+        state: {lastReadID: ""},
       };
     }
 

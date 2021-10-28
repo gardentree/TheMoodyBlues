@@ -13,7 +13,7 @@ const mapStateToProps = (state: TheMoodyBlues.Store.State) => {
         tweets,
         state: {lastReadID},
       } = timeline;
-      let count = tweets ? tweets.filter((tweet: TweetType) => tweet.id > lastReadID).length : 0;
+      let count = tweets ? tweets.filter((tweet: TweetType) => tweet.id_str > lastReadID).length : 0;
       if (count <= 0) count = 0;
 
       unreads[identity] = count;

@@ -17,7 +17,7 @@ namespace TheMoodyBlues {
       preference: TimelinePreference;
       tweets: TweetType[];
       state: {
-        lastReadID: number;
+        lastReadID: string;
         query?: string;
       };
     }

@@ -6,7 +6,7 @@ export interface OwnProperty {
 }
 export interface StateProperty {
   tweets: TweetType[];
-  lastReadID: number;
+  lastReadID: string;
 }
 export interface DispatchProperty {
   didMount: any;

@@ -18,7 +18,7 @@ const SubContents: React.SFC<Property> = ({container, tweets, onClose}) => {
           <span className="icon icon-cancel" />
         </button>
       </div>
-      <TweetList identity="subcontents" tweets={tweets!} lastReadID={0} />
+      <TweetList identity="subcontents" tweets={tweets!} lastReadID={null} />
     </div>,
     document.querySelector(container)!
   );
