@@ -1,12 +1,13 @@
-import * as React from "react";
+import React, {Suspense} from "react";
+import Timelines from "../Timelines";
 import Mute from "../Mute";
 
 class Preferences extends React.Component<{}, {focus: string}> {
-  state = {focus: Mute.name};
+  state = {focus: Timelines.name};
 
   render() {
     const {focus} = this.state;
-    const tabs = [Mute];
+    const tabs = [Timelines, Mute];
 
     return (
       <div className="Preferences">
@@ -34,7 +35,7 @@ class Preferences extends React.Component<{}, {focus: string}> {
           {tabs.map((tab) => {
             return (
               <div key={tab.name} className="window-content" style={{display: focus == tab.name ? "block" : "none"}}>
-                {React.createElement(tab)}
+                <Suspense fallback={<p>Loading...</p>}>{React.createElement<any>(tab)}</Suspense>
               </div>
             );
           })}

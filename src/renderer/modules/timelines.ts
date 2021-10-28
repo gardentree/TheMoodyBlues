@@ -1,5 +1,6 @@
 import {createActions, handleActions} from "redux-actions";
 import merge from "@libraries/merger";
+import {overwrite} from "@libraries/timeline";
 
 type RecursivePartial<T> = {
   [P in keyof T]?: RecursivePartial<T[P]>;
@@ -14,7 +15,7 @@ function mergeTimeline(oldTimelines: Map<string, TheMoodyBlues.Store.Timeline>, 
   return timelines;
 }
 
-export const {updateTweets, read, setupSearch} = createActions({
+export const {updateTweets, read, setupSearch, refreshPreferences} = createActions({
   UPDATE_TWEETS: [
     (tweets, identity, options = undefined) => ({
       tweets: tweets,
@@ -40,6 +41,7 @@ export const {updateTweets, read, setupSearch} = createActions({
       identity: identity,
     }),
   ],
+  REFRESH_PREFERENCES: () => {},
 });
 
 export default handleActions<TheMoodyBlues.Store.TimelineMap, any, any>(
@@ -64,6 +66,9 @@ export default handleActions<TheMoodyBlues.Store.TimelineMap, any, any>(
           query: query,
         },
       });
+    },
+    [refreshPreferences.toString()]: (state, action) => {
+      return overwrite(state);
     },
   },
   new Map()

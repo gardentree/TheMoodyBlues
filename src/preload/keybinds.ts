@@ -1,6 +1,6 @@
 import {ipcRenderer, IpcRendererEvent, shell, clipboard} from "electron";
 import {focusLatestTweet, focusUnreadTweet, zoomIn, zoomOut, zoomReset} from "@modules/principal";
-import {reload, searchTweets} from "@modules/timelines";
+import {reload, searchTweets, refreshPreferences} from "@modules/timelines";
 import {displayConversation} from "@modules/subcontents";
 
 export default function (store: any) {
@@ -43,5 +43,9 @@ export default function (store: any) {
   });
   ipcRenderer.on("copy_tweet_in_json", (event: IpcRendererEvent, context: TweetMenuType) => {
     clipboard.writeText(JSON.stringify(context.tweet, null, "  "));
+  });
+
+  ipcRenderer.on("refresh_preferences", (event: IpcRendererEvent, arugments: any) => {
+    store.dispatch(refreshPreferences());
   });
 }

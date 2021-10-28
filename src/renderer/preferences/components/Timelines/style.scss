@@ -1,0 +1,15 @@
+.PreferencesTimelines {
+  legend {
+    input {
+      margin-right: 8px;
+    }
+  }
+  ol {
+    padding-left: 0;
+    list-style-type: none;
+
+    li + li {
+      margin-top: 8px;
+    }
+  }
+}

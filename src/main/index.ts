@@ -183,6 +183,8 @@ function openPreferences() {
   }
 
   preferences.on("closed", () => {
+    mainWindow!.webContents.send("refresh_preferences", {});
+
     preferences = null;
   });
 }
