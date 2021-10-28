@@ -1,6 +1,9 @@
 import {put, call} from "redux-saga/effects";
 import ComponentSaga from "./abstract";
 import * as timelines from "@modules/timelines";
+import mute from "../../helpers/mute";
+
+const {TheMoodyBlues} = window;
 
 export default class SearchSaga extends ComponentSaga {
   constructor(agent: TwitterAgent, timeline: TheMoodyBlues.Store.Timeline) {
@@ -15,7 +18,14 @@ export default class SearchSaga extends ComponentSaga {
 
     const query = this.timeline.state.query || "";
     if (query.length > 0) {
-      const tweets: TweetType[] = yield call(this.agent.search, query, this.latest());
+      let tweets: TweetType[] = yield call(this.agent.search, query, this.latest());
+      if (this.timeline.preference.mute) {
+        tweets = mute(tweets);
+      }
+      if (this.timeline.preference.growl) {
+        TheMoodyBlues.growl(tweets);
+      }
+
       const newTweets = tweets.concat(this.timeline.tweets).slice(0, 400);
 
       yield put(timelines.updateTweets(newTweets, this.timeline.preference.identity, {query: query}));

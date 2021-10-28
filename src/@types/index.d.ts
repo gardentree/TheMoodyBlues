@@ -28,6 +28,9 @@ namespace TheMoodyBlues {
       interval: number;
       way: "retrieveTimeline" | "search" | "retrieveMentions" | "retrieveTimelineOfList";
       parameters?: any[];
+      active: boolean;
+      growl: boolean;
+      mute: boolean;
     }
     type SubContents = any;
 

@@ -86,6 +86,10 @@ function loadTimelines() {
   const timelines: TheMoodyBlues.Store.TimelineMap = new Map();
 
   for (const preference of TheMoodyBlues.storage.getTimelinePreferences()) {
+    if (!preference.active) {
+      continue;
+    }
+
     timelines.set(preference.identity, {
       preference: preference,
       tweets: [],

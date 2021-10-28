@@ -29,8 +29,12 @@ export default class TimelineSaga extends ComponentSaga {
     const parameters = (this.timeline.preference.parameters || []).concat(this.latest());
     let tweets: TweetType[] = yield call(this.agent[this.timeline.preference.way], ...parameters);
     if (tweets.length > 0) {
-      tweets = mute(tweets);
-      TheMoodyBlues.growl(tweets);
+      if (this.timeline.preference.mute) {
+        tweets = mute(tweets);
+      }
+      if (this.timeline.preference.growl) {
+        TheMoodyBlues.growl(tweets);
+      }
 
       const newTweets = tweets.concat(this.timeline.tweets).slice(0, 400);
 
