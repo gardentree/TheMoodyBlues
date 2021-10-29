@@ -41,7 +41,7 @@ export function initialPreferences() {
   return [{...HOME}, {...SEARCH}, {...MENTIONS}];
 }
 
-export function merge(actives: TheMoodyBlues.Store.TimelinePreference[], lists: Twitter.List[]): TheMoodyBlues.Store.TimelinePreference[] {
+export function mixPreferences(actives: TheMoodyBlues.Store.TimelinePreference[], lists: Twitter.List[]): TheMoodyBlues.Store.TimelinePreference[] {
   const activeMap = new Map(actives.map((active) => [active.identity, Object.assign({active: true}, active)]));
 
   const timelines: TheMoodyBlues.Store.TimelinePreference[] = [];
@@ -56,18 +56,18 @@ export function merge(actives: TheMoodyBlues.Store.TimelinePreference[], lists: 
   return timelines;
 }
 
-export function overwrite(oldTimelineMap: TheMoodyBlues.Store.TimelineMap) {
-  const newTimelineMap: TheMoodyBlues.Store.TimelineMap = new Map();
+export function refreshPreferences(currentMap: TheMoodyBlues.Store.TimelineMap): TheMoodyBlues.Store.TimelineMap {
+  const newMap: TheMoodyBlues.Store.TimelineMap = new Map();
 
   for (const preference of TheMoodyBlues.storage.getTimelinePreferences()) {
     if (!preference.active) {
       continue;
     }
 
-    const oldTimeline = oldTimelineMap.get(preference.identity);
+    const current = currentMap.get(preference.identity);
     let newTimeline: TheMoodyBlues.Store.Timeline | null = null;
-    if (oldTimeline) {
-      newTimeline = merger(oldTimeline, {
+    if (current) {
+      newTimeline = merger(current, {
         preference: preference,
       }) as TheMoodyBlues.Store.Timeline;
     } else {
@@ -78,8 +78,8 @@ export function overwrite(oldTimelineMap: TheMoodyBlues.Store.TimelineMap) {
       };
     }
 
-    newTimelineMap.set(preference.identity, newTimeline);
+    newMap.set(preference.identity, newTimeline);
   }
 
-  return newTimelineMap;
+  return newMap;
 }

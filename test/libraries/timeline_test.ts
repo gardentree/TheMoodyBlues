@@ -1,5 +1,5 @@
 import {expect} from "chai";
-import {merge} from "@libraries/timeline";
+import {mixPreferences} from "@libraries/timeline";
 
 const HOME = {
   identity: "home",
@@ -36,18 +36,18 @@ const LIST = {
   growl: true,
 };
 
-describe("merge", () => {
+describe("mixPreferences", () => {
   it("same", () => {
     const actives = [HOME, SEARCH, MENTIONS];
 
-    expect(merge(actives, [])).to.deep.equal([Object.assign({active: true}, HOME), Object.assign({active: true}, SEARCH), Object.assign({active: true}, MENTIONS)]);
+    expect(mixPreferences(actives, [])).to.deep.equal([Object.assign({active: true}, HOME), Object.assign({active: true}, SEARCH), Object.assign({active: true}, MENTIONS)]);
   });
 
   it("add list", () => {
     const actives = [HOME, SEARCH, MENTIONS];
 
     expect(
-      merge(actives, [
+      mixPreferences(actives, [
         {
           id_str: "news",
           name: "News",
@@ -59,6 +59,6 @@ describe("merge", () => {
   it("modify", () => {
     const actives = [Object.assign({}, HOME, {interval: 240}), SEARCH, MENTIONS];
 
-    expect(merge(actives, [])).to.deep.equal([Object.assign({active: true}, HOME, {interval: 240}), Object.assign({active: true}, SEARCH), Object.assign({active: true}, MENTIONS)]);
+    expect(mixPreferences(actives, [])).to.deep.equal([Object.assign({active: true}, HOME, {interval: 240}), Object.assign({active: true}, SEARCH), Object.assign({active: true}, MENTIONS)]);
   });
 });

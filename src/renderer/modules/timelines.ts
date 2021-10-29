@@ -1,6 +1,6 @@
 import {createActions, handleActions} from "redux-actions";
 import merge from "@libraries/merger";
-import {overwrite} from "@libraries/timeline";
+import * as library from "@libraries/timeline";
 
 type RecursivePartial<T> = {
   [P in keyof T]?: RecursivePartial<T[P]>;
@@ -68,7 +68,7 @@ export default handleActions<TheMoodyBlues.Store.TimelineMap, any, any>(
       });
     },
     [refreshPreferences.toString()]: (state, action) => {
-      return overwrite(state);
+      return library.refreshPreferences(state);
     },
   },
   new Map()

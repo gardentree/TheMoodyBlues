@@ -1,5 +1,5 @@
 import * as React from "react";
-import {merge} from "@libraries/timeline";
+import {mixPreferences} from "@libraries/timeline";
 
 const {storage, agent} = window.TheMoodyBlues;
 
@@ -16,7 +16,7 @@ const getCurrentPreferences = (() => {
       .lists()
       .then((lists) => {
         const current = storage.getTimelinePreferences();
-        timelines = merge(current, lists);
+        timelines = mixPreferences(current, lists);
       });
   };
 })();
