@@ -31,6 +31,7 @@ function createMainWindow() {
   const window = new BrowserWindow({
     webPreferences: {
       preload: pathname.join(__dirname, "preload.js"),
+      spellcheck: false,
     },
     title: "The Moody Blues",
     acceptFirstMouse: true,
@@ -170,6 +171,8 @@ function openPreferences() {
   preferences = new BrowserWindow({
     webPreferences: {
       preload: pathname.join(__dirname, "preload.js"),
+
+      spellcheck: false,
     },
     title: "Preferences",
     titleBarStyle: "hidden",
