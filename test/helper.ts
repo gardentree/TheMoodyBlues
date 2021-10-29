@@ -19,7 +19,7 @@ global.window.TheMoodyBlues = {
     getTweets: (name: string) => {
       return [];
     },
-    setTweets: (name: string, tweets: TweetType[]) => {},
+    setTweets: (name: string, tweets: Twitter.Tweet[]) => {},
   },
   authorize: () => {},
   keybinds: () => {},

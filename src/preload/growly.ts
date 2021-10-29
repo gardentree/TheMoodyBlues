@@ -1,7 +1,7 @@
 import growly from "growly";
 import {decodeHTML} from "../renderer/helpers/tools";
 
-export default function growl(tweets: TweetType[]) {
+export default function growl(tweets: Twitter.Tweet[]) {
   if (process.env.NODE_ENV === "test") return;
   if (tweets.length <= 0) return;
 

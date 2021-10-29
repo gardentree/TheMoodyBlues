@@ -4,7 +4,7 @@ import TweetList from "../TweetList";
 
 interface Property {
   container: string;
-  tweets?: TweetType[] | null;
+  tweets?: Twitter.Tweet[] | null;
   onClose?(): any;
 }
 

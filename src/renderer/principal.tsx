@@ -12,7 +12,7 @@ const {TheMoodyBlues} = window;
 
 export default function launch() {
   (async () => {
-    const agent = await new Promise<TwitterAgent>((resolve, reject) => {
+    const agent = await new Promise<TheMoodyBlues.TwitterAgent>((resolve, reject) => {
       resolve(TheMoodyBlues.agent.authorize(showVerifierForm));
     });
 
@@ -20,7 +20,7 @@ export default function launch() {
   })();
 }
 
-function setup(agent: TwitterAgent) {
+function setup(agent: TheMoodyBlues.TwitterAgent) {
   const sagaMiddleware = createSagaMiddleware();
   const store = createStore(rootReducer, applyMiddleware(sagaMiddleware, createLogger()));
 

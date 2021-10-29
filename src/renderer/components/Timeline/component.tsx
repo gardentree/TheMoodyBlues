@@ -5,7 +5,7 @@ export interface OwnProperty {
   identity: string;
 }
 export interface StateProperty {
-  tweets: TweetType[];
+  tweets: Twitter.Tweet[];
   lastReadID: string;
 }
 export interface DispatchProperty {

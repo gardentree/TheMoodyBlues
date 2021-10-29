@@ -5,7 +5,7 @@ import MediaBox from "./MediaBox";
 import * as DateUtility from "date-fns";
 
 interface Property {
-  source: TweetType;
+  source: Twitter.Tweet;
   unread: boolean;
 }
 
@@ -31,7 +31,7 @@ export default class Tweet extends React.Component<Property, {}> {
   render() {
     const {source, unread} = this.props;
 
-    let tweet: TweetType, retweet: TweetType | null;
+    let tweet: Twitter.Tweet, retweet: Twitter.Tweet | null;
     if (source.retweeted_status === undefined) {
       tweet = source;
       retweet = null;
@@ -40,16 +40,16 @@ export default class Tweet extends React.Component<Property, {}> {
       retweet = source;
     }
 
-    let quote: TweetType | null = null;
+    let quote: Twitter.Tweet | null = null;
     if (tweet.quoted_status !== undefined) {
       quote = tweet.quoted_status;
     }
-    let quoted_medias: MediaType[] = [];
+    let quoted_medias: Twitter.Media[] = [];
     if (quote && quote.extended_entities) {
       quoted_medias = quote.extended_entities.media;
     }
 
-    let medias: MediaType[] = [];
+    let medias: Twitter.Media[] = [];
     if (tweet.extended_entities !== undefined) {
       medias = tweet.extended_entities.media;
     }

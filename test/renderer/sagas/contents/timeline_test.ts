@@ -2,7 +2,7 @@ import {expectSaga} from "redux-saga-test-plan";
 import {expect} from "chai";
 import TimelineSaga from "../../../../src/renderer/sagas/contents/timeline.ts";
 
-const newTarget = (tweets: TweetType[], timeline: TheMoodyBlues.Store.Timeline) => {
+const newTarget = (tweets: Twitter.Tweet[], timeline: TheMoodyBlues.Store.Timeline) => {
   const agent = {
     [timeline.preference.way]: () => tweets,
   };

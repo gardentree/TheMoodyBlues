@@ -7,7 +7,7 @@ export interface OwnProperty {
   handleSubmit: any;
 }
 export interface StateProperty {
-  tweets: TweetType[];
+  tweets: Twitter.Tweet[];
   lastReadID: string;
   initialValues: {query: string};
   hasQuery: boolean;

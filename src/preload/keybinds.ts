@@ -27,21 +27,21 @@ export default function (store: any) {
     store.dispatch(reload(true, null));
   });
 
-  ipcRenderer.on("open_tweet_in_browser", (event: IpcRendererEvent, context: TweetMenuType) => {
+  ipcRenderer.on("open_tweet_in_browser", (event: IpcRendererEvent, context: TheMoodyBlues.TweetMenu) => {
     const {tweet} = context;
 
     shell.openExternal(`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`);
   });
-  ipcRenderer.on("show_conversation_for_tweet", (event: IpcRendererEvent, context: TweetMenuType) => {
+  ipcRenderer.on("show_conversation_for_tweet", (event: IpcRendererEvent, context: TheMoodyBlues.TweetMenu) => {
     const origin = context.tweet.retweeted_status === undefined ? context.tweet : context.tweet.retweeted_status!;
 
     store.dispatch(displayConversation(origin));
   });
 
-  ipcRenderer.on("search", (event: IpcRendererEvent, context: TweetMenuType) => {
+  ipcRenderer.on("search", (event: IpcRendererEvent, context: TheMoodyBlues.TweetMenu) => {
     store.dispatch(searchTweets(context.keyword));
   });
-  ipcRenderer.on("copy_tweet_in_json", (event: IpcRendererEvent, context: TweetMenuType) => {
+  ipcRenderer.on("copy_tweet_in_json", (event: IpcRendererEvent, context: TheMoodyBlues.TweetMenu) => {
     clipboard.writeText(JSON.stringify(context.tweet, null, "  "));
   });
 

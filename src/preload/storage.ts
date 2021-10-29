@@ -81,7 +81,7 @@ exports = {
       storage.get(`${identity}.tweets`, (error: string, data: object) => {
         if (error) return reject(error);
 
-        let tweets: TweetType[];
+        let tweets: Twitter.Tweet[];
         if (Array.isArray(data)) {
           tweets = data;
         } else {
@@ -92,7 +92,7 @@ exports = {
       });
     });
   },
-  setTweets: (identity: string, tweets: TweetType[]) => {
+  setTweets: (identity: string, tweets: Twitter.Tweet[]) => {
     return new Promise<void>((resolve, reject) => {
       storage.set(`${identity}.tweets`, tweets, (error: string) => {
         if (error) return reject(error);

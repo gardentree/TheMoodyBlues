@@ -2,16 +2,16 @@ import {put, call, actionChannel, race, take, spawn} from "redux-saga/effects";
 import * as timelines from "@modules/timelines";
 
 export default abstract class ComponentSaga {
-  agent: TwitterAgent;
+  agent: TheMoodyBlues.TwitterAgent;
   timeline: TheMoodyBlues.Store.Timeline;
 
-  constructor(agent: TwitterAgent, timeline: TheMoodyBlues.Store.Timeline) {
+  constructor(agent: TheMoodyBlues.TwitterAgent, timeline: TheMoodyBlues.Store.Timeline) {
     this.agent = agent;
     this.timeline = timeline;
   }
 
-  abstract initialize(action: TheMoodyBlues.HomeAction): any;
-  abstract order(action: ActionType): any;
+  abstract initialize(action: TheMoodyBlues.ReduxAction): any;
+  abstract order(action: TheMoodyBlues.ReduxAction): any;
 
   protected *spawnTimer() {
     yield spawn(this.runTimer, this.timeline.preference.identity, this.timeline.preference.interval * 1000);

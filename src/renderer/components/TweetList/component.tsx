@@ -4,7 +4,7 @@ import {CSSTransition, TransitionGroup} from "react-transition-group";
 
 export interface OwnProperty {
   identity: TheMoodyBlues.Store.TimelineIdentity;
-  tweets: TweetType[];
+  tweets: Twitter.Tweet[];
   lastReadID: string | null;
 }
 export interface StateProperty {}

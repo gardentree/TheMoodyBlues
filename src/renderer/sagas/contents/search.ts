@@ -6,19 +6,19 @@ import mute from "../../helpers/mute";
 const {TheMoodyBlues} = window;
 
 export default class SearchSaga extends ComponentSaga {
-  constructor(agent: TwitterAgent, timeline: TheMoodyBlues.Store.Timeline) {
+  constructor(agent: TheMoodyBlues.TwitterAgent, timeline: TheMoodyBlues.Store.Timeline) {
     super(agent, timeline);
   }
 
-  *initialize(action: TheMoodyBlues.HomeAction) {
+  *initialize(action: TheMoodyBlues.ReduxAction) {
     yield this.spawnTimer();
   }
-  *order(action: ActionType) {
+  *order(action: TheMoodyBlues.ReduxAction) {
     yield this.stopTimer();
 
     const query = this.timeline.state.query || "";
     if (query.length > 0) {
-      let tweets: TweetType[] = yield call(this.agent.search, query, this.latest());
+      let tweets: Twitter.Tweet[] = yield call(this.agent.search, query, this.latest());
       if (this.timeline.preference.mute) {
         tweets = mute(tweets);
       }

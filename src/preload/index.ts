@@ -9,7 +9,7 @@ const openExternal = (url: string) => {
   shell.openExternal(url);
 };
 
-const openTweetMenu = (context: TweetMenuType) => {
+const openTweetMenu = (context: TheMoodyBlues.TweetMenu) => {
   ipcRenderer.send("openTweetMenu", context);
 };
 

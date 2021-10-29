@@ -24,6 +24,6 @@ export function setMuteKeywords(keywords: string[]) {
 export function getTweets(name: string) {
   return TheMoodyBlues.storage.getTweets(name);
 }
-export function setTweets(name: string, tweets: TweetType[]) {
+export function setTweets(name: string, tweets: Twitter.Tweet[]) {
   TheMoodyBlues.storage.setTweets(name, tweets);
 }

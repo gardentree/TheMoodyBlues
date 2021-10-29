@@ -6,12 +6,12 @@ import mute from "../../helpers/mute";
 const {TheMoodyBlues} = window;
 
 export default class TimelineSaga extends ComponentSaga {
-  constructor(agent: TwitterAgent, timeline: TheMoodyBlues.Store.Timeline) {
+  constructor(agent: TheMoodyBlues.TwitterAgent, timeline: TheMoodyBlues.Store.Timeline) {
     super(agent, timeline);
   }
 
-  *initialize(action: TheMoodyBlues.HomeAction) {
-    const tweets: TweetType[] = yield call(TheMoodyBlues.storage.getTweets, this.timeline.preference.identity);
+  *initialize(action: TheMoodyBlues.ReduxAction) {
+    const tweets: Twitter.Tweet[] = yield call(TheMoodyBlues.storage.getTweets, this.timeline.preference.identity);
 
     if (tweets.length > 0) {
       yield put(timelines.updateTweets(tweets, action.payload!.identity));
@@ -23,11 +23,11 @@ export default class TimelineSaga extends ComponentSaga {
     yield this.spawnTimer();
     yield this.startTimer();
   }
-  *order(action: ActionType) {
+  *order(action: TheMoodyBlues.ReduxAction) {
     if (action.meta.force) this.timeline.tweets = [];
 
     const parameters = (this.timeline.preference.parameters || []).concat(this.latest());
-    let tweets: TweetType[] = yield call(this.agent[this.timeline.preference.way], ...parameters);
+    let tweets: Twitter.Tweet[] = yield call(this.agent[this.timeline.preference.way], ...parameters);
     if (tweets.length > 0) {
       if (this.timeline.preference.mute) {
         tweets = mute(tweets);

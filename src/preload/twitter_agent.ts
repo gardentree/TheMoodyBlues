@@ -3,7 +3,7 @@ import {OAuth} from "oauth";
 import storage from "./storage";
 import TwitterClient from "twitter";
 
-function setup(client: any): TwitterAgent {
+function setup(client: any): TheMoodyBlues.TwitterAgent {
   client.get = client.get.bind(client);
 
   client.retrieveTimeline = (since_id: string | null) => {
@@ -15,7 +15,7 @@ function setup(client: any): TwitterAgent {
     if (since_id) option.since_id = since_id;
 
     return new Promise((resolve, reject) => {
-      client.get("statuses/home_timeline", option, (error: string, tweets: TweetType[], response: any) => {
+      client.get("statuses/home_timeline", option, (error: string, tweets: Twitter.Tweet[], response: any) => {
         if (error) {
           return reject(error);
         }
@@ -43,7 +43,7 @@ function setup(client: any): TwitterAgent {
     });
   };
 
-  client.retrieveTimelineOfUser = (name: string): Promise<TweetType[]> => {
+  client.retrieveTimelineOfUser = (name: string): Promise<Twitter.Tweet[]> => {
     let option: any = {
       screen_name: name,
       count: 100,
@@ -53,7 +53,7 @@ function setup(client: any): TwitterAgent {
     };
 
     return new Promise((resolve, reject) => {
-      client.get("statuses/user_timeline", option, (error: string, tweets: TweetType[], response: any) => {
+      client.get("statuses/user_timeline", option, (error: string, tweets: Twitter.Tweet[], response: any) => {
         if (error) return reject(error);
 
         resolve(tweets);
@@ -70,7 +70,7 @@ function setup(client: any): TwitterAgent {
     if (since_id) option.since_id = since_id;
 
     return new Promise((resolve, reject) => {
-      client.get("statuses/mentions_timeline", option, (error: string, tweets: TweetType[], response: any) => {
+      client.get("statuses/mentions_timeline", option, (error: string, tweets: Twitter.Tweet[], response: any) => {
         if (error) return reject(error);
 
         resolve(tweets);
@@ -78,10 +78,10 @@ function setup(client: any): TwitterAgent {
     });
   };
 
-  client.retrieveConversation = (criterion: TweetType) => {
+  client.retrieveConversation = (criterion: Twitter.Tweet) => {
     return new Promise((resolve, reject) => {
       (async () => {
-        var tweets: TweetType[] = await new Promise<TweetType[]>((resolve, reject) => {
+        var tweets: Twitter.Tweet[] = await new Promise<Twitter.Tweet[]>((resolve, reject) => {
           let option: any = {
             q: `to:${criterion.user.screen_name} -rt`,
             count: 200,
@@ -95,7 +95,7 @@ function setup(client: any): TwitterAgent {
               return reject(error);
             }
 
-            let tweets: TweetType[] = body["statuses"];
+            let tweets: Twitter.Tweet[] = body["statuses"];
             resolve(tweets.filter((tweet) => criterion.id_str === tweet.in_reply_to_status_id_str));
           });
         });
@@ -103,14 +103,14 @@ function setup(client: any): TwitterAgent {
         tweets.push(criterion);
         var target = criterion;
         for (var i = 0; !!target.in_reply_to_status_id_str && i < 20; i++) {
-          target = await new Promise<TweetType>((resolve, reject) => {
+          target = await new Promise<Twitter.Tweet>((resolve, reject) => {
             let option: any = {
               id: target.in_reply_to_status_id_str,
               include_entities: true,
               tweet_mode: "extended",
             };
 
-            client.get("statuses/show", option, (error: string, tweet: TweetType, response: any) => {
+            client.get("statuses/show", option, (error: string, tweet: Twitter.Tweet, response: any) => {
               if (error) {
                 return reject(error);
               }
@@ -151,7 +151,7 @@ function setup(client: any): TwitterAgent {
     if (since_id) option.since_id = since_id;
 
     return new Promise((resolve, reject) => {
-      client.get("lists/statuses.json", option, (error: string, tweets: TweetType[], response: any) => {
+      client.get("lists/statuses.json", option, (error: string, tweets: Twitter.Tweet[], response: any) => {
         if (error) {
           return reject(error);
         }
@@ -212,7 +212,7 @@ function getAccessToken(requestToken: Token, verifier: string) {
   });
 }
 
-export function call(): TwitterAgent | null {
+export function call(): TheMoodyBlues.TwitterAgent | null {
   const client = loadClient();
   if (client) {
     return setup(client);
@@ -220,7 +220,7 @@ export function call(): TwitterAgent | null {
     return null;
   }
 }
-export async function authorize(showVerifierForm: () => string): Promise<TwitterAgent> {
+export async function authorize(showVerifierForm: () => string): Promise<TheMoodyBlues.TwitterAgent> {
   const agent = call();
   if (agent) {
     return agent;
