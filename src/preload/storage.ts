@@ -10,7 +10,7 @@ const userDataDirectory = (() => {
     }
   }
 
-  throw process.argv;
+  throw new Error(`There's no --user-data-dir in [${process.argv.toString()}]`);
 })();
 
 const store = new ElectronStore({cwd: userDataDirectory});
