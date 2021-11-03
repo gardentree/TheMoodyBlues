@@ -44,13 +44,13 @@ namespace TheMoodyBlues {
   }
 
   interface TwitterAgent {
-    timeline(since_id: string | null): Twitter.Tweet[];
-    search(query: string, since_id: string | null): Twitter.Tweet[];
-    retrieveTimelineOfUser(name: string): Twitter.Tweet[];
-    retrieveMentions(since_id: string | null): Twitter.Tweet[];
-    retrieveConversation(criterion: Twitter.Tweet): Twitter.Tweet[];
+    retrieveTimeline(since_id: string | null): Promise<Twitter.Tweet[]>;
+    search(query: string, since_id: string | null): Promise<Twitter.Tweet[]>;
+    retrieveTimelineOfUser(name: string): Promise<Twitter.Tweet[]>;
+    retrieveMentions(since_id: string | null): Promise<Twitter.Tweet[]>;
+    retrieveConversation(criterion: Twitter.Tweet): Promise<Twitter.Tweet[]>;
     lists(): Promise<Twitter.List[]>;
-    retrieveTimelineOfList(list_id: string, since_id: string | null): Twitter.Tweet[];
+    retrieveTimelineOfList(list_id: string, since_id: string | null): Promise<Twitter.Tweet[]>;
   }
 
   interface ReduxAction {

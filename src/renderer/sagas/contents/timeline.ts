@@ -27,7 +27,7 @@ export default class TimelineSaga extends ComponentSaga {
     if (action.meta.force) this.timeline.tweets = [];
 
     const parameters = (this.timeline.preference.parameters || []).concat(this.latest());
-    let tweets: Twitter.Tweet[] = yield call(this.agent[this.timeline.preference.way], ...parameters);
+    let tweets: Twitter.Tweet[] = yield call(this.agent[this.timeline.preference.way] as any, ...parameters);
     if (tweets.length > 0) {
       if (this.timeline.preference.mute) {
         tweets = mute(tweets);

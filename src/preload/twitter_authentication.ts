@@ -56,7 +56,7 @@ function getAccessToken(requestToken: Token, verifier: string) {
 export function call(): TheMoodyBlues.TwitterAgent | null {
   const client = loadClient();
   if (client) {
-    return incarnate(client);
+    return client;
   } else {
     return null;
   }
@@ -75,5 +75,5 @@ export async function authorize(showVerifierForm: () => string): Promise<TheMood
   storage.setAccessKey(accessToken.key);
   storage.setAccessSecret(accessToken.secret);
 
-  return incarnate(createClient(accessToken));
+  return createClient(accessToken);
 }
