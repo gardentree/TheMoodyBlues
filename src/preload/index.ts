@@ -1,6 +1,6 @@
 import {contextBridge, ipcRenderer, shell} from "electron";
 import {buildDefaultStorage} from "./storage";
-import {authorize, call} from "./twitter_agent";
+import {authorize, call} from "./twitter_authentication";
 import growl from "./growly";
 import logger from "electron-log";
 import keybinds from "./keybinds";
