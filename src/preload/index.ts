@@ -1,5 +1,5 @@
 import {contextBridge, ipcRenderer, shell} from "electron";
-import storage from "./storage";
+import {buildDefaultStorage} from "./storage";
 import {authorize, call} from "./twitter_agent";
 import growl from "./growly";
 import logger from "electron-log";
@@ -18,7 +18,7 @@ contextBridge.exposeInMainWorld("TheMoodyBlues", {
     authorize: authorize,
     call: call,
   },
-  storage: storage,
+  storage: buildDefaultStorage(),
   keybinds: keybinds,
   growl: growl,
   openTweetMenu: openTweetMenu,

@@ -1,6 +1,6 @@
 import {shell} from "electron";
 import {OAuth} from "oauth";
-import storage from "./storage";
+import {buildDefaultStorage} from "./storage";
 import TwitterClient from "twitter";
 
 function setup(client: any): TheMoodyBlues.TwitterAgent {
@@ -165,6 +165,7 @@ function setup(client: any): TheMoodyBlues.TwitterAgent {
 }
 
 const oauth = new OAuth("https://api.twitter.com/oauth/request_token", "https://api.twitter.com/oauth/access_token", process.env.CONSUMER_KEY!, process.env.CONSUMER_SECRET!, "1.0A", null, "HMAC-SHA1");
+const storage = buildDefaultStorage();
 
 function loadClient(): any | null {
   const accessKey = storage.getAccessKey();
