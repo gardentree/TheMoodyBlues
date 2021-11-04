@@ -99,29 +99,33 @@ export function incarnate(client: any): TheMoodyBlues.TwitterAgent {
 
           tweets.push(criterion);
           var target = criterion;
-          for (var i = 0; !!target.in_reply_to_status_id_str && i < 20; i++) {
-            target = await new Promise<Twitter.Tweet>((resolve, reject) => {
-              let option: any = {
-                id: target.in_reply_to_status_id_str,
-                include_entities: true,
-                tweet_mode: "extended",
-              };
+          try {
+            for (var i = 0; !!target.in_reply_to_status_id_str && i < 20; i++) {
+              target = await new Promise<Twitter.Tweet>((resolve, reject) => {
+                let option: any = {
+                  id: target.in_reply_to_status_id_str,
+                  include_entities: true,
+                  tweet_mode: "extended",
+                };
 
-              client.get("statuses/show", option, (error: string, tweet: Twitter.Tweet, response: any) => {
-                if (error) {
-                  return reject(error);
-                }
+                client.get("statuses/show", option, (error: string, tweet: Twitter.Tweet, response: any) => {
+                  if (error) {
+                    return reject(error);
+                  }
 
-                resolve(tweet);
+                  resolve(tweet);
+                });
               });
-            });
 
-            tweets.push(target);
+              tweets.push(target);
+            }
+          } catch (error) {
+            console.error(error);
           }
 
           resolve(tweets);
         })().catch((error) => {
-          throw error;
+          reject(error);
         });
       });
     },
