@@ -11,7 +11,6 @@ export function incarnate(client: any): TheMoodyBlues.TwitterAgent {
       if (since_id) option.since_id = since_id;
 
       return new Promise<Twitter.Tweet[]>((resolve, reject) => {
-        console.log(client);
         client.get("statuses/home_timeline", option, (error: string, tweets: Twitter.Tweet[], response: any) => {
           if (error) {
             return reject(error);
