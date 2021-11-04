@@ -1,6 +1,6 @@
 import TwitterClient from "twitter";
 
-export function incarnate(client: any): TheMoodyBlues.TwitterAgent {
+export function incarnate(client: TwitterClient): TheMoodyBlues.TwitterAgent {
   return {
     retrieveTimeline: (since_id: string | null) => {
       let option: any = {
@@ -11,12 +11,12 @@ export function incarnate(client: any): TheMoodyBlues.TwitterAgent {
       if (since_id) option.since_id = since_id;
 
       return new Promise<Twitter.Tweet[]>((resolve, reject) => {
-        client.get("statuses/home_timeline", option, (error: string, tweets: Twitter.Tweet[], response: any) => {
+        client.get("statuses/home_timeline", option, (error, data, response) => {
           if (error) {
             return reject(error);
           }
 
-          resolve(tweets);
+          resolve(data as Twitter.Tweet[]);
         });
       });
     },
@@ -31,15 +31,15 @@ export function incarnate(client: any): TheMoodyBlues.TwitterAgent {
       if (since_id) option.since_id = since_id;
 
       return new Promise((resolve, reject) => {
-        client.get("search/tweets", option, (error: string, body: any, response: any) => {
+        client.get("search/tweets", option, (error, data, response) => {
           if (error) return reject(error);
 
-          resolve(body["statuses"]);
+          resolve(data["statuses"] as Twitter.Tweet[]);
         });
       });
     },
 
-    retrieveTimelineOfUser: (name: string): Promise<Twitter.Tweet[]> => {
+    retrieveTimelineOfUser: (name: string) => {
       let option: any = {
         screen_name: name,
         count: 100,
@@ -49,10 +49,10 @@ export function incarnate(client: any): TheMoodyBlues.TwitterAgent {
       };
 
       return new Promise<Twitter.Tweet[]>((resolve, reject) => {
-        client.get("statuses/user_timeline", option, (error: string, tweets: Twitter.Tweet[], response: any) => {
+        client.get("statuses/user_timeline", option, (error, data, response) => {
           if (error) return reject(error);
 
-          resolve(tweets);
+          resolve(data as Twitter.Tweet[]);
         });
       });
     },
@@ -66,10 +66,10 @@ export function incarnate(client: any): TheMoodyBlues.TwitterAgent {
       if (since_id) option.since_id = since_id;
 
       return new Promise<Twitter.Tweet[]>((resolve, reject) => {
-        client.get("statuses/mentions_timeline", option, (error: string, tweets: Twitter.Tweet[], response: any) => {
+        client.get("statuses/mentions_timeline", option, (error, data, response) => {
           if (error) return reject(error);
 
-          resolve(tweets);
+          resolve(data as Twitter.Tweet[]);
         });
       });
     },
@@ -78,7 +78,7 @@ export function incarnate(client: any): TheMoodyBlues.TwitterAgent {
       return new Promise((resolve, reject) => {
         (async () => {
           var tweets: Twitter.Tweet[] = await new Promise<Twitter.Tweet[]>((resolve, reject) => {
-            let option: any = {
+            const option: any = {
               q: `to:${criterion.user.screen_name} -rt`,
               count: 200,
               include_entities: true,
@@ -86,12 +86,12 @@ export function incarnate(client: any): TheMoodyBlues.TwitterAgent {
               since_id: criterion.id_str,
             };
 
-            client.get("search/tweets", option, (error: string, body: any, response: any) => {
+            client.get("search/tweets", option, (error, data, response) => {
               if (error) {
                 return reject(error);
               }
 
-              let tweets: Twitter.Tweet[] = body["statuses"];
+              const tweets: Twitter.Tweet[] = data["statuses"] as Twitter.Tweet[];
               resolve(tweets.filter((tweet) => criterion.id_str === tweet.in_reply_to_status_id_str));
             });
           });
@@ -107,12 +107,12 @@ export function incarnate(client: any): TheMoodyBlues.TwitterAgent {
                   tweet_mode: "extended",
                 };
 
-                client.get("statuses/show", option, (error: string, tweet: Twitter.Tweet, response: any) => {
+                client.get("statuses/show", option, (error, data, response) => {
                   if (error) {
                     return reject(error);
                   }
 
-                  resolve(tweet);
+                  resolve(data as Twitter.Tweet);
                 });
               });
 
@@ -132,12 +132,12 @@ export function incarnate(client: any): TheMoodyBlues.TwitterAgent {
     lists: (): Promise<Twitter.List[]> => {
       return new Promise((resolve, reject) => {
         const option = {};
-        client.get("lists/list.json", option, (error: string, lists: Twitter.List[], response: any) => {
+        client.get("lists/list.json", option, (error, data, response) => {
           if (error) {
             return reject(error);
           }
 
-          resolve(lists.reverse());
+          resolve((data as Twitter.List[]).reverse());
         });
       });
     },
@@ -151,12 +151,12 @@ export function incarnate(client: any): TheMoodyBlues.TwitterAgent {
       if (since_id) option.since_id = since_id;
 
       return new Promise((resolve, reject) => {
-        client.get("lists/statuses.json", option, (error: string, tweets: Twitter.Tweet[], response: any) => {
+        client.get("lists/statuses.json", option, (error, data, response) => {
           if (error) {
             return reject(error);
           }
 
-          resolve(tweets);
+          resolve(data as Twitter.Tweet[]);
         });
       });
     },
