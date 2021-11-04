@@ -1,6 +1,11 @@
 {
   "extends": "./base.json",
   "compilerOptions": {
-    "module": "commonjs"
+    "module": "commonjs",
+    "paths": {
+      "@modules/*": ["src/renderer/modules/*"],
+      "@libraries/*": ["src/libraries/*"],
+      "@source/*": ["src/*"]
+    }
   }
 }
