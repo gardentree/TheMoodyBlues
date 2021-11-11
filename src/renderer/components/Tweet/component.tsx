@@ -22,10 +22,16 @@ export default class Tweet extends React.Component<Property, {}> {
     // const url: string = event.currentTarget.dataset.url!;
     //
     const {source} = this.props;
+    let tweet: Twitter.Tweet;
+    if (source.retweeted_status) {
+      tweet = source.retweeted_status;
+    } else {
+      tweet = source;
+    }
 
     const keyword = (window.getSelection() || "").toString().trim();
 
-    TheMoodyBlues.openTweetMenu({tweet: source, keyword: keyword});
+    TheMoodyBlues.openTweetMenu({tweet: tweet, keyword: keyword});
   }
 
   render() {
