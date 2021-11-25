@@ -3,7 +3,7 @@ var exec = require("child_process").exec;
 var fs = require("fs");
 
 function execute(command) {
-  exec(command, function(error, stdout, stderr) {
+  exec(command, function (error, stdout, stderr) {
     console.log(stdout);
 
     if (error) {
@@ -12,11 +12,14 @@ function execute(command) {
   });
 }
 
-gulp.task("test", function() {
+gulp.task("test", function () {
   execute("yarn test:all");
 
   const watcher = gulp.watch(["src/**/*.{ts,tsx}", "test/**/*_test.{ts,tsx}"]);
-  watcher.on("change", function(path) {
+  watcher.on("change", function (path) {
+    execute("clear");
+    console.log(`changed ${path}`);
+
     var command;
     if (path.match(/^test/)) {
       command = `yarn test '${path}'`;
@@ -34,7 +37,6 @@ gulp.task("test", function() {
       }
     }
 
-    execute("clear");
     execute(command);
   });
 });
