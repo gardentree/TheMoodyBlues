@@ -19,8 +19,6 @@ export default class Tweet extends React.Component<Property, {}> {
   }
 
   openContextMenu(event: React.SyntheticEvent<HTMLElement>) {
-    // const url: string = event.currentTarget.dataset.url!;
-    //
     const {source} = this.props;
     let tweet: Twitter.Tweet;
     if (source.retweeted_status) {
