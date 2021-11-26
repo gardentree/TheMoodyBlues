@@ -71,6 +71,7 @@
     "@types/twitter": "^1.7.1",
     "chai": "^4.1.2",
     "chai-as-promised": "^7.1.1",
+    "chai-subset": "^1.6.0",
     "child_process": "^1.0.2",
     "commander": "^8.2.0",
     "css-loader": "^6.3.0",
