@@ -1,0 +1,82 @@
+{
+  "data": {
+    "attachments": {
+      "media_keys": ["7_1293565706408038401"]
+    },
+    "entities": {
+      "annotations": [
+        {
+          "start": 78,
+          "end": 88,
+          "probability": 0.4381,
+          "type": "Product",
+          "normalized_text": "Twitter API"
+        }
+      ],
+      "urls": [
+        {
+          "start": 195,
+          "end": 218,
+          "url": "https://t.co/32VrwpGaJw",
+          "expanded_url": "https://blog.twitter.com/developer/en_us/topics/tools/2020/introducing_new_twitter_api.html",
+          "display_url": "blog.twitter.com/developer/en_u…",
+          "images": [
+            {
+              "url": "https://pbs.twimg.com/news_img/1453706788054962183/xfuZyQxi?format=jpg&name=orig",
+              "width": 768,
+              "height": 401
+            },
+            {
+              "url": "https://pbs.twimg.com/news_img/1453706788054962183/xfuZyQxi?format=jpg&name=150x150",
+              "width": 150,
+              "height": 150
+            }
+          ],
+          "status": 200,
+          "title": "Introducing a new and improved Twitter API",
+          "description": "Introducing the new Twitter API - rebuilt from the ground up to deliver new features faster so developers can help the world connect to the public conversation happening on Twitter.",
+          "unwound_url": "https://blog.twitter.com/developer/en_us/topics/tools/2020/introducing_new_twitter_api"
+        },
+        {
+          "start": 219,
+          "end": 242,
+          "url": "https://t.co/KaFSbjWUA8",
+          "expanded_url": "https://twitter.com/TwitterDev/status/1293593516040269825/video/1",
+          "display_url": "pic.twitter.com/KaFSbjWUA8"
+        }
+      ],
+      "hashtags": [
+        {
+          "start": 42,
+          "end": 53,
+          "tag": "TwitterAPI"
+        }
+      ]
+    },
+    "conversation_id": "1293593516040269825",
+    "created_at": "2020-08-12T17:01:42.000Z",
+    "author_id": "2244994945",
+    "id": "1293593516040269825",
+    "text": "It’s finally here! 🥁 Say hello to the new #TwitterAPI.\n\nWe’re rebuilding the Twitter API v2 from the ground up to better serve our developer community. And today’s launch is only the beginning.\n\nhttps://t.co/32VrwpGaJw https://t.co/KaFSbjWUA8"
+  },
+  "includes": {
+    "media": [
+      {
+        "preview_image_url": "https://pbs.twimg.com/ext_tw_video_thumb/1293565706408038401/pu/img/66P2dvbU4a02jYbV.jpg",
+        "type": "video",
+        "media_key": "7_1293565706408038401",
+        "height": 720,
+        "width": 1280,
+        "duration_ms": 34875
+      }
+    ],
+    "users": [
+      {
+        "name": "Twitter Dev",
+        "username": "TwitterDev",
+        "profile_image_url": "https://pbs.twimg.com/profile_images/1445764922474827784/W2zEPN7U_normal.jpg",
+        "id": "2244994945"
+      }
+    ]
+  }
+}

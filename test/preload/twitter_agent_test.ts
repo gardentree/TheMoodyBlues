@@ -1,9 +1,15 @@
 import {expect, use} from "chai";
 import chaiAsPromised from "chai-as-promised";
+import chaiSubset from "chai-subset";
 import sinon from "sinon";
 import {incarnate} from "@source/preload/twitter_agent";
+import * as fs from "fs";
 
 use(chaiAsPromised);
+use(chaiSubset);
+
+const [degrade] = rewires("preload/twitter_agent", ["degrade"]);
+const [parseElements] = rewires("libraries/twitter", ["parseElements"]);
 
 describe("retrieveTimeline", () => {
   it("success", () => {
@@ -83,42 +89,7 @@ describe("retrieveMentions", () => {
   });
 });
 
-describe("retrieveConversation", () => {
-  const criterion_template: Twitter.Tweet = {
-    user: {
-      screen_name: "gian",
-    },
-    in_reply_to_status_id_str: "0",
-  };
-
-  it("rejected", () => {
-    const agent = incarnate({});
-
-    return expect(agent.retrieveConversation({})).to.be.rejected;
-  });
-
-  it("can't find tweet", () => {
-    const callback = sinon.stub();
-    callback.onCall(0).yields(
-      null,
-      {
-        statuses: [],
-      },
-      null
-    );
-    callback.onCall(1).yields(
-      "not found",
-      {
-        statuses: [],
-      },
-      null
-    );
-
-    const agent = incarnate({get: callback});
-
-    return expect(agent.retrieveConversation(criterion_template)).to.eventually.deep.equal([criterion_template]);
-  });
-});
+describe("retrieveConversation", () => {});
 
 describe("lists", () => {
   it("success", () => {
@@ -159,4 +130,28 @@ describe("retrieveTimelineOfList", () => {
 
     return expect(agent.retrieveTimelineOfList("news")).to.eventually.deep.equal([{id: 1}]);
   });
+});
+
+describe("degrade", () => {
+  function loadJSON(path) {
+    return JSON.parse(fs.readFileSync(path));
+  }
+
+  const tests = Object.entries({
+    tweet: "Tweet",
+    reply: "Tweet reply",
+    extended: "Extended Tweet",
+    media: "Tweet with media",
+    retweet: "Retweet",
+    quote: "Quote Tweet",
+  });
+  for (const [key, subject] of tests) {
+    it(subject, () => {
+      const actual = degrade(loadJSON(`./test/preload/v2/${key}.json`))[0];
+
+      expect(loadJSON(`./test/preload/v1/${key}.json`)).to.containSubset(actual);
+
+      parseElements(actual);
+    });
+  }
 });

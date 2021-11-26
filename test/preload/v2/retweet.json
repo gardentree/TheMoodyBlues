@@ -1,0 +1,109 @@
+{
+  "data": {
+    "author_id": "2244994945",
+    "entities": {
+      "annotations": [
+        {
+          "start": 28,
+          "end": 38,
+          "probability": 0.261,
+          "type": "Product",
+          "normalized_text": "Alexa Skill"
+        },
+        {
+          "start": 44,
+          "end": 50,
+          "probability": 0.7332,
+          "type": "Product",
+          "normalized_text": "Twitter"
+        }
+      ],
+      "mentions": [
+        {
+          "start": 3,
+          "end": 15,
+          "username": "suhemparack",
+          "id": "857699969263964161"
+        }
+      ]
+    },
+    "referenced_tweets": [
+      {
+        "type": "retweeted",
+        "id": "1229843515603144704"
+      }
+    ],
+    "created_at": "2020-02-18T19:33:59.000Z",
+    "conversation_id": "1229851574555508737",
+    "text": "RT @suhemparack: I built an Alexa Skill for Twitter using APL that allows you to view Tweets and Trends on the echo show!\n\nCheck it out her…",
+    "id": "1229851574555508737"
+  },
+  "includes": {
+    "users": [
+      {
+        "name": "Twitter Dev",
+        "username": "TwitterDev",
+        "id": "2244994945",
+        "profile_image_url": "https://pbs.twimg.com/profile_images/1445764922474827784/W2zEPN7U_normal.jpg"
+      },
+      {
+        "name": "Suhem Parack",
+        "username": "suhemparack",
+        "id": "857699969263964161",
+        "profile_image_url": "https://pbs.twimg.com/profile_images/1230703695051935747/TbQKe91L_normal.jpg"
+      }
+    ],
+    "tweets": [
+      {
+        "author_id": "857699969263964161",
+        "entities": {
+          "annotations": [
+            {
+              "start": 11,
+              "end": 21,
+              "probability": 0.3342,
+              "type": "Product",
+              "normalized_text": "Alexa Skill"
+            },
+            {
+              "start": 27,
+              "end": 33,
+              "probability": 0.6727,
+              "type": "Product",
+              "normalized_text": "Twitter"
+            }
+          ],
+          "urls": [
+            {
+              "start": 127,
+              "end": 150,
+              "url": "https://t.co/l5J8wq748G",
+              "expanded_url": "https://dev.to/twitterdev/building-an-alexa-skill-for-twitter-using-alexa-presentation-language-1aj0",
+              "display_url": "dev.to/twitterdev/bui…",
+              "images": [
+                {
+                  "url": "https://pbs.twimg.com/news_img/1400786183068688389/yBi8fCsL?format=jpg&name=orig",
+                  "width": 1128,
+                  "height": 600
+                },
+                {
+                  "url": "https://pbs.twimg.com/news_img/1400786183068688389/yBi8fCsL?format=jpg&name=150x150",
+                  "width": 150,
+                  "height": 150
+                }
+              ],
+              "status": 200,
+              "title": "Building an Alexa Skill for Twitter using Alexa Presentation Language",
+              "description": "In 2016, Twitter launched a skill for Alexa that allowed people to ask Alexa for their retweets, ment...",
+              "unwound_url": "https://dev.to/twitterdev/building-an-alexa-skill-for-twitter-using-alexa-presentation-language-1aj0"
+            }
+          ]
+        },
+        "created_at": "2020-02-18T19:01:58.000Z",
+        "conversation_id": "1229843515603144704",
+        "text": "I built an Alexa Skill for Twitter using APL that allows you to view Tweets and Trends on the echo show!\n\nCheck it out here 👇\n\nhttps://t.co/l5J8wq748G",
+        "id": "1229843515603144704"
+      }
+    ]
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "data": {
+    "text": "The hide replies endpoint is launching today! \n\nDevelopers can hide replies to Tweets - a crucial way developers can help improve the health of the public conversation using the #TwitterAPI.\n\nhttps://t.co/khXhTurm9x",
+    "id": "1296121314218897408",
+    "author_id": "2244994945",
+    "entities": {
+      "hashtags": [
+        {
+          "start": 178,
+          "end": 189,
+          "tag": "TwitterAPI"
+        }
+      ],
+      "urls": [
+        {
+          "start": 192,
+          "end": 215,
+          "url": "https://t.co/khXhTurm9x",
+          "expanded_url": "https://twittercommunity.com/t/hide-replies-now-available-in-the-new-twitter-api/140996",
+          "display_url": "twittercommunity.com/t/hide-replies…",
+          "status": 200,
+          "unwound_url": "https://twittercommunity.com/t/hide-replies-now-available-in-the-new-twitter-api/140996"
+        }
+      ]
+    },
+    "conversation_id": "1296121314218897408",
+    "created_at": "2020-08-19T16:26:16.000Z"
+  },
+  "includes": {
+    "users": [
+      {
+        "profile_image_url": "https://pbs.twimg.com/profile_images/1445764922474827784/W2zEPN7U_normal.jpg",
+        "name": "Twitter Dev",
+        "username": "TwitterDev",
+        "id": "2244994945"
+      }
+    ]
+  }
+}

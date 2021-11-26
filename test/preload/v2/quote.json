@@ -1,0 +1,83 @@
+{
+  "data": {
+    "entities": {
+      "urls": [
+        {
+          "start": 167,
+          "end": 190,
+          "url": "https://t.co/JaxttUMmjX",
+          "expanded_url": "https://twitter.com/TwitterDev/status/1327011423252144128",
+          "display_url": "twitter.com/TwitterDev/sta…"
+        }
+      ],
+      "annotations": [
+        {
+          "start": 151,
+          "end": 157,
+          "probability": 0.8115,
+          "type": "Product",
+          "normalized_text": "Twitter"
+        }
+      ]
+    },
+    "author_id": "2244994945",
+    "id": "1328399838128467969",
+    "referenced_tweets": [
+      {
+        "type": "quoted",
+        "id": "1327011423252144128"
+      }
+    ],
+    "conversation_id": "1328399838128467969",
+    "text": "As planned, the Labs v2 endpoints referenced below have now been retired. Please let us know in the forums if you have questions or need help with the Twitter API v2! https://t.co/JaxttUMmjX",
+    "created_at": "2020-11-16T18:09:36.000Z"
+  },
+  "includes": {
+    "users": [
+      {
+        "profile_image_url": "https://pbs.twimg.com/profile_images/1445764922474827784/W2zEPN7U_normal.jpg",
+        "id": "2244994945",
+        "name": "Twitter Dev",
+        "username": "TwitterDev"
+      }
+    ],
+    "tweets": [
+      {
+        "entities": {
+          "urls": [
+            {
+              "start": 250,
+              "end": 273,
+              "url": "https://t.co/r6z6CI7kEy",
+              "expanded_url": "https://twittercommunity.com/t/retiring-labs-v2-recent-search-and-hide-replies/145795",
+              "display_url": "twittercommunity.com/t/retiring-lab…",
+              "status": 200,
+              "unwound_url": "https://twittercommunity.com/t/retiring-labs-v2-recent-search-and-hide-replies/145795"
+            }
+          ],
+          "hashtags": [
+            {
+              "start": 228,
+              "end": 239,
+              "tag": "TwitterAPI"
+            }
+          ],
+          "annotations": [
+            {
+              "start": 26,
+              "end": 50,
+              "probability": 0.4387,
+              "type": "Product",
+              "normalized_text": "Twitter Developer Labs v2"
+            }
+          ]
+        },
+        "author_id": "2244994945",
+        "id": "1327011423252144128",
+        "conversation_id": "1327011423252144128",
+        "text": "👋 Friendly reminder that Twitter Developer Labs v2 hide replies and recent search will be retired next Monday, November 16! We encourage you to migrate to the new hide replies and recent search endpoints now available in the v2 #TwitterAPI. Details: https://t.co/r6z6CI7kEy",
+        "created_at": "2020-11-12T22:12:32.000Z"
+      }
+    ]
+  }
+}

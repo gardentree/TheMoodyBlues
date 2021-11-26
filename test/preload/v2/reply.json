@@ -1,0 +1,104 @@
+{
+  "data": {
+    "entities": {
+      "urls": [
+        {
+          "start": 87,
+          "end": 110,
+          "url": "https://t.co/1tdA8uDWes",
+          "expanded_url": "https://developer.twitter.com/en/use-cases/success-stories/penn",
+          "display_url": "developer.twitter.com/en/use-cases/s…",
+          "images": [
+            {
+              "url": "https://pbs.twimg.com/news_img/1444212313544749064/VQAt4-Ec?format=jpg&name=orig",
+              "width": 500,
+              "height": 263
+            },
+            {
+              "url": "https://pbs.twimg.com/news_img/1444212313544749064/VQAt4-Ec?format=jpg&name=150x150",
+              "width": 150,
+              "height": 150
+            }
+          ],
+          "status": 200,
+          "title": "Penn Medicine Center for Digital Health",
+          "description": "Penn Med Center for Digital Health has created a COVID-19 Twitter map that includes charts detailing sentiment, symptoms reported, state-by-state data cuts, and border data on the COVID-19 outbreak. In addition, their Penn Med With You initiative uses aggregate regional information from Twitter to inform their website and text-messaging service.",
+          "unwound_url": "https://developer.twitter.com/en/community/success-stories/penn"
+        }
+      ],
+      "annotations": [
+        {
+          "start": 30,
+          "end": 36,
+          "probability": 0.6318,
+          "type": "Product",
+          "normalized_text": "Twitter"
+        }
+      ],
+      "mentions": [
+        {
+          "start": 8,
+          "end": 19,
+          "username": "PennMedCDH",
+          "id": "1615654896"
+        }
+      ]
+    },
+    "referenced_tweets": [
+      {
+        "type": "replied_to",
+        "id": "1296887091901718529"
+      }
+    ],
+    "in_reply_to_user_id": "2244994945",
+    "conversation_id": "1296887091901718529",
+    "author_id": "2244994945",
+    "text": "See how @PennMedCDH are using Twitter data to understand the COVID-19 health crisis 📊\n\nhttps://t.co/1tdA8uDWes",
+    "id": "1296887316556980230",
+    "created_at": "2020-08-21T19:10:05.000Z"
+  },
+  "includes": {
+    "users": [
+      {
+        "username": "TwitterDev",
+        "profile_image_url": "https://pbs.twimg.com/profile_images/1445764922474827784/W2zEPN7U_normal.jpg",
+        "name": "Twitter Dev",
+        "id": "2244994945"
+      },
+      {
+        "username": "PennMedCDH",
+        "profile_image_url": "https://pbs.twimg.com/profile_images/1067488849725726723/MoO3FQ44_normal.jpg",
+        "name": "Penn Med CDH",
+        "id": "1615654896"
+      }
+    ],
+    "tweets": [
+      {
+        "entities": {
+          "annotations": [
+            {
+              "start": 39,
+              "end": 55,
+              "probability": 0.8274,
+              "type": "Organization",
+              "normalized_text": "Penn Medicine CDH"
+            }
+          ],
+          "mentions": [
+            {
+              "start": 4,
+              "end": 18,
+              "username": "RainaMerchant",
+              "id": "1637021982"
+            }
+          ]
+        },
+        "conversation_id": "1296887091901718529",
+        "author_id": "2244994945",
+        "text": "Dr. @RainaMerchant and her team at the Penn Medicine CDH are helping build the future of health care.\n\nThe team is using insights from social data in many different ways — ranging from uncovering risk factors to shedding light on public sentiment. 🔎",
+        "id": "1296887091901718529",
+        "created_at": "2020-08-21T19:09:12.000Z"
+      }
+    ]
+  }
+}

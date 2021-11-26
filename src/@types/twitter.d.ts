@@ -1,7 +1,8 @@
 namespace Twitter {
+  type TweetID = string;
   interface Tweet {
     id: number;
-    id_str: string;
+    id_str: TweetID;
     full_text: string;
     user: User;
     retweeted_status?: Tweet;
@@ -11,23 +12,40 @@ namespace Twitter {
     };
     display_text_range: number[];
     entities: {
-      user_mentions: {
-        indices: number[];
-      };
+      user_mentions: Mention[];
       urls: URL[];
+      hashtags?: Hashtag[];
+      media?: Media[];
     };
-    since_id: string;
+    since_id?: string;
     created_at: string;
-    quoted_status_permalink: URL;
-    in_reply_to_status_id_str: string;
+    quoted_status_permalink?: URL;
+    in_reply_to_status_id_str: string | null;
+    is_quote_status: boolean;
   }
+  type UserID = string;
   interface User {
-    id_str: string;
+    id_str: UserID;
     profile_image_url_https: string;
     screen_name: string;
   }
+  interface URL {
+    url: string;
+    expanded_url: string;
+    display_url: string;
+    indices: number[];
+  }
+  interface Mention {
+    screen_name: string;
+    indices: number[];
+  }
+  interface Hashtag {
+    text: string;
+    indices: number[];
+  }
+  type MediaID = string;
   interface Media {
-    id_str: string;
+    id_str: MediaID;
     media_url_https: string;
     type: string;
     video_info: {
@@ -36,15 +54,81 @@ namespace Twitter {
         bitrate: number;
       }[];
     };
+    display_url: string;
+    indices: number[];
+  }
+  type EntityElement = URL | Mention | Hashtag | Media;
+
+  interface List {
+    id_str: string;
+    name: string;
+  }
+}
+
+namespace Twitter2 {
+  interface Response {
+    data: Tweet | Tweet[];
+    includes: Includes;
+    meta: {
+      result_count: number;
+    };
+  }
+  interface Tweet {
+    id: Twitter.TweetID;
+    text: string;
+    author_id: string;
+    conversation_id: string;
+    created_at: string;
+    entities?: Entities;
+    referenced_tweets: {
+      type: "replied_to";
+      id: string;
+    }[];
+    attachments?: {
+      media_keys?: MediaKey[];
+    };
+  }
+  interface Includes {
+    users: User[];
+    media?: Media[];
+    tweets?: Tweet[];
+  }
+  interface Entities {
+    urls?: URL[];
+    mentions?: Mention[];
+    hashtags?: Hashtag[];
   }
   interface URL {
     url: string;
     expanded_url: string;
     display_url: string;
-    indices?: number[];
+    start: number;
+    end: number;
+    images: any;
+    status?: number;
   }
-  interface List {
-    id_str: string;
+  interface Mention {
+    username: string;
+    start: number;
+    end: number;
+  }
+  interface Hashtag {
+    tag: string;
+    start: number;
+    end: number;
+  }
+  type MediaKey = string;
+  interface Media {
+    media_key: MediaKey;
+    type: "photo" | "video";
+    url: string;
+    preview_image_url: string;
+  }
+
+  interface User {
+    id: Twitter.UserID;
     name: string;
+    username: string;
+    profile_image_url: string;
   }
 }

@@ -3,6 +3,7 @@ import {OAuth} from "oauth";
 import {buildDefaultStorage} from "./storage";
 import {incarnate} from "./twitter_agent";
 import TwitterClient from "twitter";
+import TwitterClient2 from "twitter-v2";
 
 const oauth = new OAuth("https://api.twitter.com/oauth/request_token", "https://api.twitter.com/oauth/access_token", process.env.CONSUMER_KEY!, process.env.CONSUMER_SECRET!, "1.0A", null, "HMAC-SHA1");
 const storage = buildDefaultStorage();
@@ -23,15 +24,15 @@ interface Token {
   secret: string;
 }
 
-function createClient(accessToken: Token): any {
-  return incarnate(
-    new TwitterClient({
-      consumer_key: process.env.CONSUMER_KEY!,
-      consumer_secret: process.env.CONSUMER_SECRET!,
-      access_token_key: accessToken.key,
-      access_token_secret: accessToken.secret,
-    })
-  );
+function createClient(accessToken: Token): TheMoodyBlues.TwitterAgent {
+  const credentials = {
+    consumer_key: process.env.CONSUMER_KEY!,
+    consumer_secret: process.env.CONSUMER_SECRET!,
+    access_token_key: accessToken.key,
+    access_token_secret: accessToken.secret,
+  };
+
+  return incarnate(new TwitterClient(credentials), new TwitterClient2(credentials));
 }
 
 function getRequestToken() {
