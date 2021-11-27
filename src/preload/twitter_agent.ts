@@ -285,6 +285,7 @@ function degradeMedia(v2?: Twitter2.Media[]): MediaMap {
   for (const medium of v2) {
     switch (medium.type) {
       case "photo":
+      case "animated_gif":
         v1.set(medium.media_key, {
           id_str: medium.media_key.split("_")[1],
           type: medium.type,

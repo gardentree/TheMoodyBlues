@@ -120,7 +120,7 @@ namespace Twitter2 {
   type MediaKey = string;
   interface Media {
     media_key: MediaKey;
-    type: "photo" | "video";
+    type: "photo" | "video" | "animated_gif";
     url: string;
     preview_image_url: string;
   }
