@@ -8563,10 +8563,9 @@ tweetnacl@^0.14.3, tweetnacl@~0.14.0:
   resolved "https://registry.yarnpkg.com/tweetnacl/-/tweetnacl-0.14.5.tgz#5ae68177f192d4456269d108afa93ff8743f4f64"
   integrity sha1-WuaBd/GS1EViadEIr6k/+HQ/T2Q=
 
-twitter-v2@^1.1.0:
+"twitter-v2@github:edsu/twitter-v2":
   version "1.1.0"
-  resolved "https://registry.yarnpkg.com/twitter-v2/-/twitter-v2-1.1.0.tgz#b01373f2fd831d82a462b009bbb999a2e66eaa2c"
-  integrity sha512-BsoeFydwDgeS2coyIwxWkWXDxfnck8AtFQrQNY3ztkFJqIXyI1MKiGWjGvHA7U2SocUDlDQ3x1mtxQjr9xpyyg==
+  resolved "https://codeload.github.com/edsu/twitter-v2/tar.gz/02c5a8e39928df7caefa8695f1277756b200380b"
   dependencies:
     abort-controller "3.0.0"
     node-fetch "2.6.1"
