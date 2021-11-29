@@ -18,6 +18,7 @@
     "noImplicitThis": true,
     "noUnusedLocals": true,
     "paths": {
+      "@preload/*": ["src/preload/*"],
       "@modules/*": ["src/renderer/modules/*"],
       "@libraries/*": ["src/libraries/*"]
     },
