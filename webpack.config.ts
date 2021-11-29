@@ -112,4 +112,32 @@ const renderer: any = {
   },
 };
 
-export default [main, preload, renderer];
+const configurations = [main, preload, renderer];
+
+if (mode == "development") {
+  const playground: Configuration = {
+    mode: mode,
+    target: "electron-preload",
+    entry: {
+      twitter: "./src/playground/twitter.ts",
+    },
+    output: {
+      filename: "[name].js",
+      path: path.resolve(__dirname, "./playground"),
+    },
+    module: {
+      rules: [typescript],
+    },
+    resolve: {
+      alias: {
+        "@preload": path.resolve(__dirname, "src/preload"),
+        "@libraries": path.resolve(__dirname, "src/libraries"),
+      },
+    },
+    plugins: [new webpack.EnvironmentPlugin(["CONSUMER_KEY", "CONSUMER_SECRET"])],
+  };
+
+  configurations.push(playground);
+}
+
+export default configurations;

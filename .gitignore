@@ -8,6 +8,7 @@
 
 # workspace
 /build
+/playground
 /distribution
 
 # misc
