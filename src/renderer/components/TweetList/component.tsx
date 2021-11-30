@@ -1,5 +1,6 @@
 import * as React from "react";
 import Tweet from "../Tweet";
+import {default as TweetErrorBoundary} from "../Tweet/ErrorBoundary";
 import {CSSTransition, TransitionGroup} from "react-transition-group";
 
 export interface OwnProperty {
@@ -25,7 +26,9 @@ export default class TweetList extends React.Component<Property, {}> {
       return (
         <CSSTransition key={tweet.id_str} timeout={500} classNames="fade">
           <li data-id={tweet.id_str} className={unread ? "unread" : undefined} tabIndex={-1}>
-            <Tweet source={tweet} unread={unread} />
+            <TweetErrorBoundary tweet={tweet}>
+              <Tweet source={tweet} unread={unread} />
+            </TweetErrorBoundary>
           </li>
         </CSSTransition>
       );
