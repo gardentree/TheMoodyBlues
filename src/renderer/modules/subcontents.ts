@@ -17,5 +17,5 @@ export default handleActions<TheMoodyBlues.Store.SubContents, any, any>(
 ////////////////////
 export const {displayUserTimeline, displayConversation} = createActions({
   DISPLAY_USER_TIMELINE: (name) => ({name: name}),
-  DISPLAY_CONVERSATION: (tweet) => ({tweet: tweet}),
+  DISPLAY_CONVERSATION: [(tweet, options) => ({tweet: tweet}), (tweet, options) => ({options: options})],
 });

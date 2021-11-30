@@ -41,7 +41,7 @@ function* displayUserTimeline(action: TheMoodyBlues.ReduxAction) {
 function* displayConversation(action: TheMoodyBlues.ReduxAction) {
   const {agent} = yield select();
 
-  let tweets: Twitter.Tweet[] = yield call(agent.retrieveConversation, action.payload.tweet);
+  let tweets: Twitter.Tweet[] = yield call(agent.retrieveConversation, action.payload.tweet, action.meta.options);
   yield put(subcontents.updateTweetsInSubContents(tweets));
 }
 

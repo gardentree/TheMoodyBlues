@@ -33,9 +33,10 @@ export default function (store: any) {
     shell.openExternal(`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`);
   });
   ipcRenderer.on("show_conversation_for_tweet", (event: IpcRendererEvent, context: TheMoodyBlues.TweetMenu) => {
-    const origin = context.tweet.retweeted_status === undefined ? context.tweet : context.tweet.retweeted_status!;
-
-    store.dispatch(displayConversation(origin));
+    store.dispatch(displayConversation(context.tweet));
+  });
+  ipcRenderer.on("show_chain_for_tweet", (event: IpcRendererEvent, context: TheMoodyBlues.TweetMenu) => {
+    store.dispatch(displayConversation(context.tweet, {yourself: true}));
   });
 
   ipcRenderer.on("search", (event: IpcRendererEvent, context: TheMoodyBlues.TweetMenu) => {

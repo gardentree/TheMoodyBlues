@@ -216,6 +216,12 @@ ipcMain.on("openTweetMenu", (event, context: TheMoodyBlues.TweetMenu) => {
         mainWindow.webContents.send("show_conversation_for_tweet", context);
       },
     },
+    {
+      label: "つながりを表示",
+      click() {
+        mainWindow.webContents.send("show_chain_for_tweet", context);
+      },
+    },
   ];
 
   if (context.keyword.length > 0) {
