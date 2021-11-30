@@ -5,6 +5,22 @@ import {measure} from "@libraries/tools";
 
 export function incarnate(client: TwitterClient, client2: TwitterClient2): TheMoodyBlues.TwitterAgent {
   return {
+    get: (path: string, parameters: any) => {
+      return client2.get(
+        path,
+        Object.assign(
+          {},
+          {
+            expansions: "attachments.media_keys,author_id,entities.mentions.username,in_reply_to_user_id,referenced_tweets.id,referenced_tweets.id.author_id",
+            "user.fields": "id,name,profile_image_url",
+            "media.fields": "duration_ms,height,media_key,preview_image_url,type,url,width,alt_text",
+            "tweet.fields": "attachments,author_id,conversation_id,created_at,entities,referenced_tweets",
+          },
+          parameters
+        )
+      );
+    },
+
     retrieveTimeline: (since_id: string | null) => {
       let option: any = {
         count: 200,
@@ -77,7 +93,7 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): TheMo
       });
     },
 
-    retrieveConversation: (criterion: Twitter.Tweet) => {
+    retrieveConversation: (criterion: Twitter.Tweet, options?: {yourself?: boolean}) => {
       return new Promise(async (resolve, reject) => {
         let tweets: Twitter.Tweet[] = [];
 
@@ -88,15 +104,31 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): TheMo
           "tweet.fields": "attachments,author_id,conversation_id,created_at,entities,referenced_tweets",
         };
 
-        const origin: Twitter2.Response = await client2.get(`tweets/${criterion.id_str}`, parameters);
-        const response: Twitter2.Response = await client2.get(`tweets/search/recent`, {...parameters, query: `conversation_id:${(origin.data as Twitter2.Tweet).conversation_id}`, max_results: "100"});
-        if (response.meta.result_count > 0) {
-          tweets = tweets.concat(degrade(response));
+        const originResponse: Twitter2.Response = await client2.get(`tweets/${criterion.id_str}`, parameters);
+        const origin = originResponse.data as Twitter2.Tweet;
+
+        let query: string;
+        if (options?.yourself) {
+          query = `conversation_id:${origin.conversation_id} from:${origin.author_id}`;
         } else {
-          tweets = tweets.concat(degrade(origin));
+          query = `conversation_id:${origin.conversation_id}`;
         }
 
-        resolve(tweets);
+        const response: Twitter2.Response = await client2.get(`tweets/search/recent`, {
+          ...parameters,
+          query: query,
+          max_results: "100",
+        });
+        if (response.meta.result_count > 0) {
+          tweets = tweets.concat(degrade(response));
+          if (origin.conversation_id == origin.id) {
+            tweets = tweets.concat(degrade(originResponse));
+          }
+        } else {
+          tweets = tweets.concat(degrade(originResponse));
+        }
+
+        resolve(tweets.reverse());
       });
     },
 

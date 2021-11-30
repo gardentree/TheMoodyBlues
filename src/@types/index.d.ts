@@ -44,6 +44,8 @@ namespace TheMoodyBlues {
   }
 
   interface TwitterAgent {
+    get(path: string, parameters: any): Promise<Twitter2.Response>;
+
     retrieveTimeline(since_id: string | null): Promise<Twitter.Tweet[]>;
     search(query: string, since_id: string | null): Promise<Twitter.Tweet[]>;
     retrieveTimelineOfUser(name: string): Promise<Twitter.Tweet[]>;
