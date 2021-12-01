@@ -8,7 +8,7 @@ import * as fs from "fs";
 use(chaiAsPromised);
 use(chaiSubset);
 
-const [degrade] = rewires("preload/twitter_agent", ["degrade"]);
+const [degrade, degradeDate] = rewires("preload/twitter_agent", ["degrade", "degradeDate"]);
 const [parseElements] = rewires("libraries/twitter", ["parseElements"]);
 
 describe("retrieveTimeline", () => {
@@ -154,4 +154,11 @@ describe("degrade", () => {
       parseElements(actual);
     });
   }
+});
+
+describe("degradeDate", () => {
+  it("degrade", () => {
+    expect(degradeDate("2021-01-01T00:00:00.000Z")).to.eq("Fri Jan 01 00:00:00 +0000 2021");
+    expect(degradeDate("2021-01-01T01:00:00.000Z")).to.eq("Fri Jan 01 01:00:00 +0000 2021");
+  });
 });

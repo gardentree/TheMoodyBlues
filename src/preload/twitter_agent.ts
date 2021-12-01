@@ -181,11 +181,8 @@ function degrade(v2: Twitter2.Response): Twitter.Tweet[] {
   return v1;
 }
 function degradeTweet(tweet: Twitter2.Tweet, includes: IncludeMap, referenced: boolean = false): Twitter.Tweet {
-  const utc = new Date(tweet.created_at);
-  const created_at = DateUtility.format(new Date(utc.getTime() + utc.getTimezoneOffset() * 60 * 1000), "EEE LLL dd kk:mm:ss xx Y", {timeZone: "UTC"});
-
   const v1: any = {
-    created_at: created_at,
+    created_at: degradeDate(tweet.created_at),
     id: Number(tweet.id),
     id_str: tweet.id,
     full_text: tweet.text,
@@ -337,4 +334,9 @@ function degradeMedia(v2?: Twitter2.Media[]): MediaMap {
   }
 
   return v1;
+}
+
+function degradeDate(date: string): string {
+  const utc = new Date(date);
+  return DateUtility.format(new Date(utc.getTime() + utc.getTimezoneOffset() * 60 * 1000), "EEE LLL dd HH:mm:ss xx Y", {timeZone: "UTC"});
 }
