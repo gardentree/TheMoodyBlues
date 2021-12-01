@@ -2,13 +2,12 @@ import {expect, use} from "chai";
 import chaiAsPromised from "chai-as-promised";
 import chaiSubset from "chai-subset";
 import sinon from "sinon";
-import {incarnate} from "@source/preload/twitter_agent";
 import * as fs from "fs";
 
 use(chaiAsPromised);
 use(chaiSubset);
 
-const [degrade, degradeDate] = rewires("preload/twitter_agent", ["degrade", "degradeDate"]);
+const [incarnate, degrade, degradeDate] = rewires("preload/twitter_agent", ["incarnate", "degrade", "degradeDate"]);
 const [parseElements] = rewires("libraries/twitter", ["parseElements"]);
 
 describe("retrieveTimeline", () => {
