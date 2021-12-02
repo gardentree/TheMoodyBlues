@@ -10,18 +10,18 @@ interface Property {
   medias: Twitter.Media[];
 }
 
-export default class MediaBox extends React.Component<Property, {modalIsOpen: boolean}> {
+export default class MediaBox extends React.Component<Property, {modalIsOpen: boolean; selectedItem: number}> {
   constructor(property: Property) {
     super(property);
 
-    this.state = {modalIsOpen: false};
+    this.state = {modalIsOpen: false, selectedItem: 0};
 
     this.openModal = this.openModal.bind(this);
     this.closeModal = this.closeModal.bind(this);
   }
 
-  openModal() {
-    this.setState({modalIsOpen: true});
+  openModal(selectedItem: number) {
+    this.setState({modalIsOpen: true, selectedItem: selectedItem});
   }
   closeModal() {
     this.setState({modalIsOpen: false});
@@ -31,11 +31,20 @@ export default class MediaBox extends React.Component<Property, {modalIsOpen: bo
     const {medias} = this.props;
     if (medias.length <= 0) return <div />;
 
-    const thumbnails = medias.map((media) => {
-      return <img key={media.id_str} className="photo" src={media.media_url_https} />;
+    const thumbnails = medias.map((media, index: number) => {
+      return (
+        <img
+          key={media.id_str}
+          className="photo"
+          src={media.media_url_https}
+          onClick={() => {
+            this.openModal(index);
+          }}
+        />
+      );
     });
 
-    const elements = medias.map((media) => {
+    const elements = medias.map((media, index: number) => {
       switch (media.type) {
         case "video":
           const variants = media.video_info.variants.slice().sort((a: any, b: any) => (b.bitrate || 0) - (a.bitrate || 0));
@@ -56,13 +65,11 @@ export default class MediaBox extends React.Component<Property, {modalIsOpen: bo
 
     return (
       <React.Fragment>
-        <div className="media" onClick={this.openModal}>
-          {thumbnails}
-        </div>
+        <div className="media">{thumbnails}</div>
         <div onClick={(event) => event.stopPropagation()}>
           <Modal isOpen={this.state.modalIsOpen} onRequestClose={this.closeModal}>
             <div className="modal-container">
-              <Carousel showArrows={true} showThumbs={false} showIndicators={false}>
+              <Carousel selectedItem={this.state.selectedItem} showArrows={true} showThumbs={false} showIndicators={false}>
                 {elements}
               </Carousel>
             </div>
