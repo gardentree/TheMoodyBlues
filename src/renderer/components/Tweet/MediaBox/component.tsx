@@ -7,7 +7,7 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 if (process.env.NODE_ENV !== "test") Modal.setAppElement("#app");
 
 interface Property {
-  medias: Twitter.Media[];
+  media: Twitter.Media[];
 }
 
 export default class MediaBox extends React.Component<Property, {modalIsOpen: boolean; selectedItem: number}> {
@@ -28,10 +28,10 @@ export default class MediaBox extends React.Component<Property, {modalIsOpen: bo
   }
 
   render() {
-    const {medias} = this.props;
-    if (medias.length <= 0) return <div />;
+    const {media} = this.props;
+    if (media.length <= 0) return <div />;
 
-    const thumbnails = medias.map((media, index: number) => {
+    const thumbnails = media.map((media, index: number) => {
       return (
         <img
           key={media.id_str}
@@ -44,7 +44,7 @@ export default class MediaBox extends React.Component<Property, {modalIsOpen: bo
       );
     });
 
-    const elements = medias.map((media, index: number) => {
+    const elements = media.map((media, index: number) => {
       switch (media.type) {
         case "video":
           const variants = media.video_info.variants.slice().sort((a: any, b: any) => (b.bitrate || 0) - (a.bitrate || 0));
