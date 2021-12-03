@@ -4,33 +4,16 @@ import TweetBody from "./TweetBody";
 import MediaBox from "./MediaBox";
 import Quotation from "./Quotation";
 import * as DateUtility from "date-fns";
+import {openContextMenu} from "../../helpers/tools";
 
 interface Property {
   source: Twitter.Tweet;
   unread: boolean;
 }
 
-const {TheMoodyBlues} = window;
-
 export default class Tweet extends React.Component<Property, {}> {
   constructor(property: Property) {
     super(property);
-
-    this.openContextMenu = this.openContextMenu.bind(this);
-  }
-
-  openContextMenu(event: React.SyntheticEvent<HTMLElement>) {
-    const {source} = this.props;
-    let tweet: Twitter.Tweet;
-    if (source.retweeted_status) {
-      tweet = source.retweeted_status;
-    } else {
-      tweet = source;
-    }
-
-    const keyword = (window.getSelection() || "").toString().trim();
-
-    TheMoodyBlues.openTweetMenu({tweet: tweet, keyword: keyword});
   }
 
   render() {
@@ -56,7 +39,7 @@ export default class Tweet extends React.Component<Property, {}> {
     }
 
     return (
-      <div data-url={`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`} onContextMenu={this.openContextMenu}>
+      <div data-url={`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`} onContextMenu={openContextMenu(source)} tabIndex={-1}>
         <div className={`avatar${retweet ? " retweet" : ""}${unread ? " unread" : ""}`}>
           <img src={tweet.user.profile_image_url_https} className="tweeter" />
           {retweet && <img src={retweet.user.profile_image_url_https} className="retweeter" />}

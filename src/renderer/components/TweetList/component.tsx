@@ -25,7 +25,7 @@ export default class TweetList extends React.Component<Property, {}> {
       const unread = lastReadID != null && tweet.id_str > lastReadID;
       return (
         <CSSTransition key={tweet.id_str} timeout={500} classNames="fade">
-          <li data-id={tweet.id_str} className={unread ? "unread" : undefined} tabIndex={-1}>
+          <li data-id={tweet.id_str} className={unread ? "unread" : undefined}>
             <TweetErrorBoundary tweet={tweet}>
               <Tweet source={tweet} unread={unread} />
             </TweetErrorBoundary>
