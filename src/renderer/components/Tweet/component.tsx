@@ -2,6 +2,7 @@ import * as React from "react";
 import UserIdentifier from "./UserIdentifier";
 import TweetBody from "./TweetBody";
 import MediaBox from "./MediaBox";
+import Quotation from "./Quotation";
 import * as DateUtility from "date-fns";
 
 interface Property {
@@ -48,10 +49,6 @@ export default class Tweet extends React.Component<Property, {}> {
     if (tweet.quoted_status !== undefined) {
       quote = tweet.quoted_status;
     }
-    let quoted_media: Twitter.Media[] = [];
-    if (quote && quote.extended_entities) {
-      quoted_media = quote.extended_entities.media;
-    }
 
     let media: Twitter.Media[] = [];
     if (tweet.extended_entities !== undefined) {
@@ -77,17 +74,7 @@ export default class Tweet extends React.Component<Property, {}> {
             </p>
             {media && <MediaBox media={media} />}
           </div>
-          {quote && (
-            <div className="quote">
-              <div className="screen_name">
-                <UserIdentifier identifier={quote.user.screen_name} />
-              </div>
-              <p>
-                <TweetBody tweet={quote} />
-              </p>
-              {quoted_media && <MediaBox media={quoted_media} />}
-            </div>
-          )}
+          {quote && <Quotation tweet={quote} />}
           {retweet && <div className="retweeter">Retweeted by {retweet.user.screen_name}</div>}
         </div>
       </div>
