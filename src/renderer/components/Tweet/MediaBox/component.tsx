@@ -47,10 +47,17 @@ export default class MediaBox extends React.Component<Property, {modalIsOpen: bo
     const elements = media.map((media, index: number) => {
       switch (media.type) {
         case "video":
-          const variants = media.video_info.variants.slice().sort((a: any, b: any) => (b.bitrate || 0) - (a.bitrate || 0));
+          const variants = media.video_info?.variants.slice().sort((a: any, b: any) => (b.bitrate || 0) - (a.bitrate || 0));
+          let url;
+          if (variants) {
+            url = variants[0].url;
+          } else {
+            //Version 2 does not yet support video.
+            url = media.media_url_https;
+          }
           return (
             <div key={media.id_str}>
-              <video src={variants[0].url} poster={media.media_url_https} preload="metadata" playsInline controls controlsList="nodownload" />
+              <video src={url} poster={media.media_url_https} preload="metadata" playsInline controls controlsList="nodownload" />
             </div>
           );
         case "photo":
