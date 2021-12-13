@@ -10,6 +10,7 @@ export interface StateProperty {
 }
 export interface DispatchProperty {
   didMount: any;
+  willUnmount(): void;
 }
 
 type Property = OwnProperty & StateProperty & DispatchProperty;
@@ -23,5 +24,8 @@ export default class Timeline extends React.Component<Property, {}> {
 
   componentDidMount() {
     this.props.didMount();
+  }
+  componentWillUnmount() {
+    this.props.willUnmount();
   }
 }

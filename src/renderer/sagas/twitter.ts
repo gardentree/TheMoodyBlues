@@ -45,6 +45,12 @@ function* displayConversation(action: TheMoodyBlues.ReduxAction) {
   yield put(subcontents.updateTweetsInSubContents(tweets));
 }
 
+function* shutdown(action: TheMoodyBlues.ReduxAction) {
+  const {payload} = action;
+
+  yield put({type: `${payload.identity}_SHUTDOWN`});
+}
+
 const wrap = (saga: any) =>
   function* (action: TheMoodyBlues.ReduxAction) {
     TheMoodyBlues.logger.info(action);
@@ -67,5 +73,6 @@ export default [
   takeLatest(timelines.searchTweets, wrap(searchTweets)),
   takeLatest(subcontents.displayUserTimeline, wrap(displayUserTimeline)),
   takeLatest(subcontents.displayConversation, wrap(displayConversation)),
-  takeEvery(timelines.mountComponent, wrap(initialize))
+  takeEvery(timelines.mountComponent, wrap(initialize)),
+  takeEvery(timelines.unmountComponent, wrap(shutdown))
 ];

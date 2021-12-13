@@ -25,13 +25,17 @@ export default abstract class ComponentSaga {
       });
     while ((yield take(channel)) as ReturnType<typeof take>) {
       while (true) {
-        const winner: {stopped: boolean; tick: any} = yield race({
+        const winner: {stopped: boolean; killed: boolean; tick: any} = yield race({
           stopped: take(`${identity}_STOP_TIMER`),
+          killed: take(`${identity}_SHUTDOWN`),
           tick: call(wait, interval),
         });
 
         if (winner.stopped) {
           break;
+        }
+        if (winner.killed) {
+          return;
         }
 
         yield put(timelines.reload(false, identity, true));

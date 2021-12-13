@@ -75,8 +75,9 @@ export default handleActions<TheMoodyBlues.Store.TimelineMap, any, any>(
 );
 
 ////////////////////
-export const {reload, mountComponent, searchTweets} = createActions({
+export const {reload, mountComponent, unmountComponent, searchTweets} = createActions({
   RELOAD: [(force, tab) => null, (force, tab, silently = false) => ({force: force, tab: tab, silently: silently})],
   MOUNT_COMPONENT: (identity) => ({identity: identity}),
+  UNMOUNT_COMPONENT: (identity) => ({identity: identity}),
   SEARCH_TWEETS: (query) => ({query: query}),
 });

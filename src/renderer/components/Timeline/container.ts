@@ -15,6 +15,7 @@ const mapStateToProps = (state: TheMoodyBlues.Store.State, own: OwnProperty): St
 const mapDispatchToProps = (dispatch: any, own: OwnProperty): DispatchProperty => {
   return {
     didMount: () => dispatch(timelines.mountComponent(own.identity)),
+    willUnmount: () => dispatch(timelines.unmountComponent(own.identity)),
   };
 };
 
