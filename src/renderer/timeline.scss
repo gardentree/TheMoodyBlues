@@ -11,9 +11,8 @@ ul.timeline {
 
     & > div {
       display: table;
-      padding: 8px;
       border-collapse: separate;
-      border-spacing: 8px 0;
+      border-spacing: 8px;
     }
     & > div > div {
       display: table-cell;
@@ -47,6 +46,11 @@ ul.timeline {
     height: 48px;
     width: 48px;
     object-fit: cover;
+    vertical-align: bottom;
+
+    & + img.photo {
+      margin-left: 8px;
+    }
   }
 }
 

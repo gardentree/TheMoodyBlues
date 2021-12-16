@@ -5,6 +5,7 @@ import * as FileSystem from "fs";
 import './timeline.scss';
 import {PrettyTweet} from "./PrettyTweet";
 import {Tweet} from "./twitter";
+import {openLinkOnAnchor} from "./tools"
 
 interface Property {
   tweets: Tweet[];
@@ -38,7 +39,9 @@ class Timeline extends React.Component<Property,Property> {
       if (tweet.extended_entities !== undefined) {
         medias = tweet.extended_entities.media.map((media) => {
           return (
-            <img key={media.id_str} src={media.media_url_https} className="photo" />
+            <a key={media.id_str} href={media.media_url_https} onClick={openLinkOnAnchor}>
+              <img src={media.media_url_https} className="photo" />
+            </a>
           )
         })
       }
