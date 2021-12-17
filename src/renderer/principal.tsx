@@ -8,6 +8,7 @@ import {Provider} from "react-redux";
 import Principal from "./components/Principal";
 import VerifierForm from "./components/VerifierForm";
 import {createLogger} from "redux-logger";
+import {initialPreferences} from "@libraries/timeline";
 
 const {TheMoodyBlues} = window;
 
@@ -51,7 +52,7 @@ function showVerifierForm() {
 function loadTimelines() {
   const timelines: TheMoodyBlues.Store.TimelineMap = new Map();
 
-  for (const preference of TheMoodyBlues.storage.getTimelinePreferences()) {
+  for (const preference of TheMoodyBlues.storage.getTimelinePreferences()||initialPreferences()) {
     if (!preference.active) {
       continue;
     }

@@ -30,31 +30,7 @@ export function buildStorage(userDataDirectory: string) {
     },
 
     getTimelinePreferences: (): TheMoodyBlues.Store.TimelinePreference[] => {
-      return (
-        (getStore("preferences.timelines") as TheMoodyBlues.Store.TimelinePreference[]) || [
-          {
-            identity: "home",
-            title: "Home",
-            component: "Timeline",
-            interval: 120,
-            way: "retrieveTimeline",
-          },
-          {
-            identity: "search",
-            title: "Search",
-            component: "Search",
-            interval: 60,
-            way: "search",
-          },
-          {
-            identity: "mentions",
-            title: "Mentions",
-            component: "Timeline",
-            interval: 300,
-            way: "retrieveMentions",
-          },
-        ]
-      );
+      return getStore("preferences.timelines") as TheMoodyBlues.Store.TimelinePreference[];
     },
     setTimelinePreferences: (timelines: TheMoodyBlues.Store.TimelinePreference[]) => {
       setStore("preferences.timelines", timelines);

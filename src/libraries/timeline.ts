@@ -38,7 +38,7 @@ const LIST = {
 };
 
 export function initialPreferences() {
-  return [{...HOME}, {...SEARCH}, {...MENTIONS}];
+  return [HOME, SEARCH, MENTIONS].map((template) => Object.assign({active: true}, template));
 }
 
 export function mixPreferences(actives: TheMoodyBlues.Store.TimelinePreference[], lists: Twitter.List[]): TheMoodyBlues.Store.TimelinePreference[] {
