@@ -37,6 +37,21 @@ const LIST = {
   growl: true,
 };
 
+export function makeInitialTimeline(preference: TheMoodyBlues.Store.TimelinePreference): TheMoodyBlues.Store.Timeline {
+  const keywords = TheMoodyBlues.storage.getMuteKeywords();
+
+  return {
+    preference: preference,
+    tweets: [],
+    state: {
+      lastReadID: "",
+    },
+    mute: {
+      keywords: keywords,
+      selfRetweet: true,
+    },
+  };
+}
 export function initialPreferences() {
   return [HOME, SEARCH, MENTIONS].map((template) => Object.assign({active: true}, template));
 }
@@ -59,6 +74,8 @@ export function mixPreferences(actives: TheMoodyBlues.Store.TimelinePreference[]
 export function refreshPreferences(currentMap: TheMoodyBlues.Store.TimelineMap): TheMoodyBlues.Store.TimelineMap {
   const newMap: TheMoodyBlues.Store.TimelineMap = new Map();
 
+  const keywords = TheMoodyBlues.storage.getMuteKeywords();
+
   for (const preference of TheMoodyBlues.storage.getTimelinePreferences()) {
     if (!preference.active) {
       continue;
@@ -69,13 +86,13 @@ export function refreshPreferences(currentMap: TheMoodyBlues.Store.TimelineMap):
     if (current) {
       newTimeline = merger(current, {
         preference: preference,
+        mute: {
+          keywords: keywords,
+          selfRetweet: true,
+        },
       }) as TheMoodyBlues.Store.Timeline;
     } else {
-      newTimeline = {
-        preference: preference,
-        tweets: [],
-        state: {lastReadID: ""},
-      };
+      newTimeline = makeInitialTimeline(preference);
     }
 
     newMap.set(preference.identity, newTimeline);

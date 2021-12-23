@@ -28,7 +28,7 @@ export function* order(timeline: TheMoodyBlues.Store.Timeline, agent: TheMoodyBl
   let tweets: Twitter.Tweet[] = yield call(agent[timeline.preference.way] as any, ...parameters);
   if (tweets.length > 0) {
     if (timeline.preference.mute) {
-      tweets = mute(tweets);
+      tweets = mute(tweets, timeline.mute);
     }
     if (timeline.preference.growl) {
       TheMoodyBlues.growl(tweets);

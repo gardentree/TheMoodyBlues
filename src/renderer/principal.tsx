@@ -8,7 +8,7 @@ import {Provider} from "react-redux";
 import Principal from "./components/Principal";
 import VerifierForm from "./components/VerifierForm";
 import {createLogger} from "redux-logger";
-import {initialPreferences} from "@libraries/timeline";
+import {makeInitialTimeline,initialPreferences} from "@libraries/timeline";
 
 const {TheMoodyBlues} = window;
 
@@ -57,13 +57,7 @@ function loadTimelines() {
       continue;
     }
 
-    timelines.set(preference.identity, {
-      preference: preference,
-      tweets: [],
-      state: {
-        lastReadID: "",
-      },
-    });
+    timelines.set(preference.identity,makeInitialTimeline(preference));
   }
 
   return timelines;

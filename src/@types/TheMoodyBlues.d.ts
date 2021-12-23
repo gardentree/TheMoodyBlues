@@ -11,7 +11,6 @@ namespace TheMoodyBlues {
     type TimelineMap = Map<TimelineIdentity, Timeline>;
     interface Preference {
       timelines: PreferenceMap;
-      mute_keywords: string[];
     }
     interface Timeline {
       preference: TimelinePreference;
@@ -20,6 +19,7 @@ namespace TheMoodyBlues {
         lastReadID: string;
         query?: string;
       };
+      mute: MutePreference;
     }
     interface TimelinePreference {
       identity: TimelineIdentity;
@@ -32,6 +32,11 @@ namespace TheMoodyBlues {
       growl: boolean;
       mute: boolean;
     }
+    interface MutePreference {
+      keywords: string[];
+      selfRetweet: boolean;
+    }
+
     type SubContents = any;
 
     interface Principal {

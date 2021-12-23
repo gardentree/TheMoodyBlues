@@ -19,7 +19,7 @@ export function* order(timeline: TheMoodyBlues.Store.Timeline, agent: TheMoodyBl
   if (query.length > 0) {
     let tweets: Twitter.Tweet[] = yield call(agent.search, query, latest(oldTweets));
     if (timeline.preference.mute) {
-      tweets = mute(tweets);
+      tweets = mute(tweets, timeline.mute);
     }
     if (timeline.preference.growl) {
       TheMoodyBlues.growl(tweets);
