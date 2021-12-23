@@ -1,16 +1,17 @@
 import {put, call, takeLatest, takeEvery, select} from "redux-saga/effects";
-import getSaga from "./contents";
 import * as timelines from "@modules/timelines";
 import * as subcontents from "@modules/subcontents";
 import * as principal from "@modules/principal";
+import * as metronome from "./metronome";
 
 const {TheMoodyBlues} = window;
 
 function* initialize(action: TheMoodyBlues.ReduxAction) {
   const {payload} = action;
-  const state: TheMoodyBlues.Store.State = yield select();
+  const {timelines} = yield select();
+  const timeline = timelines.get(payload.identity)!;
 
-  yield getSaga(state, payload!.identity).initialize(action);
+  yield metronome.launch(timeline);
 }
 
 function* reorder(action: TheMoodyBlues.ReduxAction) {
@@ -18,8 +19,11 @@ function* reorder(action: TheMoodyBlues.ReduxAction) {
 
   yield order(action.meta.tab || focused, action);
 }
-function* order(tab: string, action: TheMoodyBlues.ReduxAction) {
-  yield getSaga((yield select()) as TheMoodyBlues.Store.State, tab).order(action);
+function* order(identity: string, action: TheMoodyBlues.ReduxAction) {
+  const {agent, timelines} = yield select();
+  const timeline = timelines.get(identity)!;
+
+  yield metronome.play(timeline, agent, action.meta.force);
 }
 
 function* searchTweets(action: TheMoodyBlues.ReduxAction) {
@@ -48,7 +52,7 @@ function* displayConversation(action: TheMoodyBlues.ReduxAction) {
 function* shutdown(action: TheMoodyBlues.ReduxAction) {
   const {payload} = action;
 
-  yield put({type: `${payload.identity}_SHUTDOWN`});
+  yield metronome.close(payload.identity);
 }
 
 const wrap = (saga: any) =>
