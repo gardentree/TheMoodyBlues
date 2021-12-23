@@ -1,7 +1,10 @@
 # TheMoodyBlues
 
 Read-only Twitter client built on electron.
-![screenshot](/readme/screenshot.png)
+![lightmode](/readme/lightmode.png)
+
+Dark Mode is supported.
+![darkmode](/readme/darkmode.png)
 
 ## Installation
 
