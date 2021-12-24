@@ -1,27 +1,14 @@
 import {expectSaga} from "redux-saga-test-plan";
 import {expect} from "chai";
-import TimelineSaga from "../../../../src/renderer/sagas/contents/timeline.ts";
+import {initialize, order} from "../../../../src/renderer/sagas/metronome/timeline.ts";
 
-const newTarget = (tweets: Twitter.Tweet[], timeline: TheMoodyBlues.Store.Timeline) => {
-  const agent = {
-    [timeline.preference.way]: () => tweets,
-  };
-
-  const target = new TimelineSaga(agent, timeline);
-
-  target.initialize = target.initialize.bind(target);
-  target.order = target.order.bind(target);
-
-  return target;
-};
-
-describe(TimelineSaga.name, () => {
+describe("timeline", () => {
   describe("#initialize", () => {
     it("when have cache", () => {
       const identity = "home";
       const title = "Home";
 
-      const target = newTarget([], {
+      const timeline = {
         preference: {
           identity: identity,
           title: title,
@@ -33,9 +20,9 @@ describe(TimelineSaga.name, () => {
         state: {
           lastReadID: 0,
         },
-      });
+      };
 
-      return expectSaga(target.initialize, {payload: {identity: identity}})
+      return expectSaga(initialize, timeline)
         .provide([
           {
             call(effect: any, next: any) {
@@ -44,7 +31,7 @@ describe(TimelineSaga.name, () => {
           },
           {
             spawn(effect: any, next: any) {
-              expect(effect.fn.name).to.equal("runTimer");
+              expect(effect.fn.name).to.equal("run");
               expect(effect.args).to.deep.equal([identity, 120 * 1000]);
             },
           },
@@ -75,7 +62,7 @@ describe(TimelineSaga.name, () => {
       const identity = "home";
       const title = "Home";
 
-      const target = newTarget([], {
+      const timeline = {
         preference: {
           identity: "home",
           title: title,
@@ -87,9 +74,9 @@ describe(TimelineSaga.name, () => {
         state: {
           lastReadID: 0,
         },
-      });
+      };
 
-      return expectSaga(target.initialize, {payload: {identity: identity}})
+      return expectSaga(initialize, timeline)
         .provide([
           {
             call(effect: any, next: any) {
@@ -98,7 +85,7 @@ describe(TimelineSaga.name, () => {
           },
           {
             spawn(effect: any, next: any) {
-              expect(effect.fn.name).to.equal("runTimer");
+              expect(effect.fn.name).to.equal("run");
               expect(effect.args).to.deep.equal([identity, 120 * 1000]);
             },
           },
@@ -127,7 +114,7 @@ describe(TimelineSaga.name, () => {
       const identity = "home";
       const title = "Home";
 
-      const target = newTarget([], {
+      const timeline = {
         preference: {
           identity: "home",
           title: title,
@@ -139,14 +126,12 @@ describe(TimelineSaga.name, () => {
         state: {
           lastReadID: 0,
         },
-      });
+      };
+      const agent = {
+        [timeline.preference.way]: () => [],
+      };
 
-      return expectSaga(target.order, {
-        payload: {},
-        meta: {
-          force: false,
-        },
-      })
+      return expectSaga(order, timeline, agent, false)
         .provide([
           {
             call(effect: any, next: any) {
@@ -185,7 +170,7 @@ describe(TimelineSaga.name, () => {
       const identity = "home";
       const title = "Home";
 
-      const target = newTarget([], {
+      const timeline = {
         preference: {
           identity: "home",
           title: title,
@@ -197,14 +182,12 @@ describe(TimelineSaga.name, () => {
         state: {
           lastReadID: 0,
         },
-      });
+      };
+      const agent = {
+        [timeline.preference.way]: () => [],
+      };
 
-      return expectSaga(target.order, {
-        payload: {},
-        meta: {
-          force: true,
-        },
-      })
+      return expectSaga(order, timeline, agent, true)
         .provide([
           {
             call(effect: any, next: any) {
@@ -243,7 +226,7 @@ describe(TimelineSaga.name, () => {
       const identity = "home";
       const title = "Home";
 
-      const target = newTarget([], {
+      const timeline = {
         preference: {
           identity: "home",
           title: title,
@@ -255,14 +238,12 @@ describe(TimelineSaga.name, () => {
         state: {
           lastReadID: 0,
         },
-      });
+      };
+      const agent = {
+        [timeline.preference.way]: () => [],
+      };
 
-      return expectSaga(target.order, {
-        payload: {},
-        meta: {
-          force: false,
-        },
-      })
+      return expectSaga(order, timeline, agent, false)
         .provide([
           {
             call(effect: any, next: any) {

@@ -1,26 +1,13 @@
 import {expectSaga} from "redux-saga-test-plan";
 import {expect} from "chai";
-import SearchSaga from "../../../../src/renderer/sagas/contents/search.ts";
+import {initialize, order} from "../../../../src/renderer/sagas/metronome/search.ts";
 
-const newTarget = (tweets: Twitter.Tweet[], timeline: TheMoodyBlues.Store.Timeline) => {
-  const agent = {
-    [timeline.preference.way]: () => tweets,
-  };
-
-  const target = new SearchSaga(agent, timeline);
-
-  target.initialize = target.initialize.bind(target);
-  target.order = target.order.bind(target);
-
-  return target;
-};
-
-describe(SearchSaga.name, () => {
+describe("search", () => {
   describe("#initialize", () => {
     const identity = "search";
     const title = identity;
 
-    const target = newTarget([], {
+    const timeline = {
       preference: {
         identity: identity,
         title: title,
@@ -32,10 +19,10 @@ describe(SearchSaga.name, () => {
       state: {
         lastReadID: 0,
       },
-    });
+    };
 
     it("when no cache", () => {
-      return expectSaga(target.initialize, {payload: {identity: identity}})
+      return expectSaga(initialize, timeline)
         .run()
         .then((result) => {
           const {effects} = result;
@@ -52,7 +39,7 @@ describe(SearchSaga.name, () => {
       const identity = "search";
       const title = identity;
 
-      const target = newTarget([{id_str: "1"}], {
+      const timeline = {
         preference: {
           identity: identity,
           title: title,
@@ -65,14 +52,12 @@ describe(SearchSaga.name, () => {
           lastReadID: 0,
           query: "くえりー",
         },
-      });
+      };
+      const agent = {
+        [timeline.preference.way]: () => [{id_str: "1"}],
+      };
 
-      return expectSaga(target.order, {
-        payload: {},
-        meta: {
-          force: false,
-        },
-      })
+      return expectSaga(order, timeline, agent, false)
         .provide([
           {
             call(effect: any, next: any) {
@@ -111,7 +96,7 @@ describe(SearchSaga.name, () => {
       const identity = "search";
       const title = identity;
 
-      const target = newTarget([{id_str: "1"}], {
+      const timeline = {
         preference: {
           identity: identity,
           title: title,
@@ -124,14 +109,12 @@ describe(SearchSaga.name, () => {
           lastReadID: 0,
           query: "",
         },
-      });
+      };
+      const agent = {
+        [timeline.preference.way]: () => [{id_str: "1"}],
+      };
 
-      return expectSaga(target.order, {
-        payload: {},
-        meta: {
-          force: false,
-        },
-      })
+      return expectSaga(order, timeline, agent, false)
         .put({
           type: `${identity}_STOP_TIMER`,
         })
