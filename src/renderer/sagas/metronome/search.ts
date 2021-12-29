@@ -1,6 +1,6 @@
 import {put, call} from "redux-saga/effects";
 import * as timelines from "@modules/timelines";
-import mute from "../../helpers/mute";
+import {silence} from "@libraries/silencer";
 import * as timer from "./timer";
 
 const {TheMoodyBlues} = window;
@@ -19,7 +19,7 @@ export function* order(timeline: TheMoodyBlues.Store.Timeline, agent: TheMoodyBl
   if (query.length > 0) {
     let tweets: Twitter.Tweet[] = yield call(agent.search, query, latest(oldTweets));
     if (timeline.preference.mute) {
-      tweets = mute(tweets, timeline.mute);
+      tweets = silence(tweets, timeline.mute);
     }
     if (timeline.preference.growl) {
       TheMoodyBlues.growl(tweets);
