@@ -1,5 +1,14 @@
 .PreferencesMute {
-  ul {
+  ul.entry.list-group {
+    * {
+      white-space: normal;
+    }
+    .list-group-item {
+      color: inherit;
+    }
+  }
+
+  ul.keywords {
     list-style-type: none;
     padding-left: 0;
 
