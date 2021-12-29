@@ -19,6 +19,12 @@
       padding: 4px;
       margin-top: 4px;
 
+      &:focus {
+        border-color: #6db3fd;
+        box-shadow: 0 0 0 3px #6db3fd;
+        outline: none;
+      }
+
       &:first-child,
       & + li {
         margin-right: 4px;
