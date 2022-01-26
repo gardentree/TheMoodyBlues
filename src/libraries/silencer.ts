@@ -16,17 +16,15 @@ export function silence(tweets: Twitter.Tweet[], preference: TheMoodyBlues.Store
   });
 }
 export function test(tweet: Twitter.Tweet, keywords: string[]): string | null {
-  for (const keyword of keywords) {
+  const loweredKeywords = keywords.map((keyword) => keyword.toLowerCase());
+
+  for (const keyword of loweredKeywords) {
     if (tweet.full_text.toLowerCase().indexOf(keyword) >= 0) {
       return tweet.full_text;
     }
   }
 
-  for (const keyword of keywords) {
-    if (tweet.full_text.toLowerCase().indexOf(keyword) >= 0) {
-      return tweet.full_text;
-    }
-
+  for (const keyword of loweredKeywords) {
     for (const url of tweet.entities.urls) {
       if (url.expanded_url.toLowerCase().indexOf(keyword) >= 0) {
         return url.expanded_url;
