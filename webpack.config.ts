@@ -1,4 +1,5 @@
 import * as path from "path";
+import * as fs from "fs";
 import {default as webpack, Configuration} from "webpack";
 import HtmlWebpackPlugin from "html-webpack-plugin";
 import MiniCssExtractPlugin from "mini-css-extract-plugin";
@@ -16,18 +17,26 @@ const mode = (() => {
 })();
 console.log(`mode: ${mode}`);
 
-const typescript = {
-  test: /\.tsx?$/,
-  use: {
-    loader: "ts-loader",
-    options: {
-      configFile: `tsconfig/${mode}.json`,
+const {compilerOptions} = JSON.parse(fs.readFileSync(path.resolve(__dirname, "tsconfig", `${mode}.json`), "utf8"));
+function typescript(name: string) {
+  return {
+    test: /\.tsx?$/,
+    use: {
+      loader: "ts-loader",
+      options: {
+        configFile: path.resolve(__dirname, "src", name, "tsconfig.json"),
+        compilerOptions: compilerOptions,
+      },
     },
-  },
-  resolve: {
-    extensions: [".js", ".ts", ".tsx"],
-  },
-};
+    include: [path.resolve(__dirname, "src", "shared"), path.resolve(__dirname, "src", name)],
+    resolve: {
+      extensions: [".js", ".ts", ".tsx"],
+      alias: {
+        "@shared": path.resolve(__dirname, "src/shared"),
+      },
+    },
+  };
+}
 
 const main: Configuration = {
   mode: mode,
@@ -40,7 +49,7 @@ const main: Configuration = {
     path: path.resolve(__dirname, "./build"),
   },
   module: {
-    rules: [typescript],
+    rules: [typescript("main")],
   },
 };
 const preload: Configuration = {
@@ -54,13 +63,7 @@ const preload: Configuration = {
     path: path.resolve(__dirname, "./build"),
   },
   module: {
-    rules: [typescript],
-  },
-  resolve: {
-    alias: {
-      "@modules": path.resolve(__dirname, "src/renderer/modules"),
-      "@libraries": path.resolve(__dirname, "src/libraries"),
-    },
+    rules: [typescript("preload")],
   },
   plugins: [new webpack.EnvironmentPlugin(["CONSUMER_KEY", "CONSUMER_SECRET"])],
 };
@@ -77,7 +80,7 @@ const renderer: any = {
   },
   module: {
     rules: [
-      typescript,
+      typescript("renderer"),
       {
         test: /\.s?css$/,
         use: [MiniCssExtractPlugin.loader, "css-loader", "sass-loader"],
@@ -87,7 +90,7 @@ const renderer: any = {
   resolve: {
     alias: {
       "@modules": path.resolve(__dirname, "src/renderer/modules"),
-      "@libraries": path.resolve(__dirname, "src/libraries"),
+      "@libraries": path.resolve(__dirname, "src/renderer/libraries"),
     },
   },
   plugins: [
@@ -112,32 +115,4 @@ const renderer: any = {
   },
 };
 
-const configurations = [main, preload, renderer];
-
-if (mode == "development") {
-  const playground: Configuration = {
-    mode: mode,
-    target: "electron-preload",
-    entry: {
-      twitter: "./src/playground/twitter.ts",
-    },
-    output: {
-      filename: "[name].js",
-      path: path.resolve(__dirname, "./playground"),
-    },
-    module: {
-      rules: [typescript],
-    },
-    resolve: {
-      alias: {
-        "@preload": path.resolve(__dirname, "src/preload"),
-        "@libraries": path.resolve(__dirname, "src/libraries"),
-      },
-    },
-    plugins: [new webpack.EnvironmentPlugin(["CONSUMER_KEY", "CONSUMER_SECRET"])],
-  };
-
-  configurations.push(playground);
-}
-
-export default configurations;
+export default [main, preload, renderer];

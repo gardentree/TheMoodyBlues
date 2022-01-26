@@ -8,7 +8,8 @@ import {Provider} from "react-redux";
 import Principal from "./components/Principal";
 import VerifierForm from "./components/VerifierForm";
 import {createLogger} from "redux-logger";
-import {makeInitialTimeline,initialPreferences} from "@libraries/timeline";
+import {makeInitialTimeline, initialPreferences} from "@libraries/timeline";
+import keybinds from "./keybinds";
 
 const {TheMoodyBlues} = window;
 
@@ -28,7 +29,7 @@ function setup(agent: TheMoodyBlues.TwitterAgent) {
 
   sagaMiddleware.run(rootSaga);
 
-  TheMoodyBlues.keybinds(store);
+  keybinds(store);
   store.getState()["agent"] = agent;
   store.getState()["timelines"] = loadTimelines();
 
@@ -52,12 +53,12 @@ function showVerifierForm() {
 function loadTimelines() {
   const timelines: TheMoodyBlues.Store.TimelineMap = new Map();
 
-  for (const preference of TheMoodyBlues.storage.getTimelinePreferences()||initialPreferences()) {
+  for (const preference of TheMoodyBlues.storage.getTimelinePreferences() || initialPreferences()) {
     if (!preference.active) {
       continue;
     }
 
-    timelines.set(preference.identity,makeInitialTimeline(preference));
+    timelines.set(preference.identity, makeInitialTimeline(preference));
   }
 
   return timelines;

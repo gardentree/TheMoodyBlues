@@ -62,7 +62,7 @@ export function call(): TheMoodyBlues.TwitterAgent | null {
     return null;
   }
 }
-export async function authorize(showVerifierForm: () => string): Promise<TheMoodyBlues.TwitterAgent> {
+export async function authorize(showVerifierForm: () => Promise<string>): Promise<TheMoodyBlues.TwitterAgent> {
   const agent = call();
   if (agent) {
     return agent;
