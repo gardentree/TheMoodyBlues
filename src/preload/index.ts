@@ -12,7 +12,7 @@ const openTweetMenu = (context: TheMoodyBlues.TweetMenu) => {
   ipcRenderer.send("openTweetMenu", context);
 };
 
-const TheMoodyBlues: TheMoodyBlues = {
+const facade: Facade = {
   agent: {
     authorize: authorize,
     call: call,
@@ -32,4 +32,4 @@ const TheMoodyBlues: TheMoodyBlues = {
     copy: (text: string) => clipboard.writeText(text),
   },
 };
-contextBridge.exposeInMainWorld("TheMoodyBlues", TheMoodyBlues);
+contextBridge.exposeInMainWorld("facade", facade);

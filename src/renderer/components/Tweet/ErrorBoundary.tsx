@@ -1,6 +1,6 @@
 import * as React from "react";
 
-const {TheMoodyBlues} = window;
+const {facade} = window;
 
 export default class ErrorBoundary extends React.Component<{tweet: Twitter.Tweet}, {error?: {message: string}}> {
   constructor(props: any) {
@@ -13,8 +13,8 @@ export default class ErrorBoundary extends React.Component<{tweet: Twitter.Tweet
     return {error: error};
   }
   componentDidCatch(error: Error, information: React.ErrorInfo) {
-    TheMoodyBlues.logger.error(error.stack);
-    TheMoodyBlues.logger.error(this.props.tweet);
+    facade.logger.error(error.stack);
+    facade.logger.error(this.props.tweet);
   }
   render() {
     const {error} = this.state;

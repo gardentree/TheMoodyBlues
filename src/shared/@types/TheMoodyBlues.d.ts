@@ -74,9 +74,9 @@ namespace TheMoodyBlues {
 }
 
 interface Window {
-  TheMoodyBlues: TheMoodyBlues;
+  facade: Facade;
 }
-interface TheMoodyBlues {
+interface Facade {
   storage: {
     getAccessKey(): string;
     setAccessKey(value: string);

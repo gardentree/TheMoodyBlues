@@ -1,14 +1,14 @@
 import * as React from "react";
 import {test} from "@libraries/silencer";
 
-const {storage} = window.TheMoodyBlues;
+const {facade} = window;
 
 interface Form extends HTMLFormElement {
   keyword: HTMLInputElement;
 }
 
 class Mute extends React.Component<{}, {keywords: string[]; tweets: Twitter.Tweet[]; matched: string[]}> {
-  state = {keywords: storage.getMuteKeywords(), tweets: [], matched: []};
+  state = {keywords: facade.storage.getMuteKeywords(), tweets: [], matched: []};
 
   handleSubmit = (event: React.SyntheticEvent<Form>) => {
     event.preventDefault();
@@ -18,7 +18,7 @@ class Mute extends React.Component<{}, {keywords: string[]; tweets: Twitter.Twee
     this.state.keywords.sort();
     this.state.keywords = [...new Set(this.state.keywords)];
 
-    storage.setMuteKeywords(this.state.keywords);
+    facade.storage.setMuteKeywords(this.state.keywords);
 
     event.currentTarget.keyword.value = "";
     this.setState({keywords: this.state.keywords, matched: []});
@@ -30,7 +30,7 @@ class Mute extends React.Component<{}, {keywords: string[]; tweets: Twitter.Twee
       const index = this.state.keywords.indexOf(keyword);
       this.state.keywords.splice(index, 1);
 
-      storage.setMuteKeywords(this.state.keywords);
+      facade.storage.setMuteKeywords(this.state.keywords);
       this.setState({keywords: this.state.keywords});
     }
   };
@@ -48,11 +48,11 @@ class Mute extends React.Component<{}, {keywords: string[]; tweets: Twitter.Twee
   };
 
   componentDidMount() {
-    const promises = storage
+    const promises = facade.storage
       .getTimelinePreferences()
       .filter((preference) => preference.mute)
       .map((preference: TheMoodyBlues.Store.TimelinePreference) => {
-        return storage.getTweets(preference.identity);
+        return facade.storage.getTweets(preference.identity);
       });
 
     Promise.all(promises).then((allTweets: Twitter.Tweet[][]) => {

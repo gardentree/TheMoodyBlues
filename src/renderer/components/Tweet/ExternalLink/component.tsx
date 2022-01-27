@@ -5,11 +5,11 @@ interface Property {
   text: string;
 }
 
-const {TheMoodyBlues} = window;
+const {facade} = window;
 
 const openLinkOnAnchor = function (event: React.MouseEvent<HTMLAnchorElement>) {
   event.preventDefault();
-  TheMoodyBlues.openExternal(event.currentTarget.href);
+  facade.openExternal(event.currentTarget.href);
 };
 
 const ExternalLink: React.SFC<Property> = ({link, text}) => {

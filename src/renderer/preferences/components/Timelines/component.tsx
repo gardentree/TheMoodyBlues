@@ -1,7 +1,7 @@
 import * as React from "react";
 import {mixPreferences} from "@libraries/timeline";
 
-const {storage, agent} = window.TheMoodyBlues;
+const {facade} = window;
 
 const getCurrentPreferences = (() => {
   let timelines: TheMoodyBlues.Store.TimelinePreference[] | null = null;
@@ -11,11 +11,11 @@ const getCurrentPreferences = (() => {
       return timelines;
     }
 
-    throw agent
+    throw facade.agent
       .call()!
       .lists()
       .then((lists) => {
-        const current = storage.getTimelinePreferences();
+        const current = facade.storage.getTimelinePreferences();
         timelines = mixPreferences(current, lists);
       });
   };
@@ -63,7 +63,7 @@ function save() {
     return Object.assign({}, current, preference);
   });
 
-  storage.setTimelinePreferences(newPreferences);
+  facade.storage.setTimelinePreferences(newPreferences);
 }
 
 class Timelines extends React.Component<{}, {}> {

@@ -3,7 +3,7 @@ import * as timelines from "@modules/timelines";
 import {silence} from "@libraries/silencer";
 import * as timer from "./timer";
 
-const {TheMoodyBlues} = window;
+const {facade} = window;
 
 export function* initialize(timeline: TheMoodyBlues.Store.Timeline) {
   const identity = timeline.preference.identity;
@@ -22,7 +22,7 @@ export function* order(timeline: TheMoodyBlues.Store.Timeline, agent: TheMoodyBl
       tweets = silence(tweets, timeline.mute);
     }
     if (timeline.preference.growl) {
-      TheMoodyBlues.growl(tweets);
+      facade.growl(tweets);
     }
 
     const newTweets = tweets.concat(oldTweets).slice(0, 400);

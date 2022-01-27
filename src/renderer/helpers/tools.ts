@@ -1,4 +1,4 @@
-const {TheMoodyBlues} = window;
+const {facade} = window;
 export function openContextMenu(tweet: Twitter.Tweet) {
   return (event: React.SyntheticEvent<HTMLElement>) => {
     event.stopPropagation();
@@ -12,6 +12,6 @@ export function openContextMenu(tweet: Twitter.Tweet) {
 
     const keyword = (window.getSelection() || "").toString().trim();
 
-    TheMoodyBlues.openTweetMenu({tweet: target, keyword: keyword});
+    facade.openTweetMenu({tweet: target, keyword: keyword});
   };
 }

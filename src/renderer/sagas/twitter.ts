@@ -4,7 +4,7 @@ import * as subcontents from "@modules/subcontents";
 import * as principal from "@modules/principal";
 import * as metronome from "./metronome";
 
-const {TheMoodyBlues} = window;
+const {facade} = window;
 
 function* initialize(action: TheMoodyBlues.ReduxAction) {
   const {payload} = action;
@@ -57,7 +57,7 @@ function* shutdown(action: TheMoodyBlues.ReduxAction) {
 
 const wrap = (saga: any) =>
   function* (action: TheMoodyBlues.ReduxAction) {
-    TheMoodyBlues.logger.info(action);
+    facade.logger.info(action);
     try {
       const loading = !action.meta || !action.meta.silently;
 
@@ -65,8 +65,8 @@ const wrap = (saga: any) =>
       yield call(saga, action);
       if (loading) yield put(principal.showLoading(false));
     } catch (error: any) {
-      TheMoodyBlues.logger.error(error);
-      TheMoodyBlues.logger.error(error.stack);
+      facade.logger.error(error);
+      facade.logger.error(error.stack);
       yield put(principal.alarm(error));
     }
   };

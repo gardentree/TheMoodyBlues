@@ -1,6 +1,6 @@
 import {default as merger} from "./merger";
 
-const {TheMoodyBlues} = window;
+const {facade} = window;
 
 const HOME = {
   identity: "home",
@@ -38,7 +38,7 @@ const LIST = {
 };
 
 export function makeInitialTimeline(preference: TheMoodyBlues.Store.TimelinePreference): TheMoodyBlues.Store.Timeline {
-  const keywords = TheMoodyBlues.storage.getMuteKeywords();
+  const keywords = facade.storage.getMuteKeywords();
 
   return {
     preference: preference,
@@ -74,9 +74,9 @@ export function mixPreferences(actives: TheMoodyBlues.Store.TimelinePreference[]
 export function refreshPreferences(currentMap: TheMoodyBlues.Store.TimelineMap): TheMoodyBlues.Store.TimelineMap {
   const newMap: TheMoodyBlues.Store.TimelineMap = new Map();
 
-  const keywords = TheMoodyBlues.storage.getMuteKeywords();
+  const keywords = facade.storage.getMuteKeywords();
 
-  for (const preference of TheMoodyBlues.storage.getTimelinePreferences()) {
+  for (const preference of facade.storage.getTimelinePreferences()) {
     if (!preference.active) {
       continue;
     }

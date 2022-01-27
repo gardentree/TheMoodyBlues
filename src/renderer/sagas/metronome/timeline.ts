@@ -3,11 +3,11 @@ import * as timelines from "@modules/timelines";
 import {silence} from "@libraries/silencer";
 import * as timer from "./timer";
 
-const {TheMoodyBlues} = window;
+const {facade} = window;
 
 export function* initialize(timeline: TheMoodyBlues.Store.Timeline) {
   const identity = timeline.preference.identity;
-  const tweets: Twitter.Tweet[] = yield call(TheMoodyBlues.storage.getTweets, identity);
+  const tweets: Twitter.Tweet[] = yield call(facade.storage.getTweets, identity);
 
   if (tweets.length > 0) {
     yield put(timelines.updateTweets(tweets, identity));
@@ -31,12 +31,12 @@ export function* order(timeline: TheMoodyBlues.Store.Timeline, agent: TheMoodyBl
       tweets = silence(tweets, timeline.mute);
     }
     if (timeline.preference.growl) {
-      TheMoodyBlues.growl(tweets);
+      facade.growl(tweets);
     }
 
     const newTweets = tweets.concat(oldTweets).slice(0, 400);
 
-    yield call(TheMoodyBlues.storage.setTweets, identity, newTweets);
+    yield call(facade.storage.setTweets, identity, newTweets);
     yield put(timelines.updateTweets(newTweets, identity));
   }
   yield timer.restart(identity);

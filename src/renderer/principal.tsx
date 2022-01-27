@@ -11,12 +11,12 @@ import {createLogger} from "redux-logger";
 import {makeInitialTimeline, initialPreferences} from "@libraries/timeline";
 import keybinds from "./keybinds";
 
-const {TheMoodyBlues} = window;
+const {facade} = window;
 
 export default function launch() {
   (async () => {
     const agent = await new Promise<TheMoodyBlues.TwitterAgent>((resolve, reject) => {
-      resolve(TheMoodyBlues.agent.authorize(showVerifierForm));
+      resolve(facade.agent.authorize(showVerifierForm));
     });
 
     setup(agent);
@@ -53,7 +53,7 @@ function showVerifierForm() {
 function loadTimelines() {
   const timelines: TheMoodyBlues.Store.TimelineMap = new Map();
 
-  for (const preference of TheMoodyBlues.storage.getTimelinePreferences() || initialPreferences()) {
+  for (const preference of facade.storage.getTimelinePreferences() || initialPreferences()) {
     if (!preference.active) {
       continue;
     }
