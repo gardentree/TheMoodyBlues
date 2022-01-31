@@ -7,8 +7,8 @@ import * as fs from "fs";
 use(chaiAsPromised);
 use(chaiSubset);
 
-const [incarnate, degrade, degradeDate] = rewires("preload/twitter_agent", ["incarnate", "degrade", "degradeDate"]);
-const [parseElements] = rewires("libraries/twitter", ["parseElements"]);
+const [incarnate, degrade, degradeDate] = rewires("main/twitter/agent", ["incarnate", "degrade", "degradeDate"]);
+const [parseElements] = rewires("/renderer/libraries/twitter", ["parseElements"]);
 
 describe("retrieveTimeline", () => {
   it("success", () => {

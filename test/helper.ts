@@ -6,28 +6,31 @@ global.window = dom.window;
 global.document = dom.window.document;
 global.navigator = dom.window.navigator;
 
-global.window.TheMoodyBlues = {
+const facade: Facade = {
+  agent: {
+    get: (path, parameters) => Promise.resolve([]),
+    retrieveTimeline: (since_id) => Promise.resolve([]),
+    search: (query, since_id) => Promise.resolve([]),
+    retrieveTimelineOfUser: (name) => Promise.resolve([]),
+    retrieveMentions: (since_id) => Promise.resolve([]),
+    retrieveConversation: (criterion, options) => Promise.resolve([]),
+    lists: () => Promise.resolve([]),
+    retrieveTimelineOfList: (list_id, since_id) => Promise.resolve([]),
+  },
   storage: {
-    getAccessKey: () => {},
-    setAccessKey: (value: string) => {},
-    getAccessSecret: () => {},
-    setAccessSecret: (value: string) => {},
-    getMuteKeywords: () => {
-      return [];
-    },
+    getMuteKeywords: () => {},
     setMuteKeywords: (keywords: string[]) => {},
-    getTweets: (name: string) => {
-      return [];
-    },
+    getTimelinePreferences: () => {},
+    setTimelinePreferences: (timelines: TheMoodyBlues.Store.TimelinePreference[]) => {},
+    getTweets: (name: string) => {},
     setTweets: (name: string, tweets: Twitter.Tweet[]) => {},
   },
-  authorize: () => {},
-  keybinds: () => {},
-  growl: () => {},
-  openTweetMenu: () => {},
-  openExternal: () => {},
-  logger: () => {},
+  growl: (tweets: Twitter.Tweet[]) => {},
+  openTweetMenu: (context: TheMoodyBlues.TweetMenu) => {},
+  openExternal: (url: string) => {},
 };
+
+global.window.facade = facade;
 
 global.rewires = (file: string, functions: string[]) => {
   const rewirer = rewire(`../src/${file}`);

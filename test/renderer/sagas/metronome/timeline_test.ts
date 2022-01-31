@@ -2,7 +2,7 @@ import {expectSaga} from "redux-saga-test-plan";
 import {expect} from "chai";
 import {initialize, order} from "../../../../src/renderer/sagas/metronome/timeline.ts";
 
-describe("timeline", () => {
+describe("retrieveTimeline", () => {
   describe("#initialize", () => {
     it("when have cache", () => {
       const identity = "home";
@@ -14,7 +14,7 @@ describe("timeline", () => {
           title: title,
           component: "Timeline",
           interval: 120,
-          way: "timeline",
+          way: "retrieveTimeline",
         },
         tweets: [],
         state: {
@@ -68,7 +68,7 @@ describe("timeline", () => {
           title: title,
           component: "Timeline",
           interval: 120,
-          way: "timeline",
+          way: "retrieveTimeline",
         },
         tweets: [],
         state: {
@@ -120,23 +120,20 @@ describe("timeline", () => {
           title: title,
           component: "Timeline",
           interval: 120,
-          way: "timeline",
+          way: "retrieveTimeline",
         },
         tweets: [{id_str: "old_1"}],
         state: {
           lastReadID: 0,
         },
       };
-      const agent = {
-        [timeline.preference.way]: () => [],
-      };
 
-      return expectSaga(order, timeline, agent, false)
+      return expectSaga(order, timeline, false)
         .provide([
           {
             call(effect: any, next: any) {
               switch (effect.fn.name) {
-                case "timeline":
+                case "retrieveTimeline":
                   expect(effect.args[0]).to.equal("old_1");
                   return [{id_str: "new_1"}, {id_str: "new_2"}];
                 case "setTweets":
@@ -176,23 +173,20 @@ describe("timeline", () => {
           title: title,
           component: "Timeline",
           interval: 120,
-          way: "timeline",
+          way: "retrieveTimeline",
         },
         tweets: [{id_str: "old_1"}],
         state: {
           lastReadID: 0,
         },
       };
-      const agent = {
-        [timeline.preference.way]: () => [],
-      };
 
-      return expectSaga(order, timeline, agent, true)
+      return expectSaga(order, timeline, true)
         .provide([
           {
             call(effect: any, next: any) {
               switch (effect.fn.name) {
-                case "timeline":
+                case "retrieveTimeline":
                   expect(effect.args[0]).to.equal(null);
                   return [{id_str: "new_1"}, {id_str: "new_2"}];
                 case "setTweets":
@@ -232,23 +226,20 @@ describe("timeline", () => {
           title: title,
           component: "Timeline",
           interval: 120,
-          way: "timeline",
+          way: "retrieveTimeline",
         },
         tweets: [{id_str: "old_1"}],
         state: {
           lastReadID: 0,
         },
       };
-      const agent = {
-        [timeline.preference.way]: () => [],
-      };
 
-      return expectSaga(order, timeline, agent, false)
+      return expectSaga(order, timeline, false)
         .provide([
           {
             call(effect: any, next: any) {
               switch (effect.fn.name) {
-                case "timeline":
+                case "retrieveTimeline":
                   expect(effect.args[0]).to.equal("old_1");
                   return [];
                 default:
