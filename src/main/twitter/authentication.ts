@@ -1,12 +1,10 @@
-import {shell} from "electron";
 import {OAuth} from "oauth";
-import {buildDefaultStorage} from "./storage";
-import {incarnate} from "./twitter_agent";
+import storage from "./storage";
+import {incarnate} from "./agent";
 import TwitterClient from "twitter";
 import TwitterClient2 from "twitter-v2";
 
 const oauth = new OAuth("https://api.twitter.com/oauth/request_token", "https://api.twitter.com/oauth/access_token", process.env.CONSUMER_KEY!, process.env.CONSUMER_SECRET!, "1.0A", null, "HMAC-SHA1");
-const storage = buildDefaultStorage();
 
 function loadClient(): any | null {
   const accessKey = storage.getAccessKey();
@@ -35,7 +33,7 @@ function createClient(accessToken: Token): TheMoodyBlues.TwitterAgent {
   return incarnate(new TwitterClient(credentials), new TwitterClient2(credentials));
 }
 
-function getRequestToken() {
+export function getRequestToken() {
   return new Promise<Token>((resolve, reject) => {
     oauth.getOAuthRequestToken((error: any, key: string, secret: string, results: any) => {
       if (error) reject(error);
@@ -62,15 +60,8 @@ export function call(): TheMoodyBlues.TwitterAgent | null {
     return null;
   }
 }
-export async function authorize(showVerifierForm: () => Promise<string>): Promise<TheMoodyBlues.TwitterAgent> {
-  const agent = call();
-  if (agent) {
-    return agent;
-  }
 
-  const requestToken = await getRequestToken();
-  shell.openExternal(`https://api.twitter.com/oauth/authorize?oauth_token=${requestToken.key}`);
-  const verifier = await showVerifierForm();
+export async function authorize(requestToken: Token, verifier: string): Promise<TheMoodyBlues.TwitterAgent> {
   const accessToken = await getAccessToken(requestToken, verifier);
 
   storage.setAccessKey(accessToken.key);

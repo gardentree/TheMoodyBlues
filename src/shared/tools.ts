@@ -1,6 +1,5 @@
-const decoder = document.createElement("textarea");
-export function decodeHTML(html: string): string {
-  decoder.innerHTML = html;
+import he from "he";
 
-  return decoder.value;
+export function decodeHTML(html: string): string {
+  return he.decode(html);
 }

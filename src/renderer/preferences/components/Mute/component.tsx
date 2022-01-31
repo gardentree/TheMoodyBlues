@@ -63,7 +63,7 @@ class Mute extends React.Component<{}, {keywords: string[]; tweets: Twitter.Twee
   render() {
     const {keywords, matched} = this.state;
 
-    const list = keywords.map((keyword, index) => {
+    const list = keywords.map((keyword, index: number) => {
       return (
         <li key={index} onKeyDown={this.handleKeyDown} tabIndex={-1}>
           {keyword}

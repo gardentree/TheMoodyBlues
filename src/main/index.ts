@@ -5,6 +5,7 @@ import installExtension, {REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS} from "electron-
 import * as pathname from "path";
 import logger from "electron-log";
 import ElectronStore from "electron-store";
+import {setup} from "./twitter";
 
 ElectronStore.initRenderer();
 
@@ -42,6 +43,9 @@ function createMainWindow() {
     height: windowState.height,
   });
   windowState.manage(window);
+  window.webContents.once("did-finish-load", () => {
+    setup(window.webContents);
+  });
 
   if (isDevelopment) {
     window.webContents.once("dom-ready", () => {

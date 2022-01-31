@@ -9,7 +9,7 @@ export function* initialize(timeline: TheMoodyBlues.Store.Timeline) {
   const identity = timeline.preference.identity;
   yield timer.spawn(identity, timeline.preference.interval);
 }
-export function* order(timeline: TheMoodyBlues.Store.Timeline, agent: TheMoodyBlues.TwitterAgent, force: boolean) {
+export function* order(timeline: TheMoodyBlues.Store.Timeline, force: boolean) {
   const identity = timeline.preference.identity;
 
   yield timer.stop(identity);
@@ -17,7 +17,7 @@ export function* order(timeline: TheMoodyBlues.Store.Timeline, agent: TheMoodyBl
   const oldTweets = timeline.tweets;
   const query = timeline.state.query || "";
   if (query.length > 0) {
-    let tweets: Twitter.Tweet[] = yield call(agent.search, query, latest(oldTweets));
+    let tweets: Twitter.Tweet[] = yield call(facade.agent.search, query, latest(oldTweets));
     if (timeline.preference.mute) {
       tweets = silence(tweets, timeline.mute);
     }

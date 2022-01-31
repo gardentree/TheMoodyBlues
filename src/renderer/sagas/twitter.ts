@@ -20,10 +20,10 @@ function* reorder(action: TheMoodyBlues.ReduxAction) {
   yield order(action.meta.tab || focused, action);
 }
 function* order(identity: string, action: TheMoodyBlues.ReduxAction) {
-  const {agent, timelines} = yield select();
+  const {timelines}: TheMoodyBlues.Store.State = yield select();
   const timeline = timelines.get(identity)!;
 
-  yield metronome.play(timeline, agent, action.meta.force);
+  yield metronome.play(timeline, action.meta.force);
 }
 
 function* searchTweets(action: TheMoodyBlues.ReduxAction) {
@@ -36,16 +36,12 @@ function* searchTweets(action: TheMoodyBlues.ReduxAction) {
 }
 
 function* displayUserTimeline(action: TheMoodyBlues.ReduxAction) {
-  const {agent} = yield select();
-
-  let tweets: Twitter.Tweet[] = yield call(agent.retrieveTimelineOfUser, action.payload.name);
+  let tweets: Twitter.Tweet[] = yield call(facade.agent.retrieveTimelineOfUser, action.payload.name);
   yield put(subcontents.updateTweetsInSubContents(tweets));
 }
 
 function* displayConversation(action: TheMoodyBlues.ReduxAction) {
-  const {agent} = yield select();
-
-  let tweets: Twitter.Tweet[] = yield call(agent.retrieveConversation, action.payload.tweet, action.meta.options);
+  let tweets: Twitter.Tweet[] = yield call(facade.agent.retrieveConversation, action.payload.tweet, action.meta.options);
   yield put(subcontents.updateTweetsInSubContents(tweets));
 }
 

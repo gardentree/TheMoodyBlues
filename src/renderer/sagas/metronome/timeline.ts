@@ -19,13 +19,13 @@ export function* initialize(timeline: TheMoodyBlues.Store.Timeline) {
   yield timer.spawn(identity, timeline.preference.interval);
   yield timer.start(identity);
 }
-export function* order(timeline: TheMoodyBlues.Store.Timeline, agent: TheMoodyBlues.TwitterAgent, force: boolean) {
+export function* order(timeline: TheMoodyBlues.Store.Timeline,force: boolean) {
   const identity = timeline.preference.identity;
 
   const oldTweets = force ? [] : timeline.tweets;
 
   const parameters = (timeline.preference.parameters || []).concat(latest(oldTweets));
-  let tweets: Twitter.Tweet[] = yield call(agent[timeline.preference.way] as any, ...parameters);
+  let tweets: Twitter.Tweet[] = yield call(facade.agent[timeline.preference.way] as any, ...parameters);
   if (tweets.length > 0) {
     if (timeline.preference.mute) {
       tweets = silence(tweets, timeline.mute);

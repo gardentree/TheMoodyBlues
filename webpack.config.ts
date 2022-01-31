@@ -51,6 +51,7 @@ const main: Configuration = {
   module: {
     rules: [typescript("main")],
   },
+  plugins: [new webpack.EnvironmentPlugin(["CONSUMER_KEY", "CONSUMER_SECRET"])],
 };
 const preload: Configuration = {
   mode: mode,
@@ -65,13 +66,12 @@ const preload: Configuration = {
   module: {
     rules: [typescript("preload")],
   },
-  plugins: [new webpack.EnvironmentPlugin(["CONSUMER_KEY", "CONSUMER_SECRET"])],
 };
 const renderer: any = {
   mode: mode,
   target: "web",
   entry: {
-    renderer: "./src/renderer/index.ts",
+    renderer: "./src/renderer/index.tsx",
     preferences: "./src/renderer/preferences/index.tsx",
   },
   output: {

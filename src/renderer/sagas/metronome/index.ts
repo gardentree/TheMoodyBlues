@@ -16,8 +16,8 @@ const components = {
 export function* launch(target: TheMoodyBlues.Store.Timeline) {
   yield components[target.preference.component].initialize(target);
 }
-export function* play(target: TheMoodyBlues.Store.Timeline, agent: TheMoodyBlues.TwitterAgent, force: boolean) {
-  yield components[target.preference.component].order(target, agent, force);
+export function* play(target: TheMoodyBlues.Store.Timeline, force: boolean) {
+  yield components[target.preference.component].order(target, force);
 }
 export function* close(identity: TheMoodyBlues.Store.TimelineIdentity) {
   yield timer.shutdown(identity);

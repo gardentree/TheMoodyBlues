@@ -1,7 +1,6 @@
 namespace TheMoodyBlues {
   namespace Store {
     interface State {
-      agent: TheMoodyBlues.TwitterAgent;
       preference: Preference;
       timelines: TimelineMap;
       subcontents: SubContents;
@@ -55,7 +54,7 @@ namespace TheMoodyBlues {
     search(query: string, since_id: string | null): Promise<Twitter.Tweet[]>;
     retrieveTimelineOfUser(name: string): Promise<Twitter.Tweet[]>;
     retrieveMentions(since_id: string | null): Promise<Twitter.Tweet[]>;
-    retrieveConversation(criterion: Twitter.Tweet): Promise<Twitter.Tweet[]>;
+    retrieveConversation(criterion: Twitter.Tweet, options?: {yourself?: boolean}): Promise<Twitter.Tweet[]>;
     lists(): Promise<Twitter.List[]>;
     retrieveTimelineOfList(list_id: string, since_id: string | null): Promise<Twitter.Tweet[]>;
   }
@@ -78,10 +77,6 @@ interface Window {
 }
 interface Facade {
   storage: {
-    getAccessKey(): string;
-    setAccessKey(value: string);
-    getAccessSecret(): string;
-    setAccessSecret(value: string);
     getMuteKeywords(): string[];
     setMuteKeywords(keywords: string[]);
     getTimelinePreferences(): TheMoodyBlues.Store.TimelinePreference[];
@@ -89,13 +84,10 @@ interface Facade {
     getTweets(name: string);
     setTweets(name: string, tweets: Twitter.Tweet[]);
   };
-  agent: {
-    authorize(showVerifierForm: () => Promise<string>): Promise<TheMoodyBlues.TwitterAgent>;
-    call(): TheMoodyBlues.TwitterAgent | null;
-  };
-  growl: any;
-  openTweetMenu: any;
-  openExternal: any;
+  agent: TheMoodyBlues.TwitterAgent;
+  growl(tweets: Twitter.Tweet[]): void;
+  openTweetMenu(context: TheMoodyBlues.TweetMenu): void;
+  openExternal(url: string): void;
   logger: any;
   ipc: {
     observe(event: string, callback: (event: Event, ...values: any[]) => void);

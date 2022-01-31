@@ -11,13 +11,10 @@ const getCurrentPreferences = (() => {
       return timelines;
     }
 
-    throw facade.agent
-      .call()!
-      .lists()
-      .then((lists) => {
-        const current = facade.storage.getTimelinePreferences();
-        timelines = mixPreferences(current, lists);
-      });
+    throw facade.agent.lists().then((lists) => {
+      const current = facade.storage.getTimelinePreferences();
+      timelines = mixPreferences(current, lists);
+    });
   };
 })();
 

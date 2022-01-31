@@ -1,7 +1,6 @@
 import TwitterClient from "twitter";
 import TwitterClient2 from "twitter-v2";
 import * as DateUtility from "date-fns-tz";
-import {measure} from "./tools";
 
 export function incarnate(client: TwitterClient, client2: TwitterClient2): TheMoodyBlues.TwitterAgent {
   return {
@@ -339,4 +338,8 @@ function degradeMedia(v2?: Twitter2.Media[]): MediaMap {
 function degradeDate(date: string): string {
   const utc = new Date(date);
   return DateUtility.format(new Date(utc.getTime() + utc.getTimezoneOffset() * 60 * 1000), "EEE LLL dd HH:mm:ss xx Y", {timeZone: "UTC"});
+}
+
+function measure(text: string): number {
+  return Array.from(text).length;
 }
