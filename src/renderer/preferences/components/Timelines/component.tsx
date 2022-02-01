@@ -63,60 +63,56 @@ function save() {
   facade.storage.setTimelinePreferences(newPreferences);
 }
 
-class Timelines extends React.Component<{}, {}> {
-  handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+const Timelines = () => {
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     save();
   };
 
-  handleFieldSetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFieldSetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fieldset: any = event.currentTarget.parentNode!.parentNode;
     fieldset.disabled = !event.currentTarget.checked;
 
     save();
   };
 
-  render() {
-    const timelines = getCurrentPreferences();
+  const timelines = getCurrentPreferences();
 
-    const elements = timelines.map((timeline, index) => {
-      return (
-        <li key={index}>
-          <fieldset disabled={!timeline.active}>
-            <legend>
-              <input name={`${timeline.identity}[active]`} type="checkbox" defaultChecked={timeline.active} onChange={this.handleFieldSetChange} />
-              {timeline.title}
-            </legend>
-
-            <div className="checkbox">
-              <label>
-                <input name={`${timeline.identity}[mute]`} type="checkbox" defaultChecked={timeline.mute} onChange={this.handleChange} />
-                Mute
-              </label>
-            </div>
-            <div className="checkbox">
-              <label>
-                <input name={`${timeline.identity}[growl]`} type="checkbox" defaultChecked={timeline.growl} onChange={this.handleChange} />
-                Growl
-              </label>
-            </div>
-            <div className="form-group">
-              <label>Interval</label>
-              <input name={`${timeline.identity}[interval]`} type="number" className="form-control" defaultValue={timeline.interval} min="60" max="300" step="60" onChange={this.handleChange} />
-            </div>
-          </fieldset>
-        </li>
-      );
-    });
-
+  const elements = timelines.map((timeline, index) => {
     return (
-      <div className="PreferencesTimelines">
-        <form>
-          <ol>{elements}</ol>
-        </form>
-      </div>
-    );
-  }
-}
+      <li key={index}>
+        <fieldset disabled={!timeline.active}>
+          <legend>
+            <input name={`${timeline.identity}[active]`} type="checkbox" defaultChecked={timeline.active} onChange={handleFieldSetChange} />
+            {timeline.title}
+          </legend>
 
-Object.defineProperty(Timelines, "name", {value: "Timelines"});
+          <div className="checkbox">
+            <label>
+              <input name={`${timeline.identity}[mute]`} type="checkbox" defaultChecked={timeline.mute} onChange={handleChange} />
+              Mute
+            </label>
+          </div>
+          <div className="checkbox">
+            <label>
+              <input name={`${timeline.identity}[growl]`} type="checkbox" defaultChecked={timeline.growl} onChange={handleChange} />
+              Growl
+            </label>
+          </div>
+          <div className="form-group">
+            <label>Interval</label>
+            <input name={`${timeline.identity}[interval]`} type="number" className="form-control" defaultValue={timeline.interval} min="60" max="300" step="60" onChange={handleChange} />
+          </div>
+        </fieldset>
+      </li>
+    );
+  });
+
+  return (
+    <div className="PreferencesTimelines">
+      <form>
+        <ol>{elements}</ol>
+      </form>
+    </div>
+  );
+};
 export default Timelines;

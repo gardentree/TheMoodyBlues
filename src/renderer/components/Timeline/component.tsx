@@ -1,4 +1,5 @@
 import * as React from "react";
+import {useEffect} from "react";
 import TweetList from "../TweetList";
 
 export interface OwnProperty {
@@ -15,17 +16,17 @@ export interface DispatchProperty {
 
 type Property = OwnProperty & StateProperty & DispatchProperty;
 
-export default class Timeline extends React.Component<Property, {}> {
-  render() {
-    const {identity, tweets, lastReadID} = this.props;
+const Timeline = (props: Property) => {
+  const {identity, tweets, lastReadID, didMount, willUnmount} = props;
 
-    return <TweetList identity={identity} tweets={tweets} lastReadID={lastReadID} />;
-  }
+  useEffect(() => {
+    didMount();
 
-  componentDidMount() {
-    this.props.didMount();
-  }
-  componentWillUnmount() {
-    this.props.willUnmount();
-  }
-}
+    return () => {
+      willUnmount();
+    };
+  }, []);
+
+  return <TweetList identity={identity} tweets={tweets} lastReadID={lastReadID} />;
+};
+export default Timeline;

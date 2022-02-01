@@ -1,4 +1,5 @@
 import * as React from "react";
+import {useEffect} from "react";
 import TweetList from "../TweetList";
 import {Field, InjectedFormProps} from "redux-form";
 
@@ -13,40 +14,39 @@ export interface StateProperty {
   hasQuery: boolean;
 }
 export interface DispatchProperty {
-  didMount: any;
+  didMount(): void;
   search: any;
 }
 type Property = OwnProperty & StateProperty & DispatchProperty & InjectedFormProps;
 
-export default class Search extends React.Component<Property, any> {
-  render() {
-    const {identity, tweets, lastReadID, hasQuery, handleSubmit, search, reset} = this.props;
+const Search = (props: Property) => {
+  const {identity, tweets, lastReadID, hasQuery, handleSubmit, search, reset, didMount} = props;
 
-    return (
-      <div className="Search">
-        <div className="toolbar">
-          <form className="search" onSubmit={handleSubmit(search)}>
-            <div className="field">
-              <Field name="query" component="input" type="search" className="form-control" />
-              <span
-                className="icon icon-cancel-circled"
-                style={{display: hasQuery ? "inline-block" : "none"}}
-                onClick={() => {
-                  reset();
-                  search("");
-                }}
-              />
-            </div>
-          </form>
-        </div>
-        <div style={{height: "100%"}}>
-          <TweetList identity={identity} tweets={tweets} lastReadID={lastReadID} />
-        </div>
+  useEffect(() => {
+    didMount();
+  }, []);
+
+  return (
+    <div className="Search">
+      <div className="toolbar">
+        <form className="search" onSubmit={handleSubmit(search)}>
+          <div className="field">
+            <Field name="query" component="input" type="search" className="form-control" />
+            <span
+              className="icon icon-cancel-circled"
+              style={{display: hasQuery ? "inline-block" : "none"}}
+              onClick={() => {
+                reset();
+                search("");
+              }}
+            />
+          </div>
+        </form>
       </div>
-    );
-  }
-
-  componentDidMount() {
-    this.props.didMount();
-  }
-}
+      <div style={{height: "100%"}}>
+        <TweetList identity={identity} tweets={tweets} lastReadID={lastReadID} />
+      </div>
+    </div>
+  );
+};
+export default Search;

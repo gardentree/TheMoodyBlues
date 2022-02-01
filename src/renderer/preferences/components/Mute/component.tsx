@@ -1,4 +1,5 @@
 import * as React from "react";
+import {useState, useEffect} from "react";
 import {test} from "@libraries/silencer";
 
 const {facade} = window;
@@ -7,47 +8,52 @@ interface Form extends HTMLFormElement {
   keyword: HTMLInputElement;
 }
 
-class Mute extends React.Component<{}, {keywords: string[]; tweets: Twitter.Tweet[]; matched: string[]}> {
-  state = {keywords: facade.storage.getMuteKeywords(), tweets: [], matched: []};
+const Mute = () => {
+  const [keywords, setKeywords] = useState(() => facade.storage.getMuteKeywords());
+  const [tweets, setTweets] = useState<Twitter.Tweet[]>([]);
+  const [matched, setMatched] = useState<string[]>([]);
 
-  handleSubmit = (event: React.SyntheticEvent<Form>) => {
+  const handleSubmit = (event: React.SyntheticEvent<Form>) => {
     event.preventDefault();
 
     const keyword = event.currentTarget.keyword.value.toLowerCase();
-    this.state.keywords.push(keyword);
-    this.state.keywords.sort();
-    this.state.keywords = [...new Set(this.state.keywords)];
+    let newKeywords = keywords.concat();
+    newKeywords.push(keyword);
+    newKeywords.sort();
+    newKeywords = [...new Set(newKeywords)];
 
-    facade.storage.setMuteKeywords(this.state.keywords);
+    facade.storage.setMuteKeywords(newKeywords);
 
     event.currentTarget.keyword.value = "";
-    this.setState({keywords: this.state.keywords, matched: []});
+    setKeywords(newKeywords);
+    setMatched([]);
   };
-
-  handleKeyDown = (event: React.KeyboardEvent) => {
+  const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.keyCode == 8) {
-      const keyword = event.currentTarget.textContent!;
-      const index = this.state.keywords.indexOf(keyword);
-      this.state.keywords.splice(index, 1);
+      const newKeywords = keywords.concat();
 
-      facade.storage.setMuteKeywords(this.state.keywords);
-      this.setState({keywords: this.state.keywords});
+      const keyword = event.currentTarget.textContent!;
+      const index = newKeywords.indexOf(keyword);
+      newKeywords.splice(index, 1);
+
+      facade.storage.setMuteKeywords(newKeywords);
+
+      setKeywords(newKeywords);
     }
   };
-
-  handleChangeEntry = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeEntry = (event: React.ChangeEvent<HTMLInputElement>) => {
     const keyword = event.currentTarget.value;
 
     if (keyword.length > 0) {
-      const matched: string[] = this.state.tweets.map((tweet) => test(tweet, [keyword])).filter((result) => result) as string[];
+      const matched: string[] = tweets.map((tweet) => test(tweet, [keyword])).filter((result) => result) as string[];
 
-      this.setState({matched: matched});
+      setMatched(matched);
     } else {
-      this.setState({matched: []});
+      setMatched([]);
     }
   };
 
-  componentDidMount() {
+  useEffect(() => {
     const promises = facade.storage
       .getTimelinePreferences()
       .filter((preference) => preference.mute)
@@ -56,45 +62,39 @@ class Mute extends React.Component<{}, {keywords: string[]; tweets: Twitter.Twee
       });
 
     Promise.all(promises).then((allTweets: Twitter.Tweet[][]) => {
-      this.setState({tweets: allTweets.flat()});
+      setTweets(allTweets.flat());
     });
-  }
+  }, []);
 
-  render() {
-    const {keywords, matched} = this.state;
-
-    const list = keywords.map((keyword, index: number) => {
-      return (
-        <li key={index} onKeyDown={this.handleKeyDown} tabIndex={-1}>
-          {keyword}
-        </li>
-      );
-    });
-
-    const matchedList = matched.slice(0, 10).map((text, index) => {
-      return (
-        <li className="list-group-item" key={index}>
-          {text}
-        </li>
-      );
-    });
-
+  const list = keywords.map((keyword, index: number) => {
     return (
-      <div className="PreferencesMute">
-        <form onSubmit={this.handleSubmit}>
-          <ul className="entry list-group">
-            <li className="list-group-header">
-              <input name="keyword" type="text" className="form-control" onChange={this.handleChangeEntry} />
-              <label>{matched.length} tweets matched</label>
-            </li>
-            {matchedList}
-          </ul>
-        </form>
-        <ul className="keywords">{list}</ul>
-      </div>
+      <li key={index} onKeyDown={handleKeyDown} tabIndex={-1}>
+        {keyword}
+      </li>
     );
-  }
-}
+  });
 
-Object.defineProperty(Mute, "name", {value: "Mute"});
+  const matchedList = matched.slice(0, 10).map((text, index) => {
+    return (
+      <li className="list-group-item" key={index}>
+        {text}
+      </li>
+    );
+  });
+
+  return (
+    <div className="PreferencesMute">
+      <form onSubmit={handleSubmit}>
+        <ul className="entry list-group">
+          <li className="list-group-header">
+            <input name="keyword" type="text" className="form-control" onChange={handleChangeEntry} />
+            <label>{matched.length} tweets matched</label>
+          </li>
+          {matchedList}
+        </ul>
+      </form>
+      <ul className="keywords">{list}</ul>
+    </div>
+  );
+};
 export default Mute;

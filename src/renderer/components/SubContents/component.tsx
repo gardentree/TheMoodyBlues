@@ -8,7 +8,9 @@ interface Property {
   onClose?(): any;
 }
 
-const SubContents: React.SFC<Property> = ({container, tweets, onClose}) => {
+const SubContents = (props: Property) => {
+  const {container, tweets, onClose} = props;
+
   if (!tweets) return null;
 
   const contents = ReactDOM.createPortal(
