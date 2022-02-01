@@ -19,7 +19,7 @@ const facade: Facade = {
     getTweets: (name) => ipcRenderer.invoke(FacadeActions.STORAGE_TWEETS_LOAD, {name}),
     setTweets: (name, tweets) => ipcRenderer.send(FacadeActions.STORAGE_TWEETS_SAVE, {name, tweets}),
     getMuteKeywords: () => ipcRenderer.sendSync(FacadeActions.STORAGE_MUTE_LOAD),
-    setMuteKeywords: (keywords) => ipcRenderer.sendSync(FacadeActions.STORAGE_MUTE_SAVE, {keywords}),
+    setMuteKeywords: (keywords) => ipcRenderer.send(FacadeActions.STORAGE_MUTE_SAVE, {keywords}),
   },
   growl: (tweets) => ipcRenderer.send(FacadeActions.GROWL, {tweets}),
   openTweetMenu: (context) => ipcRenderer.send("openTweetMenu", context),
