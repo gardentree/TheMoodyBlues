@@ -18,13 +18,13 @@ requireAll((require as any).context("./", true, /\.scss$/));
 library.add(fab, faSpinner);
 
 const {facade} = window;
-facade.ipc.observe("showVerifierForm", (event: Event, ...values: any[]) => {
+facade.ipc.observe(FacadeActions.SHOW_VERIFIER_FORM, (event: Event, ...values: any[]) => {
   const callback = (verifier: string) => {
     facade.ipc.action("authorize");
   };
   ReactDOM.render(<VerifierForm callback={callback} />, document.getElementById("app"));
 });
-facade.ipc.observe("launch", (event: Event, ...values: any[]) => {
+facade.ipc.observe(FacadeActions.LAUNCH, (event: Event, ...values: any[]) => {
   launchPrinciapl();
 });
 facade.ipc.observe(FacadeActions.ALERT, (event: Event, values) => {
