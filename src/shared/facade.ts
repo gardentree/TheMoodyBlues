@@ -17,4 +17,5 @@ export namespace Actions {
   export const LAUNCH = "launch";
   export const SHOW_VERIFIER_FORM = "showVerifierForm";
   export const AUTHORIZE = "authorize";
+  export const ALERT = "alert";
 }
