@@ -4,25 +4,30 @@ import {authorize, call, getRequestToken} from "./authentication";
 import growl from "./growly";
 import {Actions as FacadeActions} from "@shared/facade";
 
-export function setup(renderer: WebContents) {
+export async function setup(renderer: WebContents) {
   const agent = call();
   if (agent) {
     build(renderer, agent);
     return;
   }
 
-  (async () => {
-    const requestToken = await getRequestToken();
-    shell.openExternal(`https://api.twitter.com/oauth/authorize?oauth_token=${requestToken.key}`);
+  const requestToken = await getRequestToken();
+  shell.openExternal(`https://api.twitter.com/oauth/authorize?oauth_token=${requestToken.key}`);
 
-    renderer.send(FacadeActions.SHOW_VERIFIER_FORM);
-    ipcMain.once(FacadeActions.AUTHORIZE, async (event, values) => {
-      const {verifier} = values;
+  ipcMain.on(FacadeActions.AUTHORIZE, async (event, values) => {
+    const {verifier} = values;
 
-      const agent = await authorize(requestToken, verifier);
-      build(renderer, agent);
-    });
-  })();
+    await authorize(requestToken, verifier)
+      .then((agent) => {
+        build(renderer, agent);
+      })
+      .catch((error) => {
+        console.error(error);
+        renderer.send(FacadeActions.ALERT, {error});
+      });
+  });
+
+  renderer.send(FacadeActions.SHOW_VERIFIER_FORM);
 }
 function build(renderer: WebContents, agent: TheMoodyBlues.TwitterAgent) {
   ipcMain.handle(FacadeActions.AGENT_GET, (event, values) => {

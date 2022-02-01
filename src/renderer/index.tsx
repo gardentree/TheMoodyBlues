@@ -20,7 +20,7 @@ library.add(fab, faSpinner);
 const {facade} = window;
 facade.ipc.observe(FacadeActions.SHOW_VERIFIER_FORM, (event: Event, ...values: any[]) => {
   const callback = (verifier: string) => {
-    facade.ipc.action("authorize");
+    facade.ipc.action(FacadeActions.AUTHORIZE, {verifier: verifier});
   };
   ReactDOM.render(<VerifierForm callback={callback} />, document.getElementById("app"));
 });
