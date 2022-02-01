@@ -15,7 +15,7 @@ export namespace Actions {
   export const STORAGE_MUTE_LOAD = "storage_mute_load";
   export const STORAGE_MUTE_SAVE = "storage_mute_save";
   export const LAUNCH = "launch";
-  export const SHOW_VERIFIER_FORM = "showVerifierForm";
+  export const SHOW_VERIFIER_FORM = "show_verifier_form";
   export const AUTHORIZE = "authorize";
   export const ALERT = "alert";
 }
