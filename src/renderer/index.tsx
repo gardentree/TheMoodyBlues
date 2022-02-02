@@ -7,15 +7,16 @@ import * as ReactDOM from "react-dom";
 import VerifierForm from "./components/VerifierForm";
 import {Actions as FacadeActions} from "@shared/facade";
 
-require("photon/dist/css/photon.css");
+(() => {
+  require("photon/dist/css/photon.css");
 
-require("./index.scss");
-function requireAll(r: any) {
-  r.keys().forEach(r);
-}
-requireAll((require as any).context("./", true, /\.scss$/));
+  function requireAll(context: __WebpackModuleApi.RequireContext) {
+    context.keys().forEach(context);
+  }
+  requireAll(require.context("./", true, /\.scss$/));
 
-library.add(fab, faSpinner);
+  library.add(fab, faSpinner);
+})();
 
 const {facade} = window;
 facade.ipc.observe(FacadeActions.SHOW_VERIFIER_FORM, (event: Event, ...values: any[]) => {
