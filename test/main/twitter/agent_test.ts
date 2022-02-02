@@ -146,9 +146,9 @@ describe("degrade", () => {
   });
   for (const [key, subject] of tests) {
     it(subject, () => {
-      const actual = degrade(loadJSON(`./test/preload/v2/${key}.json`))[0];
+      const actual = degrade(loadJSON(`./test/main/twitter/v2/${key}.json`))[0];
 
-      expect(loadJSON(`./test/preload/v1/${key}.json`)).to.containSubset(actual);
+      expect(loadJSON(`./test/main/twitter/v1/${key}.json`)).to.containSubset(actual);
 
       parseElements(actual);
     });
