@@ -69,6 +69,14 @@ form.search {
     background-color: var(--background-color);
   }
 
+  .toolbar {
+    min-height: 30px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
   .toolbar,
   .tab-group {
     filter: var(--filter);
