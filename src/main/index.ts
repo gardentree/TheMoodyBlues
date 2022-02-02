@@ -43,15 +43,13 @@ function createMainWindow() {
     height: windowState.height,
   });
   windowState.manage(window);
-  window.webContents.once("did-finish-load", () => {
-    setup(window.webContents);
-  });
 
   if (isDevelopment) {
     window.webContents.once("dom-ready", () => {
       window.webContents.openDevTools();
     });
   }
+  setup(window.webContents);
 
   load(window, "index.html");
 

@@ -4,10 +4,21 @@ import {authorize, call, getRequestToken} from "./authentication";
 import growl from "./growly";
 import {Actions as FacadeActions} from "@shared/facade";
 
-export async function setup(renderer: WebContents) {
+let observed: boolean = false;
+
+export function setup(renderer: WebContents) {
+  renderer.on("dom-ready", () => {
+    prepare(renderer);
+  });
+}
+async function prepare(renderer: WebContents) {
+  if (observed) {
+    renderer.send(FacadeActions.LAUNCH);
+  }
+
   const agent = call();
   if (agent) {
-    build(renderer, agent);
+    observe(renderer, agent);
     return;
   }
 
@@ -19,7 +30,7 @@ export async function setup(renderer: WebContents) {
 
     await authorize(requestToken, verifier)
       .then((agent) => {
-        build(renderer, agent);
+        observe(renderer, agent);
       })
       .catch((error) => {
         console.error(error);
@@ -29,7 +40,7 @@ export async function setup(renderer: WebContents) {
 
   renderer.send(FacadeActions.SHOW_VERIFIER_FORM);
 }
-function build(renderer: WebContents, agent: TheMoodyBlues.TwitterAgent) {
+function observe(renderer: WebContents, agent: TheMoodyBlues.TwitterAgent) {
   ipcMain.handle(FacadeActions.AGENT_GET, (event, values) => {
     const {path, parameters} = values;
 
@@ -102,5 +113,6 @@ function build(renderer: WebContents, agent: TheMoodyBlues.TwitterAgent) {
     storage.setMuteKeywords(keywords);
   });
 
+  observed = true;
   renderer.send(FacadeActions.LAUNCH);
 }
