@@ -49,7 +49,7 @@ export function makeInitialTimeline(preference: TheMoodyBlues.Store.TimelinePref
     mute: Object.assign(
       {
         keywords: [],
-        selfRetweet: true,
+        selfRetweet: false,
         media: [],
       },
       mute
