@@ -34,6 +34,7 @@ namespace TheMoodyBlues {
     interface MutePreference {
       keywords: string[];
       selfRetweet: boolean;
+      media: Twitter.UserID[];
     }
 
     type SubContents = any;
@@ -77,8 +78,8 @@ interface Window {
 }
 interface Facade {
   storage: {
-    getMuteKeywords(): string[];
-    setMuteKeywords(keywords: string[]);
+    getMutePreference(): TheMoodyBlues.Store.MutePreference;
+    setMutePreference(preference: TheMoodyBlues.Store.MutePreference);
     getTimelinePreferences(): TheMoodyBlues.Store.TimelinePreference[];
     setTimelinePreferences(timelines: TheMoodyBlues.Store.TimelinePreference[]);
     getTweets(name: string);

@@ -1,12 +1,37 @@
 import {expect} from "chai";
-import {test} from "@libraries/silencer";
+import {silence, test} from "@libraries/silencer";
 
 const tweetTemplate: Twitter.Tweet = {
   full_text: "ポケモンGO",
   entities: {
     urls: [{expanded_url: "https://www.pokemongo.jp/"}],
   },
+  user: {
+    screen_name: "gian",
+  },
 };
+const preferenceTemplate: TheMoodyBlues.Store.MutePreference = {
+  keywords: [],
+  selfRetweet: false,
+  media: [],
+};
+
+describe("silence", () => {
+  describe("media", () => {
+    it("don't have media", () => {
+      const tweet = Object.assign({}, tweetTemplate, {entities: {media: []}});
+      const preference = Object.assign({}, preferenceTemplate, {media: ["gian"]});
+
+      expect(silence([tweet], preference)).to.deep.equal([tweet]);
+    });
+    it("have media", () => {
+      const tweet = Object.assign({}, tweetTemplate, {entities: {media: [{}]}});
+      const preference = Object.assign({}, preferenceTemplate, {media: ["gian"]});
+
+      expect(silence([tweet], preference)).to.deep.equal([]);
+    });
+  });
+});
 
 describe("test", () => {
   describe("full_text", () => {

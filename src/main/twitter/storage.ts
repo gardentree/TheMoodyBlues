@@ -33,11 +33,11 @@ export default {
     setStore("preferences.timelines", timelines);
   },
 
-  getMuteKeywords: (): string[] => {
-    return (getStore("preferences.mute.keywords") as string[]) || [];
+  getMutePreference: (): TheMoodyBlues.Store.MutePreference => {
+    return getStore("preferences.mute") as TheMoodyBlues.Store.MutePreference;
   },
-  setMuteKeywords: (keywords: string[]) => {
-    setStore("preferences.mute.keywords", keywords);
+  setMutePreference: (preference: TheMoodyBlues.Store.MutePreference) => {
+    setStore("preferences.mute", preference);
   },
 
   getTweets: (identity: string) => {

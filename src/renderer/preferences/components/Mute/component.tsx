@@ -9,49 +9,9 @@ interface Form extends HTMLFormElement {
 }
 
 const Mute = () => {
-  const [keywords, setKeywords] = useState(() => facade.storage.getMuteKeywords());
+  const [preference, setPreference] = useState(() => facade.storage.getMutePreference());
   const [tweets, setTweets] = useState<Twitter.Tweet[]>([]);
   const [matched, setMatched] = useState<string[]>([]);
-
-  const handleSubmit = (event: React.SyntheticEvent<Form>) => {
-    event.preventDefault();
-
-    const keyword = event.currentTarget.keyword.value.toLowerCase();
-    let newKeywords = keywords.concat();
-    newKeywords.push(keyword);
-    newKeywords.sort();
-    newKeywords = [...new Set(newKeywords)];
-
-    facade.storage.setMuteKeywords(newKeywords);
-
-    event.currentTarget.keyword.value = "";
-    setKeywords(newKeywords);
-    setMatched([]);
-  };
-  const handleKeyDown = (event: React.KeyboardEvent) => {
-    if (event.keyCode == 8) {
-      const newKeywords = keywords.concat();
-
-      const keyword = event.currentTarget.textContent!;
-      const index = newKeywords.indexOf(keyword);
-      newKeywords.splice(index, 1);
-
-      facade.storage.setMuteKeywords(newKeywords);
-
-      setKeywords(newKeywords);
-    }
-  };
-  const handleChangeEntry = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const keyword = event.currentTarget.value;
-
-    if (keyword.length > 0) {
-      const matched: string[] = tweets.map((tweet) => test(tweet, [keyword])).filter((result) => result) as string[];
-
-      setMatched(matched);
-    } else {
-      setMatched([]);
-    }
-  };
 
   useEffect(() => {
     const promises = facade.storage
@@ -66,7 +26,49 @@ const Mute = () => {
     });
   }, []);
 
-  const list = keywords.map((keyword, index: number) => {
+  const handleSubmit = (event: React.SyntheticEvent<Form>) => {
+    event.preventDefault();
+
+    const keyword = event.currentTarget.keyword.value.toLowerCase();
+    let keywords = preference.keywords.concat();
+    keywords.push(keyword);
+    keywords.sort();
+    keywords = [...new Set(keywords)];
+
+    const newPreference = Object.assign({}, preference, {keywords});
+    facade.storage.setMutePreference(newPreference);
+
+    event.currentTarget.keyword.value = "";
+    setPreference(newPreference);
+    setMatched([]);
+  };
+  const handleKeyDown = (event: React.KeyboardEvent) => {
+    if (event.keyCode == 8) {
+      const keywords = preference.keywords.concat();
+
+      const keyword = event.currentTarget.textContent!;
+      const index = keywords.indexOf(keyword);
+      keywords.splice(index, 1);
+
+      const newPreference = Object.assign({}, preference, {keywords});
+      facade.storage.setMutePreference(newPreference);
+
+      setPreference(newPreference);
+    }
+  };
+  const handleChangeEntry = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const keyword = event.currentTarget.value;
+
+    if (keyword.length > 0) {
+      const matched: string[] = tweets.map((tweet) => test(tweet, [keyword])).filter((result) => result) as string[];
+
+      setMatched(matched);
+    } else {
+      setMatched([]);
+    }
+  };
+
+  const list = preference.keywords.map((keyword, index: number) => {
     return (
       <li key={index} onKeyDown={handleKeyDown} tabIndex={-1}>
         {keyword}

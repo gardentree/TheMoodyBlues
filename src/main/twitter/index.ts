@@ -105,12 +105,12 @@ function observe(renderer: WebContents, agent: TheMoodyBlues.TwitterAgent) {
     storage.setTweets(name, tweets);
   });
   ipcMain.on(FacadeActions.STORAGE_MUTE_LOAD, (event, values) => {
-    event.returnValue = storage.getMuteKeywords();
+    event.returnValue = storage.getMutePreference();
   });
   ipcMain.on(FacadeActions.STORAGE_MUTE_SAVE, (event, values) => {
-    const {keywords} = values;
+    const {preference} = values;
 
-    storage.setMuteKeywords(keywords);
+    storage.setMutePreference(preference);
   });
 
   observed = true;
