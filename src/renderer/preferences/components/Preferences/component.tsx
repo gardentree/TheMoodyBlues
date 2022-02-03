@@ -2,12 +2,13 @@ import React, {Suspense} from "react";
 import Timelines from "../Timelines";
 import Mute from "../Mute";
 
+const components: {[key: string]: React.FC} = {Timelines, Mute};
+
 class Preferences extends React.Component<{}, {focus: string}> {
-  state = {focus: Timelines.name};
+  state = {focus: "Timelines"};
 
   render() {
     const {focus} = this.state;
-    const tabs = [Timelines, Mute];
 
     return (
       <div className="Preferences">
@@ -17,25 +18,25 @@ class Preferences extends React.Component<{}, {focus: string}> {
           </header>
 
           <div className="tab-group">
-            {tabs.map((tab) => {
+            {Object.entries(components).map(([title, component]) => {
               return (
                 <div
-                  key={tab.name}
-                  className={`tab-item${focus == tab.name ? " active" : ""}`}
+                  key={title}
+                  className={`tab-item${focus == title ? " active" : ""}`}
                   onClick={() => {
-                    this.setState({focus: tab.name});
+                    this.setState({focus: title});
                   }}
                 >
-                  {tab.name}
+                  {title}
                 </div>
               );
             })}
           </div>
 
-          {tabs.map((tab) => {
+          {Object.entries(components).map(([title, component]) => {
             return (
-              <div key={tab.name} className="window-content" style={{display: focus == tab.name ? "block" : "none"}}>
-                <Suspense fallback={<p>Loading...</p>}>{React.createElement<any>(tab)}</Suspense>
+              <div key={title} className="window-content" style={{display: focus == title ? "block" : "none"}}>
+                <Suspense fallback={<p>Loading...</p>}>{React.createElement(component)}</Suspense>
               </div>
             );
           })}
