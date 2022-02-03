@@ -4,11 +4,11 @@ import Mute from "../Mute";
 
 const components: {[key: string]: React.FC} = {Timelines, Mute};
 
-class Preferences extends React.Component<{}, {focus: string}> {
-  state = {focus: "Timelines"};
+class Preferences extends React.Component<{}, {active: string}> {
+  state = {active: "Timelines"};
 
   render() {
-    const {focus} = this.state;
+    const {active} = this.state;
 
     return (
       <div className="Preferences">
@@ -22,9 +22,9 @@ class Preferences extends React.Component<{}, {focus: string}> {
               return (
                 <div
                   key={title}
-                  className={`tab-item${focus == title ? " active" : ""}`}
+                  className={`tab-item${active == title ? " active" : ""}`}
                   onClick={() => {
-                    this.setState({focus: title});
+                    this.setState({active: title});
                   }}
                 >
                   {title}
@@ -35,7 +35,7 @@ class Preferences extends React.Component<{}, {focus: string}> {
 
           {Object.entries(components).map(([title, component]) => {
             return (
-              <div key={title} className="window-content" style={{display: focus == title ? "block" : "none"}}>
+              <div key={title} className="window-content" style={{display: active == title ? "block" : "none"}}>
                 <Suspense fallback={<p>Loading...</p>}>{React.createElement(component)}</Suspense>
               </div>
             );
