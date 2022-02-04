@@ -4,10 +4,7 @@ import {app, BrowserWindow, Menu, ipcMain} from "electron";
 import installExtension, {REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS} from "electron-devtools-installer";
 import * as pathname from "path";
 import logger from "electron-log";
-import ElectronStore from "electron-store";
 import {setup} from "./twitter";
-
-ElectronStore.initRenderer();
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
