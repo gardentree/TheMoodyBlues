@@ -17,8 +17,8 @@ let mainWindow: BrowserWindow | null;
 
 function createMainWindow() {
   installExtension([REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS])
-    .then((name) => console.log(name))
-    .catch((err) => console.log(err));
+    .then((name) => logger.info(name))
+    .catch((error) => logger.error(error));
 
   const windowKeeper = require("electron-window-state");
   const windowState = windowKeeper({

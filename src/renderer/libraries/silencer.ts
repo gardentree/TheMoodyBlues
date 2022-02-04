@@ -1,22 +1,24 @@
+const {facade} = window;
+
 export function silence(tweets: Twitter.Tweet[], preference: TheMoodyBlues.Store.MutePreference): Twitter.Tweet[] {
   const {keywords, selfRetweet, media} = preference;
 
   return tweets.filter((tweet) => {
     if (test(tweet, keywords)) {
-      console.log(`silence: ${tweet.full_text} of ${tweet.user.screen_name}`);
+      facade.logger.info(`silence: ${tweet.full_text} of ${tweet.user.screen_name}`);
       return false;
     }
 
     if (selfRetweet && tweet.retweeted_status) {
       if (tweet.user.id_str == tweet.retweeted_status.user.id_str) {
-        console.log(`silence: self retweet of ${tweet.user.screen_name}`);
+        facade.logger.info(`silence: self retweet of ${tweet.user.screen_name}`);
         return false;
       }
     }
 
     if (media?.length > 0) {
       if (media.includes(tweet.user.screen_name) && tweet.entities.media && tweet.entities.media.length > 0) {
-        console.log(`silence: media of ${tweet.user.screen_name}`);
+        facade.logger.info(`silence: media of ${tweet.user.screen_name}`);
         return false;
       }
     }

@@ -3,6 +3,7 @@ import storage from "./storage";
 import {authorize, call, getRequestToken} from "./authentication";
 import growl from "./growly";
 import {Actions as FacadeActions} from "@shared/facade";
+import logger from "electron-log";
 
 let observed: boolean = false;
 
@@ -33,7 +34,7 @@ async function prepare(renderer: WebContents) {
         observe(renderer, agent);
       })
       .catch((error) => {
-        console.error(error);
+        logger.error(error);
         renderer.send(FacadeActions.ALERT, {error});
       });
   });

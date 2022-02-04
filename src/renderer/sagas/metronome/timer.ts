@@ -27,7 +27,6 @@ function* run(identity: TheMoodyBlues.Store.TimelineIdentity, interval: number) 
       }
 
       yield effects.put(modules.reload(false, identity, true));
-      console.log(`reload ${identity}: ${new Date()}`);
     }
   }
 }

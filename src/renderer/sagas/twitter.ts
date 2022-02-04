@@ -53,7 +53,7 @@ function* shutdown(action: TheMoodyBlues.ReduxAction) {
 
 const wrap = (saga: any) =>
   function* (action: TheMoodyBlues.ReduxAction) {
-    facade.logger.info(action);
+    facade.logger.verbose(action);
     try {
       const loading = !action.meta || !action.meta.silently;
 
