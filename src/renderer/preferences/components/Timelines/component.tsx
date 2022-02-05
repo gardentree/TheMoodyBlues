@@ -4,7 +4,7 @@ import {mixPreferences} from "@libraries/timeline";
 const {facade} = window;
 
 const getCurrentPreferences = (() => {
-  let timelines: TheMoodyBlues.Store.TimelinePreference[] | null = null;
+  let timelines: TimelinePreference[] | null = null;
 
   return () => {
     if (timelines) {

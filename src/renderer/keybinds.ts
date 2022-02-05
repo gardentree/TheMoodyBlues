@@ -28,22 +28,22 @@ export default function (store: any) {
     store.dispatch(reload(true, null));
   });
 
-  facade.ipc.observe("open_tweet_in_browser", (event: Event, context: TheMoodyBlues.TweetMenu) => {
+  facade.ipc.observe("open_tweet_in_browser", (event: Event, context: TweetMenu) => {
     const {tweet} = context;
 
     facade.extra.openExternal(`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`);
   });
-  facade.ipc.observe("show_conversation_for_tweet", (event: Event, context: TheMoodyBlues.TweetMenu) => {
+  facade.ipc.observe("show_conversation_for_tweet", (event: Event, context: TweetMenu) => {
     store.dispatch(displayConversation(context.tweet));
   });
-  facade.ipc.observe("show_chain_for_tweet", (event: Event, context: TheMoodyBlues.TweetMenu) => {
+  facade.ipc.observe("show_chain_for_tweet", (event: Event, context: TweetMenu) => {
     store.dispatch(displayConversation(context.tweet, {yourself: true}));
   });
 
-  facade.ipc.observe("search", (event: Event, context: TheMoodyBlues.TweetMenu) => {
+  facade.ipc.observe("search", (event: Event, context: TweetMenu) => {
     store.dispatch(searchTweets(context.keyword));
   });
-  facade.ipc.observe("copy_tweet_in_json", (event: Event, context: TheMoodyBlues.TweetMenu) => {
+  facade.ipc.observe("copy_tweet_in_json", (event: Event, context: TweetMenu) => {
     facade.extra.copy(JSON.stringify(context.tweet, null, "  "));
   });
 

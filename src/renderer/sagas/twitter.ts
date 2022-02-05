@@ -6,7 +6,7 @@ import * as metronome from "./metronome";
 
 const {facade} = window;
 
-function* initialize(action: TheMoodyBlues.ReduxAction) {
+function* initialize(action: ReduxAction) {
   const {payload} = action;
   const {timelines} = yield select();
   const timeline = timelines.get(payload.identity)!;
@@ -14,45 +14,45 @@ function* initialize(action: TheMoodyBlues.ReduxAction) {
   yield metronome.launch(timeline);
 }
 
-function* reorder(action: TheMoodyBlues.ReduxAction) {
-  const {focused} = ((yield select()) as TheMoodyBlues.Store.State).principal;
+function* reorder(action: ReduxAction) {
+  const {focused} = ((yield select()) as State).principal;
 
   yield order(action.meta.tab || focused, action);
 }
-function* order(identity: string, action: TheMoodyBlues.ReduxAction) {
-  const {timelines}: TheMoodyBlues.Store.State = yield select();
+function* order(identity: string, action: ReduxAction) {
+  const {timelines}: State = yield select();
   const timeline = timelines.get(identity)!;
 
   yield metronome.play(timeline, action.meta.force);
 }
 
-function* searchTweets(action: TheMoodyBlues.ReduxAction) {
+function* searchTweets(action: ReduxAction) {
   const {query} = action.payload;
   const identity = "search"; //TODO 動的にする？
 
   yield put(principal.selectTab(identity));
   yield put(timelines.setupSearch(identity, query));
-  yield reorder(timelines.reload(true, identity, true) as TheMoodyBlues.ReduxAction);
+  yield reorder(timelines.reload(true, identity, true) as ReduxAction);
 }
 
-function* displayUserTimeline(action: TheMoodyBlues.ReduxAction) {
+function* displayUserTimeline(action: ReduxAction) {
   let tweets: Twitter.Tweet[] = yield call(facade.agent.retrieveTimelineOfUser, action.payload.name);
   yield put(subcontents.updateTweetsInSubContents(tweets));
 }
 
-function* displayConversation(action: TheMoodyBlues.ReduxAction) {
+function* displayConversation(action: ReduxAction) {
   let tweets: Twitter.Tweet[] = yield call(facade.agent.retrieveConversation, action.payload.tweet, action.meta.options);
   yield put(subcontents.updateTweetsInSubContents(tweets));
 }
 
-function* shutdown(action: TheMoodyBlues.ReduxAction) {
+function* shutdown(action: ReduxAction) {
   const {payload} = action;
 
   yield metronome.close(payload.identity);
 }
 
 const wrap = (saga: any) =>
-  function* (action: TheMoodyBlues.ReduxAction) {
+  function* (action: ReduxAction) {
     facade.logger.verbose(action);
     try {
       const loading = !action.meta || !action.meta.silently;

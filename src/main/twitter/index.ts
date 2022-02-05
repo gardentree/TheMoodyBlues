@@ -41,7 +41,7 @@ async function prepare(renderer: WebContents) {
 
   renderer.send(FacadeActions.SHOW_VERIFIER_FORM);
 }
-function observe(renderer: WebContents, agent: TheMoodyBlues.TwitterAgent) {
+function observe(renderer: WebContents, agent: TwitterAgent) {
   ipcMain.handle(FacadeActions.AGENT_GET, (event, values) => {
     const {path, parameters} = values;
 

@@ -6,7 +6,7 @@ type RecursivePartial<T> = {
   [P in keyof T]?: RecursivePartial<T[P]>;
 };
 
-function mergeTimeline(oldTimelines: Map<string, TheMoodyBlues.Store.Timeline>, identity: string, newTimeline: RecursivePartial<TheMoodyBlues.Store.Timeline>) {
+function mergeTimeline(oldTimelines: Map<string, Timeline>, identity: string, newTimeline: RecursivePartial<Timeline>) {
   const timelines = new Map(oldTimelines);
   const timeline = timelines.get(identity)!;
 
@@ -26,10 +26,10 @@ export const {updateTweets, read, setupSearch, refreshPreferences} = createActio
     }),
   ],
   READ: [
-    (identity: TheMoodyBlues.Store.TimelineIdentity, lastReadID) => ({
+    (identity: TimelineIdentity, lastReadID) => ({
       lastReadID: lastReadID,
     }),
-    (identity: TheMoodyBlues.Store.TimelineIdentity, lastReadID) => ({
+    (identity: TimelineIdentity, lastReadID) => ({
       identity: identity,
     }),
   ],
@@ -44,7 +44,7 @@ export const {updateTweets, read, setupSearch, refreshPreferences} = createActio
   REFRESH_PREFERENCES: () => {},
 });
 
-export default handleActions<TheMoodyBlues.Store.TimelineMap, any, any>(
+export default handleActions<TimelineMap, any, any>(
   {
     [updateTweets.toString()]: (state, action) => {
       return mergeTimeline(state, action.meta.identity, action.payload);

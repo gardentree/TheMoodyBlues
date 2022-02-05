@@ -21,7 +21,7 @@ const facade: Facade = {
     getMuteKeywords: () => {},
     setMuteKeywords: (keywords: string[]) => {},
     getTimelinePreferences: () => {},
-    setTimelinePreferences: (timelines: TheMoodyBlues.Store.TimelinePreference[]) => {},
+    setTimelinePreferences: (timelines: TimelinePreference[]) => {},
     getTweets: (name: string) => {},
     setTweets: (name: string, tweets: Twitter.Tweet[]) => {},
   },

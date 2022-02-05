@@ -1,7 +1,7 @@
 import {takeLatest, takeEvery} from "redux-saga/effects";
 import * as principal from "@modules/principal";
 
-function focusLatestTweet(action: TheMoodyBlues.ReduxAction) {
+function focusLatestTweet(action: ReduxAction) {
   const container = getContainer();
   const latest = <HTMLElement>container.querySelector("li:first-child")!;
 
@@ -9,7 +9,7 @@ function focusLatestTweet(action: TheMoodyBlues.ReduxAction) {
   latest.focus();
 }
 
-function focusUnreadTweet(action: TheMoodyBlues.ReduxAction) {
+function focusUnreadTweet(action: ReduxAction) {
   const container = getContainer();
   const unreads = container.querySelectorAll("li.unread");
   const oldest = <HTMLElement>Array.from(unreads).slice(-1)[0];
@@ -22,7 +22,7 @@ function focusUnreadTweet(action: TheMoodyBlues.ReduxAction) {
   }
 }
 
-function alarm(action: TheMoodyBlues.ReduxAction) {
+function alarm(action: ReduxAction) {
   window.alert(action.payload.message);
 }
 
@@ -42,7 +42,7 @@ function scrollTo(container: Element, target: Element, duration: number) {
   const increment = 20;
   let currentTime = 0;
 
-  const animateScroll = function() {
+  const animateScroll = function () {
     currentTime += increment;
     const value = easeInOutQuad(currentTime, start, change, duration);
     container.scrollTop = value;

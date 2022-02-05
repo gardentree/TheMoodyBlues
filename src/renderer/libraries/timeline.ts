@@ -37,7 +37,7 @@ const LIST = {
   growl: true,
 };
 
-export function makeInitialTimeline(preference: TheMoodyBlues.Store.TimelinePreference): TheMoodyBlues.Store.Timeline {
+export function makeInitialTimeline(preference: TimelinePreference): Timeline {
   const mute = facade.storage.getMutePreference();
 
   return {
@@ -60,10 +60,10 @@ export function initialPreferences() {
   return [HOME, SEARCH, MENTIONS].map((template) => Object.assign({active: true}, template));
 }
 
-export function mixPreferences(actives: TheMoodyBlues.Store.TimelinePreference[], lists: Twitter.List[]): TheMoodyBlues.Store.TimelinePreference[] {
+export function mixPreferences(actives: TimelinePreference[], lists: Twitter.List[]): TimelinePreference[] {
   const activeMap = new Map(actives.map((active) => [active.identity, Object.assign({active: true}, active)]));
 
-  const timelines: TheMoodyBlues.Store.TimelinePreference[] = [];
+  const timelines: TimelinePreference[] = [];
   timelines.push(Object.assign({}, HOME, activeMap.get("home")));
   for (const list of lists) {
     const identity = `list_${list.id_str}`;
@@ -75,8 +75,8 @@ export function mixPreferences(actives: TheMoodyBlues.Store.TimelinePreference[]
   return timelines;
 }
 
-export function refreshPreferences(currentMap: TheMoodyBlues.Store.TimelineMap): TheMoodyBlues.Store.TimelineMap {
-  const newMap: TheMoodyBlues.Store.TimelineMap = new Map();
+export function refreshPreferences(currentMap: TimelineMap): TimelineMap {
+  const newMap: TimelineMap = new Map();
 
   const mute = facade.storage.getMutePreference();
 
@@ -86,12 +86,12 @@ export function refreshPreferences(currentMap: TheMoodyBlues.Store.TimelineMap):
     }
 
     const current = currentMap.get(preference.identity);
-    let newTimeline: TheMoodyBlues.Store.Timeline | null = null;
+    let newTimeline: Timeline | null = null;
     if (current) {
       newTimeline = merger(current, {
         preference: preference,
         mute: mute,
-      }) as TheMoodyBlues.Store.Timeline;
+      }) as Timeline;
     } else {
       newTimeline = makeInitialTimeline(preference);
     }

@@ -10,7 +10,7 @@ const tweetTemplate: Twitter.Tweet = {
     screen_name: "gian",
   },
 };
-const preferenceTemplate: TheMoodyBlues.Store.MutePreference = {
+const preferenceTemplate: MutePreference = {
   keywords: [],
   selfRetweet: false,
   media: [],

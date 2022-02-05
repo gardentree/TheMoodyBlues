@@ -13,7 +13,7 @@ interface Property {
   onClick: any;
   subcontents: any;
   nowLoading: boolean;
-  timelines: TheMoodyBlues.Store.TimelineMap;
+  timelines: TimelineMap;
   didMount(identity: string): void;
 }
 

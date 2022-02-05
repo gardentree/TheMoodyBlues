@@ -5,7 +5,7 @@ import * as timer from "./timer";
 
 const {facade} = window;
 
-export function* initialize(timeline: TheMoodyBlues.Store.Timeline) {
+export function* initialize(timeline: Timeline) {
   const identity = timeline.preference.identity;
   const tweets: Twitter.Tweet[] = yield call(facade.storage.getTweets, identity);
 
@@ -19,7 +19,7 @@ export function* initialize(timeline: TheMoodyBlues.Store.Timeline) {
   yield timer.spawn(identity, timeline.preference.interval);
   yield timer.start(identity);
 }
-export function* order(timeline: TheMoodyBlues.Store.Timeline, force: boolean) {
+export function* order(timeline: Timeline, force: boolean) {
   const identity = timeline.preference.identity;
 
   const oldTweets = force ? [] : timeline.tweets;

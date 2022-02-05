@@ -26,17 +26,17 @@ export default {
     setStore("access_token.secret", value);
   },
 
-  getTimelinePreferences: (): TheMoodyBlues.Store.TimelinePreference[] => {
-    return getStore("preferences.timelines") as TheMoodyBlues.Store.TimelinePreference[];
+  getTimelinePreferences: (): TimelinePreference[] => {
+    return getStore("preferences.timelines") as TimelinePreference[];
   },
-  setTimelinePreferences: (timelines: TheMoodyBlues.Store.TimelinePreference[]) => {
+  setTimelinePreferences: (timelines: TimelinePreference[]) => {
     setStore("preferences.timelines", timelines);
   },
 
-  getMutePreference: (): TheMoodyBlues.Store.MutePreference => {
-    return getStore("preferences.mute") as TheMoodyBlues.Store.MutePreference;
+  getMutePreference: (): MutePreference => {
+    return getStore("preferences.mute") as MutePreference;
   },
-  setMutePreference: (preference: TheMoodyBlues.Store.MutePreference) => {
+  setMutePreference: (preference: MutePreference) => {
     setStore("preferences.mute", preference);
   },
 

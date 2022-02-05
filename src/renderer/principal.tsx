@@ -30,7 +30,7 @@ export default function launch() {
 }
 
 function loadTimelines() {
-  const timelines: TheMoodyBlues.Store.TimelineMap = new Map();
+  const timelines: TimelineMap = new Map();
 
   for (const preference of facade.storage.getTimelinePreferences() || initialPreferences()) {
     if (!preference.active) {

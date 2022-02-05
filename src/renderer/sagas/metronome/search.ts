@@ -5,11 +5,11 @@ import * as timer from "./timer";
 
 const {facade} = window;
 
-export function* initialize(timeline: TheMoodyBlues.Store.Timeline) {
+export function* initialize(timeline: Timeline) {
   const identity = timeline.preference.identity;
   yield timer.spawn(identity, timeline.preference.interval);
 }
-export function* order(timeline: TheMoodyBlues.Store.Timeline, force: boolean) {
+export function* order(timeline: Timeline, force: boolean) {
   const identity = timeline.preference.identity;
 
   yield timer.stop(identity);

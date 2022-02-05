@@ -12,7 +12,7 @@ export const {selectTab, zoomIn, zoomOut, zoomReset, showLoading} = createAction
   }),
 });
 
-export default handleActions<TheMoodyBlues.Store.Principal, any, any>(
+export default handleActions<Principal, any, any>(
   {
     [selectTab.toString()]: (state, action) => ({
       ...state,

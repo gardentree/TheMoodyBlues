@@ -13,12 +13,12 @@ const components = {
   },
 };
 
-export function* launch(target: TheMoodyBlues.Store.Timeline) {
+export function* launch(target: Timeline) {
   yield components[target.preference.component].initialize(target);
 }
-export function* play(target: TheMoodyBlues.Store.Timeline, force: boolean) {
+export function* play(target: Timeline, force: boolean) {
   yield components[target.preference.component].order(target, force);
 }
-export function* close(identity: TheMoodyBlues.Store.TimelineIdentity) {
+export function* close(identity: TimelineIdentity) {
   yield timer.shutdown(identity);
 }

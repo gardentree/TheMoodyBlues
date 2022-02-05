@@ -4,7 +4,7 @@ import TweetList from "../TweetList";
 import {Field, InjectedFormProps} from "redux-form";
 
 export interface OwnProperty {
-  identity: TheMoodyBlues.Store.TimelineIdentity;
+  identity: TimelineIdentity;
   handleSubmit: any;
 }
 export interface StateProperty {

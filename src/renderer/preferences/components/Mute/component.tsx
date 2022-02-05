@@ -17,7 +17,7 @@ const Mute = () => {
     const promises = facade.storage
       .getTimelinePreferences()
       .filter((preference) => preference.mute)
-      .map((preference: TheMoodyBlues.Store.TimelinePreference) => {
+      .map((preference: TimelinePreference) => {
         return facade.storage.getTweets(preference.identity);
       });
 

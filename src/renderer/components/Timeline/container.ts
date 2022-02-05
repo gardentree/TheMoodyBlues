@@ -3,7 +3,7 @@ import Component from "./component";
 import {OwnProperty, StateProperty, DispatchProperty} from "./component";
 import * as timelines from "@modules/timelines";
 
-const mapStateToProps = (state: TheMoodyBlues.Store.State, own: OwnProperty): StateProperty => {
+const mapStateToProps = (state: State, own: OwnProperty): StateProperty => {
   const {timelines} = state;
   const timeline = timelines.get(own.identity)!;
 
