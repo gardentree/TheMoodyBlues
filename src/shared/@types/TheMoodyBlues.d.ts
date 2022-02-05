@@ -89,7 +89,6 @@ interface Facade {
   ipc: {
     observe(event: string, callback: (event: Event, ...values: any[]) => void);
     action(action: string, ...values: any[]);
-    call(action: string, ...values: any[]);
   };
   extra: any;
 }

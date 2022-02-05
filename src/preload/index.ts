@@ -28,7 +28,6 @@ const facade: Facade = {
   ipc: {
     observe: (event, callback) => ipcRenderer.on(event, callback),
     action: (event, ...values) => ipcRenderer.send(event, ...values),
-    call: (event, ...values) => ipcRenderer.sendSync(event, ...values),
   },
   extra: {
     openExternal: (url: string) => shell.openExternal(url),
