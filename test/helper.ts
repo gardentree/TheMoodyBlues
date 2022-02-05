@@ -28,6 +28,7 @@ const facade: Facade = {
   growl: (tweets: Twitter.Tweet[]) => {},
   openTweetMenu: (context: TheMoodyBlues.TweetMenu) => {},
   openExternal: (url: string) => {},
+  logger: {info: () => {}, verbose: () => {}, error: () => {}},
 };
 
 global.window.facade = facade;
