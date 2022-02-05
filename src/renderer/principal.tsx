@@ -12,14 +12,14 @@ import keybinds from "./keybinds";
 
 const {facade} = window;
 
-export default function launch() {
+export default async function launch() {
   const sagaMiddleware = createSagaMiddleware();
   const store = createStore(rootReducer, applyMiddleware(sagaMiddleware, createLogger()));
 
   sagaMiddleware.run(rootSaga);
 
   keybinds(store);
-  store.getState()["timelines"] = loadTimelines();
+  store.getState()["timelines"] = await loadTimelines();
 
   ReactDOM.render(
     <Provider store={store}>
@@ -29,15 +29,15 @@ export default function launch() {
   );
 }
 
-function loadTimelines() {
+async function loadTimelines() {
   const timelines: TimelineMap = new Map();
 
-  for (const preference of facade.storage.getTimelinePreferences() || initialPreferences()) {
+  for (const preference of (await facade.storage.getTimelinePreferences()) || initialPreferences()) {
     if (!preference.active) {
       continue;
     }
 
-    timelines.set(preference.identity, makeInitialTimeline(preference));
+    timelines.set(preference.identity, await makeInitialTimeline(preference));
   }
 
   return timelines;

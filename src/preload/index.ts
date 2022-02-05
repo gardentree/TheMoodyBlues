@@ -14,11 +14,11 @@ const facade: Facade = {
     retrieveTimelineOfList: (list_id, since_id) => ipcRenderer.invoke(FacadeActions.AGENT_RETRIEVE_TIMELINE_OF_LIST, {list_id, since_id}),
   },
   storage: {
-    getTimelinePreferences: () => ipcRenderer.sendSync(FacadeActions.STORAGE_TIMELINE_PREFERENCES_LOAD),
+    getTimelinePreferences: () => ipcRenderer.invoke(FacadeActions.STORAGE_TIMELINE_PREFERENCES_LOAD),
     setTimelinePreferences: (timelines) => ipcRenderer.send(FacadeActions.STORAGE_TIMELINE_PREFERENCES_SAVE, {timelines}),
     getTweets: (name) => ipcRenderer.invoke(FacadeActions.STORAGE_TWEETS_LOAD, {name}),
     setTweets: (name, tweets) => ipcRenderer.send(FacadeActions.STORAGE_TWEETS_SAVE, {name, tweets}),
-    getMutePreference: () => ipcRenderer.sendSync(FacadeActions.STORAGE_MUTE_LOAD),
+    getMutePreference: () => ipcRenderer.invoke(FacadeActions.STORAGE_MUTE_LOAD),
     setMutePreference: (preference) => ipcRenderer.send(FacadeActions.STORAGE_MUTE_SAVE, {preference}),
   },
   growl: (tweets) => ipcRenderer.send(FacadeActions.GROWL, {tweets}),

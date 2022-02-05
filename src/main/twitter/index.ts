@@ -87,8 +87,8 @@ function observe(renderer: WebContents, agent: TwitterAgent) {
     growl(tweets);
   });
 
-  ipcMain.on(FacadeActions.STORAGE_TIMELINE_PREFERENCES_LOAD, (event, values) => {
-    event.returnValue = storage.getTimelinePreferences();
+  ipcMain.handle(FacadeActions.STORAGE_TIMELINE_PREFERENCES_LOAD, (event, values) => {
+    return storage.getTimelinePreferences();
   });
   ipcMain.on(FacadeActions.STORAGE_TIMELINE_PREFERENCES_SAVE, (event, values) => {
     const {timelines} = values;
@@ -105,8 +105,8 @@ function observe(renderer: WebContents, agent: TwitterAgent) {
 
     storage.setTweets(name, tweets);
   });
-  ipcMain.on(FacadeActions.STORAGE_MUTE_LOAD, (event, values) => {
-    event.returnValue = storage.getMutePreference();
+  ipcMain.handle(FacadeActions.STORAGE_MUTE_LOAD, (event, values) => {
+    return storage.getMutePreference();
   });
   ipcMain.on(FacadeActions.STORAGE_MUTE_SAVE, (event, values) => {
     const {preference} = values;

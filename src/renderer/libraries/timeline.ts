@@ -37,8 +37,8 @@ const LIST = {
   growl: true,
 };
 
-export function makeInitialTimeline(preference: TimelinePreference): Timeline {
-  const mute = facade.storage.getMutePreference();
+export async function makeInitialTimeline(preference: TimelinePreference): Promise<Timeline> {
+  const mute = await facade.storage.getMutePreference();
 
   return {
     preference: preference,
@@ -75,12 +75,12 @@ export function mixPreferences(actives: TimelinePreference[], lists: Twitter.Lis
   return timelines;
 }
 
-export function refreshPreferences(currentMap: TimelineMap): TimelineMap {
+export async function refreshPreferences(currentMap: TimelineMap): Promise<TimelineMap> {
   const newMap: TimelineMap = new Map();
 
-  const mute = facade.storage.getMutePreference();
+  const mute = await facade.storage.getMutePreference();
 
-  for (const preference of facade.storage.getTimelinePreferences()) {
+  for (const preference of await facade.storage.getTimelinePreferences()) {
     if (!preference.active) {
       continue;
     }
@@ -93,7 +93,7 @@ export function refreshPreferences(currentMap: TimelineMap): TimelineMap {
         mute: mute,
       }) as Timeline;
     } else {
-      newTimeline = makeInitialTimeline(preference);
+      newTimeline = await makeInitialTimeline(preference);
     }
 
     newMap.set(preference.identity, newTimeline);

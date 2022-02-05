@@ -9,21 +9,32 @@ interface Form extends HTMLFormElement {
 }
 
 const Mute = () => {
-  const [preference, setPreference] = useState(() => facade.storage.getMutePreference());
+  const [preference, setPreference] = useState<MutePreference>({
+    keywords: [],
+    selfRetweet: false,
+    media: [],
+  });
   const [tweets, setTweets] = useState<Twitter.Tweet[]>([]);
   const [matched, setMatched] = useState<string[]>([]);
 
   useEffect(() => {
-    const promises = facade.storage
-      .getTimelinePreferences()
-      .filter((preference) => preference.mute)
-      .map((preference: TimelinePreference) => {
-        return facade.storage.getTweets(preference.identity);
-      });
+    (async () => {
+      setPreference(await facade.storage.getMutePreference());
+    })();
+  }, []);
+  useEffect(() => {
+    (async () => {
+      const preferences = await facade.storage.getTimelinePreferences();
+      const promises = preferences
+        .filter((preference) => preference.mute)
+        .map((preference: TimelinePreference) => {
+          return facade.storage.getTweets(preference.identity);
+        });
 
-    Promise.all(promises).then((allTweets: Twitter.Tweet[][]) => {
-      setTweets(allTweets.flat());
-    });
+      Promise.all(promises).then((allTweets: Twitter.Tweet[][]) => {
+        setTweets(allTweets.flat());
+      });
+    })();
   }, []);
 
   const handleSubmit = (event: React.SyntheticEvent<Form>) => {

@@ -1,6 +1,7 @@
 import {focusLatestTweet, focusUnreadTweet, zoomIn, zoomOut, zoomReset} from "@modules/principal";
 import {reload, searchTweets, refreshPreferences} from "@modules/timelines";
 import {displayConversation} from "@modules/subcontents";
+import * as library from "@libraries/timeline";
 
 const {facade} = window;
 
@@ -48,6 +49,10 @@ export default function (store: any) {
   });
 
   facade.ipc.observe("refresh_preferences", (event: Event, ...values: any[]) => {
-    store.dispatch(refreshPreferences());
+    (async () => {
+      const preferences = await library.refreshPreferences(store.getState().timelines);
+
+      store.dispatch(refreshPreferences(preferences));
+    })();
   });
 }

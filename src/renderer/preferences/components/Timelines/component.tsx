@@ -1,24 +1,17 @@
 import * as React from "react";
+import {useState, useEffect} from "react";
 import {mixPreferences} from "@libraries/timeline";
 
 const {facade} = window;
 
-const getCurrentPreferences = (() => {
-  let timelines: TimelinePreference[] | null = null;
+async function getCurrentPreferences() {
+  const lists = await facade.agent.lists();
+  const current = await facade.storage.getTimelinePreferences();
 
-  return () => {
-    if (timelines) {
-      return timelines;
-    }
+  return mixPreferences(current, lists);
+}
 
-    throw facade.agent.lists().then((lists) => {
-      const current = facade.storage.getTimelinePreferences();
-      timelines = mixPreferences(current, lists);
-    });
-  };
-})();
-
-function save() {
+async function save() {
   const inputs = document.querySelectorAll("input");
 
   const map = new Map();
@@ -54,7 +47,7 @@ function save() {
     return preference;
   });
 
-  const currents = getCurrentPreferences();
+  const currents = await getCurrentPreferences();
   const newPreferences = submitted.map((preference) => {
     const current = currents.find((entry) => entry.identity == preference.identity);
     return Object.assign({}, current, preference);
@@ -64,6 +57,13 @@ function save() {
 }
 
 const Timelines = () => {
+  const [timelines, setTimelines] = useState<TimelinePreference[]>([]);
+  useEffect(() => {
+    (async () => {
+      setTimelines(await getCurrentPreferences());
+    })();
+  }, []);
+
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     save();
   };
@@ -74,8 +74,6 @@ const Timelines = () => {
 
     save();
   };
-
-  const timelines = getCurrentPreferences();
 
   const elements = timelines.map((timeline, index) => {
     return (

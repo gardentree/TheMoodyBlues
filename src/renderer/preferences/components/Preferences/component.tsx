@@ -1,4 +1,4 @@
-import React, {Suspense, useState} from "react";
+import React, {useState} from "react";
 import Timelines from "../Timelines";
 import Mute from "../Mute";
 
@@ -33,7 +33,7 @@ const Preferences = () => {
         {Object.entries(components).map(([title, component]) => {
           return (
             <div key={title} className="window-content" style={{display: active == title ? "block" : "none"}}>
-              <Suspense fallback={<p>Loading...</p>}>{React.createElement(component)}</Suspense>
+              {React.createElement(component)}
             </div>
           );
         })}

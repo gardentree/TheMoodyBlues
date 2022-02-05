@@ -74,11 +74,11 @@ interface Window {
 }
 interface Facade {
   storage: {
-    getMutePreference(): MutePreference;
+    getMutePreference(): Promise<MutePreference>;
     setMutePreference(preference: MutePreference);
-    getTimelinePreferences(): TimelinePreference[];
+    getTimelinePreferences(): Promise<TimelinePreference[]>;
     setTimelinePreferences(timelines: TimelinePreference[]);
-    getTweets(name: string);
+    getTweets(name: string): Promise<Twitter.Tweet[]>;
     setTweets(name: string, tweets: Twitter.Tweet[]);
   };
   agent: TwitterAgent;

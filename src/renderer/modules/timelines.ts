@@ -1,6 +1,5 @@
 import {createActions, handleActions} from "redux-actions";
 import merge from "@libraries/merger";
-import * as library from "@libraries/timeline";
 
 type RecursivePartial<T> = {
   [P in keyof T]?: RecursivePartial<T[P]>;
@@ -41,7 +40,9 @@ export const {updateTweets, read, setupSearch, refreshPreferences} = createActio
       identity: identity,
     }),
   ],
-  REFRESH_PREFERENCES: () => {},
+  REFRESH_PREFERENCES: (preferences: TimelineMap) => ({
+    preferences,
+  }),
 });
 
 export default handleActions<TimelineMap, any, any>(
@@ -68,7 +69,7 @@ export default handleActions<TimelineMap, any, any>(
       });
     },
     [refreshPreferences.toString()]: (state, action) => {
-      return library.refreshPreferences(state);
+      return action.payload.preferences;
     },
   },
   new Map()
