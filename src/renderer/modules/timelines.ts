@@ -9,7 +9,7 @@ function mergeTimeline(oldTimelines: Map<string, Timeline>, identity: string, ne
   const timelines = new Map(oldTimelines);
   const timeline = timelines.get(identity)!;
 
-  timelines.set(identity, merge(timeline, newTimeline));
+  timelines.set(identity, merge<Timeline>(timeline, newTimeline as Partial<Timeline>));
 
   return timelines;
 }

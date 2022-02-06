@@ -7,7 +7,7 @@ import {parseElements} from "@libraries/twitter";
 interface Property {
   tweet: Twitter.Tweet;
   expand?: boolean;
-  search: any;
+  search(event: React.SyntheticEvent): void;
 }
 
 const TweetBody: React.SFC<Property> = ({tweet, expand = false, search}) => {

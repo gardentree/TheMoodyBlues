@@ -4,14 +4,14 @@ import TweetList from "../TweetList";
 
 interface Property {
   container: string;
-  tweets?: Twitter.Tweet[] | null;
-  onClose?(): any;
+  tweets: Twitter.Tweet[];
+  onClose(): void;
 }
 
 const SubContents = (props: Property) => {
   const {container, tweets, onClose} = props;
 
-  if (!tweets) return null;
+  if (tweets.length <= 0) return null;
 
   const contents = ReactDOM.createPortal(
     <div className="SubContents">
@@ -20,7 +20,7 @@ const SubContents = (props: Property) => {
           <span className="icon icon-cancel" />
         </button>
       </div>
-      <TweetList identity="subcontents" tweets={tweets!} lastReadID={null} />
+      <TweetList identity="subcontents" tweets={tweets} lastReadID={null} />
     </div>,
     document.querySelector(container)!
   );

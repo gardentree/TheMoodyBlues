@@ -8,10 +8,10 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 interface Property {
   current: string;
-  style: any;
-  unreads: any;
-  onClick: any;
-  subcontents: any;
+  style: PrincipalStyle;
+  unreads: {[key: string]: number};
+  onClick(event: React.SyntheticEvent<HTMLElement>): void;
+  subcontents: SubContents;
   nowLoading: boolean;
   timelines: TimelineMap;
   didMount(identity: string): void;
@@ -29,7 +29,7 @@ const Principal = (props: Property) => {
     didMount(timelines.keys().next().value);
   }, []);
 
-  const contents: {identity: string; title: string; component: any}[] = Array.from(timelines.entries()).map(([identity, timeline]) => ({
+  const contents: {identity: string; title: string; component: React.FC}[] = Array.from(timelines.entries()).map(([identity, timeline]) => ({
     identity: identity,
     title: timeline.preference.title,
     component: components.get(timeline.preference.component),
@@ -53,10 +53,10 @@ const Principal = (props: Property) => {
         })}
       </div>
       {contents.map(({identity, component}) => {
-        const display = !!subcontents.tweets;
+        const display = subcontents.tweets.length > 0;
         return (
           <div key={identity} className="window-content" style={{display: current == identity ? "block" : "none"}} data-name={identity}>
-            {React.createElement(component, {identity: identity})}
+            {React.createElement<typeof Timeline | typeof Search>(component, {identity: identity})}
 
             <CSSTransition timeout={300} classNames="fade" in={display}>
               <div className="subcontents" />

@@ -10,7 +10,7 @@ export interface StateProperty {
   lastReadID: string;
 }
 export interface DispatchProperty {
-  didMount: any;
+  didMount(): void;
   willUnmount(): void;
 }
 

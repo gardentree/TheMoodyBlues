@@ -35,18 +35,21 @@ interface MutePreference {
   media: Twitter.UserID[];
 }
 
-type SubContents = any;
+interface SubContents {
+  tweets: Twitter.Tweet[];
+}
 
 interface Principal {
   focused: TimelineIdentity;
   nowLoading: boolean;
-  style: {
-    fontSize: string;
-  };
+  style: PrincipalStyle;
+}
+interface PrincipalStyle {
+  fontSize: string;
 }
 
 interface TwitterAgent {
-  get(path: string, parameters: any): Promise<Twitter2.Response>;
+  get(path: string, parameters: RequestParameters): Promise<Twitter2.Response>;
 
   retrieveTimeline(since_id: string | null): Promise<Twitter.Tweet[]>;
   search(query: string, since_id: string | null): Promise<Twitter.Tweet[]>;
@@ -85,14 +88,22 @@ interface Facade {
   growl(tweets: Twitter.Tweet[]): void;
   openTweetMenu(context: TheMoodyBlues.TweetMenu): void;
   openExternal(url: string): void;
-  logger: any;
+  logger: {
+    info(message: LogMessage): void;
+    error(message: LogMessage): void;
+    verbose(message: LogMessage): void;
+  };
   ipc: {
     observe(event: string, callback: (event: Event, ...values: any[]) => void);
     action(action: string, ...values: any[]);
   };
-  extra: any;
+  extra: {
+    openExternal(url: string): void;
+    copy(text: string): void;
+  };
 }
+type LogMessage = string | object | undefined | null;
 
 declare module "growly" {
-  declare function notify(any, any);
+  declare function notify(message: string, {title: string, icon: string});
 }

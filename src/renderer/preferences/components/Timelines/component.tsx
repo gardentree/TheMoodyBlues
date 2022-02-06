@@ -28,7 +28,7 @@ async function save() {
       map.set(identity, preference);
     }
 
-    let value: any;
+    let value: string | number | boolean;
     switch (input.type) {
       case "checkbox":
         value = input.checked || false;
@@ -69,7 +69,7 @@ const Timelines = () => {
   };
 
   const handleFieldSetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const fieldset: any = event.currentTarget.parentNode!.parentNode;
+    const fieldset = event.currentTarget.parentNode!.parentNode! as ParentNode & {disabled: boolean};
     fieldset.disabled = !event.currentTarget.checked;
 
     save();

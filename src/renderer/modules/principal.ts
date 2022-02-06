@@ -12,7 +12,7 @@ export const {selectTab, zoomIn, zoomOut, zoomReset, showLoading} = createAction
   }),
 });
 
-export default handleActions<Principal, any, any>(
+export default handleActions<Principal, {identity: TimelineIdentity; nowLoading: boolean}, {}>(
   {
     [selectTab.toString()]: (state, action) => ({
       ...state,
@@ -44,7 +44,7 @@ export default handleActions<Principal, any, any>(
   }
 );
 
-function fontSize(style: any, offset: number) {
+function fontSize(style: PrincipalStyle, offset: number) {
   if (offset == 0) {
     return "12px";
   } else {

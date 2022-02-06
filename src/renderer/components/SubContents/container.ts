@@ -2,17 +2,14 @@ import {connect} from "react-redux";
 import Component from "./component";
 import {updateTweetsInSubContents} from "@modules/subcontents";
 
-const mapStateToProps = (state: any) => {
+const mapStateToProps = (state: State) => {
   const {subcontents} = state;
 
   return {
-    tweets: subcontents.tweets || null,
+    tweets: subcontents.tweets,
   };
 };
 const mapDispatchToProps = {
-  onClose: () => updateTweetsInSubContents(null),
+  onClose: () => updateTweetsInSubContents([]),
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Component);
+export default connect(mapStateToProps, mapDispatchToProps)(Component);

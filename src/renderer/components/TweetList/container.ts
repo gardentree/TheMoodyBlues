@@ -1,8 +1,9 @@
+import {Dispatch, Action} from "redux";
 import {connect} from "react-redux";
 import Component, {OwnProperty, DispatchProperty} from "./component";
 import * as timelines from "@modules/timelines";
 
-const mapDispatchToProps = (dispatch: any, ownProps: OwnProperty): DispatchProperty => ({
+const mapDispatchToProps = (dispatch: Dispatch<Action>, ownProps: OwnProperty): DispatchProperty => ({
   onScroll: (event: React.SyntheticEvent<HTMLElement>): void => {
     const {identity, tweets, lastReadID} = ownProps;
     if ((event.target as HTMLElement).scrollTop <= 0 && tweets.length > 0 && lastReadID != null && lastReadID < tweets[0].id_str) {

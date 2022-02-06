@@ -11,7 +11,7 @@ export default handleActions<SubContents, any, any>(
       ...action.payload,
     }),
   },
-  {}
+  {tweets: []}
 );
 
 ////////////////////

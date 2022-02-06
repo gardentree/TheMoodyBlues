@@ -10,7 +10,7 @@ export interface OwnProperty {
 }
 export interface StateProperty {}
 export interface DispatchProperty {
-  onScroll: any;
+  onScroll(event: React.SyntheticEvent<HTMLElement>): void;
 }
 type Property = OwnProperty & StateProperty & DispatchProperty;
 

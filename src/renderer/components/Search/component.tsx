@@ -15,7 +15,7 @@ export interface StateProperty {
 }
 export interface DispatchProperty {
   didMount(): void;
-  search: any;
+  search(values: {query: string}): void;
 }
 type Property = OwnProperty & StateProperty & DispatchProperty & InjectedFormProps;
 
@@ -37,7 +37,7 @@ const Search = (props: Property) => {
               style={{display: hasQuery ? "inline-block" : "none"}}
               onClick={() => {
                 reset();
-                search("");
+                search({query: ""});
               }}
             />
           </div>

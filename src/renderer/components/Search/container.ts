@@ -20,7 +20,7 @@ const mapStateToProps = (state: State, own: OwnProperty): StateProperty => {
 };
 const mapDispatchToProps = (dispatch: any, own: OwnProperty): DispatchProperty => {
   return {
-    search: (values: any) => dispatch(timelines.searchTweets(values.query)),
+    search: (values: {query: string}) => dispatch(timelines.searchTweets(values.query)),
     didMount: () => dispatch(timelines.mountComponent(own.identity)),
   };
 };

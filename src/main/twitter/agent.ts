@@ -4,7 +4,7 @@ import * as DateUtility from "date-fns-tz";
 
 export function incarnate(client: TwitterClient, client2: TwitterClient2): TwitterAgent {
   return {
-    get: (path: string, parameters: any) => {
+    get: (path, parameters) => {
       return client2.get(
         path,
         Object.assign(
@@ -20,8 +20,8 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): Twitt
       );
     },
 
-    retrieveTimeline: (since_id: string | null) => {
-      let option: any = {
+    retrieveTimeline: (since_id) => {
+      let option: TwitterClient.RequestParams = {
         count: 200,
         include_entities: true,
         tweet_mode: "extended",
@@ -39,8 +39,8 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): Twitt
       });
     },
 
-    search: (query: string, since_id: string | null) => {
-      let option: any = {
+    search: (query, since_id) => {
+      let option: TwitterClient.RequestParams = {
         q: `${query} -rt`,
         count: 100,
         include_entities: true,
@@ -57,8 +57,8 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): Twitt
       });
     },
 
-    retrieveTimelineOfUser: (name: string) => {
-      let option: any = {
+    retrieveTimelineOfUser: (name) => {
+      let option: TwitterClient.RequestParams = {
         screen_name: name,
         count: 100,
         exclude_replies: false,
@@ -75,8 +75,8 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): Twitt
       });
     },
 
-    retrieveMentions: (since_id: string | null) => {
-      let option: any = {
+    retrieveMentions: (since_id) => {
+      let option: TwitterClient.RequestParams = {
         count: 200,
         include_entities: true,
         tweet_mode: "extended",
@@ -92,7 +92,7 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): Twitt
       });
     },
 
-    retrieveConversation: (criterion: Twitter.Tweet, options?: {yourself?: boolean}) => {
+    retrieveConversation: (criterion, options) => {
       return new Promise(async (resolve, reject) => {
         let tweets: Twitter.Tweet[] = [];
 
@@ -143,8 +143,8 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): Twitt
         });
       });
     },
-    retrieveTimelineOfList: (list_id: string, since_id: string | null) => {
-      const option: any = {
+    retrieveTimelineOfList: (list_id, since_id) => {
+      const option: TwitterClient.RequestParams = {
         list_id: list_id,
         count: 200,
         include_entities: true,
@@ -180,14 +180,20 @@ function degrade(v2: Twitter2.Response): Twitter.Tweet[] {
   return v1;
 }
 function degradeTweet(tweet: Twitter2.Tweet, includes: IncludeMap, referenced: boolean = false): Twitter.Tweet {
-  const v1: any = {
+  const v1: Twitter.Tweet = {
     created_at: degradeDate(tweet.created_at),
     id: Number(tweet.id),
     id_str: tweet.id,
     full_text: tweet.text,
-    user: includes.users.get(tweet.author_id),
+    user: includes.users.get(tweet.author_id)!,
     display_text_range: calculateDisplayTextRange(tweet, includes, referenced),
-    entities: {},
+    entities: {
+      hashtags: [],
+      user_mentions: [],
+      urls: [],
+    },
+    in_reply_to_status_id_str: null,
+    is_quote_status: false,
   };
 
   if (tweet.entities) {
@@ -204,19 +210,19 @@ function degradeTweet(tweet: Twitter2.Tweet, includes: IncludeMap, referenced: b
 
   if (tweet.attachments && !referenced) {
     if (tweet.attachments.media_keys) {
-      const media = tweet.attachments.media_keys.map((key) => includes.media.get(key));
+      const media: Twitter.Media[] = tweet.attachments.media_keys.map((key) => includes.media.get(key)!);
 
       if (!v1.extended_entities) {
-        v1.extended_entities = {};
+        v1.extended_entities = {media: []};
       }
-      v1.extended_entities.media = media;
+      v1.extended_entities!.media = media;
 
-      const urls = v1.entities.urls.splice(v1.entities.urls.length - v1.extended_entities.media.length, v1.extended_entities.media.length);
-      for (let i = 0; i < v1.extended_entities.media.length; i++) {
-        Object.assign(v1.extended_entities.media[i], urls[i]);
+      const urls = v1.entities.urls.splice(v1.entities.urls.length - v1.extended_entities!.media.length, v1.extended_entities!.media.length);
+      for (let i = 0; i < v1.extended_entities!.media.length; i++) {
+        Object.assign(v1.extended_entities!.media[i], urls[i]);
       }
 
-      v1.entities.media = v1.extended_entities.media.map((medium: Twitter.Media) => Object.assign({}, medium, {type: "photo"}));
+      v1.entities.media = v1.extended_entities!.media.map((medium: Twitter.Media) => Object.assign({}, medium, {type: "photo"}));
     }
   }
 

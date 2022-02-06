@@ -6,7 +6,7 @@ import TwitterClient2 from "twitter-v2";
 
 const oauth = new OAuth("https://api.twitter.com/oauth/request_token", "https://api.twitter.com/oauth/access_token", process.env.CONSUMER_KEY!, process.env.CONSUMER_SECRET!, "1.0A", null, "HMAC-SHA1");
 
-function loadClient(): any | null {
+function loadClient(): TwitterAgent | null {
   const accessKey = storage.getAccessKey();
   const accessSecret = storage.getAccessSecret();
 
@@ -35,7 +35,7 @@ function createClient(accessToken: Token): TwitterAgent {
 
 export function getRequestToken() {
   return new Promise<Token>((resolve, reject) => {
-    oauth.getOAuthRequestToken((error: any, key: string, secret: string, results: any) => {
+    oauth.getOAuthRequestToken((error, key, secret, results) => {
       if (error) reject(error);
 
       resolve({key: key, secret: secret});
@@ -44,7 +44,7 @@ export function getRequestToken() {
 }
 function getAccessToken(requestToken: Token, verifier: string) {
   return new Promise<Token>((resolve, reject) => {
-    oauth.getOAuthAccessToken(requestToken.key, requestToken.secret, verifier, (error: any, accessKey: string, accessSecret: string) => {
+    oauth.getOAuthAccessToken(requestToken.key, requestToken.secret, verifier, (error, accessKey, accessSecret) => {
       if (error) reject(error);
 
       resolve({key: accessKey, secret: accessSecret});

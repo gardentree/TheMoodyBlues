@@ -13,7 +13,7 @@ function* run(identity: TimelineIdentity, interval: number) {
     });
   while ((yield effects.take(channel)) as ReturnType<typeof effects.take>) {
     while (true) {
-      const winner: {stopped: boolean; killed: boolean; tick: any} = yield effects.race({
+      const winner: {stopped: boolean; killed: boolean; tick: boolean} = yield effects.race({
         stopped: effects.take(`${identity}_STOP_TIMER`),
         killed: effects.take(`${identity}_SHUTDOWN`),
         tick: effects.call(wait, interval),

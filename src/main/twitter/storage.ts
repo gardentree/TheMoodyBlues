@@ -7,7 +7,7 @@ const store = new ElectronStore();
 const getStore = (key: string) => {
   return store.get(key);
 };
-const setStore = (key: string, value: any) => {
+const setStore = (key: string, value: string | object) => {
   store.set(key, value);
 };
 

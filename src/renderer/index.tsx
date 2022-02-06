@@ -19,16 +19,16 @@ import {Actions as FacadeActions} from "@shared/facade";
 })();
 
 const {facade} = window;
-facade.ipc.observe(FacadeActions.SHOW_VERIFIER_FORM, (event: Event, ...values: any[]) => {
+facade.ipc.observe(FacadeActions.SHOW_VERIFIER_FORM, (event, ...values) => {
   const callback = (verifier: string) => {
     facade.ipc.action(FacadeActions.AUTHORIZE, {verifier: verifier});
   };
   ReactDOM.render(<VerifierForm callback={callback} />, document.getElementById("app"));
 });
-facade.ipc.observe(FacadeActions.LAUNCH, (event: Event, ...values: any[]) => {
+facade.ipc.observe(FacadeActions.LAUNCH, (event, ...values) => {
   launchPrinciapl();
 });
-facade.ipc.observe(FacadeActions.ALERT, (event: Event, values) => {
+facade.ipc.observe(FacadeActions.ALERT, (event, values) => {
   const {error} = values;
 
   if (error.message) {

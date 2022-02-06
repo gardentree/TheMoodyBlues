@@ -42,7 +42,7 @@ const MediaBox = (props: Property) => {
   const elements = media.map((media, index: number) => {
     switch (media.type) {
       case "video":
-        const variants = media.video_info?.variants.slice().sort((a: any, b: any) => (b.bitrate || 0) - (a.bitrate || 0));
+        const variants = media.video_info?.variants.slice().sort((a: Twitter.MediaVideoVariant, b: Twitter.MediaVideoVariant) => (b.bitrate || 0) - (a.bitrate || 0));
         let url;
         if (variants) {
           url = variants[0].url;

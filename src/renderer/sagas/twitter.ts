@@ -51,7 +51,7 @@ function* shutdown(action: ReduxAction) {
   yield metronome.close(payload.identity);
 }
 
-const wrap = (saga: any) =>
+const wrap = (saga: (action: ReduxAction) => Generator) =>
   function* (action: ReduxAction) {
     facade.logger.verbose(action);
     try {

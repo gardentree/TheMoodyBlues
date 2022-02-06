@@ -14,7 +14,7 @@ namespace Twitter {
     entities: {
       user_mentions: Mention[];
       urls: URL[];
-      hashtags?: Hashtag[];
+      hashtags: Hashtag[];
       media?: Media[];
     };
     since_id?: string;
@@ -49,14 +49,16 @@ namespace Twitter {
     media_url_https: string;
     type: string;
     video_info: {
-      variants: {
-        url: string;
-        bitrate: number;
-      }[];
+      variants: MediaVideoVariant[];
     };
     display_url: string;
     indices: number[];
   }
+  interface MediaVideoVariant {
+    url: string;
+    bitrate: number;
+  }
+
   type EntityElement = URL | Mention | Hashtag | Media;
 
   interface List {
@@ -104,7 +106,6 @@ namespace Twitter2 {
     display_url: string;
     start: number;
     end: number;
-    images: any;
     status?: number;
   }
   interface Mention {

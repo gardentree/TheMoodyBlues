@@ -1,7 +1,7 @@
 import deepmerge from "deepmerge";
 
-const overwrite = (destinationArray: any, sourceArray: any, options: any) => sourceArray;
+const overwrite = (destinationArray: any[], sourceArray: any[], options: deepmerge.Options) => sourceArray;
 
-export default function merge(a: any, b: any): any {
-  return deepmerge(a, b, {arrayMerge: overwrite});
+export default function merge<T>(a: Partial<T>, b: Partial<T>): T {
+  return deepmerge<T>(a, b, {arrayMerge: overwrite});
 }
