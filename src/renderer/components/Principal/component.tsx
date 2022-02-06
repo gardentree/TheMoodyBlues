@@ -17,7 +17,7 @@ interface Property {
   didMount(identity: string): void;
 }
 
-const componets = new Map([
+const components = new Map([
   ["Timeline", Timeline],
   ["Search", Search],
 ]);
@@ -32,7 +32,7 @@ const Principal = (props: Property) => {
   const contents: {identity: string; title: string; component: any}[] = Array.from(timelines.entries()).map(([identity, timeline]) => ({
     identity: identity,
     title: timeline.preference.title,
-    component: componets.get(timeline.preference.component),
+    component: components.get(timeline.preference.component),
   }));
 
   return (
