@@ -21,7 +21,7 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): Twitt
     },
 
     retrieveTimeline: (since_id) => {
-      let option: TwitterClient.RequestParams = {
+      const option: TwitterClient.RequestParams = {
         count: 200,
         include_entities: true,
         tweet_mode: "extended",
@@ -40,7 +40,7 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): Twitt
     },
 
     search: (query, since_id) => {
-      let option: TwitterClient.RequestParams = {
+      const option: TwitterClient.RequestParams = {
         q: `${query} -rt`,
         count: 100,
         include_entities: true,
@@ -58,7 +58,7 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): Twitt
     },
 
     retrieveTimelineOfUser: (name) => {
-      let option: TwitterClient.RequestParams = {
+      const option: TwitterClient.RequestParams = {
         screen_name: name,
         count: 100,
         exclude_replies: false,
@@ -76,7 +76,7 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): Twitt
     },
 
     retrieveMentions: (since_id) => {
-      let option: TwitterClient.RequestParams = {
+      const option: TwitterClient.RequestParams = {
         count: 200,
         include_entities: true,
         tweet_mode: "extended",

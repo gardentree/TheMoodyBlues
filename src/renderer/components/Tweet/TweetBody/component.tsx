@@ -13,8 +13,8 @@ interface Property {
 const TweetBody: React.SFC<Property> = ({tweet, expand = false, search}) => {
   const elements = parseElements(tweet, expand);
 
-  let fragments: JSX.Element[] = [];
-  for (let element of elements) {
+  const fragments: JSX.Element[] = [];
+  for (const element of elements) {
     switch (element.type) {
       case "string":
         fragments.push(React.createElement(React.Fragment, {key: fragments.length}, breakLine(decodeHTML(element.entity))));

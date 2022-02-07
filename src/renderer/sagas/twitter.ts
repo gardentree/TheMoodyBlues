@@ -36,12 +36,12 @@ function* searchTweets(action: ReduxAction) {
 }
 
 function* displayUserTimeline(action: ReduxAction) {
-  let tweets: Twitter.Tweet[] = yield call(facade.agent.retrieveTimelineOfUser, action.payload.name);
+  const tweets: Twitter.Tweet[] = yield call(facade.agent.retrieveTimelineOfUser, action.payload.name);
   yield put(subcontents.updateTweetsInSubContents(tweets));
 }
 
 function* displayConversation(action: ReduxAction) {
-  let tweets: Twitter.Tweet[] = yield call(facade.agent.retrieveConversation, action.payload.tweet, action.meta.options);
+  const tweets: Twitter.Tweet[] = yield call(facade.agent.retrieveConversation, action.payload.tweet, action.meta.options);
   yield put(subcontents.updateTweetsInSubContents(tweets));
 }
 

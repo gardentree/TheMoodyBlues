@@ -6,7 +6,7 @@ const mapStateToProps = (state: State) => {
   const {timelines, subcontents} = state;
   const {focused, style, nowLoading} = state.principal;
 
-  let unreads = {};
+  const unreads = {};
   if (timelines) {
     for (const [identity, timeline] of timelines.entries()) {
       const {
