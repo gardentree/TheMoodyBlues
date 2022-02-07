@@ -1,4 +1,5 @@
 import {connect} from "react-redux";
+import {Dispatch} from "redux";
 import Component from "./component";
 import {OwnProperty, StateProperty, DispatchProperty} from "./component";
 import * as timelines from "@modules/timelines";
@@ -12,7 +13,7 @@ const mapStateToProps = (state: State, own: OwnProperty): StateProperty => {
     lastReadID: timeline.state.lastReadID,
   };
 };
-const mapDispatchToProps = (dispatch: any, own: OwnProperty): DispatchProperty => {
+const mapDispatchToProps = (dispatch: Dispatch, own: OwnProperty): DispatchProperty => {
   return {
     didMount: () => dispatch(timelines.mountComponent(own.identity)),
     willUnmount: () => dispatch(timelines.unmountComponent(own.identity)),

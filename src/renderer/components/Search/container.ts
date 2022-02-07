@@ -1,4 +1,5 @@
 import {connect} from "react-redux";
+import {Dispatch} from "redux";
 import Component from "./component";
 import {OwnProperty, StateProperty, DispatchProperty} from "./component";
 import {reduxForm, formValueSelector} from "redux-form";
@@ -18,7 +19,7 @@ const mapStateToProps = (state: State, own: OwnProperty): StateProperty => {
     hasQuery: query && query.length > 0,
   };
 };
-const mapDispatchToProps = (dispatch: any, own: OwnProperty): DispatchProperty => {
+const mapDispatchToProps = (dispatch: Dispatch, own: OwnProperty): DispatchProperty => {
   return {
     search: (values: {query: string}) => dispatch(timelines.searchTweets(values.query)),
     didMount: () => dispatch(timelines.mountComponent(own.identity)),
