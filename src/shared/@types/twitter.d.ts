@@ -83,7 +83,7 @@ namespace Twitter2 {
     created_at: string;
     entities?: Entities;
     referenced_tweets: {
-      type: "replied_to";
+      type: "replied_to" | "quoted";
       id: string;
     }[];
     attachments?: {

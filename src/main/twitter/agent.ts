@@ -233,6 +233,10 @@ function degradeTweet(tweet: Twitter2.Tweet, includes: IncludeMap, referenced: b
         v1.in_reply_to_status_id_str = referenced.id;
 
         break;
+      case "quoted":
+        v1.is_quote_status = true;
+
+        break;
     }
   } else {
     v1.is_quote_status = false;
