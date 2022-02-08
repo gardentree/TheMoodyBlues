@@ -17,7 +17,8 @@ interface Property {
   didMount(identity: string): void;
 }
 
-const components = new Map([
+type Component = React.ComponentType<{identity: string}>;
+const components = new Map<string, Component>([
   ["Timeline", Timeline],
   ["Search", Search],
 ]);
@@ -29,10 +30,10 @@ const Principal = (props: Property) => {
     didMount(timelines.keys().next().value);
   }, []);
 
-  const contents: {identity: string; title: string; component: React.FC}[] = Array.from(timelines.entries()).map(([identity, timeline]) => ({
+  const contents: {identity: string; title: string; component: Component}[] = Array.from(timelines.entries()).map(([identity, timeline]) => ({
     identity: identity,
     title: timeline.preference.title,
-    component: components.get(timeline.preference.component),
+    component: components.get(timeline.preference.component)!,
   }));
 
   return (
@@ -56,7 +57,7 @@ const Principal = (props: Property) => {
         const display = subcontents.tweets.length > 0;
         return (
           <div key={identity} className="window-content" style={{display: current == identity ? "block" : "none"}} data-name={identity}>
-            {React.createElement<typeof Timeline | typeof Search>(component, {identity: identity})}
+            {React.createElement(component, {identity: identity})}
 
             <CSSTransition timeout={300} classNames="fade" in={display}>
               <div className="subcontents" />

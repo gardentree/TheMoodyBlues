@@ -1,11 +1,10 @@
 import * as React from "react";
 import {useEffect} from "react";
 import TweetList from "../TweetList";
-import {Field, InjectedFormProps} from "redux-form";
+import {reduxForm, Field, InjectedFormProps} from "redux-form";
 
 export interface OwnProperty {
   identity: TimelineIdentity;
-  handleSubmit: any;
 }
 export interface StateProperty {
   tweets: Twitter.Tweet[];
@@ -17,7 +16,11 @@ export interface DispatchProperty {
   didMount(): void;
   search(values: {query: string}): void;
 }
-type Property = OwnProperty & StateProperty & DispatchProperty & InjectedFormProps;
+export interface FormProperty {
+  query: string;
+}
+type ComponentProperty = OwnProperty & StateProperty & DispatchProperty;
+type Property = ComponentProperty & InjectedFormProps<FormProperty, ComponentProperty>;
 
 const Search = (props: Property) => {
   const {identity, tweets, lastReadID, hasQuery, handleSubmit, search, reset, didMount} = props;
@@ -49,4 +52,8 @@ const Search = (props: Property) => {
     </div>
   );
 };
-export default Search;
+
+export default reduxForm<FormProperty, ComponentProperty>({
+  form: "Search",
+  enableReinitialize: true,
+})(Search);

@@ -64,7 +64,7 @@ interface ReduxAction {
   type: string;
   payload?: any;
   meta?: any;
-  error?: any;
+  error?: unknown;
 }
 
 interface TweetMenu {
@@ -102,7 +102,7 @@ interface Facade {
     copy(text: string): void;
   };
 }
-type LogMessage = string | object | undefined | null;
+type LogMessage = string | object | undefined | null | unknown;
 
 declare module "growly" {
   declare function notify(message: string, {title: string, icon: string});

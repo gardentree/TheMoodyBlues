@@ -26,7 +26,9 @@ export const {updateTweets, read, setupSearch, refreshPreferences} = createActio
   ],
   READ: [
     (identity: TimelineIdentity, lastReadID) => ({
-      lastReadID: lastReadID,
+      state: {
+        lastReadID: lastReadID,
+      },
     }),
     (identity: TimelineIdentity, lastReadID) => ({
       identity: identity,
@@ -34,27 +36,28 @@ export const {updateTweets, read, setupSearch, refreshPreferences} = createActio
   ],
   SETUP_SEARCH: [
     (identity: string, query: string) => ({
-      query: query,
+      state: {
+        query: query,
+      },
     }),
     (identity: string, query: string) => ({
       identity: identity,
     }),
   ],
-  REFRESH_PREFERENCES: (preferences: TimelineMap) => ({
-    preferences,
-  }),
+  REFRESH_PREFERENCES: (timelines: TimelineMap) => timelines,
 });
 
-export default handleActions<TimelineMap, any, any>(
+//FIXME refreshPreferencesを分割したい
+export default handleActions<TimelineMap, RecursivePartial<Timeline> | TimelineMap, {identity: TimelineIdentity}>(
   {
     [updateTweets.toString()]: (state, action) => {
-      return mergeTimeline(state, action.meta.identity, action.payload);
+      return mergeTimeline(state, action.meta.identity, action.payload as RecursivePartial<Timeline>);
     },
     [read.toString()]: (state, action) => {
-      return mergeTimeline(state, action.meta.identity, {state: action.payload});
+      return mergeTimeline(state, action.meta.identity, action.payload as RecursivePartial<Timeline>);
     },
     [setupSearch.toString()]: (state, action) => {
-      let query = action.payload.query;
+      let query = (action.payload as RecursivePartial<Timeline>).state!.query;
       if (query) {
         query = query.trim();
       } else {
@@ -69,7 +72,7 @@ export default handleActions<TimelineMap, any, any>(
       });
     },
     [refreshPreferences.toString()]: (state, action) => {
-      return action.payload.preferences;
+      return action.payload as TimelineMap;
     },
   },
   new Map()

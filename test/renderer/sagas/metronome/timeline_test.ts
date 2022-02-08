@@ -43,7 +43,7 @@ describe("retrieveTimeline", () => {
         })
         .put({
           type: "READ",
-          payload: {lastReadID: 1},
+          payload: {state: {lastReadID: 1}},
           meta: {identity: identity},
         })
         .put({

@@ -60,9 +60,11 @@ const wrap = (saga: (action: ReduxAction) => Generator) =>
       if (loading) yield put(principal.showLoading(true));
       yield call(saga, action);
       if (loading) yield put(principal.showLoading(false));
-    } catch (error: any) {
+    } catch (error: unknown) {
       facade.logger.error(error);
-      facade.logger.error(error.stack);
+      if (error instanceof Error) {
+        facade.logger.error(error.stack);
+      }
       yield put(principal.alarm(error));
     }
   };

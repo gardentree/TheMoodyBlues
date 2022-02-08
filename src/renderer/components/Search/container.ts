@@ -2,7 +2,7 @@ import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import Component from "./component";
 import {OwnProperty, StateProperty, DispatchProperty} from "./component";
-import {reduxForm, formValueSelector} from "redux-form";
+import {formValueSelector} from "redux-form";
 import * as timelines from "@modules/timelines";
 
 const mapStateToProps = (state: State, own: OwnProperty): StateProperty => {
@@ -26,11 +26,4 @@ const mapDispatchToProps = (dispatch: Dispatch, own: OwnProperty): DispatchPrope
   };
 };
 
-let container: any = Component;
-container = reduxForm({
-  form: "Search",
-  enableReinitialize: true,
-})(container);
-container = connect(mapStateToProps, mapDispatchToProps)(container);
-
-export default container;
+export default connect(mapStateToProps, mapDispatchToProps)(Component);

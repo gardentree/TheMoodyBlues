@@ -120,7 +120,7 @@ describe("search", () => {
         })
         .put({
           type: "SETUP_SEARCH",
-          payload: {query: ""},
+          payload: {state: {query: ""}},
           meta: {identity: identity},
         })
         .run()

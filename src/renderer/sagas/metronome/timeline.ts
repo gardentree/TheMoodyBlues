@@ -25,7 +25,7 @@ export function* order(timeline: Timeline, force: boolean) {
   const oldTweets = force ? [] : timeline.tweets;
 
   const parameters = (timeline.preference.parameters || []).concat(latest(oldTweets));
-  let tweets: Twitter.Tweet[] = yield call(facade.agent[timeline.preference.way] as any, ...parameters);
+  let tweets: Twitter.Tweet[] = yield call(facade.agent[timeline.preference.way] as (...parameters: unknown[]) => Promise<Twitter.Tweet[]>, ...parameters);
   if (tweets.length > 0) {
     if (timeline.preference.mute) {
       tweets = silence(tweets, timeline.mute);

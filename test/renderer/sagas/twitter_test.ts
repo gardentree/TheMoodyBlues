@@ -97,7 +97,7 @@ describe(searchTweets.name, () => {
       })
       .put({
         type: "SETUP_SEARCH",
-        payload: {query: "くえりー"},
+        payload: {state: {query: "くえりー"}},
         meta: {identity: "search"},
       })
       .put({
