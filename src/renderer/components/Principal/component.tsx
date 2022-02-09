@@ -73,9 +73,3 @@ const Principal = (props: Property) => {
   );
 };
 export default Principal;
-
-// }
-// componentDidMount() {
-//   const {timelines} = this.props;
-//   this.props.didMount(timelines.keys().next().value);
-// }
