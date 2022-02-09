@@ -22,7 +22,7 @@ const facade: Facade = {
     setMutePreference: (preference) => ipcRenderer.send(FacadeActions.STORAGE_MUTE_SAVE, {preference}),
   },
   growl: (tweets) => ipcRenderer.send(FacadeActions.GROWL, {tweets}),
-  openTweetMenu: (context) => ipcRenderer.send("openTweetMenu", context),
+  openTweetMenu: (context) => ipcRenderer.send(FacadeActions.OPEN_TWEET_MENU, context),
   openExternal: (url) => shell.openExternal(url),
   logger: logger,
   ipc: {

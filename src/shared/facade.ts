@@ -16,6 +16,7 @@ export namespace Actions {
   export const GROWL = "growl";
   export const LAUNCH = "launch";
   export const OPEN_TWEET_IN_BROWSER = "open_tweet_in_browser";
+  export const OPEN_TWEET_MENU = "openTweetMenu";
   export const REFRESH_PREFERENCES = "refresh_preferences";
   export const RELOAD = "reload";
   export const SEARCH = "search";

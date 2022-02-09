@@ -108,49 +108,49 @@ app.on("ready", () => {
           label: "Focus Latest Tweet",
           accelerator: "0",
           click() {
-            mainWindow!.webContents.send("focus_latest_tweet", {});
+            mainWindow!.webContents.send(FacadeActions.FOCUS_LATEST_TWEET, {});
           },
         },
         {
           label: "Focus Unread Tweet",
           accelerator: "9",
           click() {
-            mainWindow!.webContents.send("focus_unread_tweet", {});
+            mainWindow!.webContents.send(FacadeActions.FOCUS_UNREAD_TWEET, {});
           },
         },
         {
           label: "Reload",
           accelerator: "Command+r",
           click() {
-            mainWindow!.webContents.send("reload", {});
+            mainWindow!.webContents.send(FacadeActions.RELOAD, {});
           },
         },
         {
           label: "Force Reload",
           accelerator: "Shift+Command+r",
           click() {
-            mainWindow!.webContents.send("force_reload", {});
+            mainWindow!.webContents.send(FacadeActions.FORCE_RELOAD, {});
           },
         },
         {
           label: "Zoom In",
           accelerator: "Command+Plus",
           click() {
-            mainWindow!.webContents.send("zoom_in", {});
+            mainWindow!.webContents.send(FacadeActions.ZOOM_IN, {});
           },
         },
         {
           label: "Zoom Out",
           accelerator: "Command+-",
           click() {
-            mainWindow!.webContents.send("zoom_out", {});
+            mainWindow!.webContents.send(FacadeActions.ZOOM_OUT, {});
           },
         },
         {
           label: "Zoom Reset",
           accelerator: "Command+0",
           click() {
-            mainWindow!.webContents.send("zoom_reset", {});
+            mainWindow!.webContents.send(FacadeActions.ZOOM_RESET, {});
           },
         },
       ],
@@ -186,7 +186,7 @@ function openPreferences() {
   }
 
   preferences.on("closed", () => {
-    mainWindow!.webContents.send("refresh_preferences", {});
+    mainWindow!.webContents.send(FacadeActions.REFRESH_PREFERENCES, {});
 
     preferences = null;
   });
@@ -200,7 +200,7 @@ function load(target: BrowserWindow, path: string) {
   }
 }
 
-ipcMain.on("openTweetMenu", (event, context: TweetMenu) => {
+ipcMain.on(FacadeActions.OPEN_TWEET_MENU, (event, context: TweetMenu) => {
   const mainWindow = BrowserWindow.fromWebContents(event.sender)!;
 
   const template: Electron.MenuItemConstructorOptions[] = [
