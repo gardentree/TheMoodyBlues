@@ -7,47 +7,47 @@ import {MiddlewareAPI} from "redux";
 const {facade} = window;
 
 export default function (store: MiddlewareAPI) {
-  facade.ipc.onFocusLatestTweet(() => {
+  facade.events.onFocusLatestTweet(() => {
     store.dispatch(focusLatestTweet());
   });
-  facade.ipc.onFocusUnreadTweet(() => {
+  facade.events.onFocusUnreadTweet(() => {
     store.dispatch(focusUnreadTweet());
   });
 
-  facade.ipc.onZoomIn(() => {
+  facade.events.onZoomIn(() => {
     store.dispatch(zoomIn());
   });
-  facade.ipc.onZoomOut(() => {
+  facade.events.onZoomOut(() => {
     store.dispatch(zoomOut());
   });
-  facade.ipc.onZoomReset(() => {
+  facade.events.onZoomReset(() => {
     store.dispatch(zoomReset());
   });
-  facade.ipc.onReload(() => {
+  facade.events.onReload(() => {
     store.dispatch(reload(false, null));
   });
-  facade.ipc.onForceReload(() => {
+  facade.events.onForceReload(() => {
     store.dispatch(reload(true, null));
   });
 
-  facade.ipc.onOpenTweetInBrowser((tweet: Twitter.Tweet) => {
-    facade.extra.openExternal(`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`);
+  facade.events.onOpenTweetInBrowser((tweet: Twitter.Tweet) => {
+    facade.actions.openExternal(`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`);
   });
-  facade.ipc.onShowConversationForTweet((tweet: Twitter.Tweet) => {
+  facade.events.onShowConversationForTweet((tweet: Twitter.Tweet) => {
     store.dispatch(displayConversation(tweet));
   });
-  facade.ipc.onShowChainForTweet((tweet: Twitter.Tweet) => {
+  facade.events.onShowChainForTweet((tweet: Twitter.Tweet) => {
     store.dispatch(displayConversation(tweet, {yourself: true}));
   });
 
-  facade.ipc.onSearch((keyword: string) => {
+  facade.events.onSearch((keyword: string) => {
     store.dispatch(searchTweets(keyword));
   });
-  facade.ipc.onCopyTweetInJSON((tweet: Twitter.Tweet) => {
-    facade.extra.copy(JSON.stringify(tweet, null, "  "));
+  facade.events.onCopyTweetInJSON((tweet: Twitter.Tweet) => {
+    facade.actions.copy(JSON.stringify(tweet, null, "  "));
   });
 
-  facade.ipc.onRefreshPreferences(() => {
+  facade.events.onRefreshPreferences(() => {
     (async () => {
       const preferences = await library.refreshPreferences(store.getState().timelines);
 

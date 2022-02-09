@@ -21,12 +21,15 @@ const facade: Facade = {
     getMutePreference: () => ipcRenderer.invoke(FacadeActions.STORAGE_MUTE_LOAD),
     setMutePreference: (preference) => ipcRenderer.send(FacadeActions.STORAGE_MUTE_SAVE, {preference}),
   },
-  growl: (tweets) => ipcRenderer.send(FacadeActions.GROWL, {tweets}),
-  openTweetMenu: (context) => ipcRenderer.send(FacadeActions.OPEN_TWEET_MENU, context),
-  openExternal: (url) => shell.openExternal(url),
-  logger: logger,
-  ipc: {
-    onAlert: (callback) => ipcRenderer.on(FacadeActions.ALERT, (event, error: unknown) => callback(error)),
+  actions: {
+    authorize: (verifier) => ipcRenderer.send(FacadeActions.AUTHORIZE, {verifier}),
+    copy: (text) => clipboard.writeText(text),
+    growl: (tweets) => ipcRenderer.send(FacadeActions.GROWL, {tweets}),
+    openExternal: (url) => shell.openExternal(url),
+    openTweetMenu: (context) => ipcRenderer.send(FacadeActions.OPEN_TWEET_MENU, context),
+  },
+  events: {
+    onAlert: (callback) => ipcRenderer.on(FacadeActions.ALERT, (event, error) => callback(error)),
     onCopyTweetInJSON: (callback) => ipcRenderer.on(FacadeActions.COPY_TWEET_IN_JSON, (event, context: TweetMenu) => callback(context.tweet)),
     onFocusLatestTweet: (callback) => ipcRenderer.on(FacadeActions.FOCUS_LATEST_TWEET, (event, ...values) => callback()),
     onFocusUnreadTweet: (callback) => ipcRenderer.on(FacadeActions.FOCUS_UNREAD_TWEET, (event, ...values) => callback()),
@@ -42,12 +45,7 @@ const facade: Facade = {
     onZoomIn: (callback) => ipcRenderer.on(FacadeActions.ZOOM_IN, (event, ...values) => callback()),
     onZoomOut: (callback) => ipcRenderer.on(FacadeActions.ZOOM_OUT, (event, ...values) => callback()),
     onZoomReset: (callback) => ipcRenderer.on(FacadeActions.ZOOM_RESET, (event, ...values) => callback()),
-
-    dispatchAuthorize: (verifier: string) => ipcRenderer.send(FacadeActions.AUTHORIZE, {verifier}),
   },
-  extra: {
-    openExternal: (url: string) => shell.openExternal(url),
-    copy: (text: string) => clipboard.writeText(text),
-  },
+  logger: logger,
 };
 contextBridge.exposeInMainWorld("facade", facade);

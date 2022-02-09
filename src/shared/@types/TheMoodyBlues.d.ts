@@ -76,24 +76,23 @@ interface Window {
   facade: Facade;
 }
 interface Facade {
+  agent: TwitterAgent;
   storage: {
-    getMutePreference(): Promise<MutePreference>;
-    setMutePreference(preference: MutePreference);
-    getTimelinePreferences(): Promise<TimelinePreference[]>;
-    setTimelinePreferences(timelines: TimelinePreference[]);
     getTweets(name: string): Promise<Twitter.Tweet[]>;
     setTweets(name: string, tweets: Twitter.Tweet[]);
+    getTimelinePreferences(): Promise<TimelinePreference[]>;
+    setTimelinePreferences(timelines: TimelinePreference[]);
+    getMutePreference(): Promise<MutePreference>;
+    setMutePreference(preference: MutePreference);
   };
-  agent: TwitterAgent;
-  growl(tweets: Twitter.Tweet[]): void;
-  openTweetMenu(context: TheMoodyBlues.TweetMenu): void;
-  openExternal(url: string): void;
-  logger: {
-    info(message: LogMessage): void;
-    error(message: LogMessage): void;
-    verbose(message: LogMessage): void;
+  actions: {
+    authorize(verifier: string);
+    copy(text: string): void;
+    growl(tweets: Twitter.Tweet[]): void;
+    openExternal(url: string): void;
+    openTweetMenu(context: TheMoodyBlues.TweetMenu): void;
   };
-  ipc: {
+  events: {
     onAlert(callback: (error: unknown) => void);
     onCopyTweetInJSON(callback: (tweet: Twitter.Tweet) => void);
     onFocusLatestTweet(callback: () => void);
@@ -110,12 +109,11 @@ interface Facade {
     onZoomIn(callback: () => void);
     onZoomOut(callback: () => void);
     onZoomReset(callback: () => void);
-
-    dispatchAuthorize(verifier: string);
   };
-  extra: {
-    openExternal(url: string): void;
-    copy(text: string): void;
+  logger: {
+    info(message: LogMessage): void;
+    error(message: LogMessage): void;
+    verbose(message: LogMessage): void;
   };
 }
 type LogMessage = string | object | undefined | null | unknown;

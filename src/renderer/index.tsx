@@ -18,16 +18,16 @@ import VerifierForm from "./components/VerifierForm";
 })();
 
 const {facade} = window;
-facade.ipc.onShowVerifierForm(() => {
+facade.events.onShowVerifierForm(() => {
   const callback = (verifier: string) => {
-    facade.ipc.dispatchAuthorize(verifier);
+    facade.actions.authorize(verifier);
   };
   ReactDOM.render(<VerifierForm callback={callback} />, document.getElementById("app"));
 });
-facade.ipc.onLaunch(() => {
+facade.events.onLaunch(() => {
   launchPrinciapl();
 });
-facade.ipc.onAlert((error: unknown) => {
+facade.events.onAlert((error: unknown) => {
   if (error instanceof Error) {
     window.alert(error.message);
   } else {

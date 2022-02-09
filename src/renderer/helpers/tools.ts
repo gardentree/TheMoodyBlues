@@ -12,6 +12,6 @@ export function openContextMenu(tweet: Twitter.Tweet) {
 
     const keyword = (window.getSelection() || "").toString().trim();
 
-    facade.openTweetMenu({tweet: target, keyword: keyword});
+    facade.actions.openTweetMenu({tweet: target, keyword: keyword});
   };
 }

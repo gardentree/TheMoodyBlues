@@ -9,7 +9,7 @@ const {facade} = window;
 
 const openLinkOnAnchor = function (event: React.MouseEvent<HTMLAnchorElement>) {
   event.preventDefault();
-  facade.openExternal(event.currentTarget.href);
+  facade.actions.openExternal(event.currentTarget.href);
 };
 
 const ExternalLink: React.SFC<Property> = ({link, text}) => {

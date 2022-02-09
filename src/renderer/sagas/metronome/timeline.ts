@@ -31,7 +31,7 @@ export function* order(timeline: Timeline, force: boolean) {
       tweets = silence(tweets, timeline.mute);
     }
     if (timeline.preference.growl) {
-      facade.growl(tweets);
+      facade.actions.growl(tweets);
     }
 
     const newTweets = tweets.concat(oldTweets).slice(0, 400);
