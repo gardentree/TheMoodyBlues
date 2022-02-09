@@ -94,8 +94,24 @@ interface Facade {
     verbose(message: LogMessage): void;
   };
   ipc: {
-    observe(event: string, callback: (event: Event, ...values: any[]) => void);
-    action(action: string, ...values: any[]);
+    onAlert(callback: (error: unknown) => void);
+    onCopyTweetInJSON(callback: (tweet: Twitter.Tweet) => void);
+    onFocusLatestTweet(callback: () => void);
+    onFocusUnreadTweet(callback: () => void);
+    onForceReload(callback: () => void);
+    onLaunch(callback: () => void);
+    onOpenTweetInBrowser(callback: (tweet: Twitter.Tweet) => void);
+    onRefreshPreferences(callback: () => void);
+    onReload(callback: () => void);
+    onSearch(callback: (keyword: string) => void);
+    onShowChainForTweet(callback: (tweet: Twitter.Tweet) => void);
+    onShowConversationForTweet(callback: (tweet: Twitter.Tweet) => void);
+    onShowVerifierForm(callback: () => void);
+    onZoomIn(callback: () => void);
+    onZoomOut(callback: () => void);
+    onZoomReset(callback: () => void);
+
+    dispatchAuthorize(verifier: string);
   };
   extra: {
     openExternal(url: string): void;

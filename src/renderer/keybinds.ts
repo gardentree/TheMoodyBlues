@@ -7,49 +7,47 @@ import {MiddlewareAPI} from "redux";
 const {facade} = window;
 
 export default function (store: MiddlewareAPI) {
-  facade.ipc.observe("focus_latest_tweet", (event, ...values) => {
+  facade.ipc.onFocusLatestTweet(() => {
     store.dispatch(focusLatestTweet());
   });
-  facade.ipc.observe("focus_unread_tweet", (event, ...values) => {
+  facade.ipc.onFocusUnreadTweet(() => {
     store.dispatch(focusUnreadTweet());
   });
 
-  facade.ipc.observe("zoom_in", (event, ...values) => {
+  facade.ipc.onZoomIn(() => {
     store.dispatch(zoomIn());
   });
-  facade.ipc.observe("zoom_out", (event, ...values) => {
+  facade.ipc.onZoomOut(() => {
     store.dispatch(zoomOut());
   });
-  facade.ipc.observe("zoom_reset", (event, ...values) => {
+  facade.ipc.onZoomReset(() => {
     store.dispatch(zoomReset());
   });
-  facade.ipc.observe("reload", (event, ...values) => {
+  facade.ipc.onReload(() => {
     store.dispatch(reload(false, null));
   });
-  facade.ipc.observe("force_reload", (event, ...values) => {
+  facade.ipc.onForceReload(() => {
     store.dispatch(reload(true, null));
   });
 
-  facade.ipc.observe("open_tweet_in_browser", (event, context: TweetMenu) => {
-    const {tweet} = context;
-
+  facade.ipc.onOpenTweetInBrowser((tweet: Twitter.Tweet) => {
     facade.extra.openExternal(`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`);
   });
-  facade.ipc.observe("show_conversation_for_tweet", (event, context: TweetMenu) => {
-    store.dispatch(displayConversation(context.tweet));
+  facade.ipc.onShowConversationForTweet((tweet: Twitter.Tweet) => {
+    store.dispatch(displayConversation(tweet));
   });
-  facade.ipc.observe("show_chain_for_tweet", (event, context: TweetMenu) => {
-    store.dispatch(displayConversation(context.tweet, {yourself: true}));
-  });
-
-  facade.ipc.observe("search", (event, context: TweetMenu) => {
-    store.dispatch(searchTweets(context.keyword));
-  });
-  facade.ipc.observe("copy_tweet_in_json", (event, context: TweetMenu) => {
-    facade.extra.copy(JSON.stringify(context.tweet, null, "  "));
+  facade.ipc.onShowChainForTweet((tweet: Twitter.Tweet) => {
+    store.dispatch(displayConversation(tweet, {yourself: true}));
   });
 
-  facade.ipc.observe("refresh_preferences", (event, ...values) => {
+  facade.ipc.onSearch((keyword: string) => {
+    store.dispatch(searchTweets(keyword));
+  });
+  facade.ipc.onCopyTweetInJSON((tweet: Twitter.Tweet) => {
+    facade.extra.copy(JSON.stringify(tweet, null, "  "));
+  });
+
+  facade.ipc.onRefreshPreferences(() => {
     (async () => {
       const preferences = await library.refreshPreferences(store.getState().timelines);
 

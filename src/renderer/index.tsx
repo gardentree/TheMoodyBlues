@@ -5,7 +5,6 @@ import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 import VerifierForm from "./components/VerifierForm";
-import {Actions as FacadeActions} from "@shared/facade";
 
 (() => {
   require("photon/dist/css/photon.css");
@@ -19,19 +18,17 @@ import {Actions as FacadeActions} from "@shared/facade";
 })();
 
 const {facade} = window;
-facade.ipc.observe(FacadeActions.SHOW_VERIFIER_FORM, (event, ...values) => {
+facade.ipc.onShowVerifierForm(() => {
   const callback = (verifier: string) => {
-    facade.ipc.action(FacadeActions.AUTHORIZE, {verifier: verifier});
+    facade.ipc.dispatchAuthorize(verifier);
   };
   ReactDOM.render(<VerifierForm callback={callback} />, document.getElementById("app"));
 });
-facade.ipc.observe(FacadeActions.LAUNCH, (event, ...values) => {
+facade.ipc.onLaunch(() => {
   launchPrinciapl();
 });
-facade.ipc.observe(FacadeActions.ALERT, (event, values) => {
-  const {error} = values;
-
-  if (error.message) {
+facade.ipc.onAlert((error: unknown) => {
+  if (error instanceof Error) {
     window.alert(error.message);
   } else {
     window.alert(JSON.stringify(error));

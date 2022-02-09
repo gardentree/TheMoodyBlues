@@ -5,6 +5,7 @@ import installExtension, {REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS} from "electron-
 import * as pathname from "path";
 import logger from "electron-log";
 import {setup} from "./twitter";
+import {Actions as FacadeActions} from "@shared/facade";
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
@@ -206,19 +207,19 @@ ipcMain.on("openTweetMenu", (event, context: TweetMenu) => {
     {
       label: "ブラウザで開く",
       click() {
-        mainWindow.webContents.send("open_tweet_in_browser", context);
+        mainWindow.webContents.send(FacadeActions.OPEN_TWEET_IN_BROWSER, context);
       },
     },
     {
       label: "会話を表示",
       click() {
-        mainWindow.webContents.send("show_conversation_for_tweet", context);
+        mainWindow.webContents.send(FacadeActions.SHOW_CONVERSATION_FOR_TWEET, context);
       },
     },
     {
       label: "つながりを表示",
       click() {
-        mainWindow.webContents.send("show_chain_for_tweet", context);
+        mainWindow.webContents.send(FacadeActions.SHOW_CHAIN_FOR_TWEET, context);
       },
     },
   ];
@@ -227,7 +228,7 @@ ipcMain.on("openTweetMenu", (event, context: TweetMenu) => {
     template.push({
       label: `"${context.keyword}"を検索`,
       click() {
-        mainWindow.webContents.send("search", context);
+        mainWindow.webContents.send(FacadeActions.SEARCH, context);
       },
     });
   }
@@ -236,7 +237,7 @@ ipcMain.on("openTweetMenu", (event, context: TweetMenu) => {
     template.push({
       label: "JSON形式でコピー",
       click() {
-        mainWindow.webContents.send("copy_tweet_in_json", context);
+        mainWindow.webContents.send(FacadeActions.COPY_TWEET_IN_JSON, context);
       },
     });
   }
