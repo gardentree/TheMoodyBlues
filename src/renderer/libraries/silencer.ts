@@ -4,8 +4,9 @@ export function silence(tweets: Twitter.Tweet[], preference: MutePreference): Tw
   const {keywords, selfRetweet, media} = preference;
 
   return tweets.filter((tweet) => {
-    if (test(tweet, keywords)) {
-      facade.logger.info(`silence: ${tweet.full_text} of ${tweet.user.screen_name}`);
+    const matched = test(tweet, keywords);
+    if (matched) {
+      facade.logger.info(`silence: ${matched} of ${tweet.user.screen_name}`);
       return false;
     }
 
