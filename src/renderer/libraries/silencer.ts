@@ -29,6 +29,10 @@ export function silence(tweets: Twitter.Tweet[], preference: MutePreference): Tw
 export function test(tweet: Twitter.Tweet, keywords: string[]): string | null {
   const loweredKeywords = keywords.map((keyword) => keyword.toLowerCase());
 
+  if (tweet.retweeted_status) {
+    tweet = tweet.retweeted_status;
+  }
+
   for (const keyword of loweredKeywords) {
     if (tweet.full_text.toLowerCase().indexOf(keyword) >= 0) {
       return tweet.full_text;

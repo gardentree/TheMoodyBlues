@@ -1,5 +1,6 @@
 import {expect} from "chai";
 import {silence, test} from "@libraries/silencer";
+import * as fs from "fs";
 
 const tweetTemplate: Twitter.Tweet = {
   full_text: "ポケモンGO",
@@ -50,6 +51,12 @@ describe("test", () => {
       const tweet = Object.assign({}, tweetTemplate, {full_text: "ポケモンgo"});
 
       expect(test(tweet, ["go"])).to.deep.equal("ポケモンgo");
+    });
+
+    it("when retweet", () => {
+      const tweet = JSON.parse(fs.readFileSync("./test/renderer/libraries/silencer/retweet.json"));
+
+      expect(test(tweet, ["here"])).to.not.be.null;
     });
   });
 
