@@ -1,0 +1,208 @@
+{
+  "created_at": "Mon Nov 16 18:09:36 +0000 2020",
+  "id": 1328399838128468000,
+  "id_str": "1328399838128467969",
+  "full_text": "As planned, the Labs v2 endpoints referenced below have now been retired. Please let us know in the forums if you have questions or need help with the Twitter API v2! https://t.co/JaxttUMmjX",
+  "truncated": false,
+  "display_text_range": [0, 166],
+  "entities": {
+    "hashtags": [],
+    "symbols": [],
+    "user_mentions": [],
+    "urls": [
+      {
+        "url": "https://t.co/JaxttUMmjX",
+        "expanded_url": "https://twitter.com/TwitterDev/status/1327011423252144128",
+        "display_url": "twitter.com/TwitterDev/sta…",
+        "indices": [167, 190]
+      }
+    ]
+  },
+  "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+  "in_reply_to_status_id": null,
+  "in_reply_to_status_id_str": null,
+  "in_reply_to_user_id": null,
+  "in_reply_to_user_id_str": null,
+  "in_reply_to_screen_name": null,
+  "user": {
+    "id": 2244994945,
+    "id_str": "2244994945",
+    "name": "Twitter Dev",
+    "screen_name": "TwitterDev",
+    "location": "127.0.0.1",
+    "description": "The voice of the #TwitterDev team and your official source for updates, news, and events, related to the #TwitterAPI.",
+    "url": "https://t.co/3ZX3TNiZCY",
+    "entities": {
+      "url": {
+        "urls": [
+          {
+            "url": "https://t.co/3ZX3TNiZCY",
+            "expanded_url": "https://developer.twitter.com/en/community",
+            "display_url": "developer.twitter.com/en/community",
+            "indices": [0, 23]
+          }
+        ]
+      },
+      "description": {
+        "urls": []
+      }
+    },
+    "protected": false,
+    "followers_count": 528968,
+    "friends_count": 2021,
+    "listed_count": 1886,
+    "created_at": "Sat Dec 14 04:35:55 +0000 2013",
+    "favourites_count": 2114,
+    "utc_offset": null,
+    "time_zone": null,
+    "geo_enabled": true,
+    "verified": true,
+    "statuses_count": 3834,
+    "lang": null,
+    "contributors_enabled": false,
+    "is_translator": false,
+    "is_translation_enabled": false,
+    "profile_background_color": "FFFFFF",
+    "profile_background_image_url": "http://abs.twimg.com/images/themes/theme1/bg.png",
+    "profile_background_image_url_https": "https://abs.twimg.com/images/themes/theme1/bg.png",
+    "profile_background_tile": false,
+    "profile_image_url": "http://pbs.twimg.com/profile_images/1445764922474827784/W2zEPN7U_normal.jpg",
+    "profile_image_url_https": "https://pbs.twimg.com/profile_images/1445764922474827784/W2zEPN7U_normal.jpg",
+    "profile_banner_url": "https://pbs.twimg.com/profile_banners/2244994945/1633532194",
+    "profile_link_color": "0084B4",
+    "profile_sidebar_border_color": "FFFFFF",
+    "profile_sidebar_fill_color": "DDEEF6",
+    "profile_text_color": "333333",
+    "profile_use_background_image": false,
+    "has_extended_profile": true,
+    "default_profile": false,
+    "default_profile_image": false,
+    "following": false,
+    "follow_request_sent": false,
+    "notifications": false,
+    "translator_type": "regular",
+    "withheld_in_countries": []
+  },
+  "geo": null,
+  "coordinates": null,
+  "place": null,
+  "contributors": null,
+  "is_quote_status": true,
+  "quoted_status_id": 1327011423252144000,
+  "quoted_status_id_str": "1327011423252144128",
+  "quoted_status_permalink": {
+    "url": "https://t.co/JaxttUMmjX",
+    "expanded": "https://twitter.com/TwitterDev/status/1327011423252144128",
+    "display": "twitter.com/TwitterDev/sta…"
+  },
+  "quoted_status": {
+    "created_at": "Thu Nov 12 22:12:32 +0000 2020",
+    "id": 1327011423252144000,
+    "id_str": "1327011423252144128",
+    "full_text": "👋 Friendly reminder that Twitter Developer Labs v2 hide replies and recent search will be retired next Monday, November 16! We encourage you to migrate to the new hide replies and recent search endpoints now available in the v2 #TwitterAPI. Details: https://t.co/r6z6CI7kEy",
+    "truncated": false,
+    "display_text_range": [0, 273],
+    "entities": {
+      "hashtags": [
+        {
+          "text": "TwitterAPI",
+          "indices": [228, 239]
+        }
+      ],
+      "symbols": [],
+      "user_mentions": [],
+      "urls": [
+        {
+          "url": "https://t.co/r6z6CI7kEy",
+          "expanded_url": "https://twittercommunity.com/t/retiring-labs-v2-recent-search-and-hide-replies/145795",
+          "display_url": "twittercommunity.com/t/retiring-lab…",
+          "indices": [250, 273]
+        }
+      ]
+    },
+    "source": "<a href=\"https://mobile.twitter.com\" rel=\"nofollow\">Twitter Web App</a>",
+    "in_reply_to_status_id": null,
+    "in_reply_to_status_id_str": null,
+    "in_reply_to_user_id": null,
+    "in_reply_to_user_id_str": null,
+    "in_reply_to_screen_name": null,
+    "user": {
+      "id": 2244994945,
+      "id_str": "2244994945",
+      "name": "Twitter Dev",
+      "screen_name": "TwitterDev",
+      "location": "127.0.0.1",
+      "description": "The voice of the #TwitterDev team and your official source for updates, news, and events, related to the #TwitterAPI.",
+      "url": "https://t.co/3ZX3TNiZCY",
+      "entities": {
+        "url": {
+          "urls": [
+            {
+              "url": "https://t.co/3ZX3TNiZCY",
+              "expanded_url": "https://developer.twitter.com/en/community",
+              "display_url": "developer.twitter.com/en/community",
+              "indices": [0, 23]
+            }
+          ]
+        },
+        "description": {
+          "urls": []
+        }
+      },
+      "protected": false,
+      "followers_count": 528968,
+      "friends_count": 2021,
+      "listed_count": 1886,
+      "created_at": "Sat Dec 14 04:35:55 +0000 2013",
+      "favourites_count": 2114,
+      "utc_offset": null,
+      "time_zone": null,
+      "geo_enabled": true,
+      "verified": true,
+      "statuses_count": 3834,
+      "lang": null,
+      "contributors_enabled": false,
+      "is_translator": false,
+      "is_translation_enabled": false,
+      "profile_background_color": "FFFFFF",
+      "profile_background_image_url": "http://abs.twimg.com/images/themes/theme1/bg.png",
+      "profile_background_image_url_https": "https://abs.twimg.com/images/themes/theme1/bg.png",
+      "profile_background_tile": false,
+      "profile_image_url": "http://pbs.twimg.com/profile_images/1445764922474827784/W2zEPN7U_normal.jpg",
+      "profile_image_url_https": "https://pbs.twimg.com/profile_images/1445764922474827784/W2zEPN7U_normal.jpg",
+      "profile_banner_url": "https://pbs.twimg.com/profile_banners/2244994945/1633532194",
+      "profile_link_color": "0084B4",
+      "profile_sidebar_border_color": "FFFFFF",
+      "profile_sidebar_fill_color": "DDEEF6",
+      "profile_text_color": "333333",
+      "profile_use_background_image": false,
+      "has_extended_profile": true,
+      "default_profile": false,
+      "default_profile_image": false,
+      "following": false,
+      "follow_request_sent": false,
+      "notifications": false,
+      "translator_type": "regular",
+      "withheld_in_countries": []
+    },
+    "geo": null,
+    "coordinates": null,
+    "place": null,
+    "contributors": null,
+    "is_quote_status": false,
+    "retweet_count": 9,
+    "favorite_count": 29,
+    "favorited": false,
+    "retweeted": false,
+    "possibly_sensitive": false,
+    "possibly_sensitive_appealable": false,
+    "lang": "en"
+  },
+  "retweet_count": 7,
+  "favorite_count": 27,
+  "favorited": false,
+  "retweeted": false,
+  "possibly_sensitive": false,
+  "possibly_sensitive_appealable": false,
+  "lang": "en"
+}

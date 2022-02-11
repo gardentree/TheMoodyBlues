@@ -58,6 +58,11 @@ describe("test", () => {
 
       expect(test(tweet, ["here"])).to.not.be.null;
     });
+    it("when quote tweet", () => {
+      const tweet = JSON.parse(fs.readFileSync("./test/renderer/libraries/silencer/quote.json"));
+
+      expect(test(tweet, ["Friendly"])).to.not.be.null;
+    });
   });
 
   describe("url", () => {

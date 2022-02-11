@@ -48,5 +48,9 @@ export function test(tweet: Twitter.Tweet, keywords: string[]): string | null {
     }
   }
 
+  if (tweet.quoted_status) {
+    return test(tweet.quoted_status, keywords);
+  }
+
   return null;
 }
