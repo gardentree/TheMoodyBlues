@@ -34,5 +34,3 @@ facade.events.onAlert((error: unknown) => {
     window.alert(JSON.stringify(error));
   }
 });
-
-ReactDOM.render(<div>loading</div>, document.getElementById("app"));
