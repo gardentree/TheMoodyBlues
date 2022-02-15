@@ -25,6 +25,9 @@ const MediaBox = (props: Property) => {
   const closeModal = () => {
     setModalIsOpen(false);
   };
+  const onAfterOpen: Modal.OnAfterOpenCallback = (target) => {
+    target!.contentEl.querySelector<HTMLElement>(".carousel-root")!.focus();
+  };
 
   const thumbnails = media.map((media, index: number) => {
     return (
@@ -69,9 +72,9 @@ const MediaBox = (props: Property) => {
     <React.Fragment>
       <div className="media">{thumbnails}</div>
       <div onClick={(event) => event.stopPropagation()}>
-        <Modal isOpen={modalIsOpen} onRequestClose={closeModal}>
+        <Modal isOpen={modalIsOpen} onAfterOpen={onAfterOpen} onRequestClose={closeModal}>
           <div className="modal-container">
-            <Carousel selectedItem={selectedItem} showArrows={true} showThumbs={false} showIndicators={false}>
+            <Carousel selectedItem={selectedItem} showArrows={true} useKeyboardArrows={true} showThumbs={false} showIndicators={false}>
               {elements}
             </Carousel>
           </div>
