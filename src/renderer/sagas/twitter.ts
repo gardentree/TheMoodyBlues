@@ -3,10 +3,11 @@ import * as timelines from "@modules/timelines";
 import * as subcontents from "@modules/subcontents";
 import * as principal from "@modules/principal";
 import * as metronome from "./metronome";
+import {Action, ActionMeta} from "redux-actions";
 
 const {facade} = window;
 
-function* initialize(action: ReduxAction) {
+function* initialize(action: Action<{identity: TimelineIdentity}>) {
   const {payload} = action;
   const {timelines} = yield select();
   const timeline = timelines.get(payload.identity)!;
@@ -14,45 +15,45 @@ function* initialize(action: ReduxAction) {
   yield metronome.launch(timeline);
 }
 
-function* reorder(action: ReduxAction) {
+function* reorder(action: ActionMeta<{}, {tab: TimelineIdentity; force: boolean}>) {
   const {focused} = ((yield select()) as State).principal;
 
   yield order(action.meta.tab || focused, action);
 }
-function* order(identity: string, action: ReduxAction) {
+function* order(identity: string, action: ActionMeta<{}, {force: boolean}>) {
   const {timelines}: State = yield select();
   const timeline = timelines.get(identity)!;
 
   yield metronome.play(timeline, action.meta.force);
 }
 
-function* searchTweets(action: ReduxAction) {
+function* searchTweets(action: Action<{query: string}>) {
   const {query} = action.payload;
   const identity = "search"; //TODO 動的にする？
 
   yield put(principal.selectTab(identity));
   yield put(timelines.setupSearch(identity, query));
-  yield reorder(timelines.reload(true, identity, true) as ReduxAction);
+  yield reorder(timelines.reload(true, identity, true) as ActionMeta<{}, {tab: TimelineIdentity; force: boolean}>); //FIXME castを消す
 }
 
-function* displayUserTimeline(action: ReduxAction) {
+function* displayUserTimeline(action: Action<{name: Twitter.ScreenName}>) {
   const tweets: Twitter.Tweet[] = yield call(facade.agent.retrieveTimelineOfUser, action.payload.name);
   yield put(subcontents.updateTweetsInSubContents(tweets));
 }
 
-function* displayConversation(action: ReduxAction) {
+function* displayConversation(action: ActionMeta<{tweet: Twitter.Tweet}, {options: {yourself?: boolean}}>) {
   const tweets: Twitter.Tweet[] = yield call(facade.agent.retrieveConversation, action.payload.tweet, action.meta.options);
   yield put(subcontents.updateTweetsInSubContents(tweets));
 }
 
-function* shutdown(action: ReduxAction) {
+function* shutdown(action: Action<{identity: TimelineIdentity}>) {
   const {payload} = action;
 
   yield metronome.close(payload.identity);
 }
 
-const wrap = (saga: (action: ReduxAction) => Generator) =>
-  function* (action: ReduxAction) {
+const wrap = (saga: (action: ActionMeta<any, any>) => Generator) =>
+  function* (action: ActionMeta<any, any>) {
     facade.logger.verbose(action);
     try {
       const loading = !action.meta || !action.meta.silently;

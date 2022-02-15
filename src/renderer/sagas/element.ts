@@ -1,7 +1,8 @@
 import {takeLatest, takeEvery} from "redux-saga/effects";
 import * as principal from "@modules/principal";
+import {Action, BaseAction} from "redux-actions";
 
-function focusLatestTweet(action: ReduxAction) {
+function focusLatestTweet(action: BaseAction) {
   const container = getContainer();
   const latest = <HTMLElement>container.querySelector("li:first-child")!;
 
@@ -9,7 +10,7 @@ function focusLatestTweet(action: ReduxAction) {
   latest.focus();
 }
 
-function focusUnreadTweet(action: ReduxAction) {
+function focusUnreadTweet(action: BaseAction) {
   const container = getContainer();
   const unreads = container.querySelectorAll("li.unread");
   const oldest = <HTMLElement>Array.from(unreads).slice(-1)[0];
@@ -22,7 +23,7 @@ function focusUnreadTweet(action: ReduxAction) {
   }
 }
 
-function alarm(action: ReduxAction) {
+function alarm(action: Action<{message: string}>) {
   window.alert(action.payload.message);
 }
 

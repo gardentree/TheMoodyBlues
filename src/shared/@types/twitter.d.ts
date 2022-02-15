@@ -24,10 +24,11 @@ namespace Twitter {
     is_quote_status: boolean;
   }
   type UserID = string;
+  type ScreenName = string;
   interface User {
     id_str: UserID;
     profile_image_url_https: string;
-    screen_name: string;
+    screen_name: ScreenName;
   }
   interface URL {
     url: string;

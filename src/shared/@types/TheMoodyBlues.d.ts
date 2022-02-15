@@ -60,13 +60,6 @@ interface TwitterAgent {
   retrieveTimelineOfList(list_id: string, since_id: string | null): Promise<Twitter.Tweet[]>;
 }
 
-interface ReduxAction {
-  type: string;
-  payload?: any;
-  meta?: any;
-  error?: unknown;
-}
-
 interface TweetMenu {
   tweet: Twitter.Tweet;
   keyword: string;
