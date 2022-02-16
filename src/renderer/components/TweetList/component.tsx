@@ -4,7 +4,7 @@ import {default as TweetErrorBoundary} from "../Tweet/ErrorBoundary";
 import {CSSTransition, TransitionGroup} from "react-transition-group";
 
 export interface OwnProperty {
-  identity: TimelineIdentity;
+  identity: TheMoodyBlues.TimelineIdentity;
   tweets: Twitter.Tweet[];
   lastReadID: string | null;
 }

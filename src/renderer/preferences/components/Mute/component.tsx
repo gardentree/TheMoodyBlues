@@ -9,7 +9,7 @@ interface Form extends HTMLFormElement {
 }
 
 const Mute = () => {
-  const [preference, setPreference] = useState<MutePreference>({
+  const [preference, setPreference] = useState<TheMoodyBlues.MutePreference>({
     keywords: [],
     selfRetweet: false,
     media: [],
@@ -27,7 +27,7 @@ const Mute = () => {
       const preferences = await facade.storage.getTimelinePreferences();
       const promises = preferences
         .filter((preference) => preference.mute)
-        .map((preference: TimelinePreference) => {
+        .map((preference: TheMoodyBlues.TimelinePreference) => {
           return facade.storage.getTweets(preference.identity);
         });
 

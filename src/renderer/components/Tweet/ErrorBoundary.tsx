@@ -13,7 +13,7 @@ export default class ErrorBoundary extends React.Component<{tweet: Twitter.Tweet
     this.state = {error: undefined};
   }
 
-  static getDerivedStateFromError(error: Error) {
+  static getStateFromError(error: Error) {
     return {error: error};
   }
   componentDidCatch(error: Error, information: React.ErrorInfo) {

@@ -4,7 +4,7 @@ import TweetList from "../TweetList";
 import {reduxForm, Field, InjectedFormProps} from "redux-form";
 
 export interface OwnProperty {
-  identity: TimelineIdentity;
+  identity: TheMoodyBlues.TimelineIdentity;
 }
 export interface StateProperty {
   tweets: Twitter.Tweet[];

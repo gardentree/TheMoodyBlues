@@ -5,11 +5,11 @@ type RecursivePartial<T> = {
   [P in keyof T]?: RecursivePartial<T[P]>;
 };
 
-function mergeTimeline(oldTimelines: Map<string, Timeline>, identity: string, newTimeline: RecursivePartial<Timeline>) {
+function mergeTimeline(oldTimelines: Map<string, TheMoodyBlues.Timeline>, identity: string, newTimeline: RecursivePartial<TheMoodyBlues.Timeline>) {
   const timelines = new Map(oldTimelines);
   const timeline = timelines.get(identity)!;
 
-  timelines.set(identity, merge<Timeline>(timeline, newTimeline as Partial<Timeline>));
+  timelines.set(identity, merge<TheMoodyBlues.Timeline>(timeline, newTimeline as Partial<TheMoodyBlues.Timeline>));
 
   return timelines;
 }
@@ -25,12 +25,12 @@ export const {updateTweets, read, setupSearch, refreshPreferences} = createActio
     }),
   ],
   READ: [
-    (identity: TimelineIdentity, lastReadID) => ({
+    (identity: TheMoodyBlues.TimelineIdentity, lastReadID) => ({
       state: {
         lastReadID: lastReadID,
       },
     }),
-    (identity: TimelineIdentity, lastReadID) => ({
+    (identity: TheMoodyBlues.TimelineIdentity, lastReadID) => ({
       identity: identity,
     }),
   ],
@@ -44,20 +44,20 @@ export const {updateTweets, read, setupSearch, refreshPreferences} = createActio
       identity: identity,
     }),
   ],
-  REFRESH_PREFERENCES: (timelines: TimelineMap) => timelines,
+  REFRESH_PREFERENCES: (timelines: TheMoodyBlues.TimelineMap) => timelines,
 });
 
 //FIXME refreshPreferencesを分割したい
-export default handleActions<TimelineMap, RecursivePartial<Timeline> | TimelineMap, {identity: TimelineIdentity}>(
+export default handleActions<TheMoodyBlues.TimelineMap, RecursivePartial<TheMoodyBlues.Timeline> | TheMoodyBlues.TimelineMap, {identity: TheMoodyBlues.TimelineIdentity}>(
   {
     [updateTweets.toString()]: (state, action) => {
-      return mergeTimeline(state, action.meta.identity, action.payload as RecursivePartial<Timeline>);
+      return mergeTimeline(state, action.meta.identity, action.payload as RecursivePartial<TheMoodyBlues.Timeline>);
     },
     [read.toString()]: (state, action) => {
-      return mergeTimeline(state, action.meta.identity, action.payload as RecursivePartial<Timeline>);
+      return mergeTimeline(state, action.meta.identity, action.payload as RecursivePartial<TheMoodyBlues.Timeline>);
     },
     [setupSearch.toString()]: (state, action) => {
-      let query = (action.payload as RecursivePartial<Timeline>).state!.query;
+      let query = (action.payload as RecursivePartial<TheMoodyBlues.Timeline>).state!.query;
       if (query) {
         query = query.trim();
       } else {
@@ -72,7 +72,7 @@ export default handleActions<TimelineMap, RecursivePartial<Timeline> | TimelineM
       });
     },
     [refreshPreferences.toString()]: (state, action) => {
-      return action.payload as TimelineMap;
+      return action.payload as TheMoodyBlues.TimelineMap;
     },
   },
   new Map()

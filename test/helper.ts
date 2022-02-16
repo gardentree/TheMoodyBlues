@@ -6,7 +6,7 @@ global.window = dom.window;
 global.document = dom.window.document;
 global.navigator = dom.window.navigator;
 
-const facade: Facade = {
+const facade: TheMoodyBluesFacade = {
   agent: {
     get: (path, parameters) => Promise.resolve([]),
     retrieveTimeline: (since_id) => Promise.resolve([]),
@@ -21,7 +21,7 @@ const facade: Facade = {
     getMuteKeywords: () => {},
     setMuteKeywords: (keywords: string[]) => {},
     getTimelinePreferences: () => {},
-    setTimelinePreferences: (timelines: TimelinePreference[]) => {},
+    setTimelinePreferences: (timelines: TheMoodyBlues.TimelinePreference[]) => {},
     getTweets: (name: string) => {},
     setTweets: (name: string, tweets: Twitter.Tweet[]) => {},
   },

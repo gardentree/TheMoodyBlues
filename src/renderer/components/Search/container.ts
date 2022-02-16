@@ -5,7 +5,7 @@ import {OwnProperty, StateProperty, DispatchProperty} from "./component";
 import {formValueSelector} from "redux-form";
 import * as timelines from "@modules/timelines";
 
-const mapStateToProps = (state: State, own: OwnProperty): StateProperty => {
+const mapStateToProps = (state: TheMoodyBlues.State, own: OwnProperty): StateProperty => {
   const {timelines} = state;
   const timeline = timelines.get(own.identity)!;
 

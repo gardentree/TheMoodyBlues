@@ -6,7 +6,7 @@ import TwitterClient2 from "twitter-v2";
 
 const oauth = new OAuth("https://api.twitter.com/oauth/request_token", "https://api.twitter.com/oauth/access_token", process.env.CONSUMER_KEY!, process.env.CONSUMER_SECRET!, "1.0A", null, "HMAC-SHA1");
 
-function loadClient(): TwitterAgent | null {
+function loadClient(): TheMoodyBlues.TwitterAgent | null {
   const accessKey = storage.getAccessKey();
   const accessSecret = storage.getAccessSecret();
 
@@ -22,7 +22,7 @@ interface Token {
   secret: string;
 }
 
-function createClient(accessToken: Token): TwitterAgent {
+function createClient(accessToken: Token): TheMoodyBlues.TwitterAgent {
   const credentials = {
     consumer_key: process.env.CONSUMER_KEY!,
     consumer_secret: process.env.CONSUMER_SECRET!,
@@ -52,7 +52,7 @@ function getAccessToken(requestToken: Token, verifier: string) {
   });
 }
 
-export function call(): TwitterAgent | null {
+export function call(): TheMoodyBlues.TwitterAgent | null {
   const client = loadClient();
   if (client) {
     return client;
@@ -61,7 +61,7 @@ export function call(): TwitterAgent | null {
   }
 }
 
-export async function authorize(requestToken: Token, verifier: string): Promise<TwitterAgent> {
+export async function authorize(requestToken: Token, verifier: string): Promise<TheMoodyBlues.TwitterAgent> {
   const accessToken = await getAccessToken(requestToken, verifier);
 
   storage.setAccessKey(accessToken.key);

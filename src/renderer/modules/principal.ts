@@ -12,7 +12,7 @@ export const {selectTab, zoomIn, zoomOut, zoomReset, showLoading} = createAction
   }),
 });
 
-export default handleActions<Principal, {identity: TimelineIdentity; nowLoading: boolean}, {}>(
+export default handleActions<TheMoodyBlues.Principal, {identity: TheMoodyBlues.TimelineIdentity; nowLoading: boolean}, {}>(
   {
     [selectTab.toString()]: (state, action) => ({
       ...state,
@@ -44,7 +44,7 @@ export default handleActions<Principal, {identity: TimelineIdentity; nowLoading:
   }
 );
 
-function fontSize(style: PrincipalStyle, offset: number) {
+function fontSize(style: TheMoodyBlues.PrincipalStyle, offset: number) {
   if (offset == 0) {
     return "12px";
   } else {

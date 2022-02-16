@@ -2,7 +2,7 @@ import TwitterClient from "twitter";
 import TwitterClient2 from "twitter-v2";
 import * as DateUtility from "date-fns-tz";
 
-export function incarnate(client: TwitterClient, client2: TwitterClient2): TwitterAgent {
+export function incarnate(client: TwitterClient, client2: TwitterClient2): TheMoodyBlues.TwitterAgent {
   return {
     get: (path, parameters) => {
       return client2.get(

@@ -2,7 +2,7 @@ import {connect} from "react-redux";
 import Component from "./component";
 import * as principal from "@modules/principal";
 
-const mapStateToProps = (state: State) => {
+const mapStateToProps = (state: TheMoodyBlues.State) => {
   const {timelines, subcontents} = state;
   const {focused, style, nowLoading} = state.principal;
 

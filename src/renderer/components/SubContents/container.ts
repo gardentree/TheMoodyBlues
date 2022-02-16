@@ -2,7 +2,7 @@ import {connect} from "react-redux";
 import Component from "./component";
 import {updateTweetsInSubContents} from "@modules/subcontents";
 
-const mapStateToProps = (state: State) => {
+const mapStateToProps = (state: TheMoodyBlues.State) => {
   const {subcontents} = state;
 
   return {

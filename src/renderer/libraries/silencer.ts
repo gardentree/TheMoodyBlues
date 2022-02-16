@@ -1,6 +1,6 @@
 const {facade} = window;
 
-export function silence(tweets: Twitter.Tweet[], preference: MutePreference): Twitter.Tweet[] {
+export function silence(tweets: Twitter.Tweet[], preference: TheMoodyBlues.MutePreference): Twitter.Tweet[] {
   const {keywords, selfRetweet, media} = preference;
 
   return tweets.filter((tweet) => {

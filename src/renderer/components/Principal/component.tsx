@@ -8,12 +8,12 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
 interface Property {
   current: string;
-  style: PrincipalStyle;
+  style: TheMoodyBlues.PrincipalStyle;
   unreads: {[key: string]: number};
   onClick(event: React.SyntheticEvent<HTMLElement>): void;
-  subcontents: SubContents;
+  subcontents: TheMoodyBlues.SubContents;
   nowLoading: boolean;
-  timelines: TimelineMap;
+  timelines: TheMoodyBlues.TimelineMap;
   didMount(identity: string): void;
 }
 

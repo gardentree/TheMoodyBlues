@@ -7,7 +7,7 @@ import {Action, ActionMeta} from "redux-actions";
 
 const {facade} = window;
 
-function* initialize(action: Action<{identity: TimelineIdentity}>) {
+function* initialize(action: Action<{identity: TheMoodyBlues.TimelineIdentity}>) {
   const {payload} = action;
   const {timelines} = yield select();
   const timeline = timelines.get(payload.identity)!;
@@ -15,13 +15,13 @@ function* initialize(action: Action<{identity: TimelineIdentity}>) {
   yield metronome.launch(timeline);
 }
 
-function* reorder(action: ActionMeta<{}, {tab: TimelineIdentity; force: boolean}>) {
-  const {focused} = ((yield select()) as State).principal;
+function* reorder(action: ActionMeta<{}, {tab: TheMoodyBlues.TimelineIdentity; force: boolean}>) {
+  const {focused} = ((yield select()) as TheMoodyBlues.State).principal;
 
   yield order(action.meta.tab || focused, action);
 }
 function* order(identity: string, action: ActionMeta<{}, {force: boolean}>) {
-  const {timelines}: State = yield select();
+  const {timelines}: TheMoodyBlues.State = yield select();
   const timeline = timelines.get(identity)!;
 
   yield metronome.play(timeline, action.meta.force);
@@ -33,7 +33,7 @@ function* searchTweets(action: Action<{query: string}>) {
 
   yield put(principal.selectTab(identity));
   yield put(timelines.setupSearch(identity, query));
-  yield reorder(timelines.reload(true, identity, true) as ActionMeta<{}, {tab: TimelineIdentity; force: boolean}>); //FIXME castを消す
+  yield reorder(timelines.reload(true, identity, true) as ActionMeta<{}, {tab: TheMoodyBlues.TimelineIdentity; force: boolean}>); //FIXME castを消す
 }
 
 function* displayUserTimeline(action: Action<{name: Twitter.ScreenName}>) {
@@ -46,7 +46,7 @@ function* displayConversation(action: ActionMeta<{tweet: Twitter.Tweet}, {option
   yield put(subcontents.updateTweetsInSubContents(tweets));
 }
 
-function* shutdown(action: Action<{identity: TimelineIdentity}>) {
+function* shutdown(action: Action<{identity: TheMoodyBlues.TimelineIdentity}>) {
   const {payload} = action;
 
   yield metronome.close(payload.identity);

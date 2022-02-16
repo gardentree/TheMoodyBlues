@@ -37,7 +37,7 @@ const LIST = {
   growl: true,
 };
 
-export async function makeInitialTimeline(preference: TimelinePreference): Promise<Timeline> {
+export async function makeInitialTimeline(preference: TheMoodyBlues.TimelinePreference): Promise<TheMoodyBlues.Timeline> {
   const mute = await facade.storage.getMutePreference();
 
   return {
@@ -60,10 +60,10 @@ export function initialPreferences() {
   return [HOME, SEARCH, MENTIONS].map((template) => Object.assign({active: true}, template));
 }
 
-export function mixPreferences(actives: TimelinePreference[], lists: Twitter.List[]): TimelinePreference[] {
+export function mixPreferences(actives: TheMoodyBlues.TimelinePreference[], lists: Twitter.List[]): TheMoodyBlues.TimelinePreference[] {
   const activeMap = new Map(actives.map((active) => [active.identity, Object.assign({active: true}, active)]));
 
-  const timelines: TimelinePreference[] = [];
+  const timelines: TheMoodyBlues.TimelinePreference[] = [];
   timelines.push(Object.assign({}, HOME, activeMap.get("home")));
   for (const list of lists) {
     const identity = `list_${list.id_str}`;
@@ -75,8 +75,8 @@ export function mixPreferences(actives: TimelinePreference[], lists: Twitter.Lis
   return timelines;
 }
 
-export async function refreshPreferences(currentMap: TimelineMap): Promise<TimelineMap> {
-  const newMap: TimelineMap = new Map();
+export async function refreshPreferences(currentMap: TheMoodyBlues.TimelineMap): Promise<TheMoodyBlues.TimelineMap> {
+  const newMap: TheMoodyBlues.TimelineMap = new Map();
 
   const mute = await facade.storage.getMutePreference();
 
@@ -86,12 +86,12 @@ export async function refreshPreferences(currentMap: TimelineMap): Promise<Timel
     }
 
     const current = currentMap.get(preference.identity);
-    let newTimeline: Timeline | null = null;
+    let newTimeline: TheMoodyBlues.Timeline | null = null;
     if (current) {
       newTimeline = merger(current, {
         preference: preference,
         mute: mute,
-      }) as Timeline;
+      }) as TheMoodyBlues.Timeline;
     } else {
       newTimeline = await makeInitialTimeline(preference);
     }
