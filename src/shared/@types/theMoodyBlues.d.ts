@@ -13,12 +13,15 @@ namespace TheMoodyBlues {
   interface Timeline {
     preference: TimelinePreference;
     tweets: Twitter.Tweet[];
+    mode: ArticleMode;
     state: {
       lastReadID: string;
       query?: string;
     };
     mute: MutePreference;
   }
+  type ArticleMode = "tweet" | "media";
+
   interface TimelinePreference {
     identity: TimelineIdentity;
     title: string;
@@ -82,9 +85,11 @@ namespace TheMoodyBlues {
       growl(tweets: Twitter.Tweet[]): void;
       openExternal(url: string): void;
       openTweetMenu(context: TweetMenu): void;
+      showModeMenu(identity: TimelineIdentity, mode: ArticleMode): void;
     };
     events: {
       onAlert(callback: (error: unknown) => void);
+      onChangeMode(callback: (identity: TimelineIdentity, mode: TweetListMode) => void);
       onCopyTweetInJSON(callback: (tweet: Twitter.Tweet) => void);
       onFocusLatestTweet(callback: () => void);
       onFocusUnreadTweet(callback: () => void);

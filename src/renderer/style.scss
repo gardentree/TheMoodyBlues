@@ -69,7 +69,7 @@ form.search {
     background-color: var(--background-color);
   }
 
-  .toolbar {
+  & > .toolbar {
     min-height: 30px;
 
     display: flex;

@@ -43,6 +43,7 @@ export async function makeInitialTimeline(preference: TheMoodyBlues.TimelinePref
   return {
     preference: preference,
     tweets: [],
+    mode: "tweet",
     state: {
       lastReadID: "",
     },

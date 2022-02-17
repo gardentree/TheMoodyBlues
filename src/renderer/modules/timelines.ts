@@ -14,7 +14,7 @@ function mergeTimeline(oldTimelines: Map<string, TheMoodyBlues.Timeline>, identi
   return timelines;
 }
 
-export const {updateTweets, read, setupSearch, refreshPreferences} = createActions({
+export const {updateTweets, read, setupSearch, refreshPreferences, changeMode} = createActions({
   UPDATE_TWEETS: [
     (tweets, identity, options = undefined) => ({
       tweets: tweets,
@@ -44,6 +44,12 @@ export const {updateTweets, read, setupSearch, refreshPreferences} = createActio
       identity: identity,
     }),
   ],
+  changeMode: [
+    (identity: TheMoodyBlues.TimelineIdentity, mode: TheMoodyBlues.ArticleMode) => ({mode}),
+    (identity: TheMoodyBlues.TimelineIdentity, mode: TheMoodyBlues.ArticleMode) => ({
+      identity,
+    }),
+  ],
   REFRESH_PREFERENCES: (timelines: TheMoodyBlues.TimelineMap) => timelines,
 });
 
@@ -70,6 +76,11 @@ export default handleActions<TheMoodyBlues.TimelineMap, RecursivePartial<TheMood
           query: query,
         },
       });
+    },
+    [changeMode.toString()]: (state, action) => {
+      const {identity} = action.meta;
+
+      return mergeTimeline(state, identity, action.payload as RecursivePartial<TheMoodyBlues.Timeline>);
     },
     [refreshPreferences.toString()]: (state, action) => {
       return action.payload as TheMoodyBlues.TimelineMap;

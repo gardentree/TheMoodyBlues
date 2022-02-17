@@ -27,6 +27,7 @@ const facade: TheMoodyBlues.Facade = {
     growl: (tweets) => ipcRenderer.send(FacadeActions.GROWL, {tweets}),
     openExternal: (url) => shell.openExternal(url),
     openTweetMenu: (context) => ipcRenderer.send(FacadeActions.OPEN_TWEET_MENU, context),
+    showModeMenu: (identity, mode) => ipcRenderer.send(FacadeActions.SHOW_MODE_MENU, {identity, mode}),
   },
   events: {
     onAlert: (callback) => ipcRenderer.on(FacadeActions.ALERT, (event, error) => callback(error)),
@@ -41,6 +42,10 @@ const facade: TheMoodyBlues.Facade = {
     onSearch: (callback) => ipcRenderer.on(FacadeActions.SEARCH, (event, context: TheMoodyBlues.TweetMenu) => callback(context.keyword)),
     onShowChainForTweet: (callback) => ipcRenderer.on(FacadeActions.SHOW_CHAIN_FOR_TWEET, (event, context: TheMoodyBlues.TweetMenu) => callback(context.tweet)),
     onShowConversationForTweet: (callback) => ipcRenderer.on(FacadeActions.SHOW_CONVERSATION_FOR_TWEET, (event, context: TheMoodyBlues.TweetMenu) => callback(context.tweet)),
+    onChangeMode: (callback) =>
+      ipcRenderer.on(FacadeActions.CHANGE_MODE, (event, {identity, mode}) => {
+        callback(identity, mode);
+      }),
     onShowVerifierForm: (callback) => ipcRenderer.on(FacadeActions.SHOW_VERIFIER_FORM, (event, ...values) => callback()),
     onZoomIn: (callback) => ipcRenderer.on(FacadeActions.ZOOM_IN, (event, ...values) => callback()),
     onZoomOut: (callback) => ipcRenderer.on(FacadeActions.ZOOM_OUT, (event, ...values) => callback()),

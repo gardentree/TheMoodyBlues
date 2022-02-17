@@ -10,6 +10,7 @@ const mapStateToProps = (state: TheMoodyBlues.State, own: OwnProperty): StatePro
 
   return {
     tweets: timeline.tweets || [],
+    mode: timeline.mode,
     lastReadID: timeline.state.lastReadID,
   };
 };

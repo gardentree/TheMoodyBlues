@@ -9,6 +9,7 @@ export namespace Actions {
   export const AGENT_SEARCH = "agent_search";
   export const ALERT = "alert";
   export const AUTHORIZE = "authorize";
+  export const CHANGE_MODE = "change_mode";
   export const COPY_TWEET_IN_JSON = "copy_tweet_in_json";
   export const FOCUS_LATEST_TWEET = "focus_latest_tweet";
   export const FOCUS_UNREAD_TWEET = "focus_unread_tweet";
@@ -22,6 +23,7 @@ export namespace Actions {
   export const SEARCH = "search";
   export const SHOW_CHAIN_FOR_TWEET = "show_chain_for_tweet";
   export const SHOW_CONVERSATION_FOR_TWEET = "show_conversation_for_tweet";
+  export const SHOW_MODE_MENU = "show_mode_menu";
   export const SHOW_VERIFIER_FORM = "show_verifier_form";
   export const STORAGE_MUTE_LOAD = "storage_mute_load";
   export const STORAGE_MUTE_SAVE = "storage_mute_save";

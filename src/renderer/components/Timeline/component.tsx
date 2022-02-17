@@ -1,12 +1,13 @@
 import * as React from "react";
 import {useEffect} from "react";
-import TweetList from "../TweetList";
+import Article from "../Article";
 
 export interface OwnProperty {
   identity: string;
 }
 export interface StateProperty {
   tweets: Twitter.Tweet[];
+  mode: TheMoodyBlues.ArticleMode;
   lastReadID: string;
 }
 export interface DispatchProperty {
@@ -17,7 +18,7 @@ export interface DispatchProperty {
 type Property = OwnProperty & StateProperty & DispatchProperty;
 
 const Timeline = (props: Property) => {
-  const {identity, tweets, lastReadID, didMount, willUnmount} = props;
+  const {identity, tweets, mode, lastReadID, didMount, willUnmount} = props;
 
   useEffect(() => {
     didMount();
@@ -27,6 +28,6 @@ const Timeline = (props: Property) => {
     };
   }, []);
 
-  return <TweetList identity={identity} tweets={tweets} lastReadID={lastReadID} />;
+  return <Article identity={identity} tweets={tweets} mode={mode} lastReadID={lastReadID} />;
 };
 export default Timeline;

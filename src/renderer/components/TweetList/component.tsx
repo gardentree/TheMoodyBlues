@@ -9,13 +9,10 @@ export interface OwnProperty {
   lastReadID: string | null;
 }
 export interface StateProperty {}
-export interface DispatchProperty {
-  onScroll(event: React.SyntheticEvent<HTMLElement>): void;
-}
-type Property = OwnProperty & StateProperty & DispatchProperty;
+type Property = OwnProperty & StateProperty;
 
 const TweetList = (props: Property) => {
-  const {tweets, lastReadID, onScroll} = props;
+  const {tweets, lastReadID} = props;
   const elements = tweets.map((tweet) => {
     const unread = lastReadID != null && tweet.id_str > lastReadID;
     return (
@@ -30,7 +27,7 @@ const TweetList = (props: Property) => {
   });
 
   return (
-    <div className="TweetList" style={{overflowY: "auto", height: "100%"}} onScroll={onScroll}>
+    <div className="TweetList">
       <ol className="timeline">
         <TransitionGroup exit={false}>{elements}</TransitionGroup>
       </ol>

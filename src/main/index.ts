@@ -6,6 +6,7 @@ import * as pathname from "path";
 import logger from "electron-log";
 import {setup} from "./twitter";
 import {Actions as FacadeActions} from "@shared/facade";
+import {setup as setupEvents} from "./events";
 
 const isDevelopment = process.env.NODE_ENV !== "production";
 
@@ -63,6 +64,8 @@ function createMainWindow() {
       });
     });
   });
+
+  setupEvents();
 
   return window;
 }

@@ -1,0 +1,10 @@
+.Article {
+  overflow-y: auto;
+  height: 100%;
+
+  header {
+    .toolbar-actions {
+      padding-bottom: 0;
+    }
+  }
+}

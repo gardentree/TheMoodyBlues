@@ -1,6 +1,6 @@
 import * as React from "react";
 import {useEffect} from "react";
-import TweetList from "../TweetList";
+import Article from "../Article";
 import {reduxForm, Field, InjectedFormProps} from "redux-form";
 
 export interface OwnProperty {
@@ -8,6 +8,7 @@ export interface OwnProperty {
 }
 export interface StateProperty {
   tweets: Twitter.Tweet[];
+  mode: TheMoodyBlues.ArticleMode;
   lastReadID: string;
   initialValues: {query: string};
   hasQuery: boolean;
@@ -23,7 +24,7 @@ type ComponentProperty = OwnProperty & StateProperty & DispatchProperty;
 type Property = ComponentProperty & InjectedFormProps<FormProperty, ComponentProperty>;
 
 const Search = (props: Property) => {
-  const {identity, tweets, lastReadID, hasQuery, handleSubmit, search, reset, didMount} = props;
+  const {identity, tweets, mode, lastReadID, hasQuery, handleSubmit, search, reset, didMount} = props;
 
   useEffect(() => {
     didMount();
@@ -47,7 +48,7 @@ const Search = (props: Property) => {
         </form>
       </div>
       <div style={{height: "100%"}}>
-        <TweetList identity={identity} tweets={tweets} lastReadID={lastReadID} />
+        <Article identity={identity} tweets={tweets} mode={mode} lastReadID={lastReadID} />;
       </div>
     </div>
   );

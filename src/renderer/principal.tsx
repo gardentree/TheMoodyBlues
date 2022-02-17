@@ -9,6 +9,7 @@ import Principal from "./components/Principal";
 import {createLogger} from "redux-logger";
 import {makeInitialTimeline, initialPreferences} from "@libraries/timeline";
 import keybinds from "./keybinds";
+import {setup as setupEvents} from "./events";
 
 const {facade} = window;
 
@@ -18,6 +19,7 @@ export default async function launch() {
 
   sagaMiddleware.run(rootSaga);
 
+  setupEvents(store);
   keybinds(store);
   store.getState()["timelines"] = await loadTimelines();
 
