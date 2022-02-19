@@ -1,15 +1,12 @@
 namespace TheMoodyBlues {
   interface State {
-    preference: Preference;
     timelines: TimelineMap;
     subcontents: SubContents;
     principal: Principal;
   }
   type TimelineIdentity = string;
   type TimelineMap = Map<TimelineIdentity, Timeline>;
-  interface Preference {
-    timelines: PreferenceMap;
-  }
+
   interface Timeline {
     preference: TimelinePreference;
     tweets: Twitter.Tweet[];
