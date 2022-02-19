@@ -1,8 +1,8 @@
 import {connect} from "react-redux";
-import Component from "./component";
+import Component, {StateProps, DispatchProps} from "./component";
 import * as principal from "@modules/principal";
 
-const mapStateToProps = (state: TheMoodyBlues.State) => {
+const mapStateToProps = (state: TheMoodyBlues.State): StateProps => {
   const {timelines, subcontents} = state;
   const {focused, style, nowLoading} = state.principal;
 
@@ -29,7 +29,7 @@ const mapStateToProps = (state: TheMoodyBlues.State) => {
     timelines: timelines,
   };
 };
-const mapDispatchToProps = {
+const mapDispatchToProps: DispatchProps = {
   onClick: (event: React.SyntheticEvent<HTMLElement>) => principal.selectTab(event.currentTarget.dataset.name),
   didMount: (identity: string) => principal.selectTab(identity),
 };

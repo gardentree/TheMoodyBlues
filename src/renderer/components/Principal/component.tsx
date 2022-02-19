@@ -6,16 +6,19 @@ import SubContents from "../SubContents";
 import {CSSTransition} from "react-transition-group";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
-interface Property {
+export interface StateProps {
   current: string;
   style: TheMoodyBlues.PrincipalStyle;
   unreads: {[key: string]: number};
-  onClick(event: React.SyntheticEvent<HTMLElement>): void;
   subcontents: TheMoodyBlues.SubContents;
   nowLoading: boolean;
   timelines: TheMoodyBlues.TimelineMap;
+}
+export interface DispatchProps {
+  onClick(event: React.SyntheticEvent<HTMLElement>): void;
   didMount(identity: string): void;
 }
+type Property = StateProps & DispatchProps;
 
 type Component = React.ComponentType<{identity: string}>;
 const components = new Map<string, Component>([
