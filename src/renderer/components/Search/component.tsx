@@ -32,23 +32,22 @@ const Search = (props: Property) => {
 
   return (
     <div className="Search">
-      <div className="toolbar">
-        <form className="search" onSubmit={handleSubmit(search)}>
-          <div className="field">
-            <Field name="query" component="input" type="search" className="form-control" />
-            <span
-              className="icon icon-cancel-circled"
-              style={{display: hasQuery ? "inline-block" : "none"}}
-              onClick={() => {
-                reset();
-                search({query: ""});
-              }}
-            />
-          </div>
-        </form>
-      </div>
       <div style={{height: "100%"}}>
-        <Article identity={identity} tweets={tweets} mode={mode} lastReadID={lastReadID} />;
+        <Article identity={identity} tweets={tweets} mode={mode} lastReadID={lastReadID}>
+          <form className="search" onSubmit={handleSubmit(search)}>
+            <div className="field">
+              <Field name="query" component="input" type="search" className="form-control" />
+              <span
+                className="icon icon-cancel-circled"
+                style={{display: hasQuery ? "inline-block" : "none"}}
+                onClick={() => {
+                  reset();
+                  search({query: ""});
+                }}
+              />
+            </div>
+          </form>
+        </Article>
       </div>
     </div>
   );

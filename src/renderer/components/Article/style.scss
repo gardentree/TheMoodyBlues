@@ -3,8 +3,20 @@
   height: 100%;
 
   header {
-    .toolbar-actions {
-      padding-bottom: 0;
+    .actions {
+      display: flex;
+      padding: 4px 4px 3px 4px;
+
+      & > * {
+        margin: 0 4px;
+      }
+
+      .actions-center {
+        flex: auto;
+      }
+      .actions-right {
+        flex: initial;
+      }
     }
   }
 }

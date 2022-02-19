@@ -44,7 +44,7 @@ export const {updateTweets, read, setupSearch, refreshPreferences, changeMode} =
       identity: identity,
     }),
   ],
-  changeMode: [
+  CHANGE_MODE: [
     (identity: TheMoodyBlues.TimelineIdentity, mode: TheMoodyBlues.ArticleMode) => ({mode}),
     (identity: TheMoodyBlues.TimelineIdentity, mode: TheMoodyBlues.ArticleMode) => ({
       identity,

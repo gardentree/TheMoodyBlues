@@ -7,6 +7,7 @@ export interface OwnProperty {
   tweets: Twitter.Tweet[];
   mode: TheMoodyBlues.ArticleMode;
   lastReadID: string | null;
+  children?: React.ReactNode;
 }
 export interface DispatchProperty {
   onScroll(event: React.SyntheticEvent<HTMLElement>): void;
@@ -16,7 +17,7 @@ export interface DispatchProperty {
 type Property = OwnProperty & DispatchProperty;
 
 const Article = (props: Property) => {
-  const {identity, tweets, mode, lastReadID, onScroll, onChangeMode} = props;
+  const {identity, tweets, mode, lastReadID, onScroll, onChangeMode, children} = props;
 
   const article = (() => {
     switch (mode) {
@@ -32,10 +33,13 @@ const Article = (props: Property) => {
   return (
     <div className="Article" onScroll={onScroll}>
       <header className="toolbar toolbar-header">
-        <div className="toolbar-actions">
-          <button onClick={onChangeMode} className="btn btn-mini btn-default btn-dropdown pull-right">
-            <span className="icon icon-list"></span>
-          </button>
+        <div className="actions">
+          <div className="actions-center">{children}</div>
+          <div className="actions-right">
+            <button onClick={onChangeMode} className="btn btn-default btn-dropdown">
+              <span className="icon icon-list"></span>
+            </button>
+          </div>
         </div>
       </header>
       {article}
