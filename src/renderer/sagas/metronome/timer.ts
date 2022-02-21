@@ -1,10 +1,10 @@
 import * as effects from "redux-saga/effects";
 import * as actions from "@actions";
 
-export function* spawn(identity: TMB.TimelineIdentity, interval: number) {
+export function* spawn(identity: TMB.ScreenID, interval: number) {
   yield effects.spawn(run, identity, interval * 1000);
 }
-function* run(identity: TMB.TimelineIdentity, interval: number) {
+function* run(identity: TMB.ScreenID, interval: number) {
   const channel: string = yield effects.actionChannel(`${identity}_START_TIMER`);
 
   const wait = (ms: number) =>
@@ -30,16 +30,16 @@ function* run(identity: TMB.TimelineIdentity, interval: number) {
     }
   }
 }
-export function* start(identity: TMB.TimelineIdentity) {
+export function* start(identity: TMB.ScreenID) {
   yield effects.put({type: `${identity}_START_TIMER`});
 }
-export function* stop(identity: TMB.TimelineIdentity) {
+export function* stop(identity: TMB.ScreenID) {
   yield effects.put({type: `${identity}_STOP_TIMER`});
 }
-export function* shutdown(identity: TMB.TimelineIdentity) {
+export function* shutdown(identity: TMB.ScreenID) {
   yield effects.put({type: `${identity}_SHUTDOWN`});
 }
-export function* restart(identity: TMB.TimelineIdentity) {
+export function* restart(identity: TMB.ScreenID) {
   yield stop(identity);
   yield start(identity);
 }

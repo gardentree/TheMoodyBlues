@@ -24,10 +24,10 @@ const Mute = () => {
   }, []);
   useEffect(() => {
     (async () => {
-      const preferences = await facade.storage.getTimelinePreferences();
+      const preferences = await facade.storage.getScreenPreferences();
       const promises = preferences
         .filter((preference) => preference.mute)
-        .map((preference: TMB.TimelinePreference) => {
+        .map((preference: TMB.ScreenPreference) => {
           return facade.storage.getTweets(preference.identity);
         });
 

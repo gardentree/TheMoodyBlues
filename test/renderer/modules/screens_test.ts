@@ -1,6 +1,6 @@
 import {expect} from "chai";
 import * as actions from "@actions";
-import {default as reducer} from "@reducers/timelines";
+import {default as reducer} from "@reducers/screens";
 
 const template = new Map([
   [

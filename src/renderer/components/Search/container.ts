@@ -6,17 +6,17 @@ import {formValueSelector} from "redux-form";
 import * as actions from "@actions";
 
 const mapStateToProps = (state: TMB.State, own: OwnProperty): StateProperty => {
-  const {timelines} = state;
-  const timeline = timelines.get(own.identity)!;
+  const {screens} = state;
+  const screen = screens.get(own.identity)!;
 
   const selector = formValueSelector("Search");
   const query = selector(state, "query");
 
   return {
-    tweets: timeline.tweets || [],
-    mode: timeline.mode,
-    lastReadID: timeline.state.lastReadID,
-    initialValues: {query: timeline.state.query!},
+    tweets: screen.tweets || [],
+    mode: screen.mode,
+    lastReadID: screen.state.lastReadID,
+    initialValues: {query: screen.state.query!},
     hasQuery: query && query.length > 0,
   };
 };

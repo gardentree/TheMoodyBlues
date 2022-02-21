@@ -5,7 +5,7 @@ import * as timer from "./timer";
 
 const {facade} = window;
 
-export function* initialize(identity: TMB.TimelineIdentity, preference: TMB.TimelinePreference) {
+export function* initialize(identity: TMB.ScreenID, preference: TMB.ScreenPreference) {
   const tweets: Twitter.Tweet[] = yield call(facade.storage.getTweets, identity);
 
   if (tweets.length > 0) {
@@ -18,16 +18,16 @@ export function* initialize(identity: TMB.TimelineIdentity, preference: TMB.Time
   yield timer.spawn(identity, preference.interval);
   yield timer.start(identity);
 }
-export function* order(identity: TMB.TimelineIdentity, timeline: TMB.Timeline, preference: TMB.Preference, force: boolean) {
-  const oldTweets = force ? [] : timeline.tweets;
+export function* order(identity: TMB.ScreenID, screen: TMB.Screen, preference: TMB.Preference, force: boolean) {
+  const oldTweets = force ? [] : screen.tweets;
 
-  const parameters = (preference.timeline.parameters || []).concat(latest(oldTweets));
-  let tweets: Twitter.Tweet[] = yield call(facade.agent[preference.timeline.way] as (...parameters: unknown[]) => Promise<Twitter.Tweet[]>, ...parameters);
+  const parameters = (preference.screen.parameters || []).concat(latest(oldTweets));
+  let tweets: Twitter.Tweet[] = yield call(facade.agent[preference.screen.way] as (...parameters: unknown[]) => Promise<Twitter.Tweet[]>, ...parameters);
   if (tweets.length > 0) {
-    if (preference.timeline.mute) {
+    if (preference.screen.mute) {
       tweets = silence(tweets, preference.mute);
     }
-    if (preference.timeline.growl) {
+    if (preference.screen.growl) {
       facade.actions.growl(tweets);
     }
 

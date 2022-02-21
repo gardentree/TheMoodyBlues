@@ -14,8 +14,8 @@ const facade: TMB.Facade = {
     retrieveTimelineOfList: (list_id, since_id) => ipcRenderer.invoke(FacadeActions.AGENT_RETRIEVE_TIMELINE_OF_LIST, {list_id, since_id}),
   },
   storage: {
-    getTimelinePreferences: () => ipcRenderer.invoke(FacadeActions.STORAGE_TIMELINE_PREFERENCES_LOAD),
-    setTimelinePreferences: (timelines) => ipcRenderer.send(FacadeActions.STORAGE_TIMELINE_PREFERENCES_SAVE, {timelines}),
+    getScreenPreferences: () => ipcRenderer.invoke(FacadeActions.STORAGE_SCREEN_PREFERENCES_LOAD),
+    setScreenPreferences: (screens) => ipcRenderer.send(FacadeActions.STORAGE_SCREEN_PREFERENCES_SAVE, {screens}),
     getTweets: (name) => ipcRenderer.invoke(FacadeActions.STORAGE_TWEETS_LOAD, {name}),
     setTweets: (name, tweets) => ipcRenderer.send(FacadeActions.STORAGE_TWEETS_SAVE, {name, tweets}),
     getMutePreference: () => ipcRenderer.invoke(FacadeActions.STORAGE_MUTE_LOAD),

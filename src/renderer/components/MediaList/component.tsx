@@ -2,7 +2,7 @@ import * as React from "react";
 import MediaBox from "../Tweet/MediaBox";
 
 export interface OwnProperty {
-  identity: TMB.TimelineIdentity;
+  identity: TMB.ScreenID;
   tweets: Twitter.Tweet[];
 }
 type Property = OwnProperty;

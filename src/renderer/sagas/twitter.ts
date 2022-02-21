@@ -2,7 +2,7 @@ import {put, call, takeLatest, takeEvery, select} from "redux-saga/effects";
 import * as actions from "@actions";
 import * as metronome from "./metronome";
 import {Action, ActionMeta, BaseAction} from "redux-actions";
-import * as libraries from "@libraries/timeline";
+import * as libraries from "@libraries/screen";
 
 const {facade} = window;
 
@@ -10,7 +10,7 @@ function* initialize(action: BaseAction) {
   const newPreferences = (yield call(libraries.loadPreferences)) as TMB.PreferenceMap;
 
   const actives = Array.from(newPreferences)
-    .filter(([identity, preference]) => preference.timeline.active)
+    .filter(([identity, preference]) => preference.screen.active)
     .map(([identity, preference]) => identity);
 
   yield put(actions.updatePreference(newPreferences));
@@ -35,31 +35,31 @@ function* reconfigure(action: BaseAction) {
     yield put(actions.close(identity));
   }
 }
-function extractActives(preferences: TMB.PreferenceMap): TMB.TimelineIdentity[] {
+function extractActives(preferences: TMB.PreferenceMap): TMB.ScreenID[] {
   return Array.from(preferences.values())
-    .filter((preference) => preference.timeline.active)
+    .filter((preference) => preference.screen.active)
     .map((preference) => preference.identity);
 }
 
-function* launch(action: Action<{identity: TMB.TimelineIdentity}>) {
+function* launch(action: Action<{identity: TMB.ScreenID}>) {
   const {payload} = action;
   const {preferences} = yield select();
   const preference = preferences.get(payload.identity)!;
 
-  yield metronome.launch(payload.identity, preference.timeline);
+  yield metronome.launch(payload.identity, preference.screen);
 }
 
-function* reorder(action: ActionMeta<{}, {tab: TMB.TimelineIdentity; force: boolean}>) {
+function* reorder(action: ActionMeta<{}, {tab: TMB.ScreenID; force: boolean}>) {
   const {focused} = ((yield select()) as TMB.State).principal;
 
   yield order(action.meta.tab || focused, action);
 }
 function* order(identity: string, action: ActionMeta<{}, {force: boolean}>) {
-  const {timelines, preferences}: TMB.State = yield select();
-  const timeline = timelines.get(identity)!;
+  const {screens, preferences}: TMB.State = yield select();
+  const screen = screens.get(identity)!;
   const preference = preferences.get(identity)!;
 
-  yield metronome.play(identity, timeline, preference, action.meta.force);
+  yield metronome.play(identity, screen, preference, action.meta.force);
 }
 
 function* searchTweets(action: Action<{query: string}>) {
@@ -68,7 +68,7 @@ function* searchTweets(action: Action<{query: string}>) {
 
   yield put(actions.selectTab(identity));
   yield put(actions.setupSearch(identity, query));
-  yield reorder(actions.reload(true, identity, true) as ActionMeta<{}, {tab: TMB.TimelineIdentity; force: boolean}>); //FIXME castを消す
+  yield reorder(actions.reload(true, identity, true) as ActionMeta<{}, {tab: TMB.ScreenID; force: boolean}>); //FIXME castを消す
 }
 
 function* displayUserTimeline(action: Action<{name: Twitter.ScreenName}>) {
@@ -81,7 +81,7 @@ function* displayConversation(action: ActionMeta<{tweet: Twitter.Tweet}, {option
   yield put(actions.updateTweetsInSubContents(tweets));
 }
 
-function* shutdown(action: Action<{identity: TMB.TimelineIdentity}>) {
+function* shutdown(action: Action<{identity: TMB.ScreenID}>) {
   const {payload} = action;
 
   yield metronome.close(payload.identity);

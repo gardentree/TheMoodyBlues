@@ -13,12 +13,12 @@ const components = {
   },
 };
 
-export function* launch(identity: TMB.TimelineIdentity, preference: TMB.TimelinePreference) {
+export function* launch(identity: TMB.ScreenID, preference: TMB.ScreenPreference) {
   yield components[preference.component].initialize(identity, preference);
 }
-export function* play(identity: TMB.TimelineIdentity, timeline: TMB.Timeline, preference: TMB.Preference, force: boolean) {
-  yield components[preference.timeline.component].order(identity, timeline, preference, force);
+export function* play(identity: TMB.ScreenID, screen: TMB.Screen, preference: TMB.Preference, force: boolean) {
+  yield components[preference.screen.component].order(identity, screen, preference, force);
 }
-export function* close(identity: TMB.TimelineIdentity) {
+export function* close(identity: TMB.ScreenID) {
   yield timer.shutdown(identity);
 }

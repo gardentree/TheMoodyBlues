@@ -4,7 +4,7 @@ import Article from "../Article";
 import {reduxForm, Field, InjectedFormProps} from "redux-form";
 
 export interface OwnProperty {
-  identity: TMB.TimelineIdentity;
+  identity: TMB.ScreenID;
 }
 export interface StateProperty {
   tweets: Twitter.Tweet[];

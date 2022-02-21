@@ -1,15 +1,15 @@
 namespace TheMoodyBlues {
   interface State {
-    timelines: TimelineMap;
+    screens: ScreenMap;
     subcontents: SubContents;
     principal: Principal;
     preferences: PreferenceMap;
   }
-  type TimelineIdentity = string;
-  type TimelineMap = Map<TimelineIdentity, Timeline>;
-  type PreferenceMap = Map<TimelineIdentity, Preference>;
+  type ScreenID = string;
+  type ScreenMap = Map<ScreenID, Screen>;
+  type PreferenceMap = Map<ScreenID, Preference>;
 
-  interface Timeline {
+  interface Screen {
     tweets: Twitter.Tweet[];
     mode: ArticleMode;
     state: {
@@ -20,12 +20,12 @@ namespace TheMoodyBlues {
   type ArticleMode = "tweet" | "media";
 
   interface Preference {
-    identity: TimelineIdentity;
-    timeline: TimelinePreference;
+    identity: ScreenID;
+    screen: ScreenPreference;
     mute: MutePreference;
   }
-  interface TimelinePreference {
-    identity: TimelineIdentity;
+  interface ScreenPreference {
+    identity: ScreenID;
     title: string;
     component: "Timeline" | "Search";
     interval: number;
@@ -46,8 +46,8 @@ namespace TheMoodyBlues {
   }
 
   interface Principal {
-    contents: TimelineIdentity[];
-    focused: TimelineIdentity;
+    contents: ScreenID[];
+    focused: ScreenID;
     nowLoading: boolean;
     style: PrincipalStyle;
   }
@@ -77,8 +77,8 @@ namespace TheMoodyBlues {
     storage: {
       getTweets(name: string): Promise<Twitter.Tweet[]>;
       setTweets(name: string, tweets: Twitter.Tweet[]);
-      getTimelinePreferences(): Promise<TimelinePreference[]>;
-      setTimelinePreferences(timelines: TimelinePreference[]);
+      getScreenPreferences(): Promise<ScreenPreference[]>;
+      setScreenPreferences(screens: ScreenPreference[]);
       getMutePreference(): Promise<MutePreference>;
       setMutePreference(preference: MutePreference);
     };
@@ -88,11 +88,11 @@ namespace TheMoodyBlues {
       growl(tweets: Twitter.Tweet[]): void;
       openExternal(url: string): void;
       openTweetMenu(context: TweetMenu): void;
-      showModeMenu(identity: TimelineIdentity, mode: ArticleMode): void;
+      showModeMenu(identity: ScreenID, mode: ArticleMode): void;
     };
     events: {
       onAlert(callback: (error: unknown) => void);
-      onChangeMode(callback: (identity: TimelineIdentity, mode: TweetListMode) => void);
+      onChangeMode(callback: (identity: ScreenID, mode: TweetListMode) => void);
       onCopyTweetInJSON(callback: (tweet: Twitter.Tweet) => void);
       onFocusLatestTweet(callback: () => void);
       onFocusUnreadTweet(callback: () => void);

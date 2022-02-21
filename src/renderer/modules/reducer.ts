@@ -1,13 +1,13 @@
 import {combineReducers} from "redux";
 import {reducer as formReducer} from "redux-form";
 
-import timelines from "./timelines";
+import screens from "./screens";
 import preferences from "./preferences";
 import subcontents from "./subcontents";
 import principal from "./principal";
 
 export default combineReducers({
-  timelines,
+  screens,
   preferences,
   subcontents,
   principal,

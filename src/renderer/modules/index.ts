@@ -1,5 +1,5 @@
 import {createActions} from "redux-actions";
-import * as timelines from "./timelines";
+import * as screens from "./screens";
 import * as preferences from "./preferences";
 import * as principal from "./principal";
 import * as subcontents from "./subcontents";
@@ -27,7 +27,7 @@ export const {focusLatestTweet, focusUnreadTweet, alarm} = createActions({
   ALARM: (message) => ({message: message}),
 });
 
-export const {updateTweets, read, setupSearch, changeMode, open, close} = timelines;
+export const {updateTweets, read, setupSearch, changeMode, open, close} = screens;
 export const {updatePreference} = preferences;
 export const {setup, selectTab, zoomIn, zoomOut, zoomReset, showLoading} = principal;
 export const {updateTweetsInSubContents} = subcontents;

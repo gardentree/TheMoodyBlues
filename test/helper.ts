@@ -20,8 +20,8 @@ const facade = {
   storage: {
     getMuteKeywords: () => {},
     setMuteKeywords: (keywords: string[]) => {},
-    getTimelinePreferences: () => {},
-    setTimelinePreferences: (timelines: TMB.TimelinePreference[]) => {},
+    getScreenPreferences: () => {},
+    setScreenPreferences: (screens: TMB.ScreenPreference[]) => {},
     getTweets: (name: string) => {},
     setTweets: (name: string, tweets: Twitter.Tweet[]) => {},
   },

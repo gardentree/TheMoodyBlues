@@ -4,7 +4,7 @@ import {default as TweetErrorBoundary} from "../Tweet/ErrorBoundary";
 import {CSSTransition, TransitionGroup} from "react-transition-group";
 
 export interface OwnProperty {
-  identity: TMB.TimelineIdentity;
+  identity: TMB.ScreenID;
   tweets: Twitter.Tweet[];
   lastReadID: string | null;
 }
@@ -28,7 +28,7 @@ const TweetList = (props: Property) => {
 
   return (
     <div className="TweetList">
-      <ol className="timeline">
+      <ol className="tweets">
         <TransitionGroup exit={false}>{elements}</TransitionGroup>
       </ol>
     </div>

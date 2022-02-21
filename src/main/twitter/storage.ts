@@ -26,11 +26,11 @@ export default {
     setStore("access_token.secret", value);
   },
 
-  getTimelinePreferences: (): TMB.TimelinePreference[] => {
-    return getStore("preferences.timelines") as TMB.TimelinePreference[];
+  getScreenPreferences: (): TMB.ScreenPreference[] => {
+    return getStore("preferences.screens") as TMB.ScreenPreference[];
   },
-  setTimelinePreferences: (timelines: TMB.TimelinePreference[]) => {
-    setStore("preferences.timelines", timelines);
+  setScreenPreferences: (screens: TMB.ScreenPreference[]) => {
+    setStore("preferences.screens", screens);
   },
 
   getMutePreference: (): TMB.MutePreference => {

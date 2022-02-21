@@ -1,12 +1,12 @@
 import * as React from "react";
 import {useState, useEffect} from "react";
-import {mixPreferences} from "@libraries/timeline";
+import {mixPreferences} from "@libraries/screen";
 
 const {facade} = window;
 
 async function getCurrentPreferences() {
   const lists = await facade.agent.lists();
-  const current = await facade.storage.getTimelinePreferences();
+  const current = await facade.storage.getScreenPreferences();
 
   return mixPreferences(current, lists);
 }
@@ -53,14 +53,14 @@ async function save() {
     return Object.assign({}, current, preference);
   });
 
-  facade.storage.setTimelinePreferences(newPreferences);
+  facade.storage.setScreenPreferences(newPreferences);
 }
 
-const Timelines = () => {
-  const [timelines, setTimelines] = useState<TMB.TimelinePreference[]>([]);
+const Screens = () => {
+  const [screens, setScreens] = useState<TMB.ScreenPreference[]>([]);
   useEffect(() => {
     (async () => {
-      setTimelines(await getCurrentPreferences());
+      setScreens(await getCurrentPreferences());
     })();
   }, []);
 
@@ -75,30 +75,30 @@ const Timelines = () => {
     save();
   };
 
-  const elements = timelines.map((timeline, index) => {
+  const elements = screens.map((screen, index) => {
     return (
       <li key={index}>
-        <fieldset disabled={!timeline.active}>
+        <fieldset disabled={!screen.active}>
           <legend>
-            <input name={`${timeline.identity}[active]`} type="checkbox" defaultChecked={timeline.active} onChange={handleFieldSetChange} />
-            {timeline.title}
+            <input name={`${screen.identity}[active]`} type="checkbox" defaultChecked={screen.active} onChange={handleFieldSetChange} />
+            {screen.title}
           </legend>
 
           <div className="checkbox">
             <label>
-              <input name={`${timeline.identity}[mute]`} type="checkbox" defaultChecked={timeline.mute} onChange={handleChange} />
+              <input name={`${screen.identity}[mute]`} type="checkbox" defaultChecked={screen.mute} onChange={handleChange} />
               Mute
             </label>
           </div>
           <div className="checkbox">
             <label>
-              <input name={`${timeline.identity}[growl]`} type="checkbox" defaultChecked={timeline.growl} onChange={handleChange} />
+              <input name={`${screen.identity}[growl]`} type="checkbox" defaultChecked={screen.growl} onChange={handleChange} />
               Growl
             </label>
           </div>
           <div className="form-group">
             <label>Interval</label>
-            <input name={`${timeline.identity}[interval]`} type="number" className="form-control" defaultValue={timeline.interval} min="60" max="300" step="60" onChange={handleChange} />
+            <input name={`${screen.identity}[interval]`} type="number" className="form-control" defaultValue={screen.interval} min="60" max="300" step="60" onChange={handleChange} />
           </div>
         </fieldset>
       </li>
@@ -106,11 +106,11 @@ const Timelines = () => {
   });
 
   return (
-    <div className="PreferencesTimelines">
+    <div className="PreferencesScreens">
       <form>
         <ol>{elements}</ol>
       </form>
     </div>
   );
 };
-export default Timelines;
+export default Screens;

@@ -102,14 +102,14 @@ describe("retrieveTimeline", () => {
       const identity = "home";
       const title = "Home";
 
-      const timeline = {
+      const screen = {
         tweets: [{id_str: "old_1"}],
         state: {
           lastReadID: 0,
         },
       };
       const preference = {
-        timeline: {
+        screen: {
           identity: "home",
           title: title,
           component: "Timeline",
@@ -118,7 +118,7 @@ describe("retrieveTimeline", () => {
         },
       };
 
-      return expectSaga(order, identity, timeline, preference, false)
+      return expectSaga(order, identity, screen, preference, false)
         .provide([
           {
             call(effect: any, next: any) {
@@ -157,14 +157,14 @@ describe("retrieveTimeline", () => {
       const identity = "home";
       const title = "Home";
 
-      const timeline = {
+      const screen = {
         tweets: [{id_str: "old_1"}],
         state: {
           lastReadID: 0,
         },
       };
       const preference = {
-        timeline: {
+        screen: {
           identity: "home",
           title: title,
           component: "Timeline",
@@ -173,7 +173,7 @@ describe("retrieveTimeline", () => {
         },
       };
 
-      return expectSaga(order, identity, timeline, preference, true)
+      return expectSaga(order, identity, screen, preference, true)
         .provide([
           {
             call(effect: any, next: any) {
@@ -212,14 +212,14 @@ describe("retrieveTimeline", () => {
       const identity = "home";
       const title = "Home";
 
-      const timeline = {
+      const screen = {
         tweets: [{id_str: "old_1"}],
         state: {
           lastReadID: 0,
         },
       };
       const preference = {
-        timeline: {
+        screen: {
           identity: "home",
           title: title,
           component: "Timeline",
@@ -228,7 +228,7 @@ describe("retrieveTimeline", () => {
         },
       };
 
-      return expectSaga(order, identity, timeline, preference, false)
+      return expectSaga(order, identity, screen, preference, false)
         .provide([
           {
             call(effect: any, next: any) {

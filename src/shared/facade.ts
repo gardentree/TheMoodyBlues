@@ -27,8 +27,8 @@ export namespace Actions {
   export const SHOW_VERIFIER_FORM = "show_verifier_form";
   export const STORAGE_MUTE_LOAD = "storage_mute_load";
   export const STORAGE_MUTE_SAVE = "storage_mute_save";
-  export const STORAGE_TIMELINE_PREFERENCES_LOAD = "storage_timeline_preferences_load";
-  export const STORAGE_TIMELINE_PREFERENCES_SAVE = "storage_timeline_preferences_save";
+  export const STORAGE_SCREEN_PREFERENCES_LOAD = "storage_screen_preferences_load";
+  export const STORAGE_SCREEN_PREFERENCES_SAVE = "storage_screen_preferences_save";
   export const STORAGE_TWEETS_LOAD = "storage_tweets_load";
   export const STORAGE_TWEETS_SAVE = "storage_tweets_save";
   export const ZOOM_IN = "zoom_in";

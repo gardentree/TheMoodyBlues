@@ -5,13 +5,13 @@ import {OwnProperty, StateProperty, DispatchProperty} from "./component";
 import * as actions from "@actions";
 
 const mapStateToProps = (state: TMB.State, own: OwnProperty): StateProperty => {
-  const {timelines} = state;
-  const timeline = timelines.get(own.identity)!;
+  const {screens} = state;
+  const screen = screens.get(own.identity)!;
 
   return {
-    tweets: timeline.tweets || [],
-    mode: timeline.mode,
-    lastReadID: timeline.state.lastReadID,
+    tweets: screen.tweets || [],
+    mode: screen.mode,
+    lastReadID: screen.state.lastReadID,
   };
 };
 const mapDispatchToProps = (dispatch: Dispatch, own: OwnProperty): DispatchProperty => {

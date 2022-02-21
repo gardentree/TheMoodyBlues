@@ -1,11 +1,11 @@
 import React, {useState} from "react";
-import Timelines from "../Timelines";
+import Screen from "../Screen";
 import Mute from "../Mute";
 
-const components: {[key: string]: React.FC} = {Timelines, Mute};
+const components: {[key: string]: React.FC} = {Screen, Mute};
 
 const Preferences = () => {
-  const [active, setActive] = useState("Timelines");
+  const [active, setActive] = useState("Screen");
 
   return (
     <div className="Preferences">

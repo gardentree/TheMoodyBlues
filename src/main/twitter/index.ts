@@ -87,13 +87,13 @@ function observe(renderer: WebContents, agent: TMB.TwitterAgent) {
     growl(tweets);
   });
 
-  ipcMain.handle(FacadeActions.STORAGE_TIMELINE_PREFERENCES_LOAD, (event, values) => {
-    return storage.getTimelinePreferences();
+  ipcMain.handle(FacadeActions.STORAGE_SCREEN_PREFERENCES_LOAD, (event, values) => {
+    return storage.getScreenPreferences();
   });
-  ipcMain.on(FacadeActions.STORAGE_TIMELINE_PREFERENCES_SAVE, (event, values) => {
-    const {timelines} = values;
+  ipcMain.on(FacadeActions.STORAGE_SCREEN_PREFERENCES_SAVE, (event, values) => {
+    const {screens} = values;
 
-    storage.setTimelinePreferences(timelines);
+    storage.setScreenPreferences(screens);
   });
   ipcMain.handle(FacadeActions.STORAGE_TWEETS_LOAD, (event, values) => {
     const {name} = values;

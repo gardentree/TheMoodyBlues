@@ -1,7 +1,7 @@
 import {createActions, handleActions} from "redux-actions";
 
 export const {setup, selectTab, zoomIn, zoomOut, zoomReset, showLoading} = createActions({
-  SETUP: (contents: TMB.TimelineIdentity[]) => ({
+  SETUP: (contents: TMB.ScreenID[]) => ({
     contents,
   }),
   SELECT_TAB: (identity) => ({

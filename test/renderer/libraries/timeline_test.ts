@@ -1,5 +1,5 @@
 import {expect} from "chai";
-import {mixPreferences} from "@libraries/timeline";
+import {mixPreferences} from "@libraries/screen";
 
 const HOME = {
   identity: "home",

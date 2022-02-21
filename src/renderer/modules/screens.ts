@@ -1,18 +1,18 @@
 import {createActions, handleActions} from "redux-actions";
 import merge from "@libraries/merger";
-import {INITIAL_VALUE} from "@libraries/timeline";
+import {INITIAL_VALUE} from "@libraries/screen";
 
 type RecursivePartial<T> = {
   [P in keyof T]?: RecursivePartial<T[P]>;
 };
 
-function mergeTimeline(oldTimelines: Map<string, TMB.Timeline>, identity: string, newTimeline: RecursivePartial<TMB.Timeline>) {
-  const timelines = new Map(oldTimelines);
-  const timeline = timelines.get(identity)!;
+function mergeScreen(oldScreens: Map<string, TMB.Screen>, identity: string, newScreen: RecursivePartial<TMB.Screen>) {
+  const screens = new Map(oldScreens);
+  const screen = screens.get(identity)!;
 
-  timelines.set(identity, merge<TMB.Timeline>(timeline, newTimeline as Partial<TMB.Timeline>));
+  screens.set(identity, merge<TMB.Screen>(screen, newScreen as Partial<TMB.Screen>));
 
-  return timelines;
+  return screens;
 }
 
 export const {updateTweets, read, setupSearch, changeMode, open, close} = createActions({
@@ -26,12 +26,12 @@ export const {updateTweets, read, setupSearch, changeMode, open, close} = create
     }),
   ],
   READ: [
-    (identity: TMB.TimelineIdentity, lastReadID) => ({
+    (identity: TMB.ScreenID, lastReadID) => ({
       state: {
         lastReadID: lastReadID,
       },
     }),
-    (identity: TMB.TimelineIdentity, lastReadID) => ({
+    (identity: TMB.ScreenID, lastReadID) => ({
       identity: identity,
     }),
   ],
@@ -46,42 +46,42 @@ export const {updateTweets, read, setupSearch, changeMode, open, close} = create
     }),
   ],
   CHANGE_MODE: [
-    (identity: TMB.TimelineIdentity, mode: TMB.ArticleMode) => ({mode}),
-    (identity: TMB.TimelineIdentity, mode: TMB.ArticleMode) => ({
+    (identity: TMB.ScreenID, mode: TMB.ArticleMode) => ({mode}),
+    (identity: TMB.ScreenID, mode: TMB.ArticleMode) => ({
       identity,
     }),
   ],
   OPEN: [
-    (identity: TMB.TimelineIdentity) => {},
-    (identity: TMB.TimelineIdentity) => ({
+    (identity: TMB.ScreenID) => {},
+    (identity: TMB.ScreenID) => ({
       identity,
     }),
   ],
   CLOSE: [
-    (identity: TMB.TimelineIdentity) => {},
-    (identity: TMB.TimelineIdentity) => ({
+    (identity: TMB.ScreenID) => {},
+    (identity: TMB.ScreenID) => ({
       identity,
     }),
   ],
 });
 
-export default handleActions<TMB.TimelineMap, RecursivePartial<TMB.Timeline>, {identity: TMB.TimelineIdentity}>(
+export default handleActions<TMB.ScreenMap, RecursivePartial<TMB.Screen>, {identity: TMB.ScreenID}>(
   {
     [updateTweets.toString()]: (state, action) => {
-      return mergeTimeline(state, action.meta.identity, action.payload as RecursivePartial<TMB.Timeline>);
+      return mergeScreen(state, action.meta.identity, action.payload as RecursivePartial<TMB.Screen>);
     },
     [read.toString()]: (state, action) => {
-      return mergeTimeline(state, action.meta.identity, action.payload as RecursivePartial<TMB.Timeline>);
+      return mergeScreen(state, action.meta.identity, action.payload as RecursivePartial<TMB.Screen>);
     },
     [setupSearch.toString()]: (state, action) => {
-      let query = (action.payload as RecursivePartial<TMB.Timeline>).state!.query;
+      let query = (action.payload as RecursivePartial<TMB.Screen>).state!.query;
       if (query) {
         query = query.trim();
       } else {
         query = "";
       }
 
-      return mergeTimeline(state, action.meta.identity, {
+      return mergeScreen(state, action.meta.identity, {
         tweets: [],
         state: {
           query: query,
@@ -91,7 +91,7 @@ export default handleActions<TMB.TimelineMap, RecursivePartial<TMB.Timeline>, {i
     [changeMode.toString()]: (state, action) => {
       const {identity} = action.meta;
 
-      return mergeTimeline(state, identity, action.payload as RecursivePartial<TMB.Timeline>);
+      return mergeScreen(state, identity, action.payload as RecursivePartial<TMB.Screen>);
     },
     [open.toString()]: (state, action) => {
       const {identity} = action.meta;
