@@ -1,9 +1,5 @@
 import {put, call, takeLatest, takeEvery, select} from "redux-saga/effects";
-import * as actions from "@modules/index";
-import * as timelines from "@modules/timelines";
-import * as subcontents from "@modules/subcontents";
-import * as principal from "@modules/principal";
-import * as preferences from "@modules/preferences";
+import * as actions from "@actions";
 import * as metronome from "./metronome";
 import {Action, ActionMeta, BaseAction} from "redux-actions";
 import * as libraries from "@libraries/timeline";
@@ -17,11 +13,11 @@ function* initialize(action: BaseAction) {
     .filter(([identity, preference]) => preference.timeline.active)
     .map(([identity, preference]) => identity);
 
-  yield put(preferences.updatePreference(newPreferences));
+  yield put(actions.updatePreference(newPreferences));
   for (const identity of actives) {
-    yield put(timelines.open(identity));
+    yield put(actions.open(identity));
   }
-  yield put(principal.setup(actives));
+  yield put(actions.setup(actives));
 }
 function* reconfigure(action: BaseAction) {
   const state: TMB.State = yield select();
@@ -30,13 +26,13 @@ function* reconfigure(action: BaseAction) {
   const newIdentities = extractActives(newPreferences);
   const oldIdentities = extractActives(oldPreferences);
 
-  yield put(preferences.updatePreference(newPreferences));
+  yield put(actions.updatePreference(newPreferences));
   for (const identity of newIdentities.filter((key) => !oldIdentities.includes(key))) {
-    yield put(timelines.open(identity));
+    yield put(actions.open(identity));
   }
-  yield put(principal.setup(newIdentities));
+  yield put(actions.setup(newIdentities));
   for (const identity of oldIdentities.filter((key) => !newIdentities.includes(key))) {
-    yield put(timelines.close(identity));
+    yield put(actions.close(identity));
   }
 }
 function extractActives(preferences: TMB.PreferenceMap): TMB.TimelineIdentity[] {
@@ -70,19 +66,19 @@ function* searchTweets(action: Action<{query: string}>) {
   const {query} = action.payload;
   const identity = "search"; //TODO 動的にする？
 
-  yield put(principal.selectTab(identity));
-  yield put(timelines.setupSearch(identity, query));
-  yield reorder(timelines.reload(true, identity, true) as ActionMeta<{}, {tab: TMB.TimelineIdentity; force: boolean}>); //FIXME castを消す
+  yield put(actions.selectTab(identity));
+  yield put(actions.setupSearch(identity, query));
+  yield reorder(actions.reload(true, identity, true) as ActionMeta<{}, {tab: TMB.TimelineIdentity; force: boolean}>); //FIXME castを消す
 }
 
 function* displayUserTimeline(action: Action<{name: Twitter.ScreenName}>) {
   const tweets: Twitter.Tweet[] = yield call(facade.agent.retrieveTimelineOfUser, action.payload.name);
-  yield put(subcontents.updateTweetsInSubContents(tweets));
+  yield put(actions.updateTweetsInSubContents(tweets));
 }
 
 function* displayConversation(action: ActionMeta<{tweet: Twitter.Tweet}, {options: {yourself?: boolean}}>) {
   const tweets: Twitter.Tweet[] = yield call(facade.agent.retrieveConversation, action.payload.tweet, action.meta.options);
-  yield put(subcontents.updateTweetsInSubContents(tweets));
+  yield put(actions.updateTweetsInSubContents(tweets));
 }
 
 function* shutdown(action: Action<{identity: TMB.TimelineIdentity}>) {
@@ -97,26 +93,26 @@ const wrap = (saga: (action: ActionMeta<any, any>) => Generator) =>
     try {
       const loading = !action.meta || !action.meta.silently;
 
-      if (loading) yield put(principal.showLoading(true));
+      if (loading) yield put(actions.showLoading(true));
       yield call(saga, action);
-      if (loading) yield put(principal.showLoading(false));
+      if (loading) yield put(actions.showLoading(false));
     } catch (error: unknown) {
       facade.logger.error(error);
       if (error instanceof Error) {
         facade.logger.error(error.stack);
       }
-      yield put(principal.alarm(error));
+      yield put(actions.alarm(error));
     }
   };
 
 // prettier-ignore
 export default [
   takeLatest(actions.initialize, wrap(initialize)),
-  takeLatest(timelines.reload, wrap(reorder)),
-  takeLatest(timelines.searchTweets, wrap(searchTweets)),
+  takeLatest(actions.reload, wrap(reorder)),
+  takeLatest(actions.searchTweets, wrap(searchTweets)),
   takeLatest(actions.reconfigure, wrap(reconfigure)),
-  takeLatest(subcontents.displayUserTimeline, wrap(displayUserTimeline)),
-  takeLatest(subcontents.displayConversation, wrap(displayConversation)),
-  takeEvery(timelines.mountComponent, wrap(launch)),
-  takeEvery(timelines.unmountComponent, wrap(shutdown))
+  takeLatest(actions.displayUserTimeline, wrap(displayUserTimeline)),
+  takeLatest(actions.displayConversation, wrap(displayConversation)),
+  takeEvery(actions.mountComponent, wrap(launch)),
+  takeEvery(actions.unmountComponent, wrap(shutdown))
 ];

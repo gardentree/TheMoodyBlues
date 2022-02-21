@@ -112,11 +112,3 @@ export default handleActions<TMB.TimelineMap, RecursivePartial<TMB.Timeline>, {i
   },
   new Map()
 );
-
-////////////////////
-export const {reload, mountComponent, unmountComponent, searchTweets} = createActions({
-  RELOAD: [(force, tab) => null, (force, tab, silently = false) => ({force: force, tab: tab, silently: silently})],
-  MOUNT_COMPONENT: (identity) => ({identity: identity}),
-  UNMOUNT_COMPONENT: (identity) => ({identity: identity}),
-  SEARCH_TWEETS: (query) => ({query: query}),
-});

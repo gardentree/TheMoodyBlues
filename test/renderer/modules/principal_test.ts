@@ -1,6 +1,6 @@
 import {expect} from "chai";
-import * as principal from "@modules/principal";
-import {default as reducer} from "@modules/principal";
+import * as principal from "@actions/principal";
+import {default as reducer} from "@actions/principal";
 
 const template = {
   focused: "",

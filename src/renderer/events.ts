@@ -1,10 +1,10 @@
 import {MiddlewareAPI} from "redux";
-import {changeMode} from "@modules/timelines";
+import * as actions from "@actions";
 
 const {facade} = window;
 
 export function setup(store: MiddlewareAPI) {
   facade.events.onChangeMode((identity, mode) => {
-    store.dispatch(changeMode(identity, mode));
+    store.dispatch(actions.changeMode(identity, mode));
   });
 }

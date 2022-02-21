@@ -1,6 +1,6 @@
 import {expect} from "chai";
-import * as timelines from "@modules/timelines";
-import {default as reducer} from "@modules/timelines";
+import * as timelines from "@actions/timelines";
+import {default as reducer} from "@actions/timelines";
 
 const template = new Map([
   [

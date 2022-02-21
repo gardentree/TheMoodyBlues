@@ -9,7 +9,7 @@ import Principal from "./components/Principal";
 import {createLogger} from "redux-logger";
 import keybinds from "./keybinds";
 import {setup as setupEvents} from "./events";
-import * as actions from "@modules/index";
+import * as actions from "@actions";
 
 export default async function launch() {
   const sagaMiddleware = createSagaMiddleware();

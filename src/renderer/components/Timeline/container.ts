@@ -2,7 +2,7 @@ import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import Component from "./component";
 import {OwnProperty, StateProperty, DispatchProperty} from "./component";
-import * as timelines from "@modules/timelines";
+import * as actions from "@actions";
 
 const mapStateToProps = (state: TMB.State, own: OwnProperty): StateProperty => {
   const {timelines} = state;
@@ -16,8 +16,8 @@ const mapStateToProps = (state: TMB.State, own: OwnProperty): StateProperty => {
 };
 const mapDispatchToProps = (dispatch: Dispatch, own: OwnProperty): DispatchProperty => {
   return {
-    didMount: () => dispatch(timelines.mountComponent(own.identity)),
-    willUnmount: () => dispatch(timelines.unmountComponent(own.identity)),
+    didMount: () => dispatch(actions.mountComponent(own.identity)),
+    willUnmount: () => dispatch(actions.unmountComponent(own.identity)),
   };
 };
 

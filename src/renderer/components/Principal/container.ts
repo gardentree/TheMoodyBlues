@@ -1,6 +1,6 @@
 import {connect} from "react-redux";
 import Component, {StateProps, DispatchProps, Content, TabItem} from "./component";
-import * as principal from "@modules/principal";
+import * as actions from "@actions";
 import Timeline from "../Timeline";
 import Search from "../Search";
 
@@ -46,7 +46,7 @@ const mapStateToProps = (state: TMB.State): StateProps => {
   };
 };
 const mapDispatchToProps: DispatchProps = {
-  onClick: (event: React.SyntheticEvent<HTMLElement>) => principal.selectTab(event.currentTarget.dataset.name),
-  didMount: (identity: string) => principal.selectTab(identity),
+  onClick: (event: React.SyntheticEvent<HTMLElement>) => actions.selectTab(event.currentTarget.dataset.name),
+  didMount: (identity: string) => actions.selectTab(identity),
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

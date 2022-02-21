@@ -1,6 +1,6 @@
 import {connect} from "react-redux";
 import Component from "./component";
-import {updateTweetsInSubContents} from "@modules/subcontents";
+import * as actions from "@actions";
 
 const mapStateToProps = (state: TMB.State) => {
   const {subcontents} = state;
@@ -10,6 +10,6 @@ const mapStateToProps = (state: TMB.State) => {
   };
 };
 const mapDispatchToProps = {
-  onClose: () => updateTweetsInSubContents([]),
+  onClose: () => actions.updateTweetsInSubContents([]),
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

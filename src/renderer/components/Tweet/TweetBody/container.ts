@@ -1,8 +1,8 @@
 import {connect} from "react-redux";
 import Component from "./component";
-import {searchTweets} from "@modules/timelines";
+import * as actions from "@actions";
 
 const mapDispatchToProps = {
-  search: (event: React.SyntheticEvent) => searchTweets((event.target as HTMLElement).textContent!),
+  search: (event: React.SyntheticEvent) => actions.searchTweets((event.target as HTMLElement).textContent!),
 };
 export default connect(null, mapDispatchToProps)(Component);

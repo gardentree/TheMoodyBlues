@@ -1,5 +1,5 @@
 import * as effects from "redux-saga/effects";
-import * as modules from "@modules/timelines";
+import * as actions from "@actions";
 
 export function* spawn(identity: TMB.TimelineIdentity, interval: number) {
   yield effects.spawn(run, identity, interval * 1000);
@@ -26,7 +26,7 @@ function* run(identity: TMB.TimelineIdentity, interval: number) {
         return;
       }
 
-      yield effects.put(modules.reload(false, identity, true));
+      yield effects.put(actions.reload(false, identity, true));
     }
   }
 }

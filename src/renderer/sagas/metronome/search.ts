@@ -1,5 +1,5 @@
 import {put, call} from "redux-saga/effects";
-import * as timelines from "@modules/timelines";
+import * as actions from "@actions";
 import {silence} from "@libraries/silencer";
 import * as timer from "./timer";
 
@@ -24,14 +24,14 @@ export function* order(identity: TMB.TimelineIdentity, timeline: TMB.Timeline, p
 
     const newTweets = tweets.concat(oldTweets).slice(0, 400);
 
-    yield put(timelines.updateTweets(newTweets, identity, {query: query}));
+    yield put(actions.updateTweets(newTweets, identity, {query: query}));
     if (tweets.length > 0 && oldTweets.length <= 0) {
-      yield put(timelines.read(identity, tweets[0].id));
+      yield put(actions.read(identity, tweets[0].id));
     }
 
     yield timer.start(identity);
   } else {
-    yield put(timelines.setupSearch(identity, ""));
+    yield put(actions.setupSearch(identity, ""));
   }
 }
 

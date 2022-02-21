@@ -60,10 +60,3 @@ function fontSize(style: TMB.PrincipalStyle, offset: number) {
     return `${Number(matcher![1]) + offset}px`;
   }
 }
-
-////////////////////
-export const {focusLatestTweet, focusUnreadTweet, alarm} = createActions({
-  FOCUS_LATEST_TWEET: () => null,
-  FOCUS_UNREAD_TWEET: () => null,
-  ALARM: (message) => ({message: message}),
-});

@@ -3,7 +3,7 @@ import {Dispatch} from "redux";
 import Component from "./component";
 import {OwnProperty, StateProperty, DispatchProperty} from "./component";
 import {formValueSelector} from "redux-form";
-import * as timelines from "@modules/timelines";
+import * as actions from "@actions";
 
 const mapStateToProps = (state: TMB.State, own: OwnProperty): StateProperty => {
   const {timelines} = state;
@@ -22,8 +22,8 @@ const mapStateToProps = (state: TMB.State, own: OwnProperty): StateProperty => {
 };
 const mapDispatchToProps = (dispatch: Dispatch, own: OwnProperty): DispatchProperty => {
   return {
-    search: (values: {query: string}) => dispatch(timelines.searchTweets(values.query)),
-    didMount: () => dispatch(timelines.mountComponent(own.identity)),
+    search: (values: {query: string}) => dispatch(actions.searchTweets(values.query)),
+    didMount: () => dispatch(actions.mountComponent(own.identity)),
   };
 };
 

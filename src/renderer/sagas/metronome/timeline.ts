@@ -1,5 +1,5 @@
 import {put, call} from "redux-saga/effects";
-import * as timelines from "@modules/timelines";
+import * as actions from "@actions";
 import {silence} from "@libraries/silencer";
 import * as timer from "./timer";
 
@@ -9,10 +9,10 @@ export function* initialize(identity: TMB.TimelineIdentity, preference: TMB.Time
   const tweets: Twitter.Tweet[] = yield call(facade.storage.getTweets, identity);
 
   if (tweets.length > 0) {
-    yield put(timelines.updateTweets(tweets, identity));
-    yield put(timelines.read(identity, tweets[0].id));
+    yield put(actions.updateTweets(tweets, identity));
+    yield put(actions.read(identity, tweets[0].id));
   } else {
-    yield put(timelines.updateTweets([], identity));
+    yield put(actions.updateTweets([], identity));
   }
 
   yield timer.spawn(identity, preference.interval);
@@ -34,7 +34,7 @@ export function* order(identity: TMB.TimelineIdentity, timeline: TMB.Timeline, p
     const newTweets = tweets.concat(oldTweets).slice(0, 400);
 
     yield call(facade.storage.setTweets, identity, newTweets);
-    yield put(timelines.updateTweets(newTweets, identity));
+    yield put(actions.updateTweets(newTweets, identity));
   }
   yield timer.restart(identity);
 }

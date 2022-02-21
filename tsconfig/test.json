@@ -7,7 +7,7 @@
       "@source/*": ["src/*"],
       "@test/*": ["test/*"],
       "@shared/*": ["src/shared/*"],
-      "@modules/*": ["src/renderer/modules/*"],
+      "@actions/*": ["src/renderer/modules/*"],
       "@libraries/*": ["src/renderer/libraries/*"]
     }
   }
