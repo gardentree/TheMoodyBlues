@@ -1,18 +1,56 @@
 import {put, call, takeLatest, takeEvery, select} from "redux-saga/effects";
+import * as actions from "@modules/index";
 import * as timelines from "@modules/timelines";
 import * as subcontents from "@modules/subcontents";
 import * as principal from "@modules/principal";
+import * as preferences from "@modules/preferences";
 import * as metronome from "./metronome";
-import {Action, ActionMeta} from "redux-actions";
+import {Action, ActionMeta, BaseAction} from "redux-actions";
+import * as libraries from "@libraries/timeline";
 
 const {facade} = window;
 
-function* initialize(action: Action<{identity: TheMoodyBlues.TimelineIdentity}>) {
-  const {payload} = action;
-  const {timelines} = yield select();
-  const timeline = timelines.get(payload.identity)!;
+function* initialize(action: BaseAction) {
+  const newPreferences = (yield call(libraries.loadPreferences)) as TheMoodyBlues.PreferenceMap;
 
-  yield metronome.launch(timeline);
+  const actives = Array.from(newPreferences)
+    .filter(([identity, preference]) => preference.timeline.active)
+    .map(([identity, preference]) => identity);
+
+  yield put(preferences.updatePreference(newPreferences));
+  for (const identity of actives) {
+    yield put(timelines.open(identity));
+  }
+  yield put(principal.setup(actives));
+}
+function* reconfigure(action: BaseAction) {
+  const state: TheMoodyBlues.State = yield select();
+  const oldPreferences = state.preferences;
+  const newPreferences = (yield call(libraries.loadPreferences)) as TheMoodyBlues.PreferenceMap;
+  const newIdentities = extractActives(newPreferences);
+  const oldIdentities = extractActives(oldPreferences);
+
+  yield put(preferences.updatePreference(newPreferences));
+  for (const identity of newIdentities.filter((key) => !oldIdentities.includes(key))) {
+    yield put(timelines.open(identity));
+  }
+  yield put(principal.setup(newIdentities));
+  for (const identity of oldIdentities.filter((key) => !newIdentities.includes(key))) {
+    yield put(timelines.close(identity));
+  }
+}
+function extractActives(preferences: TheMoodyBlues.PreferenceMap): TheMoodyBlues.TimelineIdentity[] {
+  return Array.from(preferences.values())
+    .filter((preference) => preference.timeline.active)
+    .map((preference) => preference.identity);
+}
+
+function* launch(action: Action<{identity: TheMoodyBlues.TimelineIdentity}>) {
+  const {payload} = action;
+  const {preferences} = yield select();
+  const preference = preferences.get(payload.identity)!;
+
+  yield metronome.launch(payload.identity, preference.timeline);
 }
 
 function* reorder(action: ActionMeta<{}, {tab: TheMoodyBlues.TimelineIdentity; force: boolean}>) {
@@ -21,10 +59,11 @@ function* reorder(action: ActionMeta<{}, {tab: TheMoodyBlues.TimelineIdentity; f
   yield order(action.meta.tab || focused, action);
 }
 function* order(identity: string, action: ActionMeta<{}, {force: boolean}>) {
-  const {timelines}: TheMoodyBlues.State = yield select();
+  const {timelines, preferences}: TheMoodyBlues.State = yield select();
   const timeline = timelines.get(identity)!;
+  const preference = preferences.get(identity)!;
 
-  yield metronome.play(timeline, action.meta.force);
+  yield metronome.play(identity, timeline, preference, action.meta.force);
 }
 
 function* searchTweets(action: Action<{query: string}>) {
@@ -72,10 +111,12 @@ const wrap = (saga: (action: ActionMeta<any, any>) => Generator) =>
 
 // prettier-ignore
 export default [
+  takeLatest(actions.initialize, wrap(initialize)),
   takeLatest(timelines.reload, wrap(reorder)),
   takeLatest(timelines.searchTweets, wrap(searchTweets)),
+  takeLatest(actions.reconfigure, wrap(reconfigure)),
   takeLatest(subcontents.displayUserTimeline, wrap(displayUserTimeline)),
   takeLatest(subcontents.displayConversation, wrap(displayConversation)),
-  takeEvery(timelines.mountComponent, wrap(initialize)),
+  takeEvery(timelines.mountComponent, wrap(launch)),
   takeEvery(timelines.unmountComponent, wrap(shutdown))
 ];

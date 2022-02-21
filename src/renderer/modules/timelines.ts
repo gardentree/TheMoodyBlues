@@ -1,5 +1,6 @@
 import {createActions, handleActions} from "redux-actions";
 import merge from "@libraries/merger";
+import {INITIAL_VALUE} from "@libraries/timeline";
 
 type RecursivePartial<T> = {
   [P in keyof T]?: RecursivePartial<T[P]>;
@@ -14,7 +15,7 @@ function mergeTimeline(oldTimelines: Map<string, TheMoodyBlues.Timeline>, identi
   return timelines;
 }
 
-export const {updateTweets, read, setupSearch, refreshPreferences, changeMode} = createActions({
+export const {updateTweets, read, setupSearch, changeMode, open, close} = createActions({
   UPDATE_TWEETS: [
     (tweets, identity, options = undefined) => ({
       tweets: tweets,
@@ -50,11 +51,21 @@ export const {updateTweets, read, setupSearch, refreshPreferences, changeMode} =
       identity,
     }),
   ],
-  REFRESH_PREFERENCES: (timelines: TheMoodyBlues.TimelineMap) => timelines,
+  OPEN: [
+    (identity: TheMoodyBlues.TimelineIdentity) => {},
+    (identity: TheMoodyBlues.TimelineIdentity) => ({
+      identity,
+    }),
+  ],
+  CLOSE: [
+    (identity: TheMoodyBlues.TimelineIdentity) => {},
+    (identity: TheMoodyBlues.TimelineIdentity) => ({
+      identity,
+    }),
+  ],
 });
 
-//FIXME refreshPreferencesを分割したい
-export default handleActions<TheMoodyBlues.TimelineMap, RecursivePartial<TheMoodyBlues.Timeline> | TheMoodyBlues.TimelineMap, {identity: TheMoodyBlues.TimelineIdentity}>(
+export default handleActions<TheMoodyBlues.TimelineMap, RecursivePartial<TheMoodyBlues.Timeline>, {identity: TheMoodyBlues.TimelineIdentity}>(
   {
     [updateTweets.toString()]: (state, action) => {
       return mergeTimeline(state, action.meta.identity, action.payload as RecursivePartial<TheMoodyBlues.Timeline>);
@@ -82,8 +93,21 @@ export default handleActions<TheMoodyBlues.TimelineMap, RecursivePartial<TheMood
 
       return mergeTimeline(state, identity, action.payload as RecursivePartial<TheMoodyBlues.Timeline>);
     },
-    [refreshPreferences.toString()]: (state, action) => {
-      return action.payload as TheMoodyBlues.TimelineMap;
+    [open.toString()]: (state, action) => {
+      const {identity} = action.meta;
+      const newState = new Map(state);
+
+      newState.set(identity, INITIAL_VALUE);
+
+      return newState;
+    },
+    [close.toString()]: (state, action) => {
+      const {identity} = action.meta;
+      const newState = new Map(state);
+
+      newState.delete(identity);
+
+      return newState;
     },
   },
   new Map()

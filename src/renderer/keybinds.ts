@@ -1,7 +1,7 @@
 import {focusLatestTweet, focusUnreadTweet, zoomIn, zoomOut, zoomReset} from "@modules/principal";
-import {reload, searchTweets, refreshPreferences} from "@modules/timelines";
+import {reload, searchTweets} from "@modules/timelines";
+import {reconfigure} from "@modules/index";
 import {displayConversation} from "@modules/subcontents";
-import * as library from "@libraries/timeline";
 import {MiddlewareAPI} from "redux";
 
 const {facade} = window;
@@ -48,10 +48,6 @@ export default function (store: MiddlewareAPI) {
   });
 
   facade.events.onRefreshPreferences(() => {
-    (async () => {
-      const preferences = await library.refreshPreferences(store.getState().timelines);
-
-      store.dispatch(refreshPreferences(preferences));
-    })();
+    store.dispatch(reconfigure());
   });
 }

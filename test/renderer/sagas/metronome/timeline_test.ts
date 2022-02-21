@@ -8,21 +8,15 @@ describe("retrieveTimeline", () => {
       const identity = "home";
       const title = "Home";
 
-      const timeline = {
-        preference: {
-          identity: identity,
-          title: title,
-          component: "Timeline",
-          interval: 120,
-          way: "retrieveTimeline",
-        },
-        tweets: [],
-        state: {
-          lastReadID: 0,
-        },
+      const preference = {
+        identity: identity,
+        title: title,
+        component: "Timeline",
+        interval: 120,
+        way: "retrieveTimeline",
       };
 
-      return expectSaga(initialize, timeline)
+      return expectSaga(initialize, identity, preference)
         .provide([
           {
             call(effect: any, next: any) {
@@ -62,21 +56,15 @@ describe("retrieveTimeline", () => {
       const identity = "home";
       const title = "Home";
 
-      const timeline = {
-        preference: {
-          identity: "home",
-          title: title,
-          component: "Timeline",
-          interval: 120,
-          way: "retrieveTimeline",
-        },
-        tweets: [],
-        state: {
-          lastReadID: 0,
-        },
+      const preference = {
+        identity: "home",
+        title: title,
+        component: "Timeline",
+        interval: 120,
+        way: "retrieveTimeline",
       };
 
-      return expectSaga(initialize, timeline)
+      return expectSaga(initialize, identity, preference)
         .provide([
           {
             call(effect: any, next: any) {
@@ -115,20 +103,22 @@ describe("retrieveTimeline", () => {
       const title = "Home";
 
       const timeline = {
-        preference: {
+        tweets: [{id_str: "old_1"}],
+        state: {
+          lastReadID: 0,
+        },
+      };
+      const preference = {
+        timeline: {
           identity: "home",
           title: title,
           component: "Timeline",
           interval: 120,
           way: "retrieveTimeline",
         },
-        tweets: [{id_str: "old_1"}],
-        state: {
-          lastReadID: 0,
-        },
       };
 
-      return expectSaga(order, timeline, false)
+      return expectSaga(order, identity, timeline, preference, false)
         .provide([
           {
             call(effect: any, next: any) {
@@ -168,20 +158,22 @@ describe("retrieveTimeline", () => {
       const title = "Home";
 
       const timeline = {
-        preference: {
+        tweets: [{id_str: "old_1"}],
+        state: {
+          lastReadID: 0,
+        },
+      };
+      const preference = {
+        timeline: {
           identity: "home",
           title: title,
           component: "Timeline",
           interval: 120,
           way: "retrieveTimeline",
         },
-        tweets: [{id_str: "old_1"}],
-        state: {
-          lastReadID: 0,
-        },
       };
 
-      return expectSaga(order, timeline, true)
+      return expectSaga(order, identity, timeline, preference, true)
         .provide([
           {
             call(effect: any, next: any) {
@@ -221,20 +213,22 @@ describe("retrieveTimeline", () => {
       const title = "Home";
 
       const timeline = {
-        preference: {
+        tweets: [{id_str: "old_1"}],
+        state: {
+          lastReadID: 0,
+        },
+      };
+      const preference = {
+        timeline: {
           identity: "home",
           title: title,
           component: "Timeline",
           interval: 120,
           way: "retrieveTimeline",
         },
-        tweets: [{id_str: "old_1"}],
-        state: {
-          lastReadID: 0,
-        },
       };
 
-      return expectSaga(order, timeline, false)
+      return expectSaga(order, identity, timeline, preference, false)
         .provide([
           {
             call(effect: any, next: any) {

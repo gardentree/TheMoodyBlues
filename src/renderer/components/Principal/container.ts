@@ -1,24 +1,40 @@
 import {connect} from "react-redux";
-import Component, {StateProps, DispatchProps} from "./component";
+import Component, {StateProps, DispatchProps, Content, TabItem} from "./component";
 import * as principal from "@modules/principal";
+import Timeline from "../Timeline";
+import Search from "../Search";
+
+const components = new Map<string, Content>([
+  ["Timeline", Timeline],
+  ["Search", Search],
+]);
 
 const mapStateToProps = (state: TheMoodyBlues.State): StateProps => {
-  const {timelines, subcontents} = state;
-  const {focused, style, nowLoading} = state.principal;
+  const {timelines, subcontents, preferences} = state;
+  const {contents, focused, style, nowLoading} = state.principal;
 
   const unreads = {};
-  if (timelines) {
-    for (const [identity, timeline] of timelines.entries()) {
-      const {
-        tweets,
-        state: {lastReadID},
-      } = timeline;
-      let count = tweets ? tweets.filter((tweet: Twitter.Tweet) => tweet.id_str > lastReadID).length : 0;
-      if (count <= 0) count = 0;
+  for (const identity of contents) {
+    const timeline = timelines.get(identity)!;
+    const {
+      tweets,
+      state: {lastReadID},
+    } = timeline;
+    let count = tweets ? tweets.filter((tweet: Twitter.Tweet) => tweet.id_str > lastReadID).length : 0;
+    if (count <= 0) count = 0;
 
-      unreads[identity] = count;
-    }
+    unreads[identity] = count;
   }
+
+  const items: TabItem[] = contents.map((identity) => {
+    const preference = preferences.get(identity)!;
+
+    return {
+      identity: identity,
+      title: preference.timeline.title,
+      component: components.get(preference.timeline.component)!,
+    };
+  });
 
   return {
     current: focused,
@@ -26,7 +42,7 @@ const mapStateToProps = (state: TheMoodyBlues.State): StateProps => {
     unreads: unreads,
     subcontents: subcontents,
     nowLoading: nowLoading,
-    timelines: timelines,
+    items: items,
   };
 };
 const mapDispatchToProps: DispatchProps = {

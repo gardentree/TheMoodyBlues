@@ -7,11 +7,9 @@ import rootSaga from "./sagas";
 import {Provider} from "react-redux";
 import Principal from "./components/Principal";
 import {createLogger} from "redux-logger";
-import {makeInitialTimeline, initialPreferences} from "@libraries/timeline";
 import keybinds from "./keybinds";
 import {setup as setupEvents} from "./events";
-
-const {facade} = window;
+import * as actions from "@modules/index";
 
 export default async function launch() {
   const sagaMiddleware = createSagaMiddleware();
@@ -21,7 +19,7 @@ export default async function launch() {
 
   setupEvents(store);
   keybinds(store);
-  store.getState()["timelines"] = await loadTimelines();
+  store.dispatch(actions.initialize());
 
   ReactDOM.render(
     <Provider store={store}>
@@ -29,18 +27,4 @@ export default async function launch() {
     </Provider>,
     document.getElementById("app")
   );
-}
-
-async function loadTimelines() {
-  const timelines: TheMoodyBlues.TimelineMap = new Map();
-
-  for (const preference of (await facade.storage.getTimelinePreferences()) || initialPreferences()) {
-    if (!preference.active) {
-      continue;
-    }
-
-    timelines.set(preference.identity, await makeInitialTimeline(preference));
-  }
-
-  return timelines;
 }

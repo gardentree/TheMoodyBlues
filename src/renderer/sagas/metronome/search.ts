@@ -5,23 +5,20 @@ import * as timer from "./timer";
 
 const {facade} = window;
 
-export function* initialize(timeline: TheMoodyBlues.Timeline) {
-  const identity = timeline.preference.identity;
-  yield timer.spawn(identity, timeline.preference.interval);
+export function* initialize(identity: TheMoodyBlues.TimelineIdentity, preference: TheMoodyBlues.TimelinePreference) {
+  yield timer.spawn(identity, preference.interval);
 }
-export function* order(timeline: TheMoodyBlues.Timeline, force: boolean) {
-  const identity = timeline.preference.identity;
-
+export function* order(identity: TheMoodyBlues.TimelineIdentity, timeline: TheMoodyBlues.Timeline, preference: TheMoodyBlues.Preference, force: boolean) {
   yield timer.stop(identity);
 
   const oldTweets = timeline.tweets;
   const query = timeline.state.query || "";
   if (query.length > 0) {
     let tweets: Twitter.Tweet[] = yield call(facade.agent.search, query, latest(oldTweets));
-    if (timeline.preference.mute) {
-      tweets = silence(tweets, timeline.mute);
+    if (preference.timeline.mute) {
+      tweets = silence(tweets, preference.mute);
     }
-    if (timeline.preference.growl) {
+    if (preference.timeline.growl) {
       facade.actions.growl(tweets);
     }
 

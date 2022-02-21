@@ -13,11 +13,11 @@ const components = {
   },
 };
 
-export function* launch(target: TheMoodyBlues.Timeline) {
-  yield components[target.preference.component].initialize(target);
+export function* launch(identity: TheMoodyBlues.TimelineIdentity, preference: TheMoodyBlues.TimelinePreference) {
+  yield components[preference.component].initialize(identity, preference);
 }
-export function* play(target: TheMoodyBlues.Timeline, force: boolean) {
-  yield components[target.preference.component].order(target, force);
+export function* play(identity: TheMoodyBlues.TimelineIdentity, timeline: TheMoodyBlues.Timeline, preference: TheMoodyBlues.Preference, force: boolean) {
+  yield components[preference.timeline.component].order(identity, timeline, preference, force);
 }
 export function* close(identity: TheMoodyBlues.TimelineIdentity) {
   yield timer.shutdown(identity);

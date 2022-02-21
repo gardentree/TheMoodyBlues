@@ -5,7 +5,8 @@ const [initialize, reorder, searchTweets] = rewires("renderer/sagas/twitter", ["
 
 describe(reorder.name, () => {
   it("assign tab", () => {
-    const timelines = new Map([["search", {preference: {identity: "search", component: "Search"}, tweets: [], state: {query: "くえりー"}}]]);
+    const timelines = new Map([["search", {tweets: [], state: {query: "くえりー"}}]]);
+    const preferences = new Map([["search", {timeline: {identity: "search", component: "Search"}}]]);
 
     return expectSaga(reorder, {
       payload: {},
@@ -15,12 +16,8 @@ describe(reorder.name, () => {
         {
           select() {
             return {
-              agent: {
-                search: () => {
-                  return [];
-                },
-              },
               timelines: timelines,
+              preferences: preferences,
               principal: {
                 focused: "Timeline",
               },
@@ -65,11 +62,18 @@ describe(searchTweets.name, () => {
     [
       "search",
       {
-        preference: {identity: "search", component: "Search"},
         tweets: [],
         state: {
           query: "くえりー",
         },
+      },
+    ],
+  ]);
+  const preferences = new Map([
+    [
+      "search",
+      {
+        timeline: {identity: "search", component: "Search"},
       },
     ],
   ]);
@@ -85,6 +89,7 @@ describe(searchTweets.name, () => {
               },
             },
             timelines: timelines,
+            preferences: preferences,
             principal: {
               focused: "Timeline",
             },
@@ -93,7 +98,7 @@ describe(searchTweets.name, () => {
       })
       .put({
         type: "SELECT_TAB",
-        payload: {identity: "search"},
+        payload: {focused: "search"},
       })
       .put({
         type: "SETUP_SEARCH",

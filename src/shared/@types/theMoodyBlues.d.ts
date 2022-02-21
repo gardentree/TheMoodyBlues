@@ -3,22 +3,27 @@ namespace TheMoodyBlues {
     timelines: TimelineMap;
     subcontents: SubContents;
     principal: Principal;
+    preferences: PreferenceMap;
   }
   type TimelineIdentity = string;
   type TimelineMap = Map<TimelineIdentity, Timeline>;
+  type PreferenceMap = Map<TimelineIdentity, Preference>;
 
   interface Timeline {
-    preference: TimelinePreference;
     tweets: Twitter.Tweet[];
     mode: ArticleMode;
     state: {
       lastReadID: string;
       query?: string;
     };
-    mute: MutePreference;
   }
   type ArticleMode = "tweet" | "media";
 
+  interface Preference {
+    identity: TimelineIdentity;
+    timeline: TimelinePreference;
+    mute: MutePreference;
+  }
   interface TimelinePreference {
     identity: TimelineIdentity;
     title: string;
@@ -41,6 +46,7 @@ namespace TheMoodyBlues {
   }
 
   interface Principal {
+    contents: TimelineIdentity[];
     focused: TimelineIdentity;
     nowLoading: boolean;
     style: PrincipalStyle;

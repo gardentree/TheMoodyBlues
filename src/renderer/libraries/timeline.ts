@@ -1,8 +1,6 @@
-import {default as merger} from "./merger";
-
 const {facade} = window;
 
-const HOME = {
+const HOME: Omit<TheMoodyBlues.TimelinePreference, "active"> = {
   identity: "home",
   title: "Home",
   component: "Timeline",
@@ -11,7 +9,7 @@ const HOME = {
   mute: true,
   growl: true,
 };
-const SEARCH = {
+const SEARCH: Omit<TheMoodyBlues.TimelinePreference, "active"> = {
   identity: "search",
   title: "Search",
   component: "Search",
@@ -20,7 +18,7 @@ const SEARCH = {
   mute: false,
   growl: false,
 };
-const MENTIONS = {
+const MENTIONS: Omit<TheMoodyBlues.TimelinePreference, "active"> = {
   identity: "mentions",
   title: "Mentions",
   component: "Timeline",
@@ -29,7 +27,7 @@ const MENTIONS = {
   mute: false,
   growl: true,
 };
-const LIST = {
+const LIST: Omit<TheMoodyBlues.TimelinePreference, "identity" | "title" | "active"> = {
   component: "Timeline",
   interval: 120,
   way: "retrieveTimelineOfList",
@@ -37,27 +35,29 @@ const LIST = {
   growl: true,
 };
 
-export async function makeInitialTimeline(preference: TheMoodyBlues.TimelinePreference): Promise<TheMoodyBlues.Timeline> {
-  const mute = await facade.storage.getMutePreference();
+export const INITIAL_VALUE: TheMoodyBlues.Timeline = {
+  tweets: [],
+  mode: "tweet",
+  state: {
+    lastReadID: "",
+  },
+};
 
-  return {
-    preference: preference,
-    tweets: [],
-    mode: "tweet",
-    state: {
-      lastReadID: "",
+export async function loadPreferences(): Promise<TheMoodyBlues.PreferenceMap> {
+  const timelines = (await facade.storage.getTimelinePreferences()) || initialPreferences();
+  const mute: TheMoodyBlues.MutePreference = Object.assign(
+    {
+      keywords: [],
+      selfRetweet: false,
+      media: [],
     },
-    mute: Object.assign(
-      {
-        keywords: [],
-        selfRetweet: false,
-        media: [],
-      },
-      mute
-    ),
-  };
+    await facade.storage.getMutePreference()
+  );
+
+  return new Map(timelines.map((timeline) => [timeline.identity, {identity: timeline.identity, timeline, mute}]));
 }
-export function initialPreferences() {
+
+function initialPreferences(): TheMoodyBlues.TimelinePreference[] {
   return [HOME, SEARCH, MENTIONS].map((template) => Object.assign({active: true}, template));
 }
 
@@ -74,31 +74,4 @@ export function mixPreferences(actives: TheMoodyBlues.TimelinePreference[], list
   timelines.push(Object.assign({}, MENTIONS, activeMap.get("mentions")));
 
   return timelines;
-}
-
-export async function refreshPreferences(currentMap: TheMoodyBlues.TimelineMap): Promise<TheMoodyBlues.TimelineMap> {
-  const newMap: TheMoodyBlues.TimelineMap = new Map();
-
-  const mute = await facade.storage.getMutePreference();
-
-  for (const preference of await facade.storage.getTimelinePreferences()) {
-    if (!preference.active) {
-      continue;
-    }
-
-    const current = currentMap.get(preference.identity);
-    let newTimeline: TheMoodyBlues.Timeline | null = null;
-    if (current) {
-      newTimeline = merger(current, {
-        preference: preference,
-        mute: mute,
-      }) as TheMoodyBlues.Timeline;
-    } else {
-      newTimeline = await makeInitialTimeline(preference);
-    }
-
-    newMap.set(preference.identity, newTimeline);
-  }
-
-  return newMap;
 }

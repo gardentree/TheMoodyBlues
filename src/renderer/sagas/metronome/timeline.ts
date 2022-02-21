@@ -5,8 +5,7 @@ import * as timer from "./timer";
 
 const {facade} = window;
 
-export function* initialize(timeline: TheMoodyBlues.Timeline) {
-  const identity = timeline.preference.identity;
+export function* initialize(identity: TheMoodyBlues.TimelineIdentity, preference: TheMoodyBlues.TimelinePreference) {
   const tweets: Twitter.Tweet[] = yield call(facade.storage.getTweets, identity);
 
   if (tweets.length > 0) {
@@ -16,21 +15,19 @@ export function* initialize(timeline: TheMoodyBlues.Timeline) {
     yield put(timelines.updateTweets([], identity));
   }
 
-  yield timer.spawn(identity, timeline.preference.interval);
+  yield timer.spawn(identity, preference.interval);
   yield timer.start(identity);
 }
-export function* order(timeline: TheMoodyBlues.Timeline, force: boolean) {
-  const identity = timeline.preference.identity;
-
+export function* order(identity: TheMoodyBlues.TimelineIdentity, timeline: TheMoodyBlues.Timeline, preference: TheMoodyBlues.Preference, force: boolean) {
   const oldTweets = force ? [] : timeline.tweets;
 
-  const parameters = (timeline.preference.parameters || []).concat(latest(oldTweets));
-  let tweets: Twitter.Tweet[] = yield call(facade.agent[timeline.preference.way] as (...parameters: unknown[]) => Promise<Twitter.Tweet[]>, ...parameters);
+  const parameters = (preference.timeline.parameters || []).concat(latest(oldTweets));
+  let tweets: Twitter.Tweet[] = yield call(facade.agent[preference.timeline.way] as (...parameters: unknown[]) => Promise<Twitter.Tweet[]>, ...parameters);
   if (tweets.length > 0) {
-    if (timeline.preference.mute) {
-      tweets = silence(tweets, timeline.mute);
+    if (preference.timeline.mute) {
+      tweets = silence(tweets, preference.mute);
     }
-    if (timeline.preference.growl) {
+    if (preference.timeline.growl) {
       facade.actions.growl(tweets);
     }
 

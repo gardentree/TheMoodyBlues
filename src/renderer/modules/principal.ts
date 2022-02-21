@@ -1,8 +1,11 @@
 import {createActions, handleActions} from "redux-actions";
 
-export const {selectTab, zoomIn, zoomOut, zoomReset, showLoading} = createActions({
+export const {setup, selectTab, zoomIn, zoomOut, zoomReset, showLoading} = createActions({
+  SETUP: (contents: TheMoodyBlues.TimelineIdentity[]) => ({
+    contents,
+  }),
   SELECT_TAB: (identity) => ({
-    identity: identity,
+    focused: identity,
   }),
   ZOOM_IN: () => {},
   ZOOM_OUT: () => {},
@@ -12,11 +15,15 @@ export const {selectTab, zoomIn, zoomOut, zoomReset, showLoading} = createAction
   }),
 });
 
-export default handleActions<TheMoodyBlues.Principal, {identity: TheMoodyBlues.TimelineIdentity; nowLoading: boolean}, {}>(
+export default handleActions<TheMoodyBlues.Principal, Partial<TheMoodyBlues.Principal>>(
   {
+    [setup.toString()]: (state, action) => ({
+      ...state,
+      contents: action.payload.contents!,
+    }),
     [selectTab.toString()]: (state, action) => ({
       ...state,
-      focused: action.payload.identity,
+      focused: action.payload.focused!,
     }),
     [zoomIn.toString()]: (state, action) => ({
       ...state,
@@ -32,10 +39,11 @@ export default handleActions<TheMoodyBlues.Principal, {identity: TheMoodyBlues.T
     }),
     [showLoading.toString()]: (state, action) => ({
       ...state,
-      nowLoading: action.payload.nowLoading,
+      nowLoading: action.payload.nowLoading!,
     }),
   },
   {
+    contents: [],
     focused: "",
     style: {
       fontSize: "12px",

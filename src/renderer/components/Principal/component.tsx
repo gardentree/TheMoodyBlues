@@ -1,18 +1,22 @@
 import * as React from "react";
 import {useEffect} from "react";
-import Timeline from "../Timeline";
-import Search from "../Search";
 import SubContents from "../SubContents";
 import {CSSTransition} from "react-transition-group";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
+export type Content = React.ComponentType<{identity: string}>;
+export interface TabItem {
+  identity: string;
+  title: string;
+  component: Content;
+}
 export interface StateProps {
   current: string;
   style: TheMoodyBlues.PrincipalStyle;
   unreads: {[key: string]: number};
   subcontents: TheMoodyBlues.SubContents;
   nowLoading: boolean;
-  timelines: TheMoodyBlues.TimelineMap;
+  items: TabItem[];
 }
 export interface DispatchProps {
   onClick(event: React.SyntheticEvent<HTMLElement>): void;
@@ -20,24 +24,16 @@ export interface DispatchProps {
 }
 type Property = StateProps & DispatchProps;
 
-type Component = React.ComponentType<{identity: string}>;
-const components = new Map<string, Component>([
-  ["Timeline", Timeline],
-  ["Search", Search],
-]);
-
 const Principal = (props: Property) => {
-  const {current, style, unreads, onClick, nowLoading, timelines, subcontents, didMount} = props;
+  const {current, style, unreads, onClick, nowLoading, subcontents, items, didMount} = props;
+
+  if (items.length <= 0) {
+    return <div />;
+  }
 
   useEffect(() => {
-    didMount(timelines.keys().next().value);
+    didMount(items[0].identity);
   }, []);
-
-  const contents: {identity: string; title: string; component: Component}[] = Array.from(timelines.entries()).map(([identity, timeline]) => ({
-    identity: identity,
-    title: timeline.preference.title,
-    component: components.get(timeline.preference.component)!,
-  }));
 
   return (
     <div id="principal" className="window Principal" style={style}>
@@ -45,7 +41,7 @@ const Principal = (props: Property) => {
         <h1 className="title">The Moody Blues</h1>
       </header>
       <div className="tab-group">
-        {contents.map(({identity, title}) => {
+        {items.map(({identity, title}) => {
           const unread = unreads[identity];
 
           return (
@@ -56,7 +52,7 @@ const Principal = (props: Property) => {
           );
         })}
       </div>
-      {contents.map(({identity, component}) => {
+      {items.map(({identity, component}) => {
         const display = subcontents.tweets.length > 0;
         return (
           <div key={identity} className="window-content" style={{display: current == identity ? "block" : "none"}} data-name={identity}>

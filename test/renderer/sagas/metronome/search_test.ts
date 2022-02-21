@@ -7,22 +7,16 @@ describe("search", () => {
     const identity = "search";
     const title = identity;
 
-    const timeline = {
-      preference: {
-        identity: identity,
-        title: title,
-        component: identity,
-        interval: 60,
-        way: "search",
-      },
-      tweets: [],
-      state: {
-        lastReadID: 0,
-      },
+    const preference = {
+      identity: identity,
+      title: title,
+      component: identity,
+      interval: 60,
+      way: "search",
     };
 
     it("when no cache", () => {
-      return expectSaga(initialize, timeline)
+      return expectSaga(initialize, identity, preference)
         .run()
         .then((result) => {
           const {effects} = result;
@@ -40,24 +34,23 @@ describe("search", () => {
       const title = identity;
 
       const timeline = {
-        preference: {
-          identity: identity,
-          title: title,
-          component: identity,
-          interval: 60,
-          way: "search",
-        },
         tweets: [{id_str: "old_1"}],
         state: {
           lastReadID: 0,
           query: "くえりー",
         },
       };
-      const agent = {
-        [timeline.preference.way]: () => [{id_str: "1"}],
+      const preference = {
+        timeline: {
+          identity: identity,
+          title: title,
+          component: identity,
+          interval: 60,
+          way: "search",
+        },
       };
 
-      return expectSaga(order, timeline, agent, false)
+      return expectSaga(order, identity, timeline, preference, false)
         .provide([
           {
             call(effect: any, next: any) {
@@ -97,24 +90,23 @@ describe("search", () => {
       const title = identity;
 
       const timeline = {
-        preference: {
-          identity: identity,
-          title: title,
-          component: identity,
-          interval: 60,
-          way: "search",
-        },
         tweets: [{id_str: "old_1"}],
         state: {
           lastReadID: 0,
           query: "",
         },
       };
-      const agent = {
-        [timeline.preference.way]: () => [{id_str: "1"}],
+      const preference = {
+        timeline: {
+          identity: identity,
+          title: title,
+          component: identity,
+          interval: 60,
+          way: "search",
+        },
       };
 
-      return expectSaga(order, timeline, agent, false)
+      return expectSaga(order, identity, timeline, preference, false)
         .put({
           type: `${identity}_STOP_TIMER`,
         })
