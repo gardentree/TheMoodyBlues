@@ -1,6 +1,6 @@
 import {expect} from "chai";
-import * as timelines from "@actions/timelines";
-import {default as reducer} from "@actions/timelines";
+import * as actions from "@actions";
+import {default as reducer} from "@reducers/timelines";
 
 const template = new Map([
   [
@@ -55,7 +55,7 @@ const template = new Map([
 
 describe(reducer.name, () => {
   it("updateTweets", () => {
-    expect(reducer(template, timelines.updateTweets([], "home"))).to.deep.equal(template);
+    expect(reducer(template, actions.updateTweets([], "home"))).to.deep.equal(template);
   });
   it("updateTweets", () => {
     const oldTimelines = new Map(template);
@@ -64,7 +64,7 @@ describe(reducer.name, () => {
     const newTimelines = new Map(template);
     newTimelines.get("home").tweets = [{id: 2}, {id: 1}];
 
-    expect(reducer(oldTimelines, timelines.updateTweets([{id: 2}, {id: 1}], "home"))).to.deep.equal(newTimelines);
+    expect(reducer(oldTimelines, actions.updateTweets([{id: 2}, {id: 1}], "home"))).to.deep.equal(newTimelines);
   });
 
   it("read", () => {
@@ -76,7 +76,7 @@ describe(reducer.name, () => {
     newTimelines.get("home").tweets = [{id: 1}];
     newTimelines.get("home").state = {lastReadID: 1};
 
-    expect(reducer(oldTimelines, timelines.read("home", 1))).to.deep.equal(newTimelines);
+    expect(reducer(oldTimelines, actions.read("home", 1))).to.deep.equal(newTimelines);
   });
 
   describe("setupSearch", () => {
@@ -84,19 +84,19 @@ describe(reducer.name, () => {
       const newTimelines = new Map(template);
       newTimelines.get("search").state = {query: "くえりー"};
 
-      expect(reducer(template, timelines.setupSearch("search", "くえりー"))).to.deep.equal(newTimelines);
+      expect(reducer(template, actions.setupSearch("search", "くえりー"))).to.deep.equal(newTimelines);
     });
     it("trim query", () => {
       const newTimelines = new Map(template);
       newTimelines.get("search").state = {query: "く え り ー"};
 
-      expect(reducer(template, timelines.setupSearch("search", " く え り ー "))).to.deep.equal(newTimelines);
+      expect(reducer(template, actions.setupSearch("search", " く え り ー "))).to.deep.equal(newTimelines);
     });
     it("when query is null", () => {
       const newTimelines = new Map(template);
       newTimelines.get("search").state = {query: ""};
 
-      expect(reducer(template, timelines.setupSearch("search", null))).to.deep.equal(newTimelines);
+      expect(reducer(template, actions.setupSearch("search", null))).to.deep.equal(newTimelines);
     });
   });
 });

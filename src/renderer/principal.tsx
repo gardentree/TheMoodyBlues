@@ -7,7 +7,6 @@ import rootSaga from "./sagas";
 import {Provider} from "react-redux";
 import Principal from "./components/Principal";
 import {createLogger} from "redux-logger";
-import keybinds from "./keybinds";
 import {setup as setupEvents} from "./events";
 import * as actions from "@actions";
 
@@ -18,7 +17,6 @@ export default async function launch() {
   sagaMiddleware.run(rootSaga);
 
   setupEvents(store);
-  keybinds(store);
   store.dispatch(actions.initialize());
 
   ReactDOM.render(

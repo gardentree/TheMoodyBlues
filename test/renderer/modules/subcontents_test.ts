@@ -1,6 +1,6 @@
 import {expect} from "chai";
-import * as subcontents from "@actions/subcontents";
-import {default as reducer} from "@actions/subcontents";
+import * as actions from "@actions";
+import {default as reducer} from "@reducers/subcontents";
 
 const template = {
   tweets: [],
@@ -8,6 +8,6 @@ const template = {
 
 describe(reducer.name, () => {
   it("updateTweetsInSubContents", () => {
-    expect(reducer(template, subcontents.updateTweetsInSubContents([]))).to.deep.equal({tweets: []});
+    expect(reducer(template, actions.updateTweetsInSubContents([]))).to.deep.equal({tweets: []});
   });
 });

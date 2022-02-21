@@ -1,6 +1,6 @@
 import {expect} from "chai";
-import * as principal from "@actions/principal";
-import {default as reducer} from "@actions/principal";
+import * as actions from "@actions";
+import {default as reducer} from "@reducers/principal";
 
 const template = {
   focused: "",
@@ -12,7 +12,7 @@ const template = {
 
 describe(reducer.name, () => {
   it("selectTab", () => {
-    expect(reducer(template, principal.selectTab("home"))).to.deep.equal({
+    expect(reducer(template, actions.selectTab("home"))).to.deep.equal({
       focused: "home",
       style: {
         fontSize: "12px",
@@ -22,7 +22,7 @@ describe(reducer.name, () => {
   });
 
   it("zoomIn", () => {
-    expect(reducer({...template, style: {fontSize: "10px"}}, principal.zoomIn())).to.deep.equal({
+    expect(reducer({...template, style: {fontSize: "10px"}}, actions.zoomIn())).to.deep.equal({
       style: {
         fontSize: "11px",
       },
@@ -31,7 +31,7 @@ describe(reducer.name, () => {
     });
   });
   it("zoomOut", () => {
-    expect(reducer({...template, style: {fontSize: "10px"}}, principal.zoomOut())).to.deep.equal({
+    expect(reducer({...template, style: {fontSize: "10px"}}, actions.zoomOut())).to.deep.equal({
       style: {
         fontSize: "9px",
       },
@@ -40,7 +40,7 @@ describe(reducer.name, () => {
     });
   });
   it("zoomReset", () => {
-    expect(reducer({...template, style: {fontSize: "10px"}}, principal.zoomReset())).to.deep.equal({
+    expect(reducer({...template, style: {fontSize: "10px"}}, actions.zoomReset())).to.deep.equal({
       style: {
         fontSize: "12px",
       },
