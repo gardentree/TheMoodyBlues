@@ -5,7 +5,7 @@ import MediaList from "../MediaList";
 export interface OwnProperty {
   identity: string;
   tweets: Twitter.Tweet[];
-  mode: TheMoodyBlues.ArticleMode;
+  mode: TMB.ArticleMode;
   lastReadID: string | null;
   children?: React.ReactNode;
 }

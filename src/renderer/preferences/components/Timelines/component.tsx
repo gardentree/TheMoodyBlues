@@ -57,7 +57,7 @@ async function save() {
 }
 
 const Timelines = () => {
-  const [timelines, setTimelines] = useState<TheMoodyBlues.TimelinePreference[]>([]);
+  const [timelines, setTimelines] = useState<TMB.TimelinePreference[]>([]);
   useEffect(() => {
     (async () => {
       setTimelines(await getCurrentPreferences());

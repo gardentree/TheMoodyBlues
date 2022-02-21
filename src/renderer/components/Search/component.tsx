@@ -4,11 +4,11 @@ import Article from "../Article";
 import {reduxForm, Field, InjectedFormProps} from "redux-form";
 
 export interface OwnProperty {
-  identity: TheMoodyBlues.TimelineIdentity;
+  identity: TMB.TimelineIdentity;
 }
 export interface StateProperty {
   tweets: Twitter.Tweet[];
-  mode: TheMoodyBlues.ArticleMode;
+  mode: TMB.ArticleMode;
   lastReadID: string;
   initialValues: {query: string};
   hasQuery: boolean;

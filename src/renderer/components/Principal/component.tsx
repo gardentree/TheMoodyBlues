@@ -12,9 +12,9 @@ export interface TabItem {
 }
 export interface StateProps {
   current: string;
-  style: TheMoodyBlues.PrincipalStyle;
+  style: TMB.PrincipalStyle;
   unreads: {[key: string]: number};
-  subcontents: TheMoodyBlues.SubContents;
+  subcontents: TMB.SubContents;
   nowLoading: boolean;
   items: TabItem[];
 }

@@ -2,7 +2,7 @@ import {contextBridge, ipcRenderer, shell, clipboard} from "electron";
 import logger from "electron-log";
 import {Actions as FacadeActions} from "@shared/facade";
 
-const facade: TheMoodyBlues.Facade = {
+const facade: TMB.Facade = {
   agent: {
     get: (path, parameters) => ipcRenderer.invoke(FacadeActions.AGENT_GET, {path, parameters}),
     retrieveTimeline: (since_id) => ipcRenderer.invoke(FacadeActions.AGENT_RETRIEVE_TIMELINE, {since_id}),
@@ -31,17 +31,17 @@ const facade: TheMoodyBlues.Facade = {
   },
   events: {
     onAlert: (callback) => ipcRenderer.on(FacadeActions.ALERT, (event, error) => callback(error)),
-    onCopyTweetInJSON: (callback) => ipcRenderer.on(FacadeActions.COPY_TWEET_IN_JSON, (event, context: TheMoodyBlues.TweetMenu) => callback(context.tweet)),
+    onCopyTweetInJSON: (callback) => ipcRenderer.on(FacadeActions.COPY_TWEET_IN_JSON, (event, context: TMB.TweetMenu) => callback(context.tweet)),
     onFocusLatestTweet: (callback) => ipcRenderer.on(FacadeActions.FOCUS_LATEST_TWEET, (event, ...values) => callback()),
     onFocusUnreadTweet: (callback) => ipcRenderer.on(FacadeActions.FOCUS_UNREAD_TWEET, (event, ...values) => callback()),
     onForceReload: (callback) => ipcRenderer.on(FacadeActions.FORCE_RELOAD, (event, ...values) => callback()),
     onLaunch: (callback) => ipcRenderer.on(FacadeActions.LAUNCH, (event, ...values) => callback()),
-    onOpenTweetInBrowser: (callback) => ipcRenderer.on(FacadeActions.OPEN_TWEET_IN_BROWSER, (event, context: TheMoodyBlues.TweetMenu) => callback(context.tweet)),
+    onOpenTweetInBrowser: (callback) => ipcRenderer.on(FacadeActions.OPEN_TWEET_IN_BROWSER, (event, context: TMB.TweetMenu) => callback(context.tweet)),
     onRefreshPreferences: (callback) => ipcRenderer.on(FacadeActions.REFRESH_PREFERENCES, (event, ...values) => callback()),
     onReload: (callback) => ipcRenderer.on(FacadeActions.RELOAD, (event, ...values) => callback()),
-    onSearch: (callback) => ipcRenderer.on(FacadeActions.SEARCH, (event, context: TheMoodyBlues.TweetMenu) => callback(context.keyword)),
-    onShowChainForTweet: (callback) => ipcRenderer.on(FacadeActions.SHOW_CHAIN_FOR_TWEET, (event, context: TheMoodyBlues.TweetMenu) => callback(context.tweet)),
-    onShowConversationForTweet: (callback) => ipcRenderer.on(FacadeActions.SHOW_CONVERSATION_FOR_TWEET, (event, context: TheMoodyBlues.TweetMenu) => callback(context.tweet)),
+    onSearch: (callback) => ipcRenderer.on(FacadeActions.SEARCH, (event, context: TMB.TweetMenu) => callback(context.keyword)),
+    onShowChainForTweet: (callback) => ipcRenderer.on(FacadeActions.SHOW_CHAIN_FOR_TWEET, (event, context: TMB.TweetMenu) => callback(context.tweet)),
+    onShowConversationForTweet: (callback) => ipcRenderer.on(FacadeActions.SHOW_CONVERSATION_FOR_TWEET, (event, context: TMB.TweetMenu) => callback(context.tweet)),
     onChangeMode: (callback) =>
       ipcRenderer.on(FacadeActions.CHANGE_MODE, (event, {identity, mode}) => {
         callback(identity, mode);

@@ -11,7 +11,7 @@ import * as libraries from "@libraries/timeline";
 const {facade} = window;
 
 function* initialize(action: BaseAction) {
-  const newPreferences = (yield call(libraries.loadPreferences)) as TheMoodyBlues.PreferenceMap;
+  const newPreferences = (yield call(libraries.loadPreferences)) as TMB.PreferenceMap;
 
   const actives = Array.from(newPreferences)
     .filter(([identity, preference]) => preference.timeline.active)
@@ -24,9 +24,9 @@ function* initialize(action: BaseAction) {
   yield put(principal.setup(actives));
 }
 function* reconfigure(action: BaseAction) {
-  const state: TheMoodyBlues.State = yield select();
+  const state: TMB.State = yield select();
   const oldPreferences = state.preferences;
-  const newPreferences = (yield call(libraries.loadPreferences)) as TheMoodyBlues.PreferenceMap;
+  const newPreferences = (yield call(libraries.loadPreferences)) as TMB.PreferenceMap;
   const newIdentities = extractActives(newPreferences);
   const oldIdentities = extractActives(oldPreferences);
 
@@ -39,13 +39,13 @@ function* reconfigure(action: BaseAction) {
     yield put(timelines.close(identity));
   }
 }
-function extractActives(preferences: TheMoodyBlues.PreferenceMap): TheMoodyBlues.TimelineIdentity[] {
+function extractActives(preferences: TMB.PreferenceMap): TMB.TimelineIdentity[] {
   return Array.from(preferences.values())
     .filter((preference) => preference.timeline.active)
     .map((preference) => preference.identity);
 }
 
-function* launch(action: Action<{identity: TheMoodyBlues.TimelineIdentity}>) {
+function* launch(action: Action<{identity: TMB.TimelineIdentity}>) {
   const {payload} = action;
   const {preferences} = yield select();
   const preference = preferences.get(payload.identity)!;
@@ -53,13 +53,13 @@ function* launch(action: Action<{identity: TheMoodyBlues.TimelineIdentity}>) {
   yield metronome.launch(payload.identity, preference.timeline);
 }
 
-function* reorder(action: ActionMeta<{}, {tab: TheMoodyBlues.TimelineIdentity; force: boolean}>) {
-  const {focused} = ((yield select()) as TheMoodyBlues.State).principal;
+function* reorder(action: ActionMeta<{}, {tab: TMB.TimelineIdentity; force: boolean}>) {
+  const {focused} = ((yield select()) as TMB.State).principal;
 
   yield order(action.meta.tab || focused, action);
 }
 function* order(identity: string, action: ActionMeta<{}, {force: boolean}>) {
-  const {timelines, preferences}: TheMoodyBlues.State = yield select();
+  const {timelines, preferences}: TMB.State = yield select();
   const timeline = timelines.get(identity)!;
   const preference = preferences.get(identity)!;
 
@@ -72,7 +72,7 @@ function* searchTweets(action: Action<{query: string}>) {
 
   yield put(principal.selectTab(identity));
   yield put(timelines.setupSearch(identity, query));
-  yield reorder(timelines.reload(true, identity, true) as ActionMeta<{}, {tab: TheMoodyBlues.TimelineIdentity; force: boolean}>); //FIXME castを消す
+  yield reorder(timelines.reload(true, identity, true) as ActionMeta<{}, {tab: TMB.TimelineIdentity; force: boolean}>); //FIXME castを消す
 }
 
 function* displayUserTimeline(action: Action<{name: Twitter.ScreenName}>) {
@@ -85,7 +85,7 @@ function* displayConversation(action: ActionMeta<{tweet: Twitter.Tweet}, {option
   yield put(subcontents.updateTweetsInSubContents(tweets));
 }
 
-function* shutdown(action: Action<{identity: TheMoodyBlues.TimelineIdentity}>) {
+function* shutdown(action: Action<{identity: TMB.TimelineIdentity}>) {
   const {payload} = action;
 
   yield metronome.close(payload.identity);

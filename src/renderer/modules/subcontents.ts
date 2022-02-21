@@ -4,7 +4,7 @@ export const {updateTweetsInSubContents} = createActions({
   UPDATE_TWEETS_IN_SUB_CONTENTS: (tweets) => ({tweets: tweets}),
 });
 
-export default handleActions<TheMoodyBlues.SubContents, TheMoodyBlues.SubContents, {}>(
+export default handleActions<TMB.SubContents, TMB.SubContents, {}>(
   {
     [updateTweetsInSubContents.toString()]: (state, action) => ({
       ...state,

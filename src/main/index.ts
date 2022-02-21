@@ -203,7 +203,7 @@ function load(target: BrowserWindow, path: string) {
   }
 }
 
-ipcMain.on(FacadeActions.OPEN_TWEET_MENU, (event, context: TheMoodyBlues.TweetMenu) => {
+ipcMain.on(FacadeActions.OPEN_TWEET_MENU, (event, context: TMB.TweetMenu) => {
   const mainWindow = BrowserWindow.fromWebContents(event.sender)!;
 
   const template: Electron.MenuItemConstructorOptions[] = [

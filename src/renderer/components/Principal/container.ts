@@ -9,7 +9,7 @@ const components = new Map<string, Content>([
   ["Search", Search],
 ]);
 
-const mapStateToProps = (state: TheMoodyBlues.State): StateProps => {
+const mapStateToProps = (state: TMB.State): StateProps => {
   const {timelines, subcontents, preferences} = state;
   const {contents, focused, style, nowLoading} = state.principal;
 

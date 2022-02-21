@@ -13,12 +13,12 @@ const components = {
   },
 };
 
-export function* launch(identity: TheMoodyBlues.TimelineIdentity, preference: TheMoodyBlues.TimelinePreference) {
+export function* launch(identity: TMB.TimelineIdentity, preference: TMB.TimelinePreference) {
   yield components[preference.component].initialize(identity, preference);
 }
-export function* play(identity: TheMoodyBlues.TimelineIdentity, timeline: TheMoodyBlues.Timeline, preference: TheMoodyBlues.Preference, force: boolean) {
+export function* play(identity: TMB.TimelineIdentity, timeline: TMB.Timeline, preference: TMB.Preference, force: boolean) {
   yield components[preference.timeline.component].order(identity, timeline, preference, force);
 }
-export function* close(identity: TheMoodyBlues.TimelineIdentity) {
+export function* close(identity: TMB.TimelineIdentity) {
   yield timer.shutdown(identity);
 }

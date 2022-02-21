@@ -6,11 +6,11 @@ type RecursivePartial<T> = {
   [P in keyof T]?: RecursivePartial<T[P]>;
 };
 
-function mergeTimeline(oldTimelines: Map<string, TheMoodyBlues.Timeline>, identity: string, newTimeline: RecursivePartial<TheMoodyBlues.Timeline>) {
+function mergeTimeline(oldTimelines: Map<string, TMB.Timeline>, identity: string, newTimeline: RecursivePartial<TMB.Timeline>) {
   const timelines = new Map(oldTimelines);
   const timeline = timelines.get(identity)!;
 
-  timelines.set(identity, merge<TheMoodyBlues.Timeline>(timeline, newTimeline as Partial<TheMoodyBlues.Timeline>));
+  timelines.set(identity, merge<TMB.Timeline>(timeline, newTimeline as Partial<TMB.Timeline>));
 
   return timelines;
 }
@@ -26,12 +26,12 @@ export const {updateTweets, read, setupSearch, changeMode, open, close} = create
     }),
   ],
   READ: [
-    (identity: TheMoodyBlues.TimelineIdentity, lastReadID) => ({
+    (identity: TMB.TimelineIdentity, lastReadID) => ({
       state: {
         lastReadID: lastReadID,
       },
     }),
-    (identity: TheMoodyBlues.TimelineIdentity, lastReadID) => ({
+    (identity: TMB.TimelineIdentity, lastReadID) => ({
       identity: identity,
     }),
   ],
@@ -46,35 +46,35 @@ export const {updateTweets, read, setupSearch, changeMode, open, close} = create
     }),
   ],
   CHANGE_MODE: [
-    (identity: TheMoodyBlues.TimelineIdentity, mode: TheMoodyBlues.ArticleMode) => ({mode}),
-    (identity: TheMoodyBlues.TimelineIdentity, mode: TheMoodyBlues.ArticleMode) => ({
+    (identity: TMB.TimelineIdentity, mode: TMB.ArticleMode) => ({mode}),
+    (identity: TMB.TimelineIdentity, mode: TMB.ArticleMode) => ({
       identity,
     }),
   ],
   OPEN: [
-    (identity: TheMoodyBlues.TimelineIdentity) => {},
-    (identity: TheMoodyBlues.TimelineIdentity) => ({
+    (identity: TMB.TimelineIdentity) => {},
+    (identity: TMB.TimelineIdentity) => ({
       identity,
     }),
   ],
   CLOSE: [
-    (identity: TheMoodyBlues.TimelineIdentity) => {},
-    (identity: TheMoodyBlues.TimelineIdentity) => ({
+    (identity: TMB.TimelineIdentity) => {},
+    (identity: TMB.TimelineIdentity) => ({
       identity,
     }),
   ],
 });
 
-export default handleActions<TheMoodyBlues.TimelineMap, RecursivePartial<TheMoodyBlues.Timeline>, {identity: TheMoodyBlues.TimelineIdentity}>(
+export default handleActions<TMB.TimelineMap, RecursivePartial<TMB.Timeline>, {identity: TMB.TimelineIdentity}>(
   {
     [updateTweets.toString()]: (state, action) => {
-      return mergeTimeline(state, action.meta.identity, action.payload as RecursivePartial<TheMoodyBlues.Timeline>);
+      return mergeTimeline(state, action.meta.identity, action.payload as RecursivePartial<TMB.Timeline>);
     },
     [read.toString()]: (state, action) => {
-      return mergeTimeline(state, action.meta.identity, action.payload as RecursivePartial<TheMoodyBlues.Timeline>);
+      return mergeTimeline(state, action.meta.identity, action.payload as RecursivePartial<TMB.Timeline>);
     },
     [setupSearch.toString()]: (state, action) => {
-      let query = (action.payload as RecursivePartial<TheMoodyBlues.Timeline>).state!.query;
+      let query = (action.payload as RecursivePartial<TMB.Timeline>).state!.query;
       if (query) {
         query = query.trim();
       } else {
@@ -91,7 +91,7 @@ export default handleActions<TheMoodyBlues.TimelineMap, RecursivePartial<TheMood
     [changeMode.toString()]: (state, action) => {
       const {identity} = action.meta;
 
-      return mergeTimeline(state, identity, action.payload as RecursivePartial<TheMoodyBlues.Timeline>);
+      return mergeTimeline(state, identity, action.payload as RecursivePartial<TMB.Timeline>);
     },
     [open.toString()]: (state, action) => {
       const {identity} = action.meta;

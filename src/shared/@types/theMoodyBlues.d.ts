@@ -117,9 +117,10 @@ namespace TheMoodyBlues {
   }
   type LogMessage = string | object | undefined | null | unknown;
 }
+import TMB = TheMoodyBlues;
 
 interface Window {
-  facade: TheMoodyBlues.Facade;
+  facade: TMB.Facade;
 }
 declare module "growly" {
   declare function notify(message: string, {title: string, icon: string});

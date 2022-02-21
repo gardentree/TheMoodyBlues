@@ -1,7 +1,7 @@
 import {createActions, handleActions} from "redux-actions";
 
 export const {setup, selectTab, zoomIn, zoomOut, zoomReset, showLoading} = createActions({
-  SETUP: (contents: TheMoodyBlues.TimelineIdentity[]) => ({
+  SETUP: (contents: TMB.TimelineIdentity[]) => ({
     contents,
   }),
   SELECT_TAB: (identity) => ({
@@ -15,7 +15,7 @@ export const {setup, selectTab, zoomIn, zoomOut, zoomReset, showLoading} = creat
   }),
 });
 
-export default handleActions<TheMoodyBlues.Principal, Partial<TheMoodyBlues.Principal>>(
+export default handleActions<TMB.Principal, Partial<TMB.Principal>>(
   {
     [setup.toString()]: (state, action) => ({
       ...state,
@@ -52,7 +52,7 @@ export default handleActions<TheMoodyBlues.Principal, Partial<TheMoodyBlues.Prin
   }
 );
 
-function fontSize(style: TheMoodyBlues.PrincipalStyle, offset: number) {
+function fontSize(style: TMB.PrincipalStyle, offset: number) {
   if (offset == 0) {
     return "12px";
   } else {

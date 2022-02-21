@@ -1,6 +1,6 @@
 const {facade} = window;
 
-const HOME: Omit<TheMoodyBlues.TimelinePreference, "active"> = {
+const HOME: Omit<TMB.TimelinePreference, "active"> = {
   identity: "home",
   title: "Home",
   component: "Timeline",
@@ -9,7 +9,7 @@ const HOME: Omit<TheMoodyBlues.TimelinePreference, "active"> = {
   mute: true,
   growl: true,
 };
-const SEARCH: Omit<TheMoodyBlues.TimelinePreference, "active"> = {
+const SEARCH: Omit<TMB.TimelinePreference, "active"> = {
   identity: "search",
   title: "Search",
   component: "Search",
@@ -18,7 +18,7 @@ const SEARCH: Omit<TheMoodyBlues.TimelinePreference, "active"> = {
   mute: false,
   growl: false,
 };
-const MENTIONS: Omit<TheMoodyBlues.TimelinePreference, "active"> = {
+const MENTIONS: Omit<TMB.TimelinePreference, "active"> = {
   identity: "mentions",
   title: "Mentions",
   component: "Timeline",
@@ -27,7 +27,7 @@ const MENTIONS: Omit<TheMoodyBlues.TimelinePreference, "active"> = {
   mute: false,
   growl: true,
 };
-const LIST: Omit<TheMoodyBlues.TimelinePreference, "identity" | "title" | "active"> = {
+const LIST: Omit<TMB.TimelinePreference, "identity" | "title" | "active"> = {
   component: "Timeline",
   interval: 120,
   way: "retrieveTimelineOfList",
@@ -35,7 +35,7 @@ const LIST: Omit<TheMoodyBlues.TimelinePreference, "identity" | "title" | "activ
   growl: true,
 };
 
-export const INITIAL_VALUE: TheMoodyBlues.Timeline = {
+export const INITIAL_VALUE: TMB.Timeline = {
   tweets: [],
   mode: "tweet",
   state: {
@@ -43,9 +43,9 @@ export const INITIAL_VALUE: TheMoodyBlues.Timeline = {
   },
 };
 
-export async function loadPreferences(): Promise<TheMoodyBlues.PreferenceMap> {
+export async function loadPreferences(): Promise<TMB.PreferenceMap> {
   const timelines = (await facade.storage.getTimelinePreferences()) || initialPreferences();
-  const mute: TheMoodyBlues.MutePreference = Object.assign(
+  const mute: TMB.MutePreference = Object.assign(
     {
       keywords: [],
       selfRetweet: false,
@@ -57,14 +57,14 @@ export async function loadPreferences(): Promise<TheMoodyBlues.PreferenceMap> {
   return new Map(timelines.map((timeline) => [timeline.identity, {identity: timeline.identity, timeline, mute}]));
 }
 
-function initialPreferences(): TheMoodyBlues.TimelinePreference[] {
+function initialPreferences(): TMB.TimelinePreference[] {
   return [HOME, SEARCH, MENTIONS].map((template) => Object.assign({active: true}, template));
 }
 
-export function mixPreferences(actives: TheMoodyBlues.TimelinePreference[], lists: Twitter.List[]): TheMoodyBlues.TimelinePreference[] {
+export function mixPreferences(actives: TMB.TimelinePreference[], lists: Twitter.List[]): TMB.TimelinePreference[] {
   const activeMap = new Map(actives.map((active) => [active.identity, Object.assign({active: true}, active)]));
 
-  const timelines: TheMoodyBlues.TimelinePreference[] = [];
+  const timelines: TMB.TimelinePreference[] = [];
   timelines.push(Object.assign({}, HOME, activeMap.get("home")));
   for (const list of lists) {
     const identity = `list_${list.id_str}`;

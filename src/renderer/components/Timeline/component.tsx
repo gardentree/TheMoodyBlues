@@ -7,7 +7,7 @@ export interface OwnProperty {
 }
 export interface StateProperty {
   tweets: Twitter.Tweet[];
-  mode: TheMoodyBlues.ArticleMode;
+  mode: TMB.ArticleMode;
   lastReadID: string;
 }
 export interface DispatchProperty {

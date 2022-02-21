@@ -5,10 +5,10 @@ import * as timer from "./timer";
 
 const {facade} = window;
 
-export function* initialize(identity: TheMoodyBlues.TimelineIdentity, preference: TheMoodyBlues.TimelinePreference) {
+export function* initialize(identity: TMB.TimelineIdentity, preference: TMB.TimelinePreference) {
   yield timer.spawn(identity, preference.interval);
 }
-export function* order(identity: TheMoodyBlues.TimelineIdentity, timeline: TheMoodyBlues.Timeline, preference: TheMoodyBlues.Preference, force: boolean) {
+export function* order(identity: TMB.TimelineIdentity, timeline: TMB.Timeline, preference: TMB.Preference, force: boolean) {
   yield timer.stop(identity);
 
   const oldTweets = timeline.tweets;
