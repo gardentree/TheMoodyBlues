@@ -1,18 +1,14 @@
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import Component from "./component";
-import {OwnProperty, StateProperty, DispatchProperty} from "./component";
+import {OwnProperty, DispatchProperty} from "./component";
 import * as actions from "@actions";
 
-const mapStateToProps = (state: TMB.State, own: OwnProperty): StateProperty => {
+const mapStateToProps = (state: TMB.State, own: OwnProperty): TMB.Screen => {
   const {screens} = state;
   const screen = screens.get(own.identity)!;
 
-  return {
-    tweets: screen.tweets || [],
-    mode: screen.mode,
-    lastReadID: screen.state.lastReadID,
-  };
+  return screen;
 };
 const mapDispatchToProps = (dispatch: Dispatch, own: OwnProperty): DispatchProperty => {
   return {

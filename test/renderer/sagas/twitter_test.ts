@@ -5,7 +5,7 @@ const [initialize, reorder, searchTweets] = rewires("renderer/sagas/twitter", ["
 
 describe(reorder.name, () => {
   it("assign tab", () => {
-    const screens = new Map([["search", {tweets: [], state: {query: "くえりー"}}]]);
+    const screens = new Map([["search", {tweets: [], options: {query: "くえりー"}}]]);
     const preferences = new Map([["search", {screen: {identity: "search", component: "Search"}}]]);
 
     return expectSaga(reorder, {
@@ -63,7 +63,7 @@ describe(searchTweets.name, () => {
       "search",
       {
         tweets: [],
-        state: {
+        options: {
           query: "くえりー",
         },
       },
@@ -102,7 +102,7 @@ describe(searchTweets.name, () => {
       })
       .put({
         type: "SETUP_SEARCH",
-        payload: {state: {query: "くえりー"}},
+        payload: {options: {query: "くえりー"}},
         meta: {identity: "search"},
       })
       .put({

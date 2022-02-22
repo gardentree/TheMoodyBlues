@@ -5,17 +5,12 @@ import Article from "../Article";
 export interface OwnProperty {
   identity: string;
 }
-export interface StateProperty {
-  tweets: Twitter.Tweet[];
-  mode: TMB.ArticleMode;
-  lastReadID: string;
-}
 export interface DispatchProperty {
   didMount(): void;
   willUnmount(): void;
 }
 
-type Property = OwnProperty & StateProperty & DispatchProperty;
+type Property = OwnProperty & TMB.Screen & DispatchProperty;
 
 const Timeline = (props: Property) => {
   const {identity, tweets, mode, lastReadID, didMount, willUnmount} = props;

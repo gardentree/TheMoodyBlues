@@ -35,8 +35,8 @@ describe("search", () => {
 
       const screen = {
         tweets: [{id_str: "old_1"}],
-        state: {
-          lastReadID: 0,
+        lastReadID: 0,
+        options: {
           query: "くえりー",
         },
       };
@@ -91,8 +91,8 @@ describe("search", () => {
 
       const screen = {
         tweets: [{id_str: "old_1"}],
-        state: {
-          lastReadID: 0,
+        lastReadID: 0,
+        options: {
           query: "",
         },
       };
@@ -112,7 +112,7 @@ describe("search", () => {
         })
         .put({
           type: "SETUP_SEARCH",
-          payload: {state: {query: ""}},
+          payload: {options: {query: ""}},
           meta: {identity: identity},
         })
         .run()

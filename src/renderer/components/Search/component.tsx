@@ -6,13 +6,10 @@ import {reduxForm, Field, InjectedFormProps} from "redux-form";
 export interface OwnProperty {
   identity: TMB.ScreenID;
 }
-export interface StateProperty {
-  tweets: Twitter.Tweet[];
-  mode: TMB.ArticleMode;
-  lastReadID: string;
+export type StateProperty = TMB.Screen & {
   initialValues: {query: string};
   hasQuery: boolean;
-}
+};
 export interface DispatchProperty {
   didMount(): void;
   search(values: {query: string}): void;

@@ -16,10 +16,7 @@ const mapStateToProps = (state: TMB.State): StateProps => {
   const unreads = {};
   for (const identity of contents) {
     const screen = screens.get(identity)!;
-    const {
-      tweets,
-      state: {lastReadID},
-    } = screen;
+    const {tweets, lastReadID} = screen;
     let count = tweets ? tweets.filter((tweet: Twitter.Tweet) => tweet.id_str > lastReadID).length : 0;
     if (count <= 0) count = 0;
 

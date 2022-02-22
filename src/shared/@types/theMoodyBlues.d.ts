@@ -12,10 +12,10 @@ namespace TheMoodyBlues {
   interface Screen {
     tweets: Twitter.Tweet[];
     mode: ArticleMode;
-    state: {
-      lastReadID: string;
-      query?: string;
-    };
+    lastReadID: Twitter.TweetID;
+    options?: Partial<{
+      query: string;
+    }>;
   }
   type ArticleMode = "tweet" | "media";
 

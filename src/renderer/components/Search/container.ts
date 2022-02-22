@@ -13,10 +13,8 @@ const mapStateToProps = (state: TMB.State, own: OwnProperty): StateProperty => {
   const query = selector(state, "query");
 
   return {
-    tweets: screen.tweets || [],
-    mode: screen.mode,
-    lastReadID: screen.state.lastReadID,
-    initialValues: {query: screen.state.query!},
+    ...screen,
+    initialValues: {query: screen.options?.query || ""},
     hasQuery: query && query.length > 0,
   };
 };

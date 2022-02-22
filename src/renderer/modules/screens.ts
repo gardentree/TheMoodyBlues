@@ -27,9 +27,7 @@ export const {updateTweets, read, setupSearch, changeMode, open, close} = create
   ],
   READ: [
     (identity: TMB.ScreenID, lastReadID) => ({
-      state: {
-        lastReadID: lastReadID,
-      },
+      lastReadID: lastReadID,
     }),
     (identity: TMB.ScreenID, lastReadID) => ({
       identity: identity,
@@ -37,7 +35,7 @@ export const {updateTweets, read, setupSearch, changeMode, open, close} = create
   ],
   SETUP_SEARCH: [
     (identity: string, query: string) => ({
-      state: {
+      options: {
         query: query,
       },
     }),
@@ -74,7 +72,7 @@ export default handleActions<TMB.ScreenMap, RecursivePartial<TMB.Screen>, {ident
       return mergeScreen(state, action.meta.identity, action.payload as RecursivePartial<TMB.Screen>);
     },
     [setupSearch.toString()]: (state, action) => {
-      let query = (action.payload as RecursivePartial<TMB.Screen>).state!.query;
+      let query = (action.payload as RecursivePartial<TMB.Screen>).options!.query;
       if (query) {
         query = query.trim();
       } else {
@@ -83,7 +81,7 @@ export default handleActions<TMB.ScreenMap, RecursivePartial<TMB.Screen>, {ident
 
       return mergeScreen(state, action.meta.identity, {
         tweets: [],
-        state: {
+        options: {
           query: query,
         },
       });

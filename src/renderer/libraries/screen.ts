@@ -38,9 +38,7 @@ const LIST: Omit<TMB.ScreenPreference, "identity" | "title" | "active"> = {
 export const INITIAL_VALUE: TMB.Screen = {
   tweets: [],
   mode: "tweet",
-  state: {
-    lastReadID: "",
-  },
+  lastReadID: "",
 };
 
 export async function loadPreferences(): Promise<TMB.PreferenceMap> {

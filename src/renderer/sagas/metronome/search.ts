@@ -12,7 +12,7 @@ export function* order(identity: TMB.ScreenID, screen: TMB.Screen, preference: T
   yield timer.stop(identity);
 
   const oldTweets = screen.tweets;
-  const query = screen.state.query || "";
+  const query = screen.options?.query || "";
   if (query.length > 0) {
     let tweets: Twitter.Tweet[] = yield call(facade.agent.search, query, latest(oldTweets));
     if (preference.screen.mute) {

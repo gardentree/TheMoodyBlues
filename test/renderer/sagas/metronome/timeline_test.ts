@@ -37,7 +37,7 @@ describe("retrieveTimeline", () => {
         })
         .put({
           type: "READ",
-          payload: {state: {lastReadID: 1}},
+          payload: {lastReadID: 1},
           meta: {identity: identity},
         })
         .put({
@@ -104,9 +104,7 @@ describe("retrieveTimeline", () => {
 
       const screen = {
         tweets: [{id_str: "old_1"}],
-        state: {
-          lastReadID: 0,
-        },
+        lastReadID: 0,
       };
       const preference = {
         screen: {
@@ -159,9 +157,7 @@ describe("retrieveTimeline", () => {
 
       const screen = {
         tweets: [{id_str: "old_1"}],
-        state: {
-          lastReadID: 0,
-        },
+        lastReadID: 0,
       };
       const preference = {
         screen: {
@@ -214,9 +210,7 @@ describe("retrieveTimeline", () => {
 
       const screen = {
         tweets: [{id_str: "old_1"}],
-        state: {
-          lastReadID: 0,
-        },
+        lastReadID: 0,
       };
       const preference = {
         screen: {

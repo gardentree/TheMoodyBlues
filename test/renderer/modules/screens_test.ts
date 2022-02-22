@@ -6,49 +6,22 @@ const template = new Map([
   [
     "home",
     {
-      meta: {
-        identity: "home",
-        title: "Home",
-        component: "Timeline",
-        interval: 120,
-        way: "timeline",
-      },
       tweets: [],
-      state: {
-        lastReadID: 0,
-      },
+      lastReadID: "0",
     },
   ],
   [
     "search",
     {
-      meta: {
-        identity: "search",
-        title: "Search",
-        component: "Search",
-        interval: 60,
-        way: "search",
-      },
       tweets: [],
-      state: {
-        lastReadID: 0,
-      },
+      lastReadID: "0",
     },
   ],
   [
     "mentions",
     {
-      meta: {
-        identity: "mentions",
-        title: "Mentions",
-        component: "Timeline",
-        interval: 300,
-        way: "retrieveMentions",
-      },
       tweets: [],
-      state: {
-        lastReadID: 0,
-      },
+      lastReadID: "0",
     },
   ],
 ]);
@@ -70,11 +43,11 @@ describe(reducer.name, () => {
   it("read", () => {
     const oldTimelines = new Map(template);
     oldTimelines.get("home").tweets = [{id: 1}];
-    oldTimelines.get("home").state = {lastReadID: 0};
+    oldTimelines.get("home").lastReadID = 0;
 
     const newTimelines = new Map(template);
     newTimelines.get("home").tweets = [{id: 1}];
-    newTimelines.get("home").state = {lastReadID: 1};
+    newTimelines.get("home").lastReadID = 1;
 
     expect(reducer(oldTimelines, actions.read("home", 1))).to.deep.equal(newTimelines);
   });
@@ -82,19 +55,19 @@ describe(reducer.name, () => {
   describe("setupSearch", () => {
     it("compile", () => {
       const newTimelines = new Map(template);
-      newTimelines.get("search").state = {query: "くえりー"};
+      newTimelines.get("search").options = {query: "くえりー"};
 
       expect(reducer(template, actions.setupSearch("search", "くえりー"))).to.deep.equal(newTimelines);
     });
     it("trim query", () => {
       const newTimelines = new Map(template);
-      newTimelines.get("search").state = {query: "く え り ー"};
+      newTimelines.get("search").options = {query: "く え り ー"};
 
       expect(reducer(template, actions.setupSearch("search", " く え り ー "))).to.deep.equal(newTimelines);
     });
     it("when query is null", () => {
       const newTimelines = new Map(template);
-      newTimelines.get("search").state = {query: ""};
+      newTimelines.get("search").options = {query: ""};
 
       expect(reducer(template, actions.setupSearch("search", null))).to.deep.equal(newTimelines);
     });
