@@ -66,13 +66,13 @@ export const {updateTweets, read, setupSearch, changeMode, open, close} = create
 export default handleActions<TMB.ScreenMap, RecursivePartial<TMB.Screen>, {identity: TMB.ScreenID}>(
   {
     [updateTweets.toString()]: (state, action) => {
-      return mergeScreen(state, action.meta.identity, action.payload as RecursivePartial<TMB.Screen>);
+      return mergeScreen(state, action.meta.identity, action.payload);
     },
     [read.toString()]: (state, action) => {
-      return mergeScreen(state, action.meta.identity, action.payload as RecursivePartial<TMB.Screen>);
+      return mergeScreen(state, action.meta.identity, action.payload);
     },
     [setupSearch.toString()]: (state, action) => {
-      let query = (action.payload as RecursivePartial<TMB.Screen>).options!.query;
+      let query = action.payload.options!.query;
       if (query) {
         query = query.trim();
       } else {
@@ -89,7 +89,7 @@ export default handleActions<TMB.ScreenMap, RecursivePartial<TMB.Screen>, {ident
     [changeMode.toString()]: (state, action) => {
       const {identity} = action.meta;
 
-      return mergeScreen(state, identity, action.payload as RecursivePartial<TMB.Screen>);
+      return mergeScreen(state, identity, action.payload);
     },
     [open.toString()]: (state, action) => {
       const {identity} = action.meta;
