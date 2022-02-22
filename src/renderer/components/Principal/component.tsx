@@ -1,6 +1,6 @@
 import * as React from "react";
 import {useEffect} from "react";
-import SubContents from "../SubContents";
+import Branch from "../Branch";
 import {CSSTransition} from "react-transition-group";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 
@@ -67,7 +67,7 @@ const Principal = (props: Property) => {
       <div className="loading" style={{display: nowLoading ? "flex" : "none"}}>
         <FontAwesomeIcon icon="spinner" size="4x" spin />
       </div>
-      <SubContents container={`.window-content[data-name='${current}'] > .subcontents`} />
+      <Branch container={`.window-content[data-name='${current}'] > .subcontents`} />
     </div>
   );
 };

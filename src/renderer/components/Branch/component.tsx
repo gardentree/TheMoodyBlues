@@ -8,13 +8,13 @@ interface Property {
   onClose(): void;
 }
 
-const SubContents = (props: Property) => {
+const Branch = (props: Property) => {
   const {container, tweets, onClose} = props;
 
   if (tweets.length <= 0) return null;
 
   const contents = ReactDOM.createPortal(
-    <div className="SubContents">
+    <div className="Branch">
       <div className="header">
         <button className="btn btn-default" onClick={onClose}>
           <span className="icon icon-cancel" />
@@ -28,4 +28,4 @@ const SubContents = (props: Property) => {
   return contents;
 };
 
-export default SubContents;
+export default Branch;
