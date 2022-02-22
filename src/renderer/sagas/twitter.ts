@@ -21,6 +21,8 @@ function* initialize(action: BaseAction) {
 }
 function* reconfigure(action: BaseAction) {
   const state: TMB.State = yield select();
+  const {lineage} = state;
+
   const oldPreferences = state.preferences;
   const newPreferences = (yield call(libraries.loadPreferences)) as TMB.PreferenceMap;
   const newIdentities = extractActives(newPreferences);
@@ -33,6 +35,11 @@ function* reconfigure(action: BaseAction) {
   yield put(actions.setup(newIdentities));
   for (const identity of oldIdentities.filter((key) => !newIdentities.includes(key))) {
     yield put(actions.close(identity));
+
+    for (const branch of lineage.get(identity) || []) {
+      yield put(actions.clip(identity, branch));
+      yield put(actions.close(branch));
+    }
   }
 }
 function extractActives(preferences: TMB.PreferenceMap): TMB.ScreenID[] {
@@ -73,12 +80,21 @@ function* searchTweets(action: Action<{query: string}>) {
 
 function* displayUserTimeline(action: Action<{name: Twitter.ScreenName}>) {
   const tweets: Twitter.Tweet[] = yield call(facade.agent.retrieveTimelineOfUser, action.payload.name);
-  yield put(actions.updateTweetsInSubContents(tweets));
-}
 
+  yield branch(tweets);
+}
 function* displayConversation(action: ActionMeta<{tweet: Twitter.Tweet}, {options: {yourself?: boolean}}>) {
   const tweets: Twitter.Tweet[] = yield call(facade.agent.retrieveConversation, action.payload.tweet, action.meta.options);
-  yield put(actions.updateTweetsInSubContents(tweets));
+
+  yield branch(tweets);
+}
+function* branch(tweets: Twitter.Tweet[]) {
+  const root = ((yield select()) as TMB.State).principal.focused;
+  const branch = `${root}.${Date.now()}`;
+
+  yield put(actions.open(branch));
+  yield put(actions.updateTweets(tweets, branch));
+  yield put(actions.branch(root, branch));
 }
 
 function* shutdown(action: Action<{identity: TMB.ScreenID}>) {

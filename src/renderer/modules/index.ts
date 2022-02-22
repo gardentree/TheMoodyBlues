@@ -2,7 +2,7 @@ import {createActions} from "redux-actions";
 import * as screens from "./screens";
 import * as preferences from "./preferences";
 import * as principal from "./principal";
-import * as subcontents from "./subcontents";
+import * as lineage from "./lineage";
 
 export const {initialize, reconfigure} = createActions({
   INITIALIZE: () => null,
@@ -30,4 +30,4 @@ export const {focusLatestTweet, focusUnreadTweet, alarm} = createActions({
 export const {updateTweets, read, setupSearch, changeMode, open, close} = screens;
 export const {updatePreference} = preferences;
 export const {setup, selectTab, zoomIn, zoomOut, zoomReset, showLoading} = principal;
-export const {updateTweetsInSubContents} = subcontents;
+export const {branch, clip} = lineage;

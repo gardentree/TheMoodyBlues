@@ -24,38 +24,4 @@
     justify-content: center;
     align-items: center;
   }
-
-  .subcontents {
-    display: none;
-    position: absolute;
-    background-color: var(--background-color);
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-
-    &.fade-enter {
-      display: block;
-      left: 500px;
-    }
-    &.fade-enter-active {
-      left: 0;
-      transition: all 300ms 0s ease;
-    }
-    &.fade-enter-done {
-      display: block;
-    }
-
-    &.fade-exit {
-      display: block;
-      left: 0;
-    }
-    &.fade-exit-active {
-      left: 500px;
-      transition: all 300ms 0s ease;
-    }
-    &.fade-exit-done {
-      display: none;
-    }
-  }
 }

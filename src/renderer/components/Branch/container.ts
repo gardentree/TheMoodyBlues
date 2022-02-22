@@ -1,15 +1,15 @@
+import {Dispatch} from "redux";
 import {connect} from "react-redux";
-import Component from "./component";
+import Component, {OwnProps, DispatchProps} from "./component";
 import * as actions from "@actions";
 
-const mapStateToProps = (state: TMB.State) => {
-  const {subcontents} = state;
+const mapStateToProps = (state: TMB.State, own: OwnProps): TMB.Screen => {
+  const {screens} = state;
+  const screen = screens.get(own.identity)!;
 
-  return {
-    tweets: subcontents.tweets,
-  };
+  return screen;
 };
-const mapDispatchToProps = {
-  onClose: () => actions.updateTweetsInSubContents([]),
-};
+const mapDispatchToProps = (dispatch: Dispatch, own: OwnProps): DispatchProps => ({
+  onClose: () => dispatch(actions.clip(own.root, own.identity)),
+});
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

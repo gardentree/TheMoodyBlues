@@ -1,6 +1,7 @@
 import * as React from "react";
 import {useEffect} from "react";
 import Article from "../Article";
+import BranchBundle from "../BranchBundle";
 import {reduxForm, Field, InjectedFormProps} from "redux-form";
 
 export interface OwnProperty {
@@ -9,6 +10,7 @@ export interface OwnProperty {
 export type StateProperty = TMB.Screen & {
   initialValues: {query: string};
   hasQuery: boolean;
+  branches: TMB.ScreenID[];
 };
 export interface DispatchProperty {
   didMount(): void;
@@ -21,7 +23,7 @@ type ComponentProperty = OwnProperty & StateProperty & DispatchProperty;
 type Property = ComponentProperty & InjectedFormProps<FormProperty, ComponentProperty>;
 
 const Search = (props: Property) => {
-  const {identity, tweets, mode, lastReadID, hasQuery, handleSubmit, search, reset, didMount} = props;
+  const {identity, tweets, mode, lastReadID, hasQuery, branches, handleSubmit, search, reset, didMount} = props;
 
   useEffect(() => {
     didMount();
@@ -45,6 +47,8 @@ const Search = (props: Property) => {
             </div>
           </form>
         </Article>
+
+        <BranchBundle root={identity} branches={branches} />
       </div>
     </div>
   );

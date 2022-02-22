@@ -6,8 +6,9 @@ import {formValueSelector} from "redux-form";
 import * as actions from "@actions";
 
 const mapStateToProps = (state: TMB.State, own: OwnProperty): StateProperty => {
-  const {screens} = state;
+  const {screens, lineage} = state;
   const screen = screens.get(own.identity)!;
+  const branches = lineage.get(own.identity) || [];
 
   const selector = formValueSelector("Search");
   const query = selector(state, "query");
@@ -16,6 +17,7 @@ const mapStateToProps = (state: TMB.State, own: OwnProperty): StateProperty => {
     ...screen,
     initialValues: {query: screen.options?.query || ""},
     hasQuery: query && query.length > 0,
+    branches,
   };
 };
 const mapDispatchToProps = (dispatch: Dispatch, own: OwnProperty): DispatchProperty => {

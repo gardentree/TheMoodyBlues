@@ -10,7 +10,7 @@ const components = new Map<string, Content>([
 ]);
 
 const mapStateToProps = (state: TMB.State): StateProps => {
-  const {screens, subcontents, preferences} = state;
+  const {screens, preferences} = state;
   const {contents, focused, style, nowLoading} = state.principal;
 
   const unreads = {};
@@ -37,7 +37,6 @@ const mapStateToProps = (state: TMB.State): StateProps => {
     current: focused,
     style: style,
     unreads: unreads,
-    subcontents: subcontents,
     nowLoading: nowLoading,
     items: items,
   };

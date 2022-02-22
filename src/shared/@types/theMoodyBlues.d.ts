@@ -1,9 +1,9 @@
 namespace TheMoodyBlues {
   interface State {
     screens: ScreenMap;
-    subcontents: SubContents;
     principal: Principal;
     preferences: PreferenceMap;
+    lineage: Lineage;
   }
   type ScreenID = string;
   type ScreenMap = Map<ScreenID, Screen>;
@@ -41,9 +41,7 @@ namespace TheMoodyBlues {
     media: Twitter.UserID[];
   }
 
-  interface SubContents {
-    tweets: Twitter.Tweet[];
-  }
+  type Lineage = Map<ScreenID, ScreenID[]>;
 
   interface Principal {
     contents: ScreenID[];

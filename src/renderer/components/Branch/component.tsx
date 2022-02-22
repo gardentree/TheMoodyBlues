@@ -1,31 +1,27 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
-import TweetList from "../TweetList";
+import Article from "../Article";
 
-interface Property {
-  container: string;
-  tweets: Twitter.Tweet[];
+export interface OwnProps {
+  root: TMB.ScreenID;
+  identity: TMB.ScreenID;
+}
+export interface DispatchProps {
   onClose(): void;
 }
+type Props = OwnProps & TMB.Screen & DispatchProps;
 
-const Branch = (props: Property) => {
-  const {container, tweets, onClose} = props;
+const Branch = (props: Props) => {
+  const {identity, tweets, mode, onClose} = props;
 
-  if (tweets.length <= 0) return null;
-
-  const contents = ReactDOM.createPortal(
+  return (
     <div className="Branch">
-      <div className="header">
+      <Article identity={identity} tweets={tweets} mode={mode} lastReadID={null}>
         <button className="btn btn-default" onClick={onClose}>
           <span className="icon icon-cancel" />
         </button>
-      </div>
-      <TweetList identity="subcontents" tweets={tweets} lastReadID={null} />
-    </div>,
-    document.querySelector(container)!
+      </Article>
+    </div>
   );
-
-  return contents;
 };
 
 export default Branch;
