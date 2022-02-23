@@ -8,10 +8,7 @@ const {facade} = window;
 
 function* initialize(action: BaseAction) {
   const newPreferences = (yield call(libraries.loadPreferences)) as TMB.PreferenceMap;
-
-  const actives = Array.from(newPreferences)
-    .filter(([identity, preference]) => preference.screen.active)
-    .map(([identity, preference]) => identity);
+  const actives = extractActives(newPreferences);
 
   yield put(actions.updatePreference(newPreferences));
   for (const identity of actives) {
