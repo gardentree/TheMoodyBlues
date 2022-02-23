@@ -15,6 +15,7 @@ export function setup(renderer: WebContents) {
 async function prepare(renderer: WebContents) {
   if (observed) {
     renderer.send(FacadeActions.LAUNCH);
+    return;
   }
 
   const agent = call();
