@@ -10,12 +10,12 @@ const components = new Map<string, Content>([
 ]);
 
 const mapStateToProps = (state: TMB.State): StateProps => {
-  const {screens, preferences} = state;
-  const {contents, focused, style, nowLoading} = state.principal;
+  const {screens: screenMap, preferences} = state;
+  const {screens, focused, style, nowLoading} = state.principal;
 
   const unreads = {};
-  for (const identity of contents) {
-    const screen = screens.get(identity)!;
+  for (const identity of screens) {
+    const screen = screenMap.get(identity)!;
     const {tweets, lastReadID} = screen;
     let count = tweets ? tweets.filter((tweet: Twitter.Tweet) => tweet.id_str > lastReadID).length : 0;
     if (count <= 0) count = 0;
@@ -23,7 +23,7 @@ const mapStateToProps = (state: TMB.State): StateProps => {
     unreads[identity] = count;
   }
 
-  const items: TabItem[] = contents.map((identity) => {
+  const items: TabItem[] = screens.map((identity) => {
     const preference = preferences.get(identity)!;
 
     return {

@@ -44,7 +44,7 @@ namespace TheMoodyBlues {
   type Lineage = Map<ScreenID, ScreenID[]>;
 
   interface Principal {
-    contents: ScreenID[];
+    screens: ScreenID[];
     focused: ScreenID;
     nowLoading: boolean;
     style: PrincipalStyle;

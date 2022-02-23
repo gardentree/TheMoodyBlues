@@ -1,8 +1,8 @@
 import {createActions, handleActions} from "redux-actions";
 
 export const {setScreens, focusScreen, zoomIn, zoomOut, zoomReset, showLoading} = createActions({
-  SET_SCREENS: (contents: TMB.ScreenID[]) => ({
-    contents,
+  SET_SCREENS: (screens: TMB.ScreenID[]) => ({
+    screens,
   }),
   FOCUS_SCREEN: (identity) => ({
     focused: identity,
@@ -19,7 +19,7 @@ export default handleActions<TMB.Principal, Partial<TMB.Principal>>(
   {
     [setScreens.toString()]: (state, action) => ({
       ...state,
-      contents: action.payload.contents!,
+      screens: action.payload.screens!,
     }),
     [focusScreen.toString()]: (state, action) => ({
       ...state,
@@ -43,7 +43,7 @@ export default handleActions<TMB.Principal, Partial<TMB.Principal>>(
     }),
   },
   {
-    contents: [],
+    screens: [],
     focused: "",
     style: {
       fontSize: "12px",
