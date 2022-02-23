@@ -6,15 +6,15 @@ import * as libraries from "@libraries/screen";
 
 const {facade} = window;
 
-function* initialize(action: BaseAction) {
+function* prepareState(action: BaseAction) {
   const newPreferences = (yield call(libraries.loadPreferences)) as TMB.PreferenceMap;
   const actives = extractActives(newPreferences);
 
-  yield put(actions.updatePreference(newPreferences));
+  yield put(actions.updatePreferences(newPreferences));
   for (const identity of actives) {
-    yield put(actions.open(identity));
+    yield put(actions.prepareScreen(identity));
   }
-  yield put(actions.setup(actives));
+  yield put(actions.setScreens(actives));
 }
 function* reconfigure(action: BaseAction) {
   const state: TMB.State = yield select();
@@ -25,17 +25,17 @@ function* reconfigure(action: BaseAction) {
   const newIdentities = extractActives(newPreferences);
   const oldIdentities = extractActives(oldPreferences);
 
-  yield put(actions.updatePreference(newPreferences));
+  yield put(actions.updatePreferences(newPreferences));
   for (const identity of newIdentities.filter((key) => !oldIdentities.includes(key))) {
-    yield put(actions.open(identity));
+    yield put(actions.prepareScreen(identity));
   }
-  yield put(actions.setup(newIdentities));
+  yield put(actions.setScreens(newIdentities));
   for (const identity of oldIdentities.filter((key) => !newIdentities.includes(key))) {
-    yield put(actions.close(identity));
+    yield put(actions.closeScreen(identity));
 
     for (const branch of lineage.get(identity) || []) {
       yield put(actions.clip(identity, branch));
-      yield put(actions.close(branch));
+      yield put(actions.closeScreen(branch));
     }
   }
 }
@@ -70,7 +70,7 @@ function* searchTweets(action: Action<{query: string}>) {
   const {query} = action.payload;
   const identity = "search"; //TODO 動的にする？
 
-  yield put(actions.selectTab(identity));
+  yield put(actions.focusScreen(identity));
   yield put(actions.setupSearch(identity, query));
   yield reorder(actions.reload(true, identity, true) as ActionMeta<{}, {tab: TMB.ScreenID; force: boolean}>); //FIXME castを消す
 }
@@ -89,7 +89,7 @@ function* branch(tweets: Twitter.Tweet[]) {
   const root = ((yield select()) as TMB.State).principal.focused;
   const branch = `${root}.${Date.now()}`;
 
-  yield put(actions.open(branch));
+  yield put(actions.prepareScreen(branch));
   yield put(actions.updateTweets(tweets, branch));
   yield put(actions.branch(root, branch));
 }
@@ -120,12 +120,12 @@ const wrap = (saga: (action: ActionMeta<any, any>) => Generator) =>
 
 // prettier-ignore
 export default [
-  takeLatest(actions.initialize, wrap(initialize)),
+  takeLatest(actions.prepareState, wrap(prepareState)),
   takeLatest(actions.reload, wrap(reorder)),
   takeLatest(actions.searchTweets, wrap(searchTweets)),
   takeLatest(actions.reconfigure, wrap(reconfigure)),
   takeLatest(actions.displayUserTimeline, wrap(displayUserTimeline)),
   takeLatest(actions.displayConversation, wrap(displayConversation)),
-  takeEvery(actions.mountComponent, wrap(launch)),
-  takeEvery(actions.unmountComponent, wrap(shutdown))
+  takeEvery(actions.mountScreen, wrap(launch)),
+  takeEvery(actions.unmountScreen, wrap(shutdown))
 ];

@@ -1,7 +1,7 @@
 import {expectSaga} from "redux-saga-test-plan";
 import {expect} from "chai";
 
-const [initialize, reorder, searchTweets] = rewires("renderer/sagas/twitter", ["initialize", "reorder", "searchTweets"]);
+const [reorder, searchTweets] = rewires("renderer/sagas/twitter", ["reorder", "searchTweets"]);
 
 describe(reorder.name, () => {
   it("assign tab", () => {
@@ -97,7 +97,7 @@ describe(searchTweets.name, () => {
         },
       })
       .put({
-        type: "SELECT_TAB",
+        type: "FOCUS_SCREEN",
         payload: {focused: "search"},
       })
       .put({

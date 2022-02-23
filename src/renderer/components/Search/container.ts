@@ -23,7 +23,7 @@ const mapStateToProps = (state: TMB.State, own: OwnProps): StateProps => {
 const mapDispatchToProps = (dispatch: Dispatch, own: OwnProps): DispatchProps => {
   return {
     search: (values: {query: string}) => dispatch(actions.searchTweets(values.query)),
-    didMount: () => dispatch(actions.mountComponent(own.identity)),
+    didMount: () => dispatch(actions.mountScreen(own.identity)),
   };
 };
 

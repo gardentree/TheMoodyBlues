@@ -1,10 +1,10 @@
 import {createActions, handleActions} from "redux-actions";
 
-export const {setup, selectTab, zoomIn, zoomOut, zoomReset, showLoading} = createActions({
-  SETUP: (contents: TMB.ScreenID[]) => ({
+export const {setScreens, focusScreen, zoomIn, zoomOut, zoomReset, showLoading} = createActions({
+  SET_SCREENS: (contents: TMB.ScreenID[]) => ({
     contents,
   }),
-  SELECT_TAB: (identity) => ({
+  FOCUS_SCREEN: (identity) => ({
     focused: identity,
   }),
   ZOOM_IN: () => {},
@@ -17,11 +17,11 @@ export const {setup, selectTab, zoomIn, zoomOut, zoomReset, showLoading} = creat
 
 export default handleActions<TMB.Principal, Partial<TMB.Principal>>(
   {
-    [setup.toString()]: (state, action) => ({
+    [setScreens.toString()]: (state, action) => ({
       ...state,
       contents: action.payload.contents!,
     }),
-    [selectTab.toString()]: (state, action) => ({
+    [focusScreen.toString()]: (state, action) => ({
       ...state,
       focused: action.payload.focused!,
     }),

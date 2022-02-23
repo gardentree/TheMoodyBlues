@@ -11,8 +11,8 @@ const template = {
 };
 
 describe(reducer.name, () => {
-  it("selectTab", () => {
-    expect(reducer(template, actions.selectTab("home"))).to.deep.equal({
+  it("focusScreen", () => {
+    expect(reducer(template, actions.focusScreen("home"))).to.deep.equal({
       focused: "home",
       style: {
         fontSize: "12px",

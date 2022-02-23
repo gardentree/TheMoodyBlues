@@ -4,15 +4,15 @@ import * as preferences from "./preferences";
 import * as principal from "./principal";
 import * as lineage from "./lineage";
 
-export const {initialize, reconfigure} = createActions({
-  INITIALIZE: () => null,
+export const {prepareState, reconfigure} = createActions({
+  PREPARE_STATE: () => null,
   RECONFIGURE: () => null,
 });
 
-export const {reload, mountComponent, unmountComponent, searchTweets} = createActions({
+export const {reload, mountScreen, unmountScreen, searchTweets} = createActions({
   RELOAD: [(force, tab) => null, (force, tab, silently = false) => ({force: force, tab: tab, silently: silently})],
-  MOUNT_COMPONENT: (identity) => ({identity: identity}),
-  UNMOUNT_COMPONENT: (identity) => ({identity: identity}),
+  MOUNT_SCREEN: (identity) => ({identity: identity}),
+  UNMOUNT_SCREEN: (identity) => ({identity: identity}),
   SEARCH_TWEETS: (query) => ({query: query}),
 });
 
@@ -27,7 +27,7 @@ export const {focusLatestTweet, focusUnreadTweet, alarm} = createActions({
   ALARM: (message) => ({message: message}),
 });
 
-export const {updateTweets, read, setupSearch, changeMode, open, close} = screens;
-export const {updatePreference} = preferences;
-export const {setup, selectTab, zoomIn, zoomOut, zoomReset, showLoading} = principal;
+export const {updateTweets, mark, setupSearch, changeMode, prepareScreen, closeScreen} = screens;
+export const {updatePreferences} = preferences;
+export const {setScreens, focusScreen, zoomIn, zoomOut, zoomReset, showLoading} = principal;
 export const {branch, clip} = lineage;

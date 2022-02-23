@@ -26,7 +26,7 @@ export function* order(identity: TMB.ScreenID, screen: TMB.Screen, preference: T
 
     yield put(actions.updateTweets(newTweets, identity, {query: query}));
     if (tweets.length > 0 && oldTweets.length <= 0) {
-      yield put(actions.read(identity, tweets[0].id));
+      yield put(actions.mark(identity, tweets[0].id));
     }
 
     yield timer.start(identity);

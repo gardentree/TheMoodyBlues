@@ -10,7 +10,7 @@ const mapDispatchToProps = (dispatch: Dispatch, own: OwnProps): DispatchProps =>
   onScroll: (event: React.SyntheticEvent<HTMLElement>): void => {
     const {identity, tweets, lastReadID} = own;
     if ((event.target as HTMLElement).scrollTop <= 0 && tweets.length > 0 && lastReadID != null && lastReadID < tweets[0].id_str) {
-      dispatch(actions.read(identity, tweets[0].id));
+      dispatch(actions.mark(identity, tweets[0].id));
     }
   },
   onChangeMode: (event: React.SyntheticEvent<HTMLElement>): void => {

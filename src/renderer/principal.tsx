@@ -17,7 +17,7 @@ export default async function launch() {
   sagaMiddleware.run(rootSaga);
 
   setupEvents(store);
-  store.dispatch(actions.initialize());
+  store.dispatch(actions.prepareState());
 
   ReactDOM.render(
     <Provider store={store}>

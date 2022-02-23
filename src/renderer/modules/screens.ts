@@ -15,7 +15,7 @@ function mergeScreen(oldScreens: Map<string, TMB.Screen>, identity: string, newS
   return screens;
 }
 
-export const {updateTweets, read, setupSearch, changeMode, open, close} = createActions({
+export const {updateTweets, mark, setupSearch, changeMode, prepareScreen, closeScreen} = createActions({
   UPDATE_TWEETS: [
     (tweets, identity, options = undefined) => ({
       tweets: tweets,
@@ -25,7 +25,7 @@ export const {updateTweets, read, setupSearch, changeMode, open, close} = create
       identity: identity,
     }),
   ],
-  READ: [
+  MARK: [
     (identity: TMB.ScreenID, lastReadID) => ({
       lastReadID: lastReadID,
     }),
@@ -49,13 +49,13 @@ export const {updateTweets, read, setupSearch, changeMode, open, close} = create
       identity,
     }),
   ],
-  OPEN: [
+  PREPARE_SCREEN: [
     (identity: TMB.ScreenID) => {},
     (identity: TMB.ScreenID) => ({
       identity,
     }),
   ],
-  CLOSE: [
+  CLOSE_SCREEN: [
     (identity: TMB.ScreenID) => {},
     (identity: TMB.ScreenID) => ({
       identity,
@@ -68,7 +68,7 @@ export default handleActions<TMB.ScreenMap, RecursivePartial<TMB.Screen>, {ident
     [updateTweets.toString()]: (state, action) => {
       return mergeScreen(state, action.meta.identity, action.payload);
     },
-    [read.toString()]: (state, action) => {
+    [mark.toString()]: (state, action) => {
       return mergeScreen(state, action.meta.identity, action.payload);
     },
     [setupSearch.toString()]: (state, action) => {
@@ -91,7 +91,7 @@ export default handleActions<TMB.ScreenMap, RecursivePartial<TMB.Screen>, {ident
 
       return mergeScreen(state, identity, action.payload);
     },
-    [open.toString()]: (state, action) => {
+    [prepareScreen.toString()]: (state, action) => {
       const {identity} = action.meta;
       const newState = new Map(state);
 
@@ -99,7 +99,7 @@ export default handleActions<TMB.ScreenMap, RecursivePartial<TMB.Screen>, {ident
 
       return newState;
     },
-    [close.toString()]: (state, action) => {
+    [closeScreen.toString()]: (state, action) => {
       const {identity} = action.meta;
       const newState = new Map(state);
 

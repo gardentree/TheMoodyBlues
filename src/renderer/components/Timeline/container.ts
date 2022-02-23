@@ -16,8 +16,8 @@ const mapStateToProps = (state: TMB.State, own: OwnProps): StateProps => {
 };
 const mapDispatchToProps = (dispatch: Dispatch, own: OwnProps): DispatchProps => {
   return {
-    didMount: () => dispatch(actions.mountComponent(own.identity)),
-    willUnmount: () => dispatch(actions.unmountComponent(own.identity)),
+    didMount: () => dispatch(actions.mountScreen(own.identity)),
+    willUnmount: () => dispatch(actions.unmountScreen(own.identity)),
   };
 };
 

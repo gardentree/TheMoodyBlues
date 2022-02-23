@@ -40,7 +40,7 @@ describe(reducer.name, () => {
     expect(reducer(oldTimelines, actions.updateTweets([{id: 2}, {id: 1}], "home"))).to.deep.equal(newTimelines);
   });
 
-  it("read", () => {
+  it("mark", () => {
     const oldTimelines = new Map(template);
     oldTimelines.get("home").tweets = [{id: 1}];
     oldTimelines.get("home").lastReadID = 0;
@@ -49,7 +49,7 @@ describe(reducer.name, () => {
     newTimelines.get("home").tweets = [{id: 1}];
     newTimelines.get("home").lastReadID = 1;
 
-    expect(reducer(oldTimelines, actions.read("home", 1))).to.deep.equal(newTimelines);
+    expect(reducer(oldTimelines, actions.mark("home", 1))).to.deep.equal(newTimelines);
   });
 
   describe("setupSearch", () => {

@@ -42,7 +42,7 @@ const mapStateToProps = (state: TMB.State): StateProps => {
   };
 };
 const mapDispatchToProps: DispatchProps = {
-  onClick: (event: React.SyntheticEvent<HTMLElement>) => actions.selectTab(event.currentTarget.dataset.name),
-  didMount: (identity: string) => actions.selectTab(identity),
+  onClick: (event: React.SyntheticEvent<HTMLElement>) => actions.focusScreen(event.currentTarget.dataset.name),
+  didMount: (identity: string) => actions.focusScreen(identity),
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Component);
