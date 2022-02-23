@@ -2,7 +2,7 @@ import * as React from "react";
 import TweetBody from "../TweetBody";
 import MediaBox from "../MediaBox";
 import UserIdentifier from "../UserIdentifier";
-import {openContextMenu} from "../../../helpers/tools";
+import {showMenuForTweet} from "@libraries/tools";
 
 interface Props {
   tweet: Twitter.Tweet;
@@ -13,7 +13,7 @@ const Quotation = (props: Props) => {
   const media = tweet.extended_entities?.media;
 
   return (
-    <div className="quote" onContextMenu={openContextMenu(tweet)} tabIndex={-1}>
+    <div className="quote" onContextMenu={showMenuForTweet(tweet)} tabIndex={-1}>
       <div className="screen_name">
         <UserIdentifier identifier={tweet.user.screen_name} />
       </div>

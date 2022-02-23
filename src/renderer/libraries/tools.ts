@@ -1,5 +1,6 @@
 const {facade} = window;
-export function openContextMenu(tweet: Twitter.Tweet) {
+
+export function showMenuForTweet(tweet: Twitter.Tweet) {
   return (event: React.SyntheticEvent<HTMLElement>) => {
     event.stopPropagation();
 

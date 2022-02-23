@@ -4,7 +4,7 @@ import TweetBody from "./TweetBody";
 import MediaBox from "./MediaBox";
 import Quotation from "./Quotation";
 import * as DateUtility from "date-fns";
-import {openContextMenu} from "../../helpers/tools";
+import {showMenuForTweet} from "@libraries/tools";
 
 interface Props {
   source: Twitter.Tweet;
@@ -34,7 +34,7 @@ const Tweet = (props: Props) => {
   }
 
   return (
-    <div data-url={`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`} onContextMenu={openContextMenu(source)} tabIndex={-1}>
+    <div data-url={`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`} onContextMenu={showMenuForTweet(source)} tabIndex={-1}>
       <div className={`avatar${retweet ? " retweet" : ""}${unread ? " unread" : ""}`}>
         <img src={tweet.user.profile_image_url_https} className="tweeter" />
         {retweet && <img src={retweet.user.profile_image_url_https} className="retweeter" />}
