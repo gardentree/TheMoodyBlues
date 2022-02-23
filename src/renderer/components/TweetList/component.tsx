@@ -3,15 +3,15 @@ import Tweet from "../Tweet";
 import {default as TweetErrorBoundary} from "../Tweet/ErrorBoundary";
 import {CSSTransition, TransitionGroup} from "react-transition-group";
 
-export interface OwnProperty {
+export interface OwnProps {
   identity: TMB.ScreenID;
   tweets: Twitter.Tweet[];
   lastReadID: string | null;
 }
-export interface StateProperty {}
-type Property = OwnProperty & StateProperty;
+export interface StateProps {}
+type Props = OwnProps & StateProps;
 
-const TweetList = (props: Property) => {
+const TweetList = (props: Props) => {
   const {tweets, lastReadID} = props;
   const elements = tweets.map((tweet) => {
     const unread = lastReadID != null && tweet.id_str > lastReadID;

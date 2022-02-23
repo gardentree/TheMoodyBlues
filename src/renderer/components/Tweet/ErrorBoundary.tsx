@@ -2,12 +2,12 @@ import * as React from "react";
 
 const {facade} = window;
 
-interface Properties {
+interface Props {
   tweet: Twitter.Tweet;
 }
 
 export default class ErrorBoundary extends React.Component<{tweet: Twitter.Tweet}, {error?: {message: string}}> {
-  constructor(props: Properties) {
+  constructor(props: Props) {
     super(props);
 
     this.state = {error: undefined};

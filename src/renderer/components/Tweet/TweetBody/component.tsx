@@ -4,13 +4,13 @@ import ExternalLink from "../ExternalLink";
 import {decodeHTML} from "@shared/tools";
 import {parseElements} from "@libraries/twitter";
 
-interface Property {
+interface Props {
   tweet: Twitter.Tweet;
   expand?: boolean;
   search(event: React.SyntheticEvent): void;
 }
 
-const TweetBody: React.SFC<Property> = ({tweet, expand = false, search}) => {
+const TweetBody: React.SFC<Props> = ({tweet, expand = false, search}) => {
   const elements = parseElements(tweet, expand);
 
   const fragments: JSX.Element[] = [];

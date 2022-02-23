@@ -7,11 +7,11 @@ import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 if (process.env.NODE_ENV !== "test") Modal.setAppElement("#app");
 
-interface Property {
+interface Props {
   media: Twitter.Media[];
 }
 
-const MediaBox = (props: Property) => {
+const MediaBox = (props: Props) => {
   const {media} = props;
   if (media.length <= 0) return <div />;
 

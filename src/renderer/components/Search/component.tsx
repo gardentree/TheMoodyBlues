@@ -4,25 +4,25 @@ import Article from "../Article";
 import BranchBundle from "../BranchBundle";
 import {reduxForm, Field, InjectedFormProps} from "redux-form";
 
-export interface OwnProperty {
+export interface OwnProps {
   identity: TMB.ScreenID;
 }
-export type StateProperty = TMB.Screen & {
+export type StateProps = TMB.Screen & {
   initialValues: {query: string};
   hasQuery: boolean;
   branches: TMB.ScreenID[];
 };
-export interface DispatchProperty {
+export interface DispatchProps {
   didMount(): void;
   search(values: {query: string}): void;
 }
 export interface FormProperty {
   query: string;
 }
-type ComponentProperty = OwnProperty & StateProperty & DispatchProperty;
-type Property = ComponentProperty & InjectedFormProps<FormProperty, ComponentProperty>;
+type ComponentProperty = OwnProps & StateProps & DispatchProps;
+type Props = ComponentProperty & InjectedFormProps<FormProperty, ComponentProperty>;
 
-const Search = (props: Property) => {
+const Search = (props: Props) => {
   const {identity, tweets, mode, lastReadID, hasQuery, branches, handleSubmit, search, reset, didMount} = props;
 
   useEffect(() => {

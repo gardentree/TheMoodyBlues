@@ -6,12 +6,12 @@ import Quotation from "./Quotation";
 import * as DateUtility from "date-fns";
 import {openContextMenu} from "../../helpers/tools";
 
-interface Property {
+interface Props {
   source: Twitter.Tweet;
   unread: boolean;
 }
 
-const Tweet = (props: Property) => {
+const Tweet = (props: Props) => {
   const {source, unread} = props;
 
   let tweet: Twitter.Tweet, retweet: Twitter.Tweet | null;

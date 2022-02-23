@@ -1,11 +1,11 @@
 import {connect} from "react-redux";
 import {Dispatch} from "redux";
 import Component from "./component";
-import {OwnProperty, StateProperty, DispatchProperty} from "./component";
+import {OwnProps, StateProps, DispatchProps} from "./component";
 import {formValueSelector} from "redux-form";
 import * as actions from "@actions";
 
-const mapStateToProps = (state: TMB.State, own: OwnProperty): StateProperty => {
+const mapStateToProps = (state: TMB.State, own: OwnProps): StateProps => {
   const {screens, lineage} = state;
   const screen = screens.get(own.identity)!;
   const branches = lineage.get(own.identity) || [];
@@ -20,7 +20,7 @@ const mapStateToProps = (state: TMB.State, own: OwnProperty): StateProperty => {
     branches,
   };
 };
-const mapDispatchToProps = (dispatch: Dispatch, own: OwnProperty): DispatchProperty => {
+const mapDispatchToProps = (dispatch: Dispatch, own: OwnProps): DispatchProps => {
   return {
     search: (values: {query: string}) => dispatch(actions.searchTweets(values.query)),
     didMount: () => dispatch(actions.mountComponent(own.identity)),

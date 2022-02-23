@@ -2,21 +2,21 @@ import * as React from "react";
 import TweetList from "../TweetList";
 import MediaList from "../MediaList";
 
-export interface OwnProperty {
+export interface OwnProps {
   identity: string;
   tweets: Twitter.Tweet[];
   mode: TMB.ArticleMode;
   lastReadID: string | null;
   children?: React.ReactNode;
 }
-export interface DispatchProperty {
+export interface DispatchProps {
   onScroll(event: React.SyntheticEvent<HTMLElement>): void;
   onChangeMode(event: React.SyntheticEvent<HTMLElement>): void;
 }
 
-type Property = OwnProperty & DispatchProperty;
+type Props = OwnProps & DispatchProps;
 
-const Article = (props: Property) => {
+const Article = (props: Props) => {
   const {identity, tweets, mode, lastReadID, onScroll, onChangeMode, children} = props;
 
   const article = (() => {

@@ -19,9 +19,9 @@ export interface DispatchProps {
   onClick(event: React.SyntheticEvent<HTMLElement>): void;
   didMount(identity: string): void;
 }
-type Property = StateProps & DispatchProps;
+type Props = StateProps & DispatchProps;
 
-const Principal = (props: Property) => {
+const Principal = (props: Props) => {
   const {current, style, unreads, onClick, nowLoading, items, didMount} = props;
 
   if (items.length <= 0) {

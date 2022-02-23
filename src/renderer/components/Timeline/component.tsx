@@ -3,20 +3,20 @@ import {useEffect} from "react";
 import Article from "../Article";
 import BranchBundle from "../BranchBundle";
 
-export interface OwnProperty {
+export interface OwnProps {
   identity: string;
 }
 export type StateProps = TMB.Screen & {
   branches: TMB.ScreenID[];
 };
-export interface DispatchProperty {
+export interface DispatchProps {
   didMount(): void;
   willUnmount(): void;
 }
 
-type Property = OwnProperty & StateProps & DispatchProperty;
+type Props = OwnProps & StateProps & DispatchProps;
 
-const Timeline = (props: Property) => {
+const Timeline = (props: Props) => {
   const {identity, tweets, mode, lastReadID, branches, didMount, willUnmount} = props;
 
   useEffect(() => {

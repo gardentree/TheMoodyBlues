@@ -4,11 +4,11 @@ import MediaBox from "../MediaBox";
 import UserIdentifier from "../UserIdentifier";
 import {openContextMenu} from "../../../helpers/tools";
 
-interface Property {
+interface Props {
   tweet: Twitter.Tweet;
 }
 
-const Quotation = (props: Property) => {
+const Quotation = (props: Props) => {
   const {tweet} = props;
   const media = tweet.extended_entities?.media;
 

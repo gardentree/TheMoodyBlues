@@ -3,10 +3,10 @@ import * as React from "react";
 interface Form extends HTMLFormElement {
   verifier: HTMLInputElement;
 }
-interface Property {
+interface Props {
   callback(verifier: string): void;
 }
-const VerifierForm = (props: Property) => {
+const VerifierForm = (props: Props) => {
   const {callback} = props;
 
   const handleSubmit = (event: React.SyntheticEvent) => {

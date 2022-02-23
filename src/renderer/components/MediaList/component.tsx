@@ -1,13 +1,13 @@
 import * as React from "react";
 import MediaBox from "../Tweet/MediaBox";
 
-export interface OwnProperty {
+export interface OwnProps {
   identity: TMB.ScreenID;
   tweets: Twitter.Tweet[];
 }
-type Property = OwnProperty;
+type Props = OwnProps;
 
-const MediaList = (props: Property) => {
+const MediaList = (props: Props) => {
   const {tweets} = props;
   const media = tweets
     .filter((tweet) => tweet.extended_entities?.media)
