@@ -39,6 +39,10 @@ export const INITIAL_VALUE: TMB.Screen = {
   tweets: [],
   mode: "tweet",
   lastReadID: "",
+  state: {
+    action: "booting",
+    time: Date.now(),
+  },
 };
 
 export async function loadPreferences(): Promise<TMB.PreferenceMap> {

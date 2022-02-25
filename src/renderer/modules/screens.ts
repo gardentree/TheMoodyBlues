@@ -15,7 +15,7 @@ function mergeScreen(oldScreens: Map<string, TMB.Screen>, identity: string, newS
   return screens;
 }
 
-export const {updateTweets, mark, setupSearch, changeMode, prepareScreen, closeScreen} = createActions({
+export const {updateTweets, mark, setupSearch, changeMode, prepareScreen, closeScreen, updateScreenState} = createActions({
   UPDATE_TWEETS: [
     (tweets, identity, options = undefined) => ({
       tweets: tweets,
@@ -58,6 +58,17 @@ export const {updateTweets, mark, setupSearch, changeMode, prepareScreen, closeS
   CLOSE_SCREEN: [
     (identity: TMB.ScreenID) => {},
     (identity: TMB.ScreenID) => ({
+      identity,
+    }),
+  ],
+  UPDATE_SCREEN_STATE: [
+    (identity: TMB.ScreenID, action: TMB.ScreenState) => ({
+      state: {
+        action,
+        time: Date.now(),
+      },
+    }),
+    (identity: TMB.ScreenID, action: TMB.ScreenState) => ({
       identity,
     }),
   ],
@@ -106,6 +117,9 @@ export default handleActions<TMB.ScreenMap, RecursivePartial<TMB.Screen>, {ident
       newState.delete(identity);
 
       return newState;
+    },
+    [updateScreenState.toString()]: (state, action) => {
+      return mergeScreen(state, action.meta.identity, action.payload);
     },
   },
   new Map()

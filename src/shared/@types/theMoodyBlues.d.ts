@@ -13,11 +13,16 @@ namespace TheMoodyBlues {
     tweets: Twitter.Tweet[];
     mode: ArticleMode;
     lastReadID: Twitter.TweetID;
+    state: {
+      action: ScreenState;
+      time: number;
+    };
     options?: Partial<{
       query: string;
     }>;
   }
   type ArticleMode = "tweet" | "media";
+  type ScreenState = "booting" | "wating" | "killed";
 
   interface Preference {
     identity: ScreenID;
