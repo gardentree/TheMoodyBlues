@@ -4,20 +4,18 @@ import MediaList from "../MediaList";
 
 export interface OwnProps {
   identity: string;
-  tweets: Twitter.Tweet[];
-  mode: TMB.ArticleMode;
-  lastReadID: string | null;
   children?: React.ReactNode;
 }
+export type StateProps = TMB.Screen;
 export interface DispatchProps {
-  onScroll(event: React.SyntheticEvent<HTMLElement>): void;
-  onChangeMode(event: React.SyntheticEvent<HTMLElement>): void;
+  onMark(latest: Twitter.TweetID): void;
+  onShowModeMenu(mode: TMB.ArticleMode): void;
 }
 
-type Props = OwnProps & DispatchProps;
+type Props = OwnProps & StateProps & DispatchProps;
 
 const Article = (props: Props) => {
-  const {identity, tweets, mode, lastReadID, onScroll, onChangeMode, children} = props;
+  const {identity, tweets, mode, lastReadID, onMark, onShowModeMenu, children} = props;
 
   const article = (() => {
     switch (mode) {
@@ -30,13 +28,23 @@ const Article = (props: Props) => {
     }
   })();
 
+  const onScroll = (event: React.SyntheticEvent<HTMLElement>) => {
+    const latest = tweets[0].id_str;
+    if ((event.target as HTMLElement).scrollTop <= 0 && tweets.length > 0 && lastReadID < latest) {
+      onMark(latest);
+    }
+  };
+  const onClickModeMenu = (event: React.SyntheticEvent<HTMLElement>) => {
+    onShowModeMenu(mode);
+  };
+
   return (
     <div className="Article" onScroll={onScroll}>
       <header className="toolbar toolbar-header">
         <div className="actions">
           <div className="actions-center">{children}</div>
           <div className="actions-right">
-            <button onClick={onChangeMode} className="btn btn-default btn-dropdown">
+            <button onClick={onClickModeMenu} className="btn btn-default btn-dropdown">
               <span className="icon icon-list"></span>
             </button>
           </div>

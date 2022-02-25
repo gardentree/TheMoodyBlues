@@ -14,7 +14,6 @@ const mapStateToProps = (state: TMB.State, own: OwnProps): StateProps => {
   const query = selector(state, "query");
 
   return {
-    ...screen,
     initialValues: {query: screen.options?.query || ""},
     hasQuery: query && query.length > 0,
     branches,

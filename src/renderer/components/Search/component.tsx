@@ -7,11 +7,11 @@ import {reduxForm, Field, InjectedFormProps} from "redux-form";
 export interface OwnProps {
   identity: TMB.ScreenID;
 }
-export type StateProps = TMB.Screen & {
+export interface StateProps {
   initialValues: {query: string};
   hasQuery: boolean;
   branches: TMB.ScreenID[];
-};
+}
 export interface DispatchProps {
   didMount(): void;
   search(values: {query: string}): void;
@@ -23,7 +23,7 @@ type ComponentProperty = OwnProps & StateProps & DispatchProps;
 type Props = ComponentProperty & InjectedFormProps<FormProperty, ComponentProperty>;
 
 const Search = (props: Props) => {
-  const {identity, tweets, mode, lastReadID, hasQuery, branches, handleSubmit, search, reset, didMount} = props;
+  const {identity, hasQuery, branches, handleSubmit, search, reset, didMount} = props;
 
   useEffect(() => {
     didMount();
@@ -32,7 +32,7 @@ const Search = (props: Props) => {
   return (
     <div className="Search">
       <div style={{height: "100%"}}>
-        <Article identity={identity} tweets={tweets} mode={mode} lastReadID={lastReadID}>
+        <Article identity={identity}>
           <form className="search" onSubmit={handleSubmit(search)}>
             <div className="field">
               <Field name="query" component="input" type="search" className="form-control" />
