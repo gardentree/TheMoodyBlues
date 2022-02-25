@@ -1,7 +1,6 @@
-import {connect} from "react-redux";
 import {Dispatch} from "redux";
-import Component from "./component";
-import {OwnProps, StateProps, DispatchProps} from "./component";
+import {connect} from "react-redux";
+import Component,{OwnProps, StateProps, DispatchProps} from "./component";
 import * as actions from "@actions";
 
 const mapStateToProps = (state: TMB.State, own: OwnProps): StateProps => {

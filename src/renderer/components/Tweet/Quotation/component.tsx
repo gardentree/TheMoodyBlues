@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import TweetBody from "../TweetBody";
 import MediaBox from "../MediaBox";
 import UserIdentifier from "../UserIdentifier";

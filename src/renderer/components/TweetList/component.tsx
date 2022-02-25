@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Tweet from "../Tweet";
 import {default as TweetErrorBoundary} from "../Tweet/ErrorBoundary";
 import {CSSTransition, TransitionGroup} from "react-transition-group";

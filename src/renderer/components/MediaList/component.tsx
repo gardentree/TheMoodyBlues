@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import MediaBox from "../Tweet/MediaBox";
 
 export interface OwnProps {

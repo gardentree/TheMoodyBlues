@@ -1,4 +1,4 @@
-import * as React from "react";
+import React from "react";
 import Branch from "../Branch";
 import {TransitionGroup, CSSTransition} from "react-transition-group";
 
