@@ -1,39 +1,6 @@
-const {facade} = window;
+import {HOME, SEARCH, MENTIONS, LIST} from "@shared/defaults";
 
-const HOME: Omit<TMB.ScreenPreference, "active"> = {
-  identity: "home",
-  title: "Home",
-  component: "Timeline",
-  interval: 120,
-  way: "retrieveTimeline",
-  mute: true,
-  growl: true,
-};
-const SEARCH: Omit<TMB.ScreenPreference, "active"> = {
-  identity: "search",
-  title: "Search",
-  component: "Search",
-  interval: 60,
-  way: "search",
-  mute: false,
-  growl: false,
-};
-const MENTIONS: Omit<TMB.ScreenPreference, "active"> = {
-  identity: "mentions",
-  title: "Mentions",
-  component: "Timeline",
-  interval: 300,
-  way: "retrieveMentions",
-  mute: false,
-  growl: true,
-};
-const LIST: Omit<TMB.ScreenPreference, "identity" | "title" | "active"> = {
-  component: "Timeline",
-  interval: 120,
-  way: "retrieveTimelineOfList",
-  mute: true,
-  growl: true,
-};
+const {facade} = window;
 
 export const INITIAL_VALUE: TMB.Screen = {
   tweets: [],
@@ -46,7 +13,7 @@ export const INITIAL_VALUE: TMB.Screen = {
 };
 
 export async function loadPreferences(): Promise<TMB.PreferenceMap> {
-  const screens = (await facade.storage.getScreenPreferences()) || initialPreferences();
+  const screens = await facade.storage.getScreenPreferences();
   const mute: TMB.MutePreference = Object.assign(
     {
       keywords: [],
@@ -57,10 +24,6 @@ export async function loadPreferences(): Promise<TMB.PreferenceMap> {
   );
 
   return new Map(screens.map((screen) => [screen.identity, {identity: screen.identity, screen, mute}]));
-}
-
-function initialPreferences(): TMB.ScreenPreference[] {
-  return [HOME, SEARCH, MENTIONS].map((template) => Object.assign({active: true}, template));
 }
 
 export function mixPreferences(actives: TMB.ScreenPreference[], lists: Twitter.List[]): TMB.ScreenPreference[] {

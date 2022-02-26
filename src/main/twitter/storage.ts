@@ -1,68 +1,82 @@
 import ElectronStore from "electron-store";
+import {HOME, SEARCH, MENTIONS} from "@shared/defaults";
 
-const storage = require("electron-json-storage");
+const SCREENS: TMB.ScreenPreference[] = [HOME, SEARCH, MENTIONS].map((template) => Object.assign({active: true}, template));
 
-const store = new ElectronStore();
-
-const getStore = (key: string) => {
-  return store.get(key);
-};
-const setStore = (key: string, value: string | object) => {
-  store.set(key, value);
+const MUTE: TMB.MutePreference = {
+  keywords: [],
+  selfRetweet: false,
+  media: [],
 };
 
-export default {
-  getAccessKey: (): string => {
-    return getStore("access_token.key") as string;
-  },
-  setAccessKey: (value: string) => {
-    setStore("access_token.key", value);
-  },
+export function build(directory?: string) {
+  const storage = require("electron-json-storage");
+  const store = new ElectronStore({
+    cwd: directory,
+  });
 
-  getAccessSecret: (): string => {
-    return getStore("access_token.secret") as string;
-  },
-  setAccessSecret: (value: string) => {
-    setStore("access_token.secret", value);
-  },
+  const getStore = (key: string) => {
+    return store.get(key);
+  };
+  const setStore = (key: string, value: string | object) => {
+    store.set(key, value);
+  };
 
-  getScreenPreferences: (): TMB.ScreenPreference[] => {
-    return getStore("preferences.screens") as TMB.ScreenPreference[];
-  },
-  setScreenPreferences: (screens: TMB.ScreenPreference[]) => {
-    setStore("preferences.screens", screens);
-  },
+  return {
+    getAccessKey: (): string => {
+      return getStore("access_token.key") as string;
+    },
+    setAccessKey: (value: string) => {
+      setStore("access_token.key", value);
+    },
 
-  getMutePreference: (): TMB.MutePreference => {
-    return getStore("preferences.mute") as TMB.MutePreference;
-  },
-  setMutePreference: (preference: TMB.MutePreference) => {
-    setStore("preferences.mute", preference);
-  },
+    getAccessSecret: (): string => {
+      return getStore("access_token.secret") as string;
+    },
+    setAccessSecret: (value: string) => {
+      setStore("access_token.secret", value);
+    },
 
-  getTweets: (identity: string) => {
-    return new Promise((resolve, reject) => {
-      storage.get(`${identity}.tweets`, (error: string, data: object) => {
-        if (error) return reject(error);
+    getScreenPreferences: (): TMB.ScreenPreference[] => {
+      return (getStore("preferences.screens") as TMB.ScreenPreference[]) || SCREENS;
+    },
+    setScreenPreferences: (screens: TMB.ScreenPreference[]) => {
+      setStore("preferences.screens", screens);
+    },
 
-        let tweets: Twitter.Tweet[];
-        if (Array.isArray(data)) {
-          tweets = data;
-        } else {
-          tweets = [];
-        }
+    getMutePreference: (): TMB.MutePreference => {
+      return (getStore("preferences.mute") as TMB.MutePreference) || MUTE;
+    },
+    setMutePreference: (preference: TMB.MutePreference) => {
+      setStore("preferences.mute", preference);
+    },
 
-        resolve(tweets);
+    getTweets: (identity: string) => {
+      return new Promise((resolve, reject) => {
+        storage.get(`${identity}.tweets`, (error: string, data: object) => {
+          if (error) return reject(error);
+
+          let tweets: Twitter.Tweet[];
+          if (Array.isArray(data)) {
+            tweets = data;
+          } else {
+            tweets = [];
+          }
+
+          resolve(tweets);
+        });
       });
-    });
-  },
-  setTweets: (identity: string, tweets: Twitter.Tweet[]) => {
-    return new Promise<void>((resolve, reject) => {
-      storage.set(`${identity}.tweets`, tweets, (error: string) => {
-        if (error) return reject(error);
+    },
+    setTweets: (identity: string, tweets: Twitter.Tweet[]) => {
+      return new Promise<void>((resolve, reject) => {
+        storage.set(`${identity}.tweets`, tweets, (error: string) => {
+          if (error) return reject(error);
 
-        resolve();
+          resolve();
+        });
       });
-    });
-  },
-};
+    },
+  };
+}
+
+export default build();
