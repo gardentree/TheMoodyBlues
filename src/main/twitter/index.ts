@@ -43,11 +43,6 @@ async function prepare(renderer: WebContents) {
   renderer.send(FacadeActions.SHOW_VERIFIER_FORM);
 }
 function observe(renderer: WebContents, agent: TMB.TwitterAgent) {
-  ipcMain.handle(FacadeActions.AGENT_GET, (event, values) => {
-    const {path, parameters} = values;
-
-    return agent.get(path, parameters);
-  });
   ipcMain.handle(FacadeActions.AGENT_RETRIEVE_TIMELINE, (event, values) => {
     const {since_id} = values;
 

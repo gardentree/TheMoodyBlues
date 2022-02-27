@@ -4,7 +4,6 @@ import {Actions as FacadeActions} from "@shared/facade";
 
 const facade: TMB.Facade = {
   agent: {
-    get: (path, parameters) => ipcRenderer.invoke(FacadeActions.AGENT_GET, {path, parameters}),
     retrieveTimeline: (since_id) => ipcRenderer.invoke(FacadeActions.AGENT_RETRIEVE_TIMELINE, {since_id}),
     search: (query, since_id) => ipcRenderer.invoke(FacadeActions.AGENT_SEARCH, {query, since_id}),
     retrieveTimelineOfUser: (name) => ipcRenderer.invoke(FacadeActions.AGENT_RETRIEVE_TIMELINE_OF_USER, {name}),

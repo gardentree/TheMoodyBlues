@@ -13,22 +13,6 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): TMB.T
   }
 
   return {
-    get: (path, parameters) => {
-      return client2.get(
-        path,
-        Object.assign(
-          {},
-          {
-            expansions: "attachments.media_keys,author_id,entities.mentions.username,in_reply_to_user_id,referenced_tweets.id,referenced_tweets.id.author_id",
-            "user.fields": "id,name,profile_image_url",
-            "media.fields": "duration_ms,height,media_key,preview_image_url,type,url,width,alt_text",
-            "tweet.fields": "attachments,author_id,conversation_id,created_at,entities,referenced_tweets",
-          },
-          parameters
-        )
-      );
-    },
-
     retrieveTimeline: (since_id) => {
       const option: TwitterClient.RequestParams = {
         count: 200,

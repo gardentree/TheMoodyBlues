@@ -1,5 +1,4 @@
 export namespace Actions {
-  export const AGENT_GET = "agent_get";
   export const AGENT_LISTS = "agent_lists";
   export const AGENT_RETRIEVE_CONVERSATION = "agent_retrieveConversation";
   export const AGENT_RETRIEVE_MENTIONS = "agent_retrieveMentions";
