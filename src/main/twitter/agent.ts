@@ -1,8 +1,17 @@
 import TwitterClient from "twitter";
-import TwitterClient2 from "twitter-v2";
+import TwitterClient2, {RequestParameters} from "twitter-v2";
 import * as DateUtility from "date-fns-tz";
 
 export function incarnate(client: TwitterClient, client2: TwitterClient2): TMB.TwitterAgent {
+  async function retrieve2(endpoint: string, parameters: RequestParameters) {
+    const response: Twitter2.Response = await client2.get(endpoint, parameters);
+    if (response.errors) {
+      throw new Error(JSON.stringify(response.errors));
+    }
+
+    return response;
+  }
+
   return {
     get: (path, parameters) => {
       return client2.get(
@@ -92,47 +101,41 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): TMB.T
       });
     },
 
-    retrieveConversation: (criterion, options) => {
-      return new Promise(async (resolve, reject) => {
-        let tweets: Twitter.Tweet[] = [];
+    retrieveConversation: async (criterion, options) => {
+      let tweets: Twitter.Tweet[] = [];
 
-        const parameters = {
-          expansions: "attachments.media_keys,author_id,entities.mentions.username,in_reply_to_user_id,referenced_tweets.id,referenced_tweets.id.author_id",
-          "user.fields": "id,name,profile_image_url",
-          "media.fields": "duration_ms,height,media_key,preview_image_url,type,url,width,alt_text",
-          "tweet.fields": "attachments,author_id,conversation_id,created_at,entities,referenced_tweets",
-        };
+      const parameters = {
+        expansions: "attachments.media_keys,author_id,entities.mentions.username,in_reply_to_user_id,referenced_tweets.id,referenced_tweets.id.author_id",
+        "user.fields": "id,name,profile_image_url",
+        "media.fields": "duration_ms,height,media_key,preview_image_url,type,url,width,alt_text",
+        "tweet.fields": "attachments,author_id,conversation_id,created_at,entities,referenced_tweets",
+      };
 
-        const originResponse: Twitter2.Response = await client2.get(`tweets/${criterion.id_str}`, parameters);
-        if (originResponse.errors) {
-          reject(JSON.stringify(originResponse.errors));
-          return;
-        }
-        const origin = originResponse.data as Twitter2.Tweet;
+      const originResponse: Twitter2.Response = await retrieve2(`tweets/${criterion.id_str}`, parameters);
+      const origin = originResponse.data as Twitter2.Tweet;
 
-        let query: string;
-        if (options?.yourself) {
-          query = `conversation_id:${origin.conversation_id} from:${origin.author_id}`;
-        } else {
-          query = `conversation_id:${origin.conversation_id}`;
-        }
+      let query: string;
+      if (options?.yourself) {
+        query = `conversation_id:${origin.conversation_id} from:${origin.author_id}`;
+      } else {
+        query = `conversation_id:${origin.conversation_id}`;
+      }
 
-        const response: Twitter2.Response = await client2.get(`tweets/search/recent`, {
-          ...parameters,
-          query: query,
-          max_results: "100",
-        });
-        if (response.meta.result_count > 0) {
-          tweets = tweets.concat(degrade(response));
-          if (origin.conversation_id == origin.id) {
-            tweets = tweets.concat(degrade(originResponse));
-          }
-        } else {
+      const response: Twitter2.Response = await retrieve2(`tweets/search/recent`, {
+        ...parameters,
+        query: query,
+        max_results: "100",
+      });
+      if (response.meta.result_count > 0) {
+        tweets = tweets.concat(degrade(response));
+        if (origin.conversation_id == origin.id) {
           tweets = tweets.concat(degrade(originResponse));
         }
+      } else {
+        tweets = tweets.concat(degrade(originResponse));
+      }
 
-        resolve(tweets.reverse());
-      });
+      return tweets.reverse();
     },
 
     lists: (): Promise<Twitter.List[]> => {

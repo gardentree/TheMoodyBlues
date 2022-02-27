@@ -10,6 +10,10 @@ use(chaiSubset);
 const [incarnate, degrade, degradeDate] = rewires("main/twitter/agent", ["incarnate", "degrade", "degradeDate"]);
 const [parseElements] = rewires("/renderer/libraries/twitter", ["parseElements"]);
 
+function loadJSON(path) {
+  return JSON.parse(fs.readFileSync(path));
+}
+
 describe("retrieveTimeline", () => {
   it("success", () => {
     const callback = sinon.stub();
@@ -89,6 +93,22 @@ describe("retrieveMentions", () => {
 });
 
 describe("retrieveConversation", () => {
+  it("success", () => {
+    const callback = sinon.stub();
+    callback.withArgs("tweets/1").returns(
+      Promise.resolve({
+        data: {
+          conversation_id: "2",
+        },
+      })
+    );
+    callback.withArgs("tweets/search/recent").returns(Promise.resolve(Object.assign(loadJSON("./test/main/twitter/v2/tweet.json"), {meta: {result_count: 1}})));
+
+    const agent = incarnate(null, {get: callback});
+
+    return expect(agent.retrieveConversation({id_str: "1"})).to.eventually.lengthOf(1);
+  });
+
   it("when cannot find original", () => {
     const callback = sinon.stub();
     callback.withArgs(`tweets/1`).returns(Promise.resolve({errors: [{title: "Not Found Error"}]}));
@@ -141,10 +161,6 @@ describe("retrieveTimelineOfList", () => {
 });
 
 describe("degrade", () => {
-  function loadJSON(path) {
-    return JSON.parse(fs.readFileSync(path));
-  }
-
   const tests = Object.entries({
     tweet: "Tweet",
     reply: "Tweet reply",
