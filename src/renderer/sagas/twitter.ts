@@ -103,18 +103,19 @@ function* shutdown(action: Action<{identity: TMB.ScreenID}>) {
 const wrap = (saga: (action: ActionMeta<any, any>) => Generator) =>
   function* (action: ActionMeta<any, any>) {
     facade.logger.verbose(action);
-    try {
-      const loading = !action.meta || !action.meta.silently;
 
+    const loading = !action.meta || !action.meta.silently;
+    try {
       if (loading) yield put(actions.showLoading(true));
       yield call(saga, action);
-      if (loading) yield put(actions.showLoading(false));
     } catch (error: unknown) {
       facade.logger.error(error);
       if (error instanceof Error) {
         facade.logger.error(error.stack);
       }
       yield put(actions.alarm(error));
+    } finally {
+      if (loading) yield put(actions.showLoading(false));
     }
   };
 
