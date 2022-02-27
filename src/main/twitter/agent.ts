@@ -3,7 +3,7 @@ import TwitterClient2, {RequestParameters} from "twitter-v2";
 import * as DateUtility from "date-fns-tz";
 
 export function incarnate(client: TwitterClient, client2: TwitterClient2): TMB.TwitterAgent {
-  async function retrieve2(endpoint: string, parameters: RequestParameters) {
+  async function retrieve2(endpoint: string, parameters: RequestParameters): Promise<Twitter2.Response> {
     const response: Twitter2.Response = await client2.get(endpoint, parameters);
     if (response.errors) {
       throw new Error(JSON.stringify(response.errors));
@@ -95,7 +95,7 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): TMB.T
         "tweet.fields": "attachments,author_id,conversation_id,created_at,entities,referenced_tweets",
       };
 
-      const originResponse: Twitter2.Response = await retrieve2(`tweets/${criterion.id_str}`, parameters);
+      const originResponse = await retrieve2(`tweets/${criterion.id_str}`, parameters);
       const origin = originResponse.data as Twitter2.Tweet;
 
       let query: string;
@@ -105,7 +105,7 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): TMB.T
         query = `conversation_id:${origin.conversation_id}`;
       }
 
-      const response: Twitter2.Response = await retrieve2(`tweets/search/recent`, {
+      const response = await retrieve2(`tweets/search/recent`, {
         ...parameters,
         query: query,
         max_results: "100",
@@ -122,7 +122,7 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): TMB.T
       return tweets.reverse();
     },
 
-    lists: (): Promise<Twitter.List[]> => {
+    lists: () => {
       return new Promise((resolve, reject) => {
         const option = {};
         client.get("lists/list.json", option, (error, data, response) => {
