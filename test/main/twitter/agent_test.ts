@@ -88,7 +88,16 @@ describe("retrieveMentions", () => {
   });
 });
 
-describe("retrieveConversation", () => {});
+describe("retrieveConversation", () => {
+  it("when cannot find original", () => {
+    const callback = sinon.stub();
+    callback.withArgs(`tweets/1`).returns(Promise.resolve({errors: [{title: "Not Found Error"}]}));
+
+    const agent = incarnate(null, {get: callback});
+
+    return expect(agent.retrieveConversation({id_str: "1"})).to.be.rejectedWith(JSON.stringify([{title: "Not Found Error"}]));
+  });
+});
 
 describe("lists", () => {
   it("success", () => {

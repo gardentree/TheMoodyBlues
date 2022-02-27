@@ -104,6 +104,10 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): TMB.T
         };
 
         const originResponse: Twitter2.Response = await client2.get(`tweets/${criterion.id_str}`, parameters);
+        if (originResponse.errors) {
+          reject(JSON.stringify(originResponse.errors));
+          return;
+        }
         const origin = originResponse.data as Twitter2.Tweet;
 
         let query: string;

@@ -75,6 +75,7 @@ namespace Twitter2 {
     meta: {
       result_count: number;
     };
+    errors?: unknown[];
   }
   interface Tweet {
     id: Twitter.TweetID;
