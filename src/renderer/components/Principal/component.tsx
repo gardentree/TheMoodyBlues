@@ -2,6 +2,7 @@ import React, {useEffect} from "react";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import TabItem from "../TabItem";
 import WindowContent from "../WindowContent";
+import StatusBar from "../StatusBar";
 
 export interface StateProps {
   screens: TMB.ScreenID[];
@@ -48,6 +49,9 @@ const Principal = (props: Props) => {
           </div>
         );
       })}
+      <footer className="toolbar toolbar-footer">
+        <StatusBar />
+      </footer>
       <div className="loading" style={{display: nowLoading ? "flex" : "none"}}>
         <FontAwesomeIcon icon="spinner" size="4x" spin />
       </div>
