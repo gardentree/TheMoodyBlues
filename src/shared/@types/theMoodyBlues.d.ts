@@ -23,7 +23,7 @@ namespace TheMoodyBlues {
     action: ScreenAction;
     time: number;
   }
-  type ScreenAction = "booting" | "wating" | "killed";
+  type ScreenAction = "started" | "updated" | "killed";
 
   interface Preference {
     identity: ScreenID;

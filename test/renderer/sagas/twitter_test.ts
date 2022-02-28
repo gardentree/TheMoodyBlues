@@ -47,6 +47,11 @@ describe(reorder.name, () => {
       .put({
         type: "search_START_TIMER",
       })
+      .put({
+        type: "UPDATE_SCREEN_STATE",
+        payload: {state: {action: "updated", time: Date.now()}},
+        meta: {identity: "search"},
+      })
       .run()
       .then((result) => {
         const {effects} = result;
@@ -115,6 +120,11 @@ describe(searchTweets.name, () => {
       })
       .put({
         type: "search_START_TIMER",
+      })
+      .put({
+        type: "UPDATE_SCREEN_STATE",
+        payload: {state: {action: "updated", time: Date.now()}},
+        meta: {identity: "search"},
       })
       .run()
       .then((result) => {
