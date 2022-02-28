@@ -6,7 +6,7 @@ type RecursivePartial<T> = {
   [P in keyof T]?: RecursivePartial<T[P]>;
 };
 
-function mergeScreen(oldScreens: Map<string, TMB.Screen>, identity: string, newScreen: RecursivePartial<TMB.Screen>) {
+function mergeScreen(oldScreens: Map<string, TMB.Screen>, identity: TMB.ScreenID, newScreen: RecursivePartial<TMB.Screen>) {
   const screens = new Map(oldScreens);
   const screen = screens.get(identity)!;
 
@@ -34,12 +34,12 @@ export const {updateTweets, mark, setupSearch, changeMode, prepareScreen, closeS
     }),
   ],
   SETUP_SEARCH: [
-    (identity: string, query: string) => ({
+    (identity: TMB.ScreenID, query: string) => ({
       options: {
         query: query,
       },
     }),
-    (identity: string, query: string) => ({
+    (identity: TMB.ScreenID, query: string) => ({
       identity: identity,
     }),
   ],

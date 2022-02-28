@@ -3,7 +3,7 @@ import TweetList from "../TweetList";
 import MediaList from "../MediaList";
 
 export interface OwnProps {
-  identity: string;
+  identity: TMB.ScreenID;
   children?: React.ReactNode;
 }
 export type StateProps = TMB.Screen;

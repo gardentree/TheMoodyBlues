@@ -58,7 +58,7 @@ function* reorder(action: ActionMeta<{}, {identity: TMB.ScreenID; force: boolean
 
   yield order(action.meta.identity || focused, action);
 }
-function* order(identity: string, action: ActionMeta<{}, {force: boolean}>) {
+function* order(identity: TMB.ScreenID, action: ActionMeta<{}, {force: boolean}>) {
   const {screens, preferences}: TMB.State = yield select();
   const screen = screens.get(identity)!;
   const preference = preferences.get(identity)!;

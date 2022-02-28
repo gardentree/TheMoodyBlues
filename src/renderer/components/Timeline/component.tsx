@@ -3,7 +3,7 @@ import Article from "../Article";
 import BranchBundle from "../BranchBundle";
 
 export interface OwnProps {
-  identity: string;
+  identity: TMB.ScreenID;
 }
 export interface StateProps {
   branches: TMB.ScreenID[];

@@ -6,13 +6,13 @@ import StatusBar from "../StatusBar";
 
 export interface StateProps {
   screens: TMB.ScreenID[];
-  focused: string;
+  focused: TMB.ScreenID;
   style: TMB.PrincipalStyle;
   nowLoading: boolean;
 }
 export interface DispatchProps {
   focusScreen(event: React.SyntheticEvent<HTMLElement>): void;
-  didMount(identity: string): void;
+  didMount(identity: TMB.ScreenID): void;
 }
 type Props = StateProps & DispatchProps;
 

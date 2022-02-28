@@ -3,7 +3,7 @@ import React from "react";
 export interface OwnProps {
   identity: TMB.ScreenID;
 }
-export type ContentComponent = React.ComponentType<{identity: string}>;
+export type ContentComponent = React.ComponentType<{identity: TMB.ScreenID}>;
 export interface StateProps {
   component: ContentComponent;
 }

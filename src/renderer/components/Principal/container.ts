@@ -14,6 +14,6 @@ const mapStateToProps = (state: TMB.State): StateProps => {
 };
 const mapDispatchToProps: DispatchProps = {
   focusScreen: (event: React.SyntheticEvent<HTMLElement>) => actions.focusScreen(event.currentTarget.dataset.name),
-  didMount: (identity: string) => actions.focusScreen(identity),
+  didMount: (identity: TMB.ScreenID) => actions.focusScreen(identity),
 };
 export default connect(mapStateToProps, mapDispatchToProps)(Component);
