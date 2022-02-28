@@ -27,7 +27,7 @@ function* run(identity: TMB.ScreenID, interval: number) {
         return;
       }
 
-      yield effects.put(actions.reload(false, identity, true));
+      yield effects.put(actions.reload(identity, false, true));
     }
   }
 }

@@ -17,7 +17,7 @@ export function setup(store: MiddlewareAPI) {
     store.dispatch(actions.focusUnreadTweet());
   });
   facade.events.onForceReload(() => {
-    store.dispatch(actions.reload(true, null));
+    store.dispatch(actions.reload(null, true));
   });
   facade.events.onOpenTweetInBrowser((tweet: Twitter.Tweet) => {
     facade.actions.openExternal(`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`);
@@ -26,7 +26,7 @@ export function setup(store: MiddlewareAPI) {
     store.dispatch(actions.reconfigure());
   });
   facade.events.onReload(() => {
-    store.dispatch(actions.reload(false, null));
+    store.dispatch(actions.reload(null, false));
   });
   facade.events.onSearch((keyword: string) => {
     store.dispatch(actions.searchTweets(keyword));

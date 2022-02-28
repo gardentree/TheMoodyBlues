@@ -10,7 +10,7 @@ export const {prepareState, reconfigure} = createActions({
 });
 
 export const {reload, mountScreen, unmountScreen, searchTweets} = createActions({
-  RELOAD: [(force, tab) => null, (force, tab, silently = false) => ({force: force, tab: tab, silently: silently})],
+  RELOAD: [() => null, (identity, force, silently = false) => ({identity, force, silently})],
   MOUNT_SCREEN: (identity) => ({identity: identity}),
   UNMOUNT_SCREEN: (identity) => ({identity: identity}),
   SEARCH_TWEETS: (query) => ({query: query}),

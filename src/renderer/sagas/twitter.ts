@@ -53,10 +53,10 @@ function* launch(action: Action<{identity: TMB.ScreenID}>) {
   yield metronome.launch(payload.identity, preference.screen);
 }
 
-function* reorder(action: ActionMeta<{}, {tab: TMB.ScreenID; force: boolean}>) {
+function* reorder(action: ActionMeta<{}, {identity: TMB.ScreenID; force: boolean}>) {
   const {focused} = ((yield select()) as TMB.State).principal;
 
-  yield order(action.meta.tab || focused, action);
+  yield order(action.meta.identity || focused, action);
 }
 function* order(identity: string, action: ActionMeta<{}, {force: boolean}>) {
   const {screens, preferences}: TMB.State = yield select();
@@ -73,7 +73,7 @@ function* searchTweets(action: Action<{query: string}>) {
 
   yield put(actions.focusScreen(identity));
   yield put(actions.setupSearch(identity, query));
-  yield reorder(actions.reload(true, identity, true) as ActionMeta<{}, {tab: TMB.ScreenID; force: boolean}>); //FIXME castを消す
+  yield reorder(actions.reload(identity, true, true) as ActionMeta<{}, {identity: TMB.ScreenID; force: boolean}>); //FIXME castを消す
 }
 
 function* displayUserTimeline(action: Action<{name: Twitter.ScreenName}>) {

@@ -4,13 +4,13 @@ import {expect} from "chai";
 const [reorder, searchTweets, wrap] = rewires("renderer/sagas/twitter", ["reorder", "searchTweets", "wrap"]);
 
 describe(reorder.name, () => {
-  it("assign tab", () => {
+  it("reload", () => {
     const screens = new Map([["search", {tweets: [], options: {query: "くえりー"}}]]);
     const preferences = new Map([["search", {screen: {identity: "search", component: "Search"}}]]);
 
     return expectSaga(reorder, {
       payload: {},
-      meta: {force: false, tab: "search"},
+      meta: {force: false, identity: "search"},
     })
       .provide([
         {
