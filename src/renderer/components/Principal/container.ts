@@ -7,7 +7,7 @@ const mapStateToProps = (state: TMB.State): StateProps => {
 
   return {
     screens: screens,
-    current: focused,
+    focused: focused,
     style: style,
     nowLoading: nowLoading,
   };

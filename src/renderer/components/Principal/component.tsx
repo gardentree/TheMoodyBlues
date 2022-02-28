@@ -6,7 +6,7 @@ import StatusBar from "../StatusBar";
 
 export interface StateProps {
   screens: TMB.ScreenID[];
-  current: string;
+  focused: string;
   style: TMB.PrincipalStyle;
   nowLoading: boolean;
 }
@@ -17,7 +17,7 @@ export interface DispatchProps {
 type Props = StateProps & DispatchProps;
 
 const Principal = (props: Props) => {
-  const {screens, current, style, focusScreen, nowLoading, didMount} = props;
+  const {screens, focused, style, focusScreen, nowLoading, didMount} = props;
 
   if (screens.length <= 0) {
     return <div />;
@@ -35,7 +35,7 @@ const Principal = (props: Props) => {
       <div className="tab-group">
         {screens.map((identity) => {
           return (
-            <div key={identity} className={`tab-item${current == identity ? " active" : ""}`} data-name={identity} onClick={focusScreen}>
+            <div key={identity} className={`tab-item${focused == identity ? " active" : ""}`} data-name={identity} onClick={focusScreen}>
               <TabItem identity={identity} />
             </div>
           );
@@ -44,7 +44,7 @@ const Principal = (props: Props) => {
 
       {screens.map((identity) => {
         return (
-          <div key={identity} className="window-content" style={{display: current == identity ? "block" : "none"}} data-name={identity}>
+          <div key={identity} className="window-content" style={{display: focused == identity ? "block" : "none"}} data-name={identity}>
             <WindowContent identity={identity} />
           </div>
         );
