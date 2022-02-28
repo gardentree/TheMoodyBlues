@@ -13,10 +13,10 @@ const TabItem = (props: Props) => {
   const {title, unread} = props;
 
   return (
-    <div>
+    <div className="TabItem">
       {title}
       {unread > 0 && <span className="unread_badge">{unread}</span>}
     </div>
   );
 };
-export default TabItem;;
+export default TabItem;
