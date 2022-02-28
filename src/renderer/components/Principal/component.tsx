@@ -11,13 +11,13 @@ export interface StateProps {
   nowLoading: boolean;
 }
 export interface DispatchProps {
-  onClick(event: React.SyntheticEvent<HTMLElement>): void;
+  focusScreen(event: React.SyntheticEvent<HTMLElement>): void;
   didMount(identity: string): void;
 }
 type Props = StateProps & DispatchProps;
 
 const Principal = (props: Props) => {
-  const {screens, current, style, onClick, nowLoading, didMount} = props;
+  const {screens, current, style, focusScreen, nowLoading, didMount} = props;
 
   if (screens.length <= 0) {
     return <div />;
@@ -35,7 +35,7 @@ const Principal = (props: Props) => {
       <div className="tab-group">
         {screens.map((identity) => {
           return (
-            <div key={identity} className={`tab-item${current == identity ? " active" : ""}`} data-name={identity} onClick={onClick}>
+            <div key={identity} className={`tab-item${current == identity ? " active" : ""}`} data-name={identity} onClick={focusScreen}>
               <TabItem identity={identity} />
             </div>
           );
