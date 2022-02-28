@@ -1,10 +1,10 @@
 import {connect} from "react-redux";
-import Component, {StateProps, DispatchProps, Content, TabItem} from "./component";
+import Component, {StateProps, DispatchProps, ContentComponent, ScreenContent} from "./component";
 import * as actions from "@actions";
 import Timeline from "../Timeline";
 import Search from "../Search";
 
-const components = new Map<string, Content>([
+const components = new Map<string, ContentComponent>([
   ["Timeline", Timeline],
   ["Search", Search],
 ]);
@@ -23,7 +23,7 @@ const mapStateToProps = (state: TMB.State): StateProps => {
     unreads[identity] = count;
   }
 
-  const items: TabItem[] = screens.map((identity) => {
+  const contents: ScreenContent[] = screens.map((identity) => {
     const preference = preferences.get(identity)!;
 
     return {
@@ -38,7 +38,7 @@ const mapStateToProps = (state: TMB.State): StateProps => {
     style: style,
     unreads: unreads,
     nowLoading: nowLoading,
-    items: items,
+    contents: contents,
   };
 };
 const mapDispatchToProps: DispatchProps = {
