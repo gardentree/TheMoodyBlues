@@ -1,4 +1,5 @@
 import {JSDOM} from "jsdom";
+import sinon from "sinon";
 import rewire = require("rewire");
 
 const dom = new JSDOM("<!DOCTYPE html><p>Hello world</p>");
@@ -39,4 +40,18 @@ global.rewires = (file: string, functions: string[]) => {
   return functions.map((name) => {
     return rewirer.__get__(name);
   });
+};
+
+export const mochaHooks = {
+  clock: null,
+  beforeEach(done) {
+    this.clock = sinon.useFakeTimers(Date.now());
+
+    done();
+  },
+  afterEach(done) {
+    this.clock.restore();
+
+    done();
+  },
 };

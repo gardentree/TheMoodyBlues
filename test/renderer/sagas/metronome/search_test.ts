@@ -17,6 +17,14 @@ describe("search", () => {
 
     it("when no cache", () => {
       return expectSaga(initialize, identity, preference)
+        .provide([
+          {
+            spawn(effect: any, next: any) {
+              expect(effect.fn.name).to.equal("run");
+              expect(effect.args).to.deep.equal([identity, 60 * 1000]);
+            },
+          },
+        ])
         .run()
         .then((result) => {
           const {effects} = result;
