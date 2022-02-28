@@ -44,6 +44,7 @@ facade.events.onLaunch(() => {
   ReactDOM.render(
     <Provider store={store}>
       <Principal />
+      <div id="modals" />
     </Provider>,
     document.getElementById("app")
   );

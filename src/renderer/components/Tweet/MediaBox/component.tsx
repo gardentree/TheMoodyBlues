@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, {useState} from "react";
 import Modal from "react-modal";
 import {Carousel} from "react-responsive-carousel";
 
@@ -71,7 +71,7 @@ const MediaBox = (props: Props) => {
     <React.Fragment>
       <div className="media">{thumbnails}</div>
       <div onClick={(event) => event.stopPropagation()}>
-        <Modal isOpen={modalIsOpen} onAfterOpen={onAfterOpen} onRequestClose={closeModal}>
+        <Modal isOpen={modalIsOpen} onAfterOpen={onAfterOpen} onRequestClose={closeModal} parentSelector={() => document.querySelector("#modals")!}>
           <div className="modal-container">
             <Carousel selectedItem={selectedItem} showArrows={true} useKeyboardArrows={true} showThumbs={false} showIndicators={false}>
               {elements}
