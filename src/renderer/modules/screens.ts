@@ -62,13 +62,13 @@ export const {updateTweets, mark, setupSearch, changeMode, prepareScreen, closeS
     }),
   ],
   UPDATE_SCREEN_STATE: [
-    (identity: TMB.ScreenID, action: TMB.ScreenState) => ({
+    (identity: TMB.ScreenID, action: TMB.ScreenAction) => ({
       state: {
         action,
         time: Date.now(),
       },
     }),
-    (identity: TMB.ScreenID, action: TMB.ScreenState) => ({
+    (identity: TMB.ScreenID, action: TMB.ScreenAction) => ({
       identity,
     }),
   ],
