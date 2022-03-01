@@ -3,6 +3,7 @@ import chaiAsPromised from "chai-as-promised";
 import chaiSubset from "chai-subset";
 import sinon from "sinon";
 import * as fs from "fs";
+import faker from "@faker-js/faker";
 
 use(chaiAsPromised);
 use(chaiSubset);
@@ -12,6 +13,41 @@ const [parseElements] = rewires("/renderer/libraries/twitter", ["parseElements"]
 
 function loadJSON(path) {
   return JSON.parse(fs.readFileSync(`./test/main/twitter/${path}`));
+}
+function fake(elements) {
+  const data = [];
+  const users = [];
+
+  function duel(specified, generated) {
+    return specified !== undefined ? specified : generated();
+  }
+
+  for (const element of elements) {
+    const author_id = duel(element.author_id, faker.datatype.number).toString();
+
+    data.push({
+      id: duel(element.id, faker.datatype.number).toString(),
+      text: duel(element.text, faker.random.words),
+      conversation_id: duel(element.conversation_id, faker.datatype.number).toString(),
+      created_at: duel(element.created_at, faker.date.past),
+      author_id,
+    });
+
+    users.push({
+      id: author_id,
+      username: duel(element.username, faker.internet.userName),
+    });
+  }
+
+  return {
+    data: data,
+    includes: {
+      users: users,
+    },
+    meta: {
+      result_count: data.length,
+    },
+  };
 }
 
 describe("retrieveTimeline", () => {
@@ -106,7 +142,39 @@ describe("retrieveConversation", () => {
 
     const agent = incarnate(null, {get: callback});
 
-    return expect(agent.retrieveConversation({id_str: "1"})).to.eventually.lengthOf(1);
+    return expect(agent.retrieveConversation({id_str: "1"})).to.eventually.lengthOf(2);
+  });
+
+  it("when result does not include source tweet and replied tweet", () => {
+    const callback = sinon.stub();
+
+    const source2 = loadJSON("./v2/reply.json");
+    const source1 = degrade(source2)[0];
+
+    const replied2 = fake([
+      {
+        id: "1296887091901718529",
+      },
+    ]);
+    const replied1 = degrade(replied2);
+
+    const results2 = fake([
+      {
+        conversation_id: "1296887091901718529",
+      },
+      {
+        conversation_id: "1296887091901718529",
+      },
+    ]);
+    const results1 = degrade(results2);
+
+    callback.withArgs(`tweets/${source2.data.id}`).returns(Promise.resolve(source2));
+    callback.withArgs("tweets/search/recent").returns(Promise.resolve(results2));
+    callback.withArgs(`tweets/${source2.data.referenced_tweets[0].id}`).returns(Promise.resolve(replied2));
+
+    const agent = incarnate(null, {get: callback});
+
+    return expect(agent.retrieveConversation(source1)).to.eventually.deep.equal([].concat(replied1, source1, results1.reverse()));
   });
 
   it("when cannot find original", () => {

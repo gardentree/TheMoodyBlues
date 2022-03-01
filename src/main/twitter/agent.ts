@@ -86,8 +86,6 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): TMB.T
     },
 
     retrieveConversation: async (criterion, options) => {
-      let tweets: Twitter.Tweet[] = [];
-
       const parameters = {
         expansions: "attachments.media_keys,author_id,entities.mentions.username,in_reply_to_user_id,referenced_tweets.id,referenced_tweets.id.author_id",
         "user.fields": "id,name,profile_image_url",
@@ -110,13 +108,21 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): TMB.T
         query: query,
         max_results: "100",
       });
-      if (response.meta.result_count > 0) {
-        tweets = tweets.concat(degrade(response));
-        if (origin.conversation_id == origin.id) {
-          tweets = tweets.concat(degrade(originResponse));
+
+      const tweets = degrade(response);
+
+      const ids = tweets.map((tweet) => tweet.id_str);
+      if (!ids.includes(origin.id)) {
+        tweets.push(criterion);
+      }
+
+      if (origin.referenced_tweets && origin.referenced_tweets[0].type == "replied_to") {
+        const repliedID = origin.referenced_tweets[0].id;
+        if (!ids.includes(repliedID)) {
+          const replied = await retrieve2(`tweets/${repliedID}`, parameters);
+
+          tweets.push(degrade(replied)[0]);
         }
-      } else {
-        tweets = tweets.concat(degrade(originResponse));
       }
 
       return tweets.reverse();
