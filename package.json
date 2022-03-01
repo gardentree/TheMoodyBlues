@@ -48,6 +48,7 @@
     "test:all": "yarn test 'test/**/*.{ts,tsx}'"
   },
   "devDependencies": {
+    "@faker-js/faker": "^6.0.0-alpha.7",
     "@types/chai": "^4.3.0",
     "@types/electron-devtools-installer": "^2.2.1",
     "@types/electron-json-storage": "^4.5.0",
