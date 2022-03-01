@@ -11,7 +11,7 @@ const [incarnate, degrade, degradeDate] = rewires("main/twitter/agent", ["incarn
 const [parseElements] = rewires("/renderer/libraries/twitter", ["parseElements"]);
 
 function loadJSON(path) {
-  return JSON.parse(fs.readFileSync(path));
+  return JSON.parse(fs.readFileSync(`./test/main/twitter/${path}`));
 }
 
 describe("retrieveTimeline", () => {
@@ -102,7 +102,7 @@ describe("retrieveConversation", () => {
         },
       })
     );
-    callback.withArgs("tweets/search/recent").returns(Promise.resolve(Object.assign(loadJSON("./test/main/twitter/v2/tweet.json"), {meta: {result_count: 1}})));
+    callback.withArgs("tweets/search/recent").returns(Promise.resolve(Object.assign(loadJSON("./v2/tweet.json"), {meta: {result_count: 1}})));
 
     const agent = incarnate(null, {get: callback});
 
@@ -171,9 +171,9 @@ describe("degrade", () => {
   });
   for (const [key, subject] of tests) {
     it(subject, () => {
-      const actual = degrade(loadJSON(`./test/main/twitter/v2/${key}.json`))[0];
+      const actual = degrade(loadJSON(`./v2/${key}.json`))[0];
 
-      expect(loadJSON(`./test/main/twitter/v1/${key}.json`)).to.containSubset(actual);
+      expect(loadJSON(`./v1/${key}.json`)).to.containSubset(actual);
 
       parseElements(actual);
     });
