@@ -123,11 +123,11 @@ const wrap = (saga: (action: ActionMeta<any, any>) => Generator) =>
 // prettier-ignore
 export default [
   takeLatest(actions.prepareState, wrap(prepareState)),
-  takeLatest(actions.reload, wrap(reorder)),
   takeLatest(actions.searchTweets, wrap(searchTweets)),
   takeLatest(actions.reconfigure, wrap(reconfigure)),
   takeLatest(actions.displayUserTimeline, wrap(displayUserTimeline)),
   takeLatest(actions.displayConversation, wrap(displayConversation)),
   takeEvery(actions.mountScreen, wrap(launch)),
-  takeEvery(actions.unmountScreen, wrap(shutdown))
+  takeEvery(actions.unmountScreen, wrap(shutdown)),
+  takeEvery(actions.reload, wrap(reorder)),
 ];
