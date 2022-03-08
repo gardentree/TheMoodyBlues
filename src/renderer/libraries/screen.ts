@@ -16,7 +16,7 @@ export async function loadPreferences(): Promise<TMB.PreferenceMap> {
   const mute: TMB.MutePreference = Object.assign(
     {
       keywords: [],
-      selfRetweet: false,
+      retweetYourself: false,
       media: [],
     },
     await facade.storage.getMutePreference()

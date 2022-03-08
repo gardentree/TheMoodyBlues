@@ -13,7 +13,7 @@ const tweetTemplate: Twitter.Tweet = {
 };
 const preferenceTemplate: TMB.MutePreference = {
   keywords: [],
-  selfRetweet: false,
+  retweetYourself: false,
   withMedia: [],
 };
 
@@ -42,7 +42,7 @@ describe("silence", () => {
           },
         },
       });
-      const preference = Object.assign({}, preferenceTemplate, {selfRetweet: true});
+      const preference = Object.assign({}, preferenceTemplate, {retweetYourself: true});
 
       expect(silence([tweet], preference)).to.deep.equal([]);
     });
@@ -55,7 +55,7 @@ describe("silence", () => {
           },
         },
       });
-      const preference = Object.assign({}, preferenceTemplate, {selfRetweet: true});
+      const preference = Object.assign({}, preferenceTemplate, {retweetYourself: true});
 
       expect(silence([tweet], preference)).to.deep.equal([tweet]);
     });

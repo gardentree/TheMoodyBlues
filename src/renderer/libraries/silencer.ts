@@ -1,7 +1,7 @@
 const {facade} = window;
 
 export function silence(tweets: Twitter.Tweet[], preference: TMB.MutePreference): Twitter.Tweet[] {
-  const {keywords, selfRetweet, withMedia, retweetReaction} = preference;
+  const {keywords, retweetYourself, withMedia, retweetReaction} = preference;
 
   return tweets.filter((tweet) => {
     const {id_str, screen_name} = tweet.user;
@@ -12,7 +12,7 @@ export function silence(tweets: Twitter.Tweet[], preference: TMB.MutePreference)
       return false;
     }
 
-    if (selfRetweet && tweet.retweeted_status?.user.id_str == id_str) {
+    if (retweetYourself && tweet.retweeted_status?.user.id_str == id_str) {
       facade.logger.info(`silence: self retweet of ${screen_name}`);
       return false;
     }

@@ -11,7 +11,7 @@ interface Form extends HTMLFormElement {
 const Mute = () => {
   const [preference, setPreference] = useState<TMB.MutePreference>({
     keywords: [],
-    selfRetweet: false,
+    retweetYourself: false,
     withMedia: [],
     retweetReaction: [],
   });

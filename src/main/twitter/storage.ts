@@ -5,7 +5,7 @@ const SCREENS: TMB.ScreenPreference[] = [HOME, SEARCH, MENTIONS].map((template) 
 
 const MUTE: TMB.MutePreference = {
   keywords: [],
-  selfRetweet: false,
+  retweetYourself: false,
   withMedia: [],
   retweetReaction: [],
 };
