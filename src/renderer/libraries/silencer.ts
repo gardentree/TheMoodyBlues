@@ -4,31 +4,27 @@ export function silence(tweets: Twitter.Tweet[], preference: TMB.MutePreference)
   const {keywords, selfRetweet, withMedia, retweetReaction} = preference;
 
   return tweets.filter((tweet) => {
+    const {id_str, screen_name} = tweet.user;
+
     const matched = test(tweet, keywords);
     if (matched) {
-      facade.logger.info(`silence: ${matched} of ${tweet.user.screen_name}`);
+      facade.logger.info(`silence: ${matched} of ${screen_name}`);
       return false;
     }
 
-    if (selfRetweet && tweet.retweeted_status) {
-      if (tweet.user.id_str == tweet.retweeted_status.user.id_str) {
-        facade.logger.info(`silence: self retweet of ${tweet.user.screen_name}`);
-        return false;
-      }
+    if (selfRetweet && tweet.retweeted_status?.user.id_str == id_str) {
+      facade.logger.info(`silence: self retweet of ${screen_name}`);
+      return false;
     }
 
-    if (withMedia?.length > 0) {
-      if (withMedia.includes(tweet.user.id_str) && tweet.entities.media && tweet.entities.media.length > 0) {
-        facade.logger.info(`silence: media of ${tweet.user.screen_name}`);
-        return false;
-      }
+    if (withMedia?.includes(id_str) && (tweet.entities.media?.length || 0) > 0) {
+      facade.logger.info(`silence: media of ${screen_name}`);
+      return false;
     }
 
-    if (retweetReaction?.length > 0 && tweet.retweeted_status?.quoted_status) {
-      if (retweetReaction.includes(tweet.user.id_str) && tweet.user.id_str == tweet.retweeted_status.quoted_status.user.id_str) {
-        facade.logger.info(`silence: retweet reaction of ${tweet.user.screen_name}`);
-        return false;
-      }
+    if (retweetReaction?.includes(id_str) && tweet.retweeted_status?.quoted_status?.user.id_str == id_str) {
+      facade.logger.info(`silence: retweet reaction of ${screen_name}`);
+      return false;
     }
 
     return true;
