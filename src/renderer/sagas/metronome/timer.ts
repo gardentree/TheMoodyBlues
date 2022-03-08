@@ -7,16 +7,12 @@ export function* spawn(identity: TMB.ScreenID, interval: number) {
 function* run(identity: TMB.ScreenID, interval: number) {
   const channel: string = yield effects.actionChannel(`${identity}_START_TIMER`);
 
-  const wait = (ms: number) =>
-    new Promise<void>((resolve) => {
-      setTimeout(() => resolve(), ms);
-    });
   while ((yield effects.take(channel)) as ReturnType<typeof effects.take>) {
     while (true) {
       const winner: {stopped: boolean; killed: boolean; tick: boolean} = yield effects.race({
         stopped: effects.take(`${identity}_STOP_TIMER`),
         killed: effects.take(`${identity}_SHUTDOWN`),
-        tick: effects.call(wait, interval),
+        tick: effects.delay(interval),
       });
 
       if (winner.stopped) {
