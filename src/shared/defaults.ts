@@ -32,3 +32,10 @@ export const LIST: Omit<TMB.ScreenPreference, "identity" | "title" | "active"> =
   mute: true,
   growl: true,
 };
+
+export const MUTE: TMB.MutePreference = {
+  keywords: [],
+  retweetYourself: false,
+  withMedia: [],
+  retweetReaction: [],
+};

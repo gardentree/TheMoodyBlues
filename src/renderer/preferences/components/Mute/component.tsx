@@ -1,6 +1,7 @@
 import * as React from "react";
 import {useState, useEffect} from "react";
 import {test} from "@libraries/silencer";
+import {MUTE} from "@shared/defaults";
 
 const {facade} = window;
 
@@ -9,12 +10,7 @@ interface Form extends HTMLFormElement {
 }
 
 const Mute = () => {
-  const [preference, setPreference] = useState<TMB.MutePreference>({
-    keywords: [],
-    retweetYourself: false,
-    withMedia: [],
-    retweetReaction: [],
-  });
+  const [preference, setPreference] = useState<TMB.MutePreference>(MUTE);
   const [tweets, setTweets] = useState<Twitter.Tweet[]>([]);
   const [matched, setMatched] = useState<string[]>([]);
 

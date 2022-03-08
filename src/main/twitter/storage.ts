@@ -1,14 +1,7 @@
 import ElectronStore from "electron-store";
-import {HOME, SEARCH, MENTIONS} from "@shared/defaults";
+import {HOME, SEARCH, MENTIONS, MUTE} from "@shared/defaults";
 
 const SCREENS: TMB.ScreenPreference[] = [HOME, SEARCH, MENTIONS].map((template) => Object.assign({active: true}, template));
-
-const MUTE: TMB.MutePreference = {
-  keywords: [],
-  retweetYourself: false,
-  withMedia: [],
-  retweetReaction: [],
-};
 
 export function build(directory?: string) {
   const storage = require("electron-json-storage");
