@@ -8,8 +8,7 @@ const tweetTemplate: Twitter.Tweet = {
     urls: [{expanded_url: "https://www.pokemongo.jp/"}],
   },
   user: {
-    id_str: "123456789",
-    screen_name: "gian",
+    id_str: "gian",
   },
 };
 const preferenceTemplate: TMB.MutePreference = {
@@ -39,7 +38,7 @@ describe("silence", () => {
       const tweet = Object.assign({}, tweetTemplate, {
         retweeted_status: {
           user: {
-            id_str: "123456789",
+            id_str: "gian",
           },
         },
       });
@@ -71,12 +70,12 @@ describe("silence", () => {
           },
           quoted_status: {
             user: {
-              id_str: "123456789",
+              id_str: "gian",
             },
           },
         },
       });
-      const preference = Object.assign({}, preferenceTemplate, {retweetReaction: ["123456789"]});
+      const preference = Object.assign({}, preferenceTemplate, {retweetReaction: ["gian"]});
 
       expect(silence([tweet], preference)).to.deep.equal([]);
     });

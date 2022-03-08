@@ -18,7 +18,7 @@ export function silence(tweets: Twitter.Tweet[], preference: TMB.MutePreference)
     }
 
     if (media?.length > 0) {
-      if (media.includes(tweet.user.screen_name) && tweet.entities.media && tweet.entities.media.length > 0) {
+      if (media.includes(tweet.user.id_str) && tweet.entities.media && tweet.entities.media.length > 0) {
         facade.logger.info(`silence: media of ${tweet.user.screen_name}`);
         return false;
       }
