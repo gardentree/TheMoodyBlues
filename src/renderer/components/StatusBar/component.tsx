@@ -1,21 +1,13 @@
 import React from "react";
-import * as DateUtility from "date-fns";
 
-export interface StateProps {
-  state: TMB.ScreenState | null;
-}
-type Props = StateProps;
+type Props = TMB.ScreenStatus;
 
 const StatusBar = (props: Props) => {
-  const {state} = props;
+  const {status} = props;
 
   return (
     <div className="StatusBar">
-      {state && (
-        <h1 className="title">
-          {state.action} {DateUtility.format(state.time, "yyyy-MM-dd HH:mm:ss")}
-        </h1>
-      )}
+      <h1 className="title">{status}</h1>
     </div>
   );
 };

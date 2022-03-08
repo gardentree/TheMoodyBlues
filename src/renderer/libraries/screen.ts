@@ -6,9 +6,8 @@ export const INITIAL_VALUE: TMB.Screen = {
   tweets: [],
   mode: "tweet",
   lastReadID: "",
-  state: {
-    action: "started",
-    time: Date.now(),
+  status: {
+    status: "",
   },
 };
 

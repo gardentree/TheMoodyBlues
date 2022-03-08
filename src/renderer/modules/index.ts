@@ -27,7 +27,7 @@ export const {focusLatestTweet, focusUnreadTweet, alarm} = createActions({
   ALARM: (message) => ({message: message}),
 });
 
-export const {updateTweets, mark, setupSearch, changeMode, prepareScreen, closeScreen, updateScreenState} = screens;
+export const {updateTweets, mark, setupSearch, changeMode, prepareScreen, closeScreen, updateScreenStatus} = screens;
 export const {updatePreferences} = preferences;
 export const {setScreens, focusScreen, zoomIn, zoomOut, zoomReset, showLoading} = principal;
 export const {branch, clip} = lineage;

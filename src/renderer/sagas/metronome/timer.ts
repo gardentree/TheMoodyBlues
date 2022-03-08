@@ -1,5 +1,6 @@
 import * as effects from "redux-saga/effects";
 import * as actions from "@actions";
+import * as DateUtility from "date-fns";
 
 export function* spawn(identity: TMB.ScreenID, interval: number) {
   yield effects.spawn(run, identity, interval * 1000);
@@ -9,6 +10,8 @@ function* run(identity: TMB.ScreenID, interval: number) {
 
   while ((yield effects.take(channel)) as ReturnType<typeof effects.take>) {
     while (true) {
+      yield effects.put(actions.updateScreenStatus(identity, `next update ${DateUtility.format(Date.now() + interval, "HH:mm:ss")}`));
+
       const winner: {stopped: boolean; killed: boolean; tick: boolean} = yield effects.race({
         stopped: effects.take(`${identity}_STOP_TIMER`),
         killed: effects.take(`${identity}_SHUTDOWN`),
@@ -19,7 +22,7 @@ function* run(identity: TMB.ScreenID, interval: number) {
         break;
       }
       if (winner.killed) {
-        yield effects.put(actions.updateScreenState(identity, "killed"));
+        yield effects.put(actions.updateScreenStatus(identity, ""));
         return;
       }
 

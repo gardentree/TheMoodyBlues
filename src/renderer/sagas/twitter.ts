@@ -64,7 +64,6 @@ function* order(identity: TMB.ScreenID, action: ActionMeta<{}, {force: boolean}>
   const preference = preferences.get(identity)!;
 
   yield metronome.play(identity, screen, preference, action.meta.force);
-  yield put(actions.updateScreenState(identity, "updated"));
 }
 
 function* searchTweets(action: Action<{query: string}>) {

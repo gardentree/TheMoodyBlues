@@ -1,17 +1,15 @@
 import {connect} from "react-redux";
-import Component, {StateProps} from "./component";
+import Component from "./component";
 
-const mapStateToProps = (state: TMB.State): StateProps => {
+const mapStateToProps = (state: TMB.State): TMB.ScreenStatus => {
   const {screens, principal} = state;
   const screen = screens.get(principal.focused);
 
   if (screen) {
-    return {
-      state: screen.state,
-    };
+    return screen.status;
   } else {
     return {
-      state: null,
+      status: "loading",
     };
   }
 };
