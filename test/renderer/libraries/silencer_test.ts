@@ -61,6 +61,26 @@ describe("silence", () => {
       expect(silence([tweet], preference)).to.deep.equal([tweet]);
     });
   });
+
+  describe("retweet reaction", () => {
+    it("when retweet quote tweet to yourself", () => {
+      const tweet = Object.assign({}, tweetTemplate, {
+        retweeted_status: {
+          user: {
+            id_str: "000000000",
+          },
+          quoted_status: {
+            user: {
+              id_str: "123456789",
+            },
+          },
+        },
+      });
+      const preference = Object.assign({}, preferenceTemplate, {retweetReaction: ["123456789"]});
+
+      expect(silence([tweet], preference)).to.deep.equal([]);
+    });
+  });
 });
 
 describe("test", () => {

@@ -13,6 +13,7 @@ const Mute = () => {
     keywords: [],
     selfRetweet: false,
     media: [],
+    retweetReaction: [],
   });
   const [tweets, setTweets] = useState<Twitter.Tweet[]>([]);
   const [matched, setMatched] = useState<string[]>([]);

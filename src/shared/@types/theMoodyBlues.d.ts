@@ -43,6 +43,7 @@ namespace TheMoodyBlues {
     keywords: string[];
     selfRetweet: boolean;
     media: Twitter.UserID[];
+    retweetReaction: Twitter.UserID[];
   }
 
   type Lineage = Map<ScreenID, ScreenID[]>;

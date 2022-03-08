@@ -7,6 +7,7 @@ const MUTE: TMB.MutePreference = {
   keywords: [],
   selfRetweet: false,
   media: [],
+  retweetReaction: [],
 };
 
 export function build(directory?: string) {

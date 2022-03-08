@@ -44,6 +44,7 @@ describe("defaults", () => {
       keywords: [],
       selfRetweet: false,
       media: [],
+      retweetReaction: [],
     });
   });
 });

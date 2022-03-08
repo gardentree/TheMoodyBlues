@@ -1,7 +1,7 @@
 const {facade} = window;
 
 export function silence(tweets: Twitter.Tweet[], preference: TMB.MutePreference): Twitter.Tweet[] {
-  const {keywords, selfRetweet, media} = preference;
+  const {keywords, selfRetweet, media, retweetReaction} = preference;
 
   return tweets.filter((tweet) => {
     const matched = test(tweet, keywords);
@@ -20,6 +20,13 @@ export function silence(tweets: Twitter.Tweet[], preference: TMB.MutePreference)
     if (media?.length > 0) {
       if (media.includes(tweet.user.screen_name) && tweet.entities.media && tweet.entities.media.length > 0) {
         facade.logger.info(`silence: media of ${tweet.user.screen_name}`);
+        return false;
+      }
+    }
+
+    if (retweetReaction?.length > 0 && tweet.retweeted_status?.quoted_status) {
+      if (retweetReaction.includes(tweet.user.id_str) && tweet.user.id_str == tweet.retweeted_status.quoted_status.user.id_str) {
+        facade.logger.info(`silence: retweet reaction of ${tweet.user.screen_name}`);
         return false;
       }
     }
