@@ -8,6 +8,7 @@ const tweetTemplate: Twitter.Tweet = {
     urls: [{expanded_url: "https://www.pokemongo.jp/"}],
   },
   user: {
+    id_str: "123456789",
     screen_name: "gian",
   },
 };
@@ -30,6 +31,34 @@ describe("silence", () => {
       const preference = Object.assign({}, preferenceTemplate, {media: ["gian"]});
 
       expect(silence([tweet], preference)).to.deep.equal([]);
+    });
+  });
+
+  describe("self retweet", () => {
+    it("when self retweet", () => {
+      const tweet = Object.assign({}, tweetTemplate, {
+        retweeted_status: {
+          user: {
+            id_str: "123456789",
+          },
+        },
+      });
+      const preference = Object.assign({}, preferenceTemplate, {selfRetweet: true});
+
+      expect(silence([tweet], preference)).to.deep.equal([]);
+    });
+
+    it("when others retweet", () => {
+      const tweet = Object.assign({}, tweetTemplate, {
+        retweeted_status: {
+          user: {
+            id_str: "000000000",
+          },
+        },
+      });
+      const preference = Object.assign({}, preferenceTemplate, {selfRetweet: true});
+
+      expect(silence([tweet], preference)).to.deep.equal([tweet]);
     });
   });
 });
