@@ -12,7 +12,7 @@ const Mute = () => {
   const [preference, setPreference] = useState<TMB.MutePreference>({
     keywords: [],
     selfRetweet: false,
-    media: [],
+    withMedia: [],
     retweetReaction: [],
   });
   const [tweets, setTweets] = useState<Twitter.Tweet[]>([]);

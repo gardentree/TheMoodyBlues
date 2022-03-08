@@ -43,7 +43,7 @@ describe("defaults", () => {
     expect(storage.getMutePreference()).to.deep.equal({
       keywords: [],
       selfRetweet: false,
-      media: [],
+      withMedia: [],
       retweetReaction: [],
     });
   });

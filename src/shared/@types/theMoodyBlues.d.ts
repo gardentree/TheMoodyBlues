@@ -42,7 +42,7 @@ namespace TheMoodyBlues {
   interface MutePreference {
     keywords: string[];
     selfRetweet: boolean;
-    media: Twitter.UserID[];
+    withMedia: Twitter.UserID[];
     retweetReaction: Twitter.UserID[];
   }
 

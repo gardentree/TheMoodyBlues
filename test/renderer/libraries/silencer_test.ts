@@ -14,20 +14,20 @@ const tweetTemplate: Twitter.Tweet = {
 const preferenceTemplate: TMB.MutePreference = {
   keywords: [],
   selfRetweet: false,
-  media: [],
+  withMedia: [],
 };
 
 describe("silence", () => {
-  describe("media", () => {
+  describe("withMedia", () => {
     it("don't have media", () => {
       const tweet = Object.assign({}, tweetTemplate, {entities: {media: []}});
-      const preference = Object.assign({}, preferenceTemplate, {media: ["gian"]});
+      const preference = Object.assign({}, preferenceTemplate, {withMedia: ["gian"]});
 
       expect(silence([tweet], preference)).to.deep.equal([tweet]);
     });
     it("have media", () => {
       const tweet = Object.assign({}, tweetTemplate, {entities: {media: [{}]}});
-      const preference = Object.assign({}, preferenceTemplate, {media: ["gian"]});
+      const preference = Object.assign({}, preferenceTemplate, {withMedia: ["gian"]});
 
       expect(silence([tweet], preference)).to.deep.equal([]);
     });
