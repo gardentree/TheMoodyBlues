@@ -41,7 +41,7 @@
     "dev": "yarn compile && run-p dev:*",
     "dev:serve": "webpack-dev-server --hot",
     "dev:launch": "wait-on http://localhost:8080 && electron .",
-    "dist": "yarn compile --mode production && yarn package",
+    "dist": "test -z \"$(git status -s)\" && yarn compile --mode production && yarn package",
     "compile": "webpack",
     "package": "electron-builder --c.buildVersion=`git rev-parse --short HEAD`",
     "test": "NODE_ENV=test TS_NODE_PROJECT=tsconfig/test.json yarn mocha --exit -r ts-node/register/transpile-only -r tsconfig-paths/register -r test/helper.ts",
