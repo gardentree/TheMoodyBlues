@@ -145,6 +145,22 @@ describe("retrieveConversation", () => {
     return expect(agent.retrieveConversation({id_str: "1"})).to.eventually.lengthOf(2);
   });
 
+  it("when conversation is empty", () => {
+    const callback = sinon.stub();
+    callback.withArgs("tweets/1").returns(
+      Promise.resolve({
+        data: {
+          conversation_id: "2",
+        },
+      })
+    );
+    callback.withArgs("tweets/search/recent").returns(Promise.resolve({meta: {result_count: 0}}));
+
+    const agent = incarnate(null, {get: callback});
+
+    return expect(agent.retrieveConversation({id_str: "1"})).to.eventually.lengthOf(1);
+  });
+
   it("when result does not include source tweet and replied tweet", () => {
     const callback = sinon.stub();
 

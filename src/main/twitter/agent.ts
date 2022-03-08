@@ -163,6 +163,10 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): TMB.T
 }
 
 function degrade(v2: Twitter2.Response): Twitter.Tweet[] {
+  if (v2.meta?.result_count <= 0) {
+    return [];
+  }
+
   const v1: Twitter.Tweet[] = [];
   const includes = degradeIncludeMap(v2.includes);
 
