@@ -1,6 +1,24 @@
 import TwitterClient from "twitter";
 import TwitterClient2, {RequestParameters} from "twitter-v2";
 import * as DateUtility from "date-fns-tz";
+import logger from "electron-log";
+
+function retry<P>(processing: () => Promise<P>, retryCount: number) {
+  let promise: Promise<P> = processing();
+  for (let i = 1; i <= retryCount; i++) {
+    promise = promise.catch((error: any) => {
+      logger.error(error);
+
+      if (error.code == "ENOTFOUND") {
+        logger.error(`retry ${i}`);
+        return processing();
+      }
+
+      throw new Error(error);
+    });
+  }
+  return promise;
+}
 
 export function incarnate(client: TwitterClient, client2: TwitterClient2): TMB.TwitterAgent {
   async function retrieve2(endpoint: string, parameters: RequestParameters): Promise<Twitter2.Response> {
@@ -10,6 +28,19 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): TMB.T
     }
 
     return response;
+  }
+  function retrieve1(endpoint: string, parameters: TwitterClient.RequestParams): Promise<Twitter.Tweet[]> {
+    return retry<Twitter.Tweet[]>(
+      () =>
+        client.get(endpoint, parameters).then((data) => {
+          if (data.statuses) {
+            return data.statuses as Twitter.Tweet[];
+          } else {
+            return data as Twitter.Tweet[];
+          }
+        }),
+      3
+    );
   }
 
   return {
@@ -21,15 +52,7 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): TMB.T
       };
       if (since_id) option.since_id = since_id;
 
-      return new Promise<Twitter.Tweet[]>((resolve, reject) => {
-        client.get("statuses/home_timeline", option, (error, data, response) => {
-          if (error) {
-            return reject(error);
-          }
-
-          resolve(data as Twitter.Tweet[]);
-        });
-      });
+      return retrieve1("statuses/home_timeline", option);
     },
 
     search: (query, since_id) => {
@@ -41,13 +64,7 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): TMB.T
       };
       if (since_id) option.since_id = since_id;
 
-      return new Promise((resolve, reject) => {
-        client.get("search/tweets", option, (error, data, response) => {
-          if (error) return reject(error);
-
-          resolve(data["statuses"] as Twitter.Tweet[]);
-        });
-      });
+      return retrieve1("search/tweets", option);
     },
 
     retrieveTimelineOfUser: (name) => {
@@ -59,13 +76,7 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): TMB.T
         tweet_mode: "extended",
       };
 
-      return new Promise<Twitter.Tweet[]>((resolve, reject) => {
-        client.get("statuses/user_timeline", option, (error, data, response) => {
-          if (error) return reject(error);
-
-          resolve(data as Twitter.Tweet[]);
-        });
-      });
+      return retrieve1("statuses/user_timeline", option);
     },
 
     retrieveMentions: (since_id) => {
@@ -76,13 +87,7 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): TMB.T
       };
       if (since_id) option.since_id = since_id;
 
-      return new Promise<Twitter.Tweet[]>((resolve, reject) => {
-        client.get("statuses/mentions_timeline", option, (error, data, response) => {
-          if (error) return reject(error);
-
-          resolve(data as Twitter.Tweet[]);
-        });
-      });
+      return retrieve1("statuses/mentions_timeline", option);
     },
 
     retrieveConversation: async (criterion, options) => {
@@ -149,15 +154,7 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): TMB.T
       };
       if (since_id) option.since_id = since_id;
 
-      return new Promise((resolve, reject) => {
-        client.get("lists/statuses.json", option, (error, data, response) => {
-          if (error) {
-            return reject(error);
-          }
-
-          resolve(data as Twitter.Tweet[]);
-        });
-      });
+      return retrieve1("lists/statuses.json", option);
     },
   };
 }

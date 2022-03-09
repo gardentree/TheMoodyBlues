@@ -53,15 +53,7 @@ function fake(elements) {
 describe("retrieveTimeline", () => {
   it("success", () => {
     const callback = sinon.stub();
-    callback.yields(
-      null,
-      [
-        {
-          id: 1,
-        },
-      ],
-      null
-    );
+    callback.returns(Promise.resolve([{id: 1}]));
 
     const agent = incarnate({get: callback});
 
@@ -72,16 +64,14 @@ describe("retrieveTimeline", () => {
 describe("search", () => {
   it("success", () => {
     const callback = sinon.stub();
-    callback.yields(
-      null,
-      {
+    callback.returns(
+      Promise.resolve({
         statuses: [
           {
             id: 1,
           },
         ],
-      },
-      null
+      })
     );
 
     const agent = incarnate({get: callback});
@@ -93,14 +83,12 @@ describe("search", () => {
 describe("retrieveTimelineOfUser", () => {
   it("success", () => {
     const callback = sinon.stub();
-    callback.yields(
-      null,
-      [
+    callback.returns(
+      Promise.resolve([
         {
           id: 1,
         },
-      ],
-      null
+      ])
     );
 
     const agent = incarnate({get: callback});
@@ -112,14 +100,12 @@ describe("retrieveTimelineOfUser", () => {
 describe("retrieveMentions", () => {
   it("success", () => {
     const callback = sinon.stub();
-    callback.yields(
-      null,
-      [
+    callback.returns(
+      Promise.resolve([
         {
           id: 1,
         },
-      ],
-      null
+      ])
     );
 
     const agent = incarnate({get: callback});
@@ -228,14 +214,12 @@ describe("lists", () => {
 describe("retrieveTimelineOfList", () => {
   it("success", () => {
     const callback = sinon.stub();
-    callback.yields(
-      null,
-      [
+    callback.returns(
+      Promise.resolve([
         {
           id: 1,
         },
-      ],
-      null
+      ])
     );
 
     const agent = incarnate({get: callback});
