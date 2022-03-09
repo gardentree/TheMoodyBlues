@@ -1,14 +1,12 @@
 "use strict";
 
-import {app, BrowserWindow, Menu, ipcMain} from "electron";
+import {app, BrowserWindow, Menu} from "electron";
 import installExtension, {REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS} from "electron-devtools-installer";
 import * as pathname from "path";
 import logger from "electron-log";
 import {setup} from "./twitter";
 import {Actions as FacadeActions} from "@shared/facade";
-import {setup as setupEvents} from "./events";
-
-const isDevelopment = process.env.NODE_ENV !== "production";
+import {environment} from "@shared/tools";
 
 logger.info(`start: ${process.env.NODE_ENV}`);
 
@@ -43,7 +41,7 @@ function createMainWindow() {
   });
   windowState.manage(window);
 
-  if (isDevelopment) {
+  if (environment.isDevelopment()) {
     window.webContents.once("dom-ready", () => {
       window.webContents.openDevTools();
     });
@@ -64,8 +62,6 @@ function createMainWindow() {
       });
     });
   });
-
-  setupEvents();
 
   return window;
 }
@@ -184,7 +180,7 @@ function openPreferences() {
   });
 
   load(preferences, "preferences.html");
-  if (isDevelopment) {
+  if (environment.isDevelopment()) {
     preferences.webContents.openDevTools();
   }
 
@@ -196,55 +192,9 @@ function openPreferences() {
 }
 
 function load(target: BrowserWindow, path: string) {
-  if (isDevelopment) {
+  if (environment.isDevelopment()) {
     target.loadURL(`http://localhost:8080/${path}`);
   } else {
     target.loadURL(`file://${__dirname}/${path}`);
   }
 }
-
-ipcMain.on(FacadeActions.OPEN_TWEET_MENU, (event, context: TMB.TweetMenu) => {
-  const mainWindow = BrowserWindow.fromWebContents(event.sender)!;
-
-  const template: Electron.MenuItemConstructorOptions[] = [
-    {
-      label: "ブラウザで開く",
-      click() {
-        mainWindow.webContents.send(FacadeActions.OPEN_TWEET_IN_BROWSER, context);
-      },
-    },
-    {
-      label: "会話を表示",
-      click() {
-        mainWindow.webContents.send(FacadeActions.SHOW_CONVERSATION_FOR_TWEET, context);
-      },
-    },
-    {
-      label: "つながりを表示",
-      click() {
-        mainWindow.webContents.send(FacadeActions.SHOW_CHAIN_FOR_TWEET, context);
-      },
-    },
-  ];
-
-  if (context.keyword.length > 0) {
-    template.push({
-      label: `"${context.keyword}"を検索`,
-      click() {
-        mainWindow.webContents.send(FacadeActions.SEARCH, context);
-      },
-    });
-  }
-
-  if (isDevelopment) {
-    template.push({
-      label: "JSON形式でコピー",
-      click() {
-        mainWindow.webContents.send(FacadeActions.COPY_TWEET_IN_JSON, context);
-      },
-    });
-  }
-
-  const menu = Menu.buildFromTemplate(template);
-  menu.popup({window: mainWindow});
-});

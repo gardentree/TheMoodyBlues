@@ -1,8 +1,9 @@
-import {ipcMain, shell, WebContents} from "electron";
+import {ipcMain, shell, WebContents, Menu} from "electron";
 import storage from "./storage";
 import {authorize, call, getRequestToken} from "./authentication";
 import growl from "./growly";
 import {Actions as FacadeActions} from "@shared/facade";
+import {environment} from "@shared/tools";
 import logger from "electron-log";
 
 let observed: boolean = false;
@@ -108,6 +109,70 @@ function observe(renderer: WebContents, agent: TMB.TwitterAgent) {
     const {preference} = values;
 
     storage.setMutePreference(preference);
+  });
+
+  ipcMain.on(FacadeActions.OPEN_TWEET_MENU, (event, context: TMB.TweetMenu) => {
+    const template: Electron.MenuItemConstructorOptions[] = [
+      {
+        label: "ブラウザで開く",
+        click() {
+          renderer.send(FacadeActions.OPEN_TWEET_IN_BROWSER, context);
+        },
+      },
+      {
+        label: "会話を表示",
+        click() {
+          renderer.send(FacadeActions.SHOW_CONVERSATION_FOR_TWEET, context);
+        },
+      },
+      {
+        label: "つながりを表示",
+        click() {
+          renderer.send(FacadeActions.SHOW_CHAIN_FOR_TWEET, context);
+        },
+      },
+    ];
+
+    if (context.keyword.length > 0) {
+      template.push({
+        label: `"${context.keyword}"を検索`,
+        click() {
+          renderer.send(FacadeActions.SEARCH, context);
+        },
+      });
+    }
+
+    if (environment.isDevelopment()) {
+      template.push({
+        label: "JSON形式でコピー",
+        click() {
+          renderer.send(FacadeActions.COPY_TWEET_IN_JSON, context);
+        },
+      });
+    }
+
+    const menu = Menu.buildFromTemplate(template);
+    menu.popup();
+  });
+
+  ipcMain.on(FacadeActions.SHOW_MODE_MENU, (event, {identity, mode}) => {
+    const template: Electron.MenuItemConstructorOptions[] = [
+      {
+        label: `${mode == "tweet" ? "✔" : "　"}ツイート`,
+        click() {
+          renderer.send(FacadeActions.CHANGE_MODE, {identity: identity, mode: "tweet"});
+        },
+      },
+      {
+        label: `${mode == "media" ? "✔" : "　"}メディア`,
+        click() {
+          renderer.send(FacadeActions.CHANGE_MODE, {identity: identity, mode: "media"});
+        },
+      },
+    ];
+
+    const menu = Menu.buildFromTemplate(template);
+    menu.popup();
   });
 
   observed = true;
