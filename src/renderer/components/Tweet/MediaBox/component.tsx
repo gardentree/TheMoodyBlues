@@ -1,10 +1,11 @@
 import React, {useState} from "react";
 import Modal from "react-modal";
 import {Carousel} from "react-responsive-carousel";
+import {environment} from "@shared/tools";
 
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
-if (process.env.NODE_ENV !== "test") Modal.setAppElement("#app");
+if (!environment.isTest()) Modal.setAppElement("#app");
 
 interface Props {
   media: Twitter.Media[];

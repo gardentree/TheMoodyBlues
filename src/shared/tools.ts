@@ -8,4 +8,7 @@ export const environment = {
   isDevelopment: () => {
     return process.env.NODE_ENV == "development";
   },
+  isTest: () => {
+    return process.env.NODE_ENV == "test";
+  },
 };
