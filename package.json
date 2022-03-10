@@ -44,8 +44,8 @@
     "dist": "test -z \"$(git status -s)\" && yarn compile --mode production && yarn package",
     "compile": "webpack",
     "package": "electron-builder --c.buildVersion=`git rev-parse --short HEAD`",
-    "test": "NODE_ENV=test TS_NODE_PROJECT=tsconfig/test.json yarn mocha --exit -r ts-node/register/transpile-only -r tsconfig-paths/register -r test/helper.ts",
-    "test:all": "yarn test 'test/**/*.{ts,tsx}'"
+    "test": "yarn gulp test:all",
+    "test:watch": "yarn gulp watch"
   },
   "devDependencies": {
     "@faker-js/faker": "^6.0.0-alpha.7",
@@ -83,6 +83,7 @@
     "enzyme-adapter-react-16": "^1.5.0",
     "gulp": "^4.0.2",
     "gulp-exec": "^5.0.0",
+    "gulp-mocha": "^8.0.0",
     "html-webpack-plugin": "^5.5.0",
     "ignore-styles": "^5.0.1",
     "jsdom": "^19.0.0",
@@ -105,10 +106,7 @@
   },
   "build": {
     "appId": "com.electron.themoodyblues",
-    "files": [
-      "build/**/*",
-      "icon.*"
-    ],
+    "files": ["build/**/*", "icon.*"],
     "extraMetadata": {
       "main": "build/main.js"
     },
