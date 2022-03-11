@@ -34,7 +34,7 @@ namespace TheMoodyBlues {
     component: "Timeline" | "Search";
     interval: number;
     way: "retrieveTimeline" | "search" | "retrieveMentions" | "retrieveTimelineOfList";
-    parameters?: any[];
+    parameters?: string[] | undefined;
     active: boolean;
     growl: boolean;
     mute: boolean;

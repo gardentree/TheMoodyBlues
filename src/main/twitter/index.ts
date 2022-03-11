@@ -6,7 +6,7 @@ import {Actions as FacadeActions} from "@shared/facade";
 import {environment} from "@shared/tools";
 import logger from "electron-log";
 
-let observed: boolean = false;
+let observed = false;
 
 export function setup(renderer: WebContents) {
   renderer.on("dom-ready", () => {

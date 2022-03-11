@@ -1,10 +1,10 @@
 import ElectronStore from "electron-store";
 import {HOME, SEARCH, MENTIONS, MUTE} from "@shared/defaults";
+import storage from "electron-json-storage";
 
 const SCREENS: TMB.ScreenPreference[] = [HOME, SEARCH, MENTIONS].map((template) => Object.assign({active: true}, template));
 
 export function build(directory?: string) {
-  const storage = require("electron-json-storage");
   const store = new ElectronStore({
     cwd: directory,
   });

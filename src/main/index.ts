@@ -7,6 +7,7 @@ import logger from "electron-log";
 import {setup} from "./twitter";
 import {Actions as FacadeActions} from "@shared/facade";
 import {environment} from "@shared/tools";
+import windowKeeper from "electron-window-state";
 
 logger.info(`start: ${process.env.NODE_ENV}`);
 
@@ -18,7 +19,6 @@ function createMainWindow() {
     .then((name) => logger.info(name))
     .catch((error) => logger.error(error));
 
-  const windowKeeper = require("electron-window-state");
   const windowState = windowKeeper({
     defaultWidth: 1000,
     defaultHeight: 800,
@@ -88,7 +88,7 @@ app.on("ready", () => {
             openPreferences();
           },
         },
-        {role: 'quit'},
+        {role: "quit"},
       ],
     },
     {

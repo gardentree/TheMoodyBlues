@@ -175,7 +175,7 @@ describe("retrieveTimeline", () => {
             call(effect: any, next: any) {
               switch (effect.fn.name) {
                 case "retrieveTimeline":
-                  expect(effect.args[0]).to.equal(null);
+                  expect(effect.args[0]).to.equal(undefined);
                   return [{id_str: "new_1"}, {id_str: "new_2"}];
                 case "setTweets":
                   expect(effect.args[0]).to.equal(identity);

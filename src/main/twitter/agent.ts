@@ -6,10 +6,10 @@ import logger from "electron-log";
 function retry<P>(processing: () => Promise<P>, retryCount: number) {
   let promise: Promise<P> = processing();
   for (let i = 1; i <= retryCount; i++) {
-    promise = promise.catch((error: any) => {
+    promise = promise.catch((error) => {
       logger.error(error);
 
-      if (error.code == "ENOTFOUND") {
+      if ("data" in error && error.code == "ENOTFOUND") {
         logger.error(`retry ${i}`);
         return processing();
       }
@@ -108,7 +108,7 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): TMB.T
         query = `conversation_id:${origin.conversation_id}`;
       }
 
-      const response = await retrieve2(`tweets/search/recent`, {
+      const response = await retrieve2("tweets/search/recent", {
         ...parameters,
         query: query,
         max_results: "100",
@@ -177,7 +177,7 @@ function degrade(v2: Twitter2.Response): Twitter.Tweet[] {
 
   return v1;
 }
-function degradeTweet(tweet: Twitter2.Tweet, includes: IncludeMap, referenced: boolean = false): Twitter.Tweet {
+function degradeTweet(tweet: Twitter2.Tweet, includes: IncludeMap, referenced = false): Twitter.Tweet {
   const v1: Twitter.Tweet = {
     created_at: degradeDate(tweet.created_at),
     id: Number(tweet.id),

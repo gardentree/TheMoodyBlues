@@ -45,7 +45,7 @@ const MediaBox = (props: Props) => {
   const elements = media.map((media, index: number) => {
     switch (media.type) {
       case "video":
-      case "animated_gif":
+      case "animated_gif": {
         const variants = media.video_info?.variants.slice().sort((a: Twitter.MediaVideoVariant, b: Twitter.MediaVideoVariant) => (b.bitrate || 0) - (a.bitrate || 0));
         let url;
         if (variants) {
@@ -59,6 +59,7 @@ const MediaBox = (props: Props) => {
             <video src={url} poster={media.media_url_https} preload="metadata" playsInline controls controlsList="nodownload" />
           </div>
         );
+      }
       case "photo":
       default:
         return (

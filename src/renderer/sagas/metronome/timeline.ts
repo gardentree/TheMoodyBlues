@@ -21,7 +21,7 @@ export function* initialize(identity: TMB.ScreenID, preference: TMB.ScreenPrefer
 export function* order(identity: TMB.ScreenID, screen: TMB.Screen, preference: TMB.Preference, force: boolean) {
   const oldTweets = force ? [] : screen.tweets;
 
-  const parameters = (preference.screen.parameters || []).concat(latest(oldTweets));
+  const parameters = (preference.screen.parameters || []).concat(latest(oldTweets) || []);
   let tweets: Twitter.Tweet[] = yield call(facade.agent[preference.screen.way] as (...parameters: unknown[]) => Promise<Twitter.Tweet[]>, ...parameters);
   if (tweets.length > 0) {
     if (preference.screen.mute) {

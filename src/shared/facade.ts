@@ -1,3 +1,5 @@
+// TODO どうする？
+// eslint-disable-next-line @typescript-eslint/no-namespace
 export namespace Actions {
   export const AGENT_LISTS = "agent_lists";
   export const AGENT_RETRIEVE_CONVERSATION = "agent_retrieveConversation";

@@ -53,12 +53,12 @@ function* launch(action: Action<{identity: TMB.ScreenID}>) {
   yield metronome.launch(payload.identity, preference.screen);
 }
 
-function* reorder(action: ActionMeta<{}, {identity: TMB.ScreenID; force: boolean}>) {
+function* reorder(action: ActionMeta<Record<string, never>, {identity: TMB.ScreenID; force: boolean}>) {
   const {focused} = ((yield select()) as TMB.State).principal;
 
   yield order(action.meta.identity || focused, action);
 }
-function* order(identity: TMB.ScreenID, action: ActionMeta<{}, {force: boolean}>) {
+function* order(identity: TMB.ScreenID, action: ActionMeta<Record<string, never>, {force: boolean}>) {
   const {screens, preferences}: TMB.State = yield select();
   const screen = screens.get(identity)!;
   const preference = preferences.get(identity)!;
@@ -72,7 +72,7 @@ function* searchTweets(action: Action<{query: string}>) {
 
   yield put(actions.focusScreen(identity));
   yield put(actions.setupSearch(identity, query));
-  yield reorder(actions.reload(identity, true, true) as ActionMeta<{}, {identity: TMB.ScreenID; force: boolean}>); //FIXME castを消す
+  yield reorder(actions.reload(identity, true, true) as ActionMeta<Record<string, never>, {identity: TMB.ScreenID; force: boolean}>); //FIXME castを消す
 }
 
 function* displayUserTimeline(action: Action<{name: Twitter.ScreenName}>) {
@@ -100,6 +100,7 @@ function* shutdown(action: Action<{identity: TMB.ScreenID}>) {
   yield metronome.close(payload.identity);
 }
 
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const wrap = (saga: (action: ActionMeta<any, any>) => Generator) =>
   function* (action: ActionMeta<any, any>) {
     facade.logger.verbose(action);
@@ -118,6 +119,7 @@ const wrap = (saga: (action: ActionMeta<any, any>) => Generator) =>
       if (loading) yield put(actions.showLoading(false));
     }
   };
+/* eslint-enable @typescript-eslint/no-explicit-any */
 
 // prettier-ignore
 export default [

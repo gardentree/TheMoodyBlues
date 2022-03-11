@@ -8,8 +8,7 @@ export interface OwnProps {
   tweets: Twitter.Tweet[];
   lastReadID: string | null;
 }
-export interface StateProps {}
-type Props = OwnProps & StateProps;
+type Props = OwnProps;
 
 const TweetList = (props: Props) => {
   const {tweets, lastReadID} = props;
