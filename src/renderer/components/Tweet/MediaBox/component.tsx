@@ -5,7 +5,7 @@ import {environment} from "@shared/tools";
 
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 
-if (!environment.isTest()) Modal.setAppElement("#app");
+if (!environment.isTest()) Modal.setAppElement("#container");
 
 interface Props {
   media: Twitter.Media[];

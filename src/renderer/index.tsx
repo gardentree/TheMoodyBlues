@@ -32,7 +32,7 @@ facade.events.onShowVerifierForm(() => {
   const callback = (verifier: string) => {
     facade.actions.authorize(verifier);
   };
-  ReactDOM.render(<VerifierForm callback={callback} />, document.getElementById("app"));
+  ReactDOM.render(<VerifierForm callback={callback} />, document.getElementById("container"));
 });
 facade.events.onLaunch(() => {
   const sagaMiddleware = createSagaMiddleware();
@@ -48,7 +48,7 @@ facade.events.onLaunch(() => {
       <Principal />
       <div id="modals" />
     </Provider>,
-    document.getElementById("app")
+    document.getElementById("container")
   );
 });
 facade.events.onAlert((error: unknown) => {
