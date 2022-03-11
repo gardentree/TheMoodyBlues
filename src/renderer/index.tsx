@@ -4,7 +4,7 @@ import {createStore, applyMiddleware} from "redux";
 import {Provider} from "react-redux";
 import createSagaMiddleware from "redux-saga";
 import {createLogger} from "redux-logger";
-import {library} from "@fortawesome/fontawesome-svg-core";
+import {library, config} from "@fortawesome/fontawesome-svg-core";
 import {fab} from "@fortawesome/free-brands-svg-icons";
 import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 import rootSaga from "./sagas";
@@ -16,12 +16,14 @@ import Principal from "./components/Principal";
 
 (() => {
   require("photon/dist/css/photon.css");
+  require("@fortawesome/fontawesome-svg-core/styles.css");
 
   function requireAll(context: __WebpackModuleApi.RequireContext) {
     context.keys().forEach(context);
   }
   requireAll(require.context("./", true, /\.scss$/));
 
+  config.autoAddCss = false;
   library.add(fab, faSpinner);
 })();
 

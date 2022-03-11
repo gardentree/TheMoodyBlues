@@ -10,8 +10,6 @@ import {environment} from "@shared/tools";
 
 logger.info(`start: ${process.env.NODE_ENV}`);
 
-process.env["ELECTRON_DISABLE_SECURITY_WARNINGS"] = "true";
-
 // global reference to mainWindow (necessary to prevent window from being garbage collected)
 let mainWindow: BrowserWindow | null;
 

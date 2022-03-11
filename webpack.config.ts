@@ -106,6 +106,7 @@ const renderer: any = {
       inject: false,
     }),
   ],
+  devtool: "cheap-module-source-map",
   devServer: {
     static: path.join(__dirname, "./build"),
   },
