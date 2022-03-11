@@ -41,7 +41,7 @@
     "dev": "yarn compile && run-p dev:*",
     "dev:serve": "webpack-dev-server --hot",
     "dev:launch": "wait-on http://localhost:8080 && electron .",
-    "dist": "test -z \"$(git status -s)\" && yarn compile --mode production && yarn test && yarn package",
+    "dist": "test -z \"$(git status -s)\" && yarn compile --mode production && yarn test && yarn eslint src --max-warnings 0 && yarn package",
     "compile": "webpack",
     "package": "electron-builder --c.buildVersion=`git rev-parse --short HEAD`",
     "test": "yarn gulp test:all",
