@@ -1,6 +1,6 @@
 import {expect, use} from "chai";
 import sinon from "sinon";
-import {build} from "@source/main/twitter/storage";
+import {build} from "@source/main/processing/storage";
 
 const HOME = {
   identity: "home",

@@ -8,11 +8,11 @@ import faker from "@faker-js/faker";
 use(chaiAsPromised);
 use(chaiSubset);
 
-const [incarnate, degrade, degradeDate] = rewires("main/twitter/agent", ["incarnate", "degrade", "degradeDate"]);
+const [incarnate, degrade, degradeDate] = rewires("main/processing/twitter.ts", ["incarnate", "degrade", "degradeDate"]);
 const [parseElements] = rewires("/renderer/libraries/twitter", ["parseElements"]);
 
 function loadJSON(path) {
-  return JSON.parse(fs.readFileSync(`./test/main/twitter/${path}`));
+  return JSON.parse(fs.readFileSync(`./test/main/processing/${path}`));
 }
 function fake(elements) {
   const data = [];

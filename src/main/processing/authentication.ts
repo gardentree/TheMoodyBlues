@@ -1,6 +1,6 @@
 import {OAuth} from "oauth";
 import storage from "./storage";
-import {incarnate} from "./agent";
+import {incarnate} from "./twitter";
 import TwitterClient from "twitter";
 import TwitterClient2 from "twitter-v2";
 
