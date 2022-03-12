@@ -8,7 +8,7 @@ import {library, config} from "@fortawesome/fontawesome-svg-core";
 import {fab} from "@fortawesome/free-brands-svg-icons";
 import {faSpinner} from "@fortawesome/free-solid-svg-icons";
 import rootSaga from "./sagas";
-import rootReducer from "./modules/reducer";
+import rootReducer from "./actions/reducer";
 import * as actions from "@actions";
 import {setup as setupEvents} from "./events";
 import VerifierForm from "./components/VerifierForm";

@@ -89,7 +89,7 @@ const renderer: any = {
   },
   resolve: {
     alias: {
-      "@actions": path.resolve(__dirname, "src/renderer/modules"),
+      "@actions": path.resolve(__dirname, "src/renderer/actions"),
       "@libraries": path.resolve(__dirname, "src/renderer/libraries"),
     },
   },

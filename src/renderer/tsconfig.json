@@ -4,7 +4,7 @@
   "compilerOptions": {
     "paths": {
       "@shared/*": ["../shared/*"],
-      "@actions": ["./modules"],
+      "@actions": ["./actions"],
       "@libraries/*": ["./libraries/*"]
     }
   }
