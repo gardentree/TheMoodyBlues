@@ -9,7 +9,7 @@ function retry<P>(processing: () => Promise<P>, retryCount: number) {
     promise = promise.catch((error) => {
       logger.error(error);
 
-      if ("data" in error && error.code == "ENOTFOUND") {
+      if (error.code == "ENOTFOUND") {
         logger.error(`retry ${i}`);
         return processing();
       }

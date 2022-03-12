@@ -8,7 +8,7 @@ import faker from "@faker-js/faker";
 use(chaiAsPromised);
 use(chaiSubset);
 
-const [incarnate, degrade, degradeDate] = rewires("main/processing/twitter.ts", ["incarnate", "degrade", "degradeDate"]);
+const [incarnate, degrade, degradeDate, retry] = rewires("main/processing/twitter.ts", ["incarnate", "degrade", "degradeDate", "retry"]);
 const [parseElements] = rewires("/renderer/libraries/twitter", ["parseElements"]);
 
 function loadJSON(path) {
@@ -252,5 +252,46 @@ describe("degradeDate", () => {
   it("degrade", () => {
     expect(degradeDate("2021-01-01T00:00:00.000Z")).to.eq("Fri Jan 01 00:00:00 +0000 2021");
     expect(degradeDate("2021-01-01T01:00:00.000Z")).to.eq("Fri Jan 01 01:00:00 +0000 2021");
+  });
+});
+
+describe("retry", () => {
+  it("when success", () => {
+    const processing = sinon.stub();
+    processing.resolves([]);
+
+    return expect(retry(processing, 3)).to.eventually.deep.equal([]);
+  });
+  it("when retry", () => {
+    const processing = sinon.stub();
+    processing.onFirstCall().rejects({
+      code: "ENOTFOUND",
+    });
+    processing.onSecondCall().resolves([]);
+
+    return expect(retry(processing, 3)).to.eventually.deep.equal([]);
+  });
+  it("when retries are exceeded", () => {
+    const processing = sinon.stub();
+    processing.onFirstCall().rejects({
+      code: "ENOTFOUND",
+    });
+    processing.onSecondCall().rejects({
+      code: "ENOTFOUND",
+    });
+
+    return expect(retry(processing, 1)).to.be.rejectedWith({
+      code: "ENOTFOUND",
+    });
+  });
+  it("when other than ENOTFOUND", () => {
+    const processing = sinon.stub();
+    processing.onFirstCall().rejects({
+      code: "others",
+    });
+
+    return expect(retry(processing, 3)).to.be.rejectedWith({
+      code: "others",
+    });
   });
 });
