@@ -1,7 +1,7 @@
 import {expectSaga} from "redux-saga-test-plan";
 import {expect} from "chai";
 
-const [reorder, searchTweets, wrap] = rewires("renderer/sagas/screen", ["reorder", "searchTweets", "wrap"]);
+const [reorder, searchTweets] = rewires("renderer/sagas/screen", ["reorder", "searchTweets"]);
 
 describe(reorder.name, () => {
   it("reload", () => {
@@ -123,29 +123,5 @@ describe(searchTweets.name, () => {
         expect(effects.put).to.be.undefined;
         expect(effects.call).to.have.lengthOf(1);
       });
-  });
-});
-
-describe(wrap.name, () => {
-  it("hide loading spinner when alarm", () => {
-    function* fail() {
-      throw new Error();
-    }
-
-    return expectSaga(wrap(fail), {})
-      .put({
-        type: "SHOW_LOADING",
-        payload: {nowLoading: true},
-      })
-      .put({
-        type: "ALARM",
-        error: true,
-        payload: new Error(),
-      })
-      .put({
-        type: "SHOW_LOADING",
-        payload: {nowLoading: false},
-      })
-      .run();
   });
 });

@@ -2,6 +2,7 @@ import {put, call, takeLatest, takeEvery, select} from "redux-saga/effects";
 import * as actions from "@actions";
 import * as metronome from "./metronome";
 import {Action, ActionMeta} from "redux-actions";
+import {wrap} from "./library";
 
 const {facade} = window;
 
@@ -59,27 +60,6 @@ function* shutdown(action: Action<{identity: TMB.ScreenID}>) {
 
   yield metronome.close(payload.identity);
 }
-
-/* eslint-disable @typescript-eslint/no-explicit-any */
-const wrap = (saga: (action: ActionMeta<any, any>) => Generator) =>
-  function* (action: ActionMeta<any, any>) {
-    facade.logger.verbose(action);
-
-    const loading = !action.meta || !action.meta.silently;
-    try {
-      if (loading) yield put(actions.showLoading(true));
-      yield call(saga, action);
-    } catch (error: unknown) {
-      facade.logger.error(error);
-      if (error instanceof Error) {
-        facade.logger.error(error.stack);
-      }
-      yield put(actions.alarm(error));
-    } finally {
-      if (loading) yield put(actions.showLoading(false));
-    }
-  };
-/* eslint-enable @typescript-eslint/no-explicit-any */
 
 // prettier-ignore
 export default [
