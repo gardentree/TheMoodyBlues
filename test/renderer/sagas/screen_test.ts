@@ -1,7 +1,7 @@
 import {expectSaga} from "redux-saga-test-plan";
 import {expect} from "chai";
 
-const [reorder, searchTweets, wrap] = rewires("renderer/sagas/twitter", ["reorder", "searchTweets", "wrap"]);
+const [reorder, searchTweets, wrap] = rewires("renderer/sagas/screen", ["reorder", "searchTweets", "wrap"]);
 
 describe(reorder.name, () => {
   it("reload", () => {
