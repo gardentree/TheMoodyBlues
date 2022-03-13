@@ -9,8 +9,14 @@ export const {prepareState, reconfigure} = createActions({
   RECONFIGURE: () => null,
 });
 
-export const {reload, mountScreen, unmountScreen, searchTweets} = createActions({
-  RELOAD: [() => null, (identity, force, silently = false) => ({identity, force, silently})],
+export const {reload, reloadFocusedScreen, mountScreen, unmountScreen, searchTweets} = createActions({
+  RELOAD: [
+    (identity) => ({
+      identity,
+    }),
+    (identity, force, silently = false) => ({force, silently}),
+  ],
+  RELOAD_FOCUSED_SCREEN: [() => null, (force, silently = false) => ({force, silently})],
   MOUNT_SCREEN: (identity) => ({identity: identity}),
   UNMOUNT_SCREEN: (identity) => ({identity: identity}),
   SEARCH_TWEETS: (query) => ({identity: "search", query: query}),

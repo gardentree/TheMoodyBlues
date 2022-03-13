@@ -15,10 +15,13 @@ function* launch(action: Action<{identity: TMB.ScreenID}>) {
   yield metronome.launch(payload.identity, preference.screen);
 }
 
-function* reorder(action: ActionMeta<Record<string, never>, {identity: TMB.ScreenID; force: boolean}>) {
+function* reorder(action: ActionMeta<{identity: TMB.ScreenID}, {force: boolean}>) {
+  yield order(action.payload.identity, action.meta.force);
+}
+function* reorderFocusedScreen(action: ActionMeta<Record<string, never>, {force: boolean}>) {
   const focused = selectFocusedScreenID(yield select());
 
-  yield order(action.meta.identity || focused, action.meta.force);
+  yield order(focused, action.meta.force);
 }
 function* order(identity: TMB.ScreenID, force: boolean) {
   const {screens, preferences}: TMB.State = yield select();
@@ -69,4 +72,5 @@ export default [
   takeEvery(actions.mountScreen, wrap(launch)),
   takeEvery(actions.unmountScreen, wrap(shutdown)),
   takeEvery(actions.reload, wrap(reorder)),
+  takeEvery(actions.reloadFocusedScreen, wrap(reorderFocusedScreen)),
 ];

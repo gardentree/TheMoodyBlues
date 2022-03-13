@@ -1,7 +1,7 @@
 import {expectSaga} from "redux-saga-test-plan";
 import {expect} from "chai";
 
-const [reorder, searchTweets] = rewires("renderer/sagas/screen", ["reorder", "searchTweets"]);
+const [reorder, reorderFocusedScreen, searchTweets] = rewires("renderer/sagas/screen", ["reorder", "reorderFocusedScreen", "searchTweets"]);
 
 describe(reorder.name, () => {
   it("reload", () => {
@@ -9,8 +9,8 @@ describe(reorder.name, () => {
     const preferences = new Map([["search", {screen: {identity: "search", component: "Search"}}]]);
 
     return expectSaga(reorder, {
-      payload: {},
-      meta: {force: false, identity: "search"},
+      payload: {identity: "search"},
+      meta: {force: false},
     })
       .provide([
         {
@@ -20,6 +20,57 @@ describe(reorder.name, () => {
               preferences: preferences,
               principal: {
                 focused: "Timeline",
+              },
+            };
+          },
+        },
+        {
+          call(effect: any, next: any) {
+            switch (effect.fn.name) {
+              case "search":
+                return [];
+              default:
+                expect.fail(effect.fn.name);
+                return;
+            }
+          },
+        },
+      ])
+      .put({
+        type: "search_STOP_TIMER",
+      })
+      .put({
+        type: "UPDATE_TWEETS",
+        payload: {tweets: [], query: "くえりー"},
+        meta: {identity: "search"},
+      })
+      .put({
+        type: "search_START_TIMER",
+      })
+      .run()
+      .then((result) => {
+        const {effects} = result;
+
+        expect(effects.put).to.be.undefined;
+        expect(effects.call).to.have.lengthOf(1);
+      });
+  });
+  it("reloadFocusedScreen", () => {
+    const screens = new Map([["search", {tweets: [], options: {query: "くえりー"}}]]);
+    const preferences = new Map([["search", {screen: {identity: "search", component: "Search"}}]]);
+
+    return expectSaga(reorderFocusedScreen, {
+      payload: {},
+      meta: {force: false},
+    })
+      .provide([
+        {
+          select() {
+            return {
+              screens: screens,
+              preferences: preferences,
+              principal: {
+                focused: "search",
               },
             };
           },
