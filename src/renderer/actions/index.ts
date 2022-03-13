@@ -13,7 +13,7 @@ export const {reload, mountScreen, unmountScreen, searchTweets} = createActions(
   RELOAD: [() => null, (identity, force, silently = false) => ({identity, force, silently})],
   MOUNT_SCREEN: (identity) => ({identity: identity}),
   UNMOUNT_SCREEN: (identity) => ({identity: identity}),
-  SEARCH_TWEETS: (query) => ({query: query}),
+  SEARCH_TWEETS: (query) => ({identity: "search", query: query}),
 });
 
 export const {displayUserTimeline, displayConversation} = createActions({

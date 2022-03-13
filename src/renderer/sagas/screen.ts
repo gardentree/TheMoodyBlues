@@ -27,9 +27,8 @@ function* order(identity: TMB.ScreenID, force: boolean) {
   yield metronome.play(identity, screen, preference, force);
 }
 
-function* searchTweets(action: Action<{query: string}>) {
-  const {query} = action.payload;
-  const identity = "search"; //TODO 動的にする？
+function* searchTweets(action: Action<{identity: TMB.ScreenID; query: string}>) {
+  const {identity, query} = action.payload;
 
   yield put(actions.focusScreen(identity));
   yield put(actions.setupSearch(identity, query));

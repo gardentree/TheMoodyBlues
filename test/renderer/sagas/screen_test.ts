@@ -79,7 +79,7 @@ describe(searchTweets.name, () => {
   ]);
 
   it("normal", () => {
-    return expectSaga(searchTweets, {payload: {query: "くえりー"}, meta: {identity: "search"}})
+    return expectSaga(searchTweets, {payload: {identity: "search", query: "くえりー"}})
       .provide({
         select() {
           return {
