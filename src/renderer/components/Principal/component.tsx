@@ -4,17 +4,11 @@ import TabItem from "../TabItem";
 import WindowContent from "../WindowContent";
 import StatusBar from "../StatusBar";
 
-export interface StateProps {
-  screens: TMB.ScreenID[];
-  focused: TMB.ScreenID;
-  style: TMB.PrincipalStyle;
-  nowLoading: boolean;
-}
 export interface DispatchProps {
   focusScreen(event: React.SyntheticEvent<HTMLElement>): void;
   didMount(identity: TMB.ScreenID): void;
 }
-type Props = StateProps & DispatchProps;
+type Props = TMB.Principal & DispatchProps;
 
 const Principal = (props: Props) => {
   const {screens, focused, style, focusScreen, nowLoading, didMount} = props;

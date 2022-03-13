@@ -1,16 +1,11 @@
 import {connect} from "react-redux";
-import Component, {StateProps, DispatchProps} from "./component";
+import Component, {DispatchProps} from "./component";
 import * as actions from "@actions";
 
-const mapStateToProps = (state: TMB.State): StateProps => {
-  const {screens, focused, style, nowLoading} = state.principal;
+const mapStateToProps = (state: TMB.State): TMB.Principal => {
+  const {principal} = state;
 
-  return {
-    screens: screens,
-    focused: focused,
-    style: style,
-    nowLoading: nowLoading,
-  };
+  return principal;
 };
 const mapDispatchToProps: DispatchProps = {
   focusScreen: (event: React.SyntheticEvent<HTMLElement>) => actions.focusScreen(event.currentTarget.dataset.name),
