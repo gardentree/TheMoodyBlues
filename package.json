@@ -41,11 +41,12 @@
     "dev": "yarn compile && run-p dev:*",
     "dev:serve": "webpack-dev-server --hot",
     "dev:launch": "wait-on http://localhost:8080 && electron .",
-    "dist": "test -z \"$(git status -s)\" && yarn compile --mode production && yarn test && yarn eslint src --max-warnings 0 && yarn package",
+    "dist": "yarn run check && yarn package",
     "compile": "webpack",
     "package": "electron-builder --c.buildVersion=`git rev-parse --short HEAD`",
     "test": "yarn gulp test:all",
-    "test:watch": "yarn gulp watch"
+    "test:watch": "yarn gulp watch",
+    "check": "test -z \"$(git status -s)\" && yarn compile --mode production && yarn test && yarn eslint src --max-warnings 0"
   },
   "devDependencies": {
     "@faker-js/faker": "^6.0.0-alpha.7",
@@ -113,10 +114,7 @@
   },
   "build": {
     "appId": "com.electron.themoodyblues",
-    "files": [
-      "build/**/*",
-      "icon.*"
-    ],
+    "files": ["build/**/*", "icon.*"],
     "extraMetadata": {
       "main": "build/main.js"
     },
