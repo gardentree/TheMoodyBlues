@@ -3,6 +3,7 @@ import * as actions from "@actions";
 import * as metronome from "./metronome";
 import {Action, ActionMeta} from "redux-actions";
 import {wrap} from "./library";
+import {selectFocusedScreenID} from "@libraries/selector";
 
 const {facade} = window;
 
@@ -15,7 +16,7 @@ function* launch(action: Action<{identity: TMB.ScreenID}>) {
 }
 
 function* reorder(action: ActionMeta<Record<string, never>, {identity: TMB.ScreenID; force: boolean}>) {
-  const {focused} = ((yield select()) as TMB.State).principal;
+  const focused = selectFocusedScreenID(yield select());
 
   yield order(action.meta.identity || focused, action.meta.force);
 }
@@ -46,7 +47,7 @@ function* displayConversation(action: ActionMeta<{tweet: Twitter.Tweet}, {option
   yield branch(tweets);
 }
 function* branch(tweets: Twitter.Tweet[]) {
-  const root = ((yield select()) as TMB.State).principal.focused;
+  const root = selectFocusedScreenID(yield select());
   const branch = `${root}.${Date.now()}`;
 
   yield put(actions.prepareScreen(branch));
