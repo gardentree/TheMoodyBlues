@@ -10,7 +10,7 @@ export function* initialize(identity: TMB.ScreenID, preference: TMB.ScreenPrefer
 
   if (tweets.length > 0) {
     yield put(actions.updateTweets(tweets, identity));
-    yield put(actions.mark(identity, tweets[0].id));
+    yield put(actions.mark(identity, tweets[0].id_str));
   } else {
     yield put(actions.updateTweets([], identity));
   }

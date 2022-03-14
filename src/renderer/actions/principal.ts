@@ -1,4 +1,4 @@
-import {createActions, handleActions} from "redux-actions";
+import {createActions, handleActions, Action} from "redux-actions";
 
 export const {setScreens, focusScreen, zoomIn, zoomOut, zoomReset, showLoading} = createActions({
   SET_SCREENS: (screens: TMB.ScreenID[]) => ({
@@ -13,7 +13,14 @@ export const {setScreens, focusScreen, zoomIn, zoomOut, zoomReset, showLoading} 
   SHOW_LOADING: (nowLoading: boolean) => ({
     nowLoading: nowLoading,
   }),
-});
+}) as {
+  setScreens(screens: TMB.ScreenID[]): Action<unknown>;
+  focusScreen(identity: TMB.ScreenID): Action<unknown>;
+  zoomIn(): Action<unknown>;
+  zoomOut(): Action<unknown>;
+  zoomReset(): Action<unknown>;
+  showLoading(nowLoading: boolean): Action<unknown>;
+};
 
 export default handleActions<TMB.Principal, Partial<TMB.Principal>>(
   {

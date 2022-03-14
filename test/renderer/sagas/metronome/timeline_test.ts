@@ -20,7 +20,7 @@ describe("retrieveTimeline", () => {
         .provide([
           {
             call(effect: any, next: any) {
-              return [{id: 1}];
+              return [{id_str: "1"}];
             },
           },
           {
@@ -32,12 +32,12 @@ describe("retrieveTimeline", () => {
         ])
         .put({
           type: "UPDATE_TWEETS",
-          payload: {tweets: [{id: 1}]},
+          payload: {tweets: [{id_str: "1"}]},
           meta: {identity: identity},
         })
         .put({
           type: "MARK",
-          payload: {lastReadID: 1},
+          payload: {lastReadID: "1"},
           meta: {identity: identity},
         })
         .put({

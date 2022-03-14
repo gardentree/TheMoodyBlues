@@ -1,9 +1,12 @@
-import {createActions, handleActions} from "redux-actions";
+import {createActions, handleActions, Action} from "redux-actions";
 
 export const {branch, clip} = createActions({
   BRANCH: (root: TMB.ScreenID, branch: TMB.ScreenID) => ({root, branch}),
   CLIP: (root: TMB.ScreenID, branch: TMB.ScreenID) => ({root, branch}),
-});
+}) as {
+  branch(root: TMB.ScreenID, branch: TMB.ScreenID): Action<unknown>;
+  clip(root: TMB.ScreenID, branch: TMB.ScreenID): Action<unknown>;
+};
 
 export default handleActions<TMB.Lineage, {root: TMB.ScreenID; branch: TMB.ScreenID}>(
   {

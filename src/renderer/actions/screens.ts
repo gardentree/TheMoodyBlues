@@ -1,4 +1,4 @@
-import {createActions, handleActions} from "redux-actions";
+import {createActions, handleActions, Action} from "redux-actions";
 import merge from "@libraries/merger";
 import {INITIAL_VALUE} from "@libraries/screen";
 
@@ -71,7 +71,15 @@ export const {updateTweets, mark, setupSearch, changeMode, prepareScreen, closeS
       identity,
     }),
   ],
-});
+}) as {
+  updateTweets(tweets: Twitter.Tweet[], identity: TMB.ScreenID, options?: TMB.ScreenOptions): Action<unknown>;
+  mark(identity: TMB.ScreenID, lastReadID: Twitter.TweetID): Action<unknown>;
+  setupSearch(identity: TMB.ScreenID, query: string): Action<unknown>;
+  changeMode(identity: TMB.ScreenID, mode: TMB.ArticleMode): Action<unknown>;
+  prepareScreen(identity: TMB.ScreenID): Action<unknown>;
+  closeScreen(identity: TMB.ScreenID): Action<unknown>;
+  updateScreenStatus(identity: TMB.ScreenID, status: string): Action<unknown>;
+};
 
 export default handleActions<TMB.ScreenMap, RecursivePartial<TMB.Screen>, {identity: TMB.ScreenID}>(
   {
