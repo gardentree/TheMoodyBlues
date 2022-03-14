@@ -55,6 +55,7 @@ function* branch(tweets: Twitter.Tweet[]) {
 
   yield put(actions.prepareScreen(branch));
   yield put(actions.updateTweets(tweets, branch));
+  yield put(actions.mark(branch, "MAX_VALUE"));
   yield put(actions.branch(root, branch));
 }
 
