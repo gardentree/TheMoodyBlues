@@ -28,7 +28,7 @@ const template = new Map([
 
 describe(reducer.name, () => {
   it("updateTweets", () => {
-    expect(reducer(template, actions.updateTweets([], "home"))).to.deep.equal(template);
+    expect(reducer(template, actions.updateTweets("home", []))).to.deep.equal(template);
   });
   it("updateTweets", () => {
     const oldTimelines = new Map(template);
@@ -37,7 +37,7 @@ describe(reducer.name, () => {
     const newTimelines = new Map(template);
     newTimelines.get("home").tweets = [{id: 2}, {id: 1}];
 
-    expect(reducer(oldTimelines, actions.updateTweets([{id: 2}, {id: 1}], "home"))).to.deep.equal(newTimelines);
+    expect(reducer(oldTimelines, actions.updateTweets("home", [{id: 2}, {id: 1}]))).to.deep.equal(newTimelines);
   });
 
   it("mark", () => {

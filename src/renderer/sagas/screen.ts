@@ -54,7 +54,7 @@ function* branch(tweets: Twitter.Tweet[]) {
   const branch = `${root}.${Date.now()}`;
 
   yield put(actions.prepareScreen(branch));
-  yield put(actions.updateTweets(tweets, branch));
+  yield put(actions.updateTweets(branch,tweets));
   yield put(actions.mark(branch, "MAX_VALUE"));
   yield put(actions.branch(root, branch));
 }

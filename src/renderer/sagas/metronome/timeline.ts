@@ -9,10 +9,10 @@ export function* initialize(identity: TMB.ScreenID, preference: TMB.ScreenPrefer
   const tweets: Twitter.Tweet[] = yield call(facade.storage.getTweets, identity);
 
   if (tweets.length > 0) {
-    yield put(actions.updateTweets(tweets, identity));
+    yield put(actions.updateTweets(identity, tweets));
     yield put(actions.mark(identity, tweets[0].id_str));
   } else {
-    yield put(actions.updateTweets([], identity));
+    yield put(actions.updateTweets(identity, []));
   }
 
   yield timer.spawn(identity, preference.interval);
@@ -34,7 +34,7 @@ export function* order(identity: TMB.ScreenID, screen: TMB.Screen, preference: T
     const newTweets = tweets.concat(oldTweets).slice(0, 400);
 
     yield call(facade.storage.setTweets, identity, newTweets);
-    yield put(actions.updateTweets(newTweets, identity));
+    yield put(actions.updateTweets(identity,newTweets));
   }
   yield timer.restart(identity);
 }

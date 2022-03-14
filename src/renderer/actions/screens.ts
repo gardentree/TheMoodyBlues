@@ -17,11 +17,11 @@ function mergeScreen(oldScreens: Map<string, TMB.Screen>, identity: TMB.ScreenID
 
 export const {updateTweets, mark, setupSearch, changeMode, prepareScreen, closeScreen, updateScreenStatus} = createActions({
   UPDATE_TWEETS: [
-    (tweets, identity, options = undefined) => ({
+    (identity, tweets, options = undefined) => ({
       tweets: tweets,
       ...options,
     }),
-    (tweets, identity) => ({
+    (identity, tweets) => ({
       identity: identity,
     }),
   ],
@@ -72,7 +72,7 @@ export const {updateTweets, mark, setupSearch, changeMode, prepareScreen, closeS
     }),
   ],
 }) as {
-  updateTweets(tweets: Twitter.Tweet[], identity: TMB.ScreenID, options?: TMB.ScreenOptions): Action<unknown>;
+  updateTweets(identity: TMB.ScreenID, tweets: Twitter.Tweet[], options?: TMB.ScreenOptions): Action<unknown>;
   mark(identity: TMB.ScreenID, lastReadID: Twitter.TweetID): Action<unknown>;
   setupSearch(identity: TMB.ScreenID, query: string): Action<unknown>;
   changeMode(identity: TMB.ScreenID, mode: TMB.ArticleMode): Action<unknown>;

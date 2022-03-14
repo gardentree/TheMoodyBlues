@@ -24,7 +24,7 @@ export function* order(identity: TMB.ScreenID, screen: TMB.Screen, preference: T
 
     const newTweets = tweets.concat(oldTweets).slice(0, 400);
 
-    yield put(actions.updateTweets(newTweets, identity, {query: query}));
+    yield put(actions.updateTweets(identity, newTweets, {query: query}));
     if (tweets.length > 0 && oldTweets.length <= 0) {
       yield put(actions.mark(identity, tweets[0].id_str));
     }
