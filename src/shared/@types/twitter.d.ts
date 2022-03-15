@@ -75,8 +75,14 @@ namespace Twitter2 {
     meta: {
       result_count: number;
     };
-    errors?: unknown[];
+    errors?: Error[];
   }
+  interface Error {
+    resource_type: "tweet";
+    parameter: "referenced_tweets.id";
+    type: "https://api.twitter.com/2/problems/resource-not-found";
+  }
+
   interface Tweet {
     id: Twitter.TweetID;
     text: string;

@@ -5,8 +5,8 @@ import sinon from "sinon";
 import * as fs from "fs";
 import faker from "@faker-js/faker";
 
-use(chaiAsPromised);
 use(chaiSubset);
+use(chaiAsPromised);
 
 const [incarnate, degrade, degradeDate, retry] = rewires("main/processing/twitter.ts", ["incarnate", "degrade", "degradeDate", "retry"]);
 const [parseElements] = rewires("/renderer/libraries/twitter", ["parseElements"]);
@@ -186,6 +186,48 @@ describe("retrieveConversation", () => {
     const agent = incarnate(null, {get: callback});
 
     return expect(agent.retrieveConversation({id_str: "1"})).to.be.rejectedWith(JSON.stringify([{title: "Not Found Error"}]));
+  });
+
+  it("when replied tweets is deleted", () => {
+    const callback = sinon.stub();
+    callback.withArgs("tweets/1296887316556980230").resolves(
+      Object.assign(loadJSON("./v2/reply.json"), {
+        errors: [
+          {
+            value: "1503557906574503936",
+            detail: "Could not find tweet with referenced_tweets.id: [1503557906574503936].",
+            title: "Not Found Error",
+            resource_type: "tweet",
+            parameter: "referenced_tweets.id",
+            resource_id: "1503557906574503936",
+            type: "https://api.twitter.com/2/problems/resource-not-found",
+          },
+        ],
+      })
+    );
+    callback.withArgs("tweets/search/recent").resolves(
+      Object.assign(loadJSON("./v2/reply.json"), {
+        meta: {
+          result_count: 1,
+        },
+        errors: [
+          {
+            value: "1503557906574503936",
+            detail: "Could not find tweet with referenced_tweets.id: [1503557906574503936].",
+            title: "Not Found Error",
+            resource_type: "tweet",
+            parameter: "referenced_tweets.id",
+            resource_id: "1503557906574503936",
+            type: "https://api.twitter.com/2/problems/resource-not-found",
+          },
+        ],
+      })
+    );
+
+    const agent = incarnate(null, {get: callback});
+
+    const criterion = {id_str: "1296887316556980230"};
+    return expect(agent.retrieveConversation(criterion)).to.eventually.deep.equal(degrade(loadJSON("./v2/reply.json")));
   });
 });
 

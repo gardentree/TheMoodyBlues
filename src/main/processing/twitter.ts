@@ -21,10 +21,32 @@ function retry<P>(processing: () => Promise<P>, retryCount: number) {
 }
 
 export function incarnate(client: TwitterClient, client2: TwitterClient2): TMB.TwitterAgent {
-  async function retrieve2(endpoint: string, parameters: RequestParameters): Promise<Twitter2.Response> {
+  async function retrieve2(endpoint: string, parameters: RequestParameters, allows?: Twitter2.Error[]): Promise<Twitter2.Response> {
     const response: Twitter2.Response = await client2.get(endpoint, parameters);
     if (response.errors) {
-      throw new Error(JSON.stringify(response.errors));
+      logger.error(response);
+
+      const allowed = (() => {
+        if (!allows) {
+          return false;
+        }
+
+        for (const error of response.errors) {
+          for (const allow of allows) {
+            for (const [key, value] of Object.entries(allow)) {
+              if (error[key] != value) {
+                return false;
+              }
+            }
+          }
+        }
+
+        return true;
+      })();
+
+      if (!allowed) {
+        throw new Error(JSON.stringify(response.errors));
+      }
     }
 
     return response;
@@ -97,8 +119,15 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): TMB.T
         "media.fields": "duration_ms,height,media_key,preview_image_url,type,url,width,alt_text",
         "tweet.fields": "attachments,author_id,conversation_id,created_at,entities,referenced_tweets",
       };
+      const allows: Twitter2.Error[] = [
+        {
+          resource_type: "tweet",
+          parameter: "referenced_tweets.id",
+          type: "https://api.twitter.com/2/problems/resource-not-found",
+        },
+      ];
 
-      const originResponse = await retrieve2(`tweets/${criterion.id_str}`, parameters);
+      const originResponse = await retrieve2(`tweets/${criterion.id_str}`, parameters, allows);
       const origin = originResponse.data as Twitter2.Tweet;
 
       let query: string;
@@ -108,11 +137,15 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): TMB.T
         query = `conversation_id:${origin.conversation_id}`;
       }
 
-      const response = await retrieve2("tweets/search/recent", {
-        ...parameters,
-        query: query,
-        max_results: "100",
-      });
+      const response = await retrieve2(
+        "tweets/search/recent",
+        {
+          ...parameters,
+          query: query,
+          max_results: "100",
+        },
+        allows
+      );
 
       const tweets = degrade(response);
 
@@ -123,9 +156,8 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): TMB.T
 
       if (origin.referenced_tweets && origin.referenced_tweets[0].type == "replied_to") {
         const repliedID = origin.referenced_tweets[0].id;
-        if (!ids.includes(repliedID)) {
+        if (!ids.includes(repliedID) && !originResponse.errors) {
           const replied = await retrieve2(`tweets/${repliedID}`, parameters);
-
           tweets.push(degrade(replied)[0]);
         }
       }
