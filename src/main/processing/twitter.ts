@@ -24,7 +24,7 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): TMB.T
   async function retrieve2(endpoint: string, parameters: RequestParameters, allows?: Twitter2.Error[]): Promise<Twitter2.Response> {
     const response: Twitter2.Response = await client2.get(endpoint, parameters);
     if (response.errors) {
-      logger.error(response);
+      logger.error(JSON.stringify({endpoint, parameters, response}));
 
       const allowed = (() => {
         if (!allows) {
