@@ -1,6 +1,5 @@
 import {JSDOM} from "jsdom";
 import sinon from "sinon";
-import rewire = require("rewire");
 
 const dom = new JSDOM("<!DOCTYPE html><p>Hello world</p>");
 global.window = dom.window;
@@ -33,14 +32,6 @@ const facade = {
 };
 
 global.window.facade = facade;
-
-global.rewires = (file: string, functions: string[]) => {
-  const rewirer = rewire(`../src/${file}`);
-
-  return functions.map((name) => {
-    return rewirer.__get__(name);
-  });
-};
 
 export const mochaHooks = {
   clock: null,

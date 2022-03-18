@@ -1,7 +1,6 @@
 import {expectSaga} from "redux-saga-test-plan";
 import {expect} from "chai";
-
-const [reorder, reorderFocusedScreen, searchTweets] = rewires("renderer/sagas/screen", ["reorder", "reorderFocusedScreen", "searchTweets"]);
+import {reorder, reorderFocusedScreen, searchTweets} from "@source/renderer/sagas/screen/stories";
 
 describe(reorder.name, () => {
   it("reload", () => {

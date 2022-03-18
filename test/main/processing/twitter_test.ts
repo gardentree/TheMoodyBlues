@@ -4,12 +4,13 @@ import chaiSubset from "chai-subset";
 import sinon from "sinon";
 import * as fs from "fs";
 import faker from "@faker-js/faker";
+import {incarnate} from "@source/main/processing/twitter";
+import {retry} from "@source/main/processing/twitter/utility";
+import {degrade, degradeDate} from "@source/main/processing/twitter/degrader";
+import {parseElements} from "@source/renderer/libraries/twitter";
 
 use(chaiSubset);
 use(chaiAsPromised);
-
-const [incarnate, degrade, degradeDate, retry] = rewires("main/processing/twitter.ts", ["incarnate", "degrade", "degradeDate", "retry"]);
-const [parseElements] = rewires("/renderer/libraries/twitter", ["parseElements"]);
 
 function loadJSON(path) {
   return JSON.parse(fs.readFileSync(`./test/main/processing/${path}`));
