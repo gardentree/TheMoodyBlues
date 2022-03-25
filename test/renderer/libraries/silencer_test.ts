@@ -84,32 +84,42 @@ describe("silence", () => {
 
 describe("test", () => {
   describe("full_text", () => {
-    it("when upper and upper", () => {
-      expect(test(tweetTemplate, ["GO"])).to.deep.equal("ポケモンGO");
-    });
-    it("when upper and lower", () => {
-      expect(test(tweetTemplate, ["go"])).to.deep.equal("ポケモンGO");
-    });
-    it("when lower and upper", () => {
-      const tweet = Object.assign({}, tweetTemplate, {full_text: "ポケモンgo"});
+    describe("use text", () => {
+      it("when upper and upper", () => {
+        expect(test(tweetTemplate, ["GO"])).to.deep.equal("ポケモンGO");
+      });
+      it("when upper and lower", () => {
+        expect(test(tweetTemplate, ["go"])).to.deep.equal("ポケモンGO");
+      });
+      it("when lower and upper", () => {
+        const tweet = Object.assign({}, tweetTemplate, {full_text: "ポケモンgo"});
 
-      expect(test(tweet, ["GO"])).to.deep.equal("ポケモンgo");
+        expect(test(tweet, ["GO"])).to.deep.equal("ポケモンgo");
+      });
+      it("when lower and lower", () => {
+        const tweet = Object.assign({}, tweetTemplate, {full_text: "ポケモンgo"});
+
+        expect(test(tweet, ["go"])).to.deep.equal("ポケモンgo");
+      });
+
+      it("when retweet", () => {
+        const tweet = JSON.parse(fs.readFileSync("./test/renderer/libraries/silencer/retweet.json"));
+
+        expect(test(tweet, ["here"])).to.not.be.null;
+      });
+      it("when quote tweet", () => {
+        const tweet = JSON.parse(fs.readFileSync("./test/renderer/libraries/silencer/quote.json"));
+
+        expect(test(tweet, ["Friendly"])).to.not.be.null;
+      });
     });
-    it("when lower and lower", () => {
-      const tweet = Object.assign({}, tweetTemplate, {full_text: "ポケモンgo"});
-
-      expect(test(tweet, ["go"])).to.deep.equal("ポケモンgo");
-    });
-
-    it("when retweet", () => {
-      const tweet = JSON.parse(fs.readFileSync("./test/renderer/libraries/silencer/retweet.json"));
-
-      expect(test(tweet, ["here"])).to.not.be.null;
-    });
-    it("when quote tweet", () => {
-      const tweet = JSON.parse(fs.readFileSync("./test/renderer/libraries/silencer/quote.json"));
-
-      expect(test(tweet, ["Friendly"])).to.not.be.null;
+    describe("use regex", () => {
+      it("when matche whole", () => {
+        expect(test(tweetTemplate, ["^ポケモンGO$"])).to.deep.equal("ポケモンGO");
+      });
+      it("when doesn't matche whole", () => {
+        expect(test(tweetTemplate, ["^GO$"])).to.be.null;
+      });
     });
   });
 
