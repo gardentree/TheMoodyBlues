@@ -30,9 +30,16 @@ export function silence(tweets: Twitter.Tweet[], preference: TMB.MutePreference)
     return true;
   });
 }
+
+const MATCHER = new RegExp("^/(.+)/$");
 export function test(tweet: Twitter.Tweet, keywords: string[]): string | null {
   const expressions = keywords.map((keyword) => {
-    return new RegExp(keyword, "i");
+    const matches = MATCHER.exec(keyword);
+    if (matches) {
+      return new RegExp(matches[1], "i");
+    } else {
+      return new RegExp(keyword, "i");
+    }
   });
 
   if (tweet.retweeted_status) {

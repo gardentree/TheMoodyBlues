@@ -115,10 +115,10 @@ describe("test", () => {
     });
     describe("use regex", () => {
       it("when matche whole", () => {
-        expect(test(tweetTemplate, ["^ポケモンGO$"])).to.deep.equal("ポケモンGO");
+        expect(test(tweetTemplate, ["/^ポケモンGO$/"])).to.deep.equal("ポケモンGO");
       });
       it("when doesn't matche whole", () => {
-        expect(test(tweetTemplate, ["^GO$"])).to.be.null;
+        expect(test(tweetTemplate, ["/^GO$/"])).to.be.null;
       });
     });
   });
