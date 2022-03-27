@@ -15,6 +15,9 @@ describe("degradeTweet", () => {
         id_str: "1460323750105075712",
         in_reply_to_status_id_str: "1460323748788072449",
         is_quote_status: true,
+        quoted_status: {
+          id_str: "1458552718214062081",
+        },
       },
     ]);
   });

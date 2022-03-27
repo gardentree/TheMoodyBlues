@@ -74,6 +74,7 @@ export function degradeTweet(tweet: Twitter2.Tweet, includes: IncludeMap, refere
           break;
         case "quoted":
           v1.is_quote_status = true;
+          v1.quoted_status = includes.tweets.get(referenced.id)!;
 
           break;
       }
