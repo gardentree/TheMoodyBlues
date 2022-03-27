@@ -18,7 +18,7 @@ export function degrade(v2: Twitter2.Response): Twitter.Tweet[] {
 
   return v1;
 }
-function degradeTweet(tweet: Twitter2.Tweet, includes: IncludeMap, referenced = false): Twitter.Tweet {
+export function degradeTweet(tweet: Twitter2.Tweet, includes: IncludeMap, referenced = false): Twitter.Tweet {
   const v1: Twitter.Tweet = {
     created_at: degradeDate(tweet.created_at),
     id: Number(tweet.id),
@@ -66,16 +66,17 @@ function degradeTweet(tweet: Twitter2.Tweet, includes: IncludeMap, referenced = 
   }
 
   if (tweet.referenced_tweets) {
-    const referenced = tweet.referenced_tweets[0];
-    switch (referenced.type) {
-      case "replied_to":
-        v1.in_reply_to_status_id_str = referenced.id;
+    for (const referenced of tweet.referenced_tweets) {
+      switch (referenced.type) {
+        case "replied_to":
+          v1.in_reply_to_status_id_str = referenced.id;
 
-        break;
-      case "quoted":
-        v1.is_quote_status = true;
+          break;
+        case "quoted":
+          v1.is_quote_status = true;
 
-        break;
+          break;
+      }
     }
   } else {
     v1.is_quote_status = false;
