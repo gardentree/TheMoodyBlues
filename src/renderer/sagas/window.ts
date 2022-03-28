@@ -16,7 +16,7 @@ function focusTweet(action: Action<{tweet: Twitter.Tweet}>) {
 
 function focusLatestTweet(action: BaseAction) {
   const container = getContainer();
-  const latest = <HTMLElement>container.querySelector("li:first-child")!;
+  const latest = <HTMLElement>container.querySelector("li:first-child *[tabindex='-1']")!;
 
   scrollTo(container, latest, 500);
   latest.focus();
@@ -24,7 +24,7 @@ function focusLatestTweet(action: BaseAction) {
 
 function focusUnreadTweet(action: BaseAction) {
   const container = getContainer();
-  const unreads = container.querySelectorAll("li.unread");
+  const unreads = container.querySelectorAll("li.unread *[tabindex='-1']");
   const oldest = <HTMLElement>Array.from(unreads).slice(-1)[0];
 
   if (oldest) {
