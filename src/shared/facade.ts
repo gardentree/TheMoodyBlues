@@ -13,6 +13,7 @@ export namespace Actions {
   export const CHANGE_MODE = "change_mode";
   export const COPY_TWEET_IN_JSON = "copy_tweet_in_json";
   export const FOCUS_LATEST_TWEET = "focus_latest_tweet";
+  export const FOCUS_TWEET = "focus_tweet";
   export const FOCUS_UNREAD_TWEET = "focus_unread_tweet";
   export const FORCE_RELOAD = "force_reload";
   export const GROWL = "growl";

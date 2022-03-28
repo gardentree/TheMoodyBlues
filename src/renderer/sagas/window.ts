@@ -2,6 +2,18 @@ import {takeLatest, takeEvery} from "redux-saga/effects";
 import * as actions from "@actions";
 import {Action, BaseAction} from "redux-actions";
 
+function focusTweet(action: Action<{tweet: Twitter.Tweet}>) {
+  const {tweet} = action.payload;
+  const container = getContainer();
+  const element = <HTMLElement>container.querySelector(`li[data-id="${tweet.id_str}"] *[tabindex="-1"]`)!;
+
+  console.log(container);
+  console.log(element);
+
+  scrollTo(container, element, 500);
+  element.focus();
+}
+
 function focusLatestTweet(action: BaseAction) {
   const container = getContainer();
   const latest = <HTMLElement>container.querySelector("li:first-child")!;
@@ -29,13 +41,16 @@ function alarm(action: Action<{message: string}>) {
 
 // prettier-ignore
 export default [
+  takeLatest(actions.focusTweet.toString(), focusTweet),
   takeLatest(actions.focusLatestTweet.toString(), focusLatestTweet),
   takeLatest(actions.focusUnreadTweet.toString(), focusUnreadTweet),
   takeEvery(actions.alarm.toString(), alarm),
 ];
 
 function getContainer(): Element {
-  return document.querySelector(".window-content[style*=block] > div")!;
+  const lists = document.querySelectorAll(".window-content[style*=block] .Article")!;
+
+  return lists[lists.length - 1];
 }
 function scrollTo(container: Element, target: Element, duration: number) {
   const start = container.scrollTop;

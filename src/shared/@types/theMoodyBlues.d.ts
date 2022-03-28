@@ -57,6 +57,7 @@ namespace TheMoodyBlues {
       onChangeMode(callback: (identity: ScreenID, mode: TweetListMode) => void);
       onCopyTweetInJSON(callback: (tweet: Twitter.Tweet) => void);
       onFocusLatestTweet(callback: () => void);
+      onFocusTweet(callback: (tweet: Twitter.Tweet) => void);
       onFocusUnreadTweet(callback: () => void);
       onForceReload(callback: () => void);
       onLaunch(callback: () => void);

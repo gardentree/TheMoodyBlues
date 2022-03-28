@@ -27,7 +27,8 @@ export const {displayUserTimeline, displayConversation} = createActions({
   DISPLAY_CONVERSATION: [(tweet, options) => ({tweet: tweet}), (tweet, options) => ({options: options})],
 });
 
-export const {focusLatestTweet, focusUnreadTweet, alarm} = createActions({
+export const {focusTweet, focusLatestTweet, focusUnreadTweet, alarm} = createActions({
+  FOCUS_TWEET: (tweet: Twitter.Tweet) => ({tweet}),
   FOCUS_LATEST_TWEET: () => null,
   FOCUS_UNREAD_TWEET: () => null,
   ALARM: (message) => ({message: message}),
