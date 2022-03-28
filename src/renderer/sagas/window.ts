@@ -5,7 +5,7 @@ import {Action, BaseAction} from "redux-actions";
 function focusTweet(action: Action<{tweet: Twitter.Tweet}>) {
   const {tweet} = action.payload;
   const container = getContainer();
-  const element = <HTMLElement>container.querySelector(`li[data-id="${tweet.id_str}"] *[tabindex="-1"]`)!;
+  const element = <HTMLElement>container.querySelector(`li[data-id="${tweet.id_str}"] *[tabindex='-1']`)!;
 
   console.log(container);
   console.log(element);

@@ -44,9 +44,11 @@ export function* displayUserTimeline(action: Action<{name: Twitter.ScreenName}>)
   yield branch(tweets);
 }
 export function* displayConversation(action: ActionMeta<{tweet: Twitter.Tweet}, {options: {yourself?: boolean}}>) {
-  const tweets: Twitter.Tweet[] = yield call(facade.agent.retrieveConversation, action.payload.tweet, action.meta.options);
+  const {tweet} = action.payload;
+  const tweets: Twitter.Tweet[] = yield call(facade.agent.retrieveConversation, tweet, action.meta.options);
 
   yield branch(tweets);
+  yield put(actions.focusTweet(tweet));
 }
 export function* branch(tweets: Twitter.Tweet[]) {
   const root = selectFocusedScreenID(yield select());
