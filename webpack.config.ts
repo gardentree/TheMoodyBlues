@@ -51,7 +51,7 @@ const main: Configuration = {
   module: {
     rules: [typescript("main")],
   },
-  plugins: [new webpack.EnvironmentPlugin(["CONSUMER_KEY", "CONSUMER_SECRET"])],
+  plugins: [new webpack.EnvironmentPlugin({CONSUMER_KEY: null, CONSUMER_SECRET: null})],
 };
 const preload: Configuration = {
   mode: mode,
