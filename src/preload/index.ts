@@ -1,5 +1,5 @@
 import {contextBridge, ipcRenderer, shell, clipboard} from "electron";
-import logger from "electron-log";
+import logger from "@shared/logger";
 import {Actions as FacadeActions} from "@shared/facade";
 
 const facade: TMB.Facade = {

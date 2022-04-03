@@ -4,7 +4,7 @@ import {authorize, call, getRequestToken} from "./authentication";
 import growl from "./growly";
 import {Actions as FacadeActions} from "@shared/facade";
 import {environment} from "@shared/tools";
-import logger from "electron-log";
+import logger from "@shared/logger";
 
 let observed = false;
 
