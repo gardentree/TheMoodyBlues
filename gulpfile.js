@@ -9,7 +9,7 @@ gulp.task("test:all", () => {
   return gulp.src("test/**/*_test.ts", {read: false}).pipe(
     mocha({
       require: ["ts-node/register/transpile-only", "tsconfig-paths/register", "test/helper.ts"],
-      reporter: "nyan",
+      reporter: "spec",
     })
   );
 });
