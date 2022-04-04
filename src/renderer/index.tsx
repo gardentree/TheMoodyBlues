@@ -1,5 +1,5 @@
 import * as React from "react";
-import * as ReactDOM from "react-dom";
+import {createRoot} from "react-dom/client";
 import {createStore, applyMiddleware} from "redux";
 import {Provider} from "react-redux";
 import createSagaMiddleware from "redux-saga";
@@ -32,7 +32,7 @@ facade.events.onShowVerifierForm(() => {
   const callback = (verifier: string) => {
     facade.actions.authorize(verifier);
   };
-  ReactDOM.render(<VerifierForm callback={callback} />, document.getElementById("container"));
+  createRoot(document.getElementById("container")!).render(<VerifierForm callback={callback} />);
 });
 facade.events.onLaunch(() => {
   const sagaMiddleware = createSagaMiddleware();
@@ -43,12 +43,11 @@ facade.events.onLaunch(() => {
   setupEvents(store);
   store.dispatch(actions.prepareState());
 
-  ReactDOM.render(
+  createRoot(document.getElementById("container")!).render(
     <Provider store={store}>
       <Principal />
       <div id="modals" />
-    </Provider>,
-    document.getElementById("container")
+    </Provider>
   );
 });
 facade.events.onAlert((error: unknown) => {
