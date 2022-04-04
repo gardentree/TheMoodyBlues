@@ -1,7 +1,7 @@
 import {ipcMain, shell, WebContents, Menu} from "electron";
 import storage from "./storage";
 import {authorize, call, getRequestToken} from "./authentication";
-import growl from "./growly";
+import * as growl from "./growl";
 import {Actions as FacadeActions} from "@shared/facade";
 import {environment} from "@shared/tools";
 import logger from "@shared/logger";
@@ -81,7 +81,10 @@ function observe(renderer: WebContents, agent: TMB.TwitterAgent) {
   ipcMain.on(FacadeActions.GROWL, (event, values) => {
     const {tweets} = values;
 
-    growl(tweets);
+    growl.notify(tweets);
+  });
+  ipcMain.on(FacadeActions.GROWL_IS_RUNNING, (event) => {
+    event.returnValue = growl.isRunning();
   });
 
   ipcMain.handle(FacadeActions.STORAGE_SCREEN_PREFERENCES_LOAD, (event, values) => {

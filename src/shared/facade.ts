@@ -17,6 +17,7 @@ export namespace Actions {
   export const FOCUS_UNREAD_TWEET = "focus_unread_tweet";
   export const FORCE_RELOAD = "force_reload";
   export const GROWL = "growl";
+  export const GROWL_IS_RUNNING = "growl_is_running";
   export const LAUNCH = "launch";
   export const OPEN_TWEET_IN_BROWSER = "open_tweet_in_browser";
   export const OPEN_TWEET_MENU = "openTweetMenu";

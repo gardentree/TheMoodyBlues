@@ -72,6 +72,9 @@ namespace TheMoodyBlues {
       onZoomOut(callback: () => void);
       onZoomReset(callback: () => void);
     };
+    collaborators: {
+      growl(): boolean;
+    };
     logger: {
       info(message: LogMessage): void;
       error(message: LogMessage): void;
@@ -81,7 +84,3 @@ namespace TheMoodyBlues {
   type LogMessage = string | object | undefined | null | unknown;
 }
 import TMB = TheMoodyBlues;
-
-declare module "growly" {
-  declare function notify(message: string, {title: string, icon: string});
-}

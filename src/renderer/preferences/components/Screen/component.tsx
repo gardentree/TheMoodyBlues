@@ -3,6 +3,7 @@ import {useState, useEffect} from "react";
 import {mixPreferences} from "@libraries/screen";
 
 const {facade} = window;
+const growlIsRunning = facade.collaborators.growl();
 
 async function getCurrentPreferences() {
   const lists = await facade.agent.lists();
@@ -92,7 +93,7 @@ const Screens = () => {
           </div>
           <div className="checkbox">
             <label>
-              <input name={`${screen.identity}[growl]`} type="checkbox" defaultChecked={screen.growl} onChange={handleChange} />
+              <input disabled={!growlIsRunning} name={`${screen.identity}[growl]`} type="checkbox" defaultChecked={growlIsRunning && screen.growl} onChange={handleChange} />
               Growl
             </label>
           </div>

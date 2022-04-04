@@ -51,6 +51,9 @@ const facade: TMB.Facade = {
     onZoomOut: (callback) => ipcRenderer.on(FacadeActions.ZOOM_OUT, (event, ...values) => callback()),
     onZoomReset: (callback) => ipcRenderer.on(FacadeActions.ZOOM_RESET, (event, ...values) => callback()),
   },
+  collaborators: {
+    growl: () => ipcRenderer.sendSync(FacadeActions.GROWL_IS_RUNNING),
+  },
   logger: logger,
 };
 contextBridge.exposeInMainWorld("facade", facade);
