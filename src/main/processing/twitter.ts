@@ -18,14 +18,14 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): TMB.T
         for (const error of response.errors) {
           for (const allow of allows) {
             for (const [key, value] of Object.entries(allow)) {
-              if (error[key] != value) {
-                return false;
+              if (error[key] == value) {
+                return true;
               }
             }
           }
         }
 
-        return true;
+        return false;
       })();
 
       if (!allowed) {
@@ -108,6 +108,11 @@ export function incarnate(client: TwitterClient, client2: TwitterClient2): TMB.T
           resource_type: "tweet",
           parameter: "referenced_tweets.id",
           type: "https://api.twitter.com/2/problems/resource-not-found",
+        },
+        {
+          resource_type: "tweet",
+          parameter: "referenced_tweets.id",
+          type: "https://api.twitter.com/2/problems/not-authorized-for-resource",
         },
       ];
 

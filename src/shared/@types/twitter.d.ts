@@ -80,7 +80,7 @@ namespace Twitter2 {
   interface Error {
     resource_type: "tweet";
     parameter: "referenced_tweets.id";
-    type: "https://api.twitter.com/2/problems/resource-not-found";
+    type: "https://api.twitter.com/2/problems/resource-not-found" | "https://api.twitter.com/2/problems/not-authorized-for-resource";
   }
 
   interface Tweet {

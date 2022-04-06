@@ -230,6 +230,48 @@ describe("retrieveConversation", () => {
     const criterion = {id_str: "1296887316556980230"};
     return expect(agent.retrieveConversation(criterion)).to.eventually.deep.equal(degrade(loadJSON("./v2/reply.json")));
   });
+
+  it("when replied tweets is private account", () => {
+    const callback = sinon.stub();
+    callback.withArgs("tweets/1296887316556980230").resolves(
+      Object.assign(loadJSON("./v2/reply.json"), {
+        errors: [
+          {
+            value: "1503557906574503936",
+            detail: "Sorry, you are not authorized to see the Tweet with  referenced_tweets.id: [1503557906574503936].",
+            title: "Authorization Error",
+            resource_type: "tweet",
+            parameter: "referenced_tweets.id",
+            resource_id: "1503557906574503936",
+            type: "https://api.twitter.com/2/problems/not-authorized-for-resource",
+          },
+        ],
+      })
+    );
+    callback.withArgs("tweets/search/recent").resolves(
+      Object.assign(loadJSON("./v2/reply.json"), {
+        meta: {
+          result_count: 1,
+        },
+        errors: [
+          {
+            value: "1503557906574503936",
+            detail: "Sorry, you are not authorized to see the Tweet with referenced_tweets.id: [1503557906574503936].",
+            title: "Authorization Error",
+            resource_type: "tweet",
+            parameter: "referenced_tweets.id",
+            resource_id: "1503557906574503936",
+            type: "https://api.twitter.com/2/problems/not-authorized-for-resource",
+          },
+        ],
+      })
+    );
+
+    const agent = incarnate(null, {get: callback});
+
+    const criterion = {id_str: "1296887316556980230"};
+    return expect(agent.retrieveConversation(criterion)).to.eventually.deep.equal(degrade(loadJSON("./v2/reply.json")));
+  });
 });
 
 describe("lists", () => {
