@@ -1,4 +1,4 @@
-namespace Twitter {
+declare namespace Twitter {
   type TweetID = string;
   interface Tweet {
     id: number;
@@ -68,7 +68,7 @@ namespace Twitter {
   }
 }
 
-namespace Twitter2 {
+declare namespace Twitter2 {
   interface Response {
     data: Tweet | Tweet[];
     includes: Includes;

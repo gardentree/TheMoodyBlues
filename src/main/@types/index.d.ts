@@ -1,3 +1,3 @@
 declare module "growly" {
-  declare function notify(message: string, {title: string, icon: string}, callback?: (error: unknown, action: string) => void);
+  function notify(message: string, {title, icon}: {title: string; icon: string}, callback?: (error: unknown, action: string) => void): void;
 }

@@ -1,4 +1,4 @@
-namespace TheMoodyBlues {
+declare namespace TheMoodyBlues {
   type ScreenID = string;
 
   interface ScreenPreference {
@@ -38,14 +38,14 @@ namespace TheMoodyBlues {
     agent: TwitterAgent;
     storage: {
       getTweets(name: string): Promise<Twitter.Tweet[]>;
-      setTweets(name: string, tweets: Twitter.Tweet[]);
+      setTweets(name: string, tweets: Twitter.Tweet[]): void;
       getScreenPreferences(): Promise<ScreenPreference[]>;
-      setScreenPreferences(screens: ScreenPreference[]);
+      setScreenPreferences(screens: ScreenPreference[]): void;
       getMutePreference(): Promise<MutePreference>;
-      setMutePreference(preference: MutePreference);
+      setMutePreference(preference: MutePreference): void;
     };
     actions: {
-      authorize(verifier: string);
+      authorize(verifier: string): void;
       copy(text: string): void;
       growl(tweets: Twitter.Tweet[]): void;
       openExternal(url: string): void;
@@ -53,24 +53,24 @@ namespace TheMoodyBlues {
       showModeMenu(identity: ScreenID, mode: ArticleMode): void;
     };
     events: {
-      onAlert(callback: (error: unknown) => void);
-      onChangeMode(callback: (identity: ScreenID, mode: TweetListMode) => void);
-      onCopyTweetInJSON(callback: (tweet: Twitter.Tweet) => void);
-      onFocusLatestTweet(callback: () => void);
-      onFocusTweet(callback: (tweet: Twitter.Tweet) => void);
-      onFocusUnreadTweet(callback: () => void);
-      onForceReload(callback: () => void);
-      onLaunch(callback: () => void);
-      onOpenTweetInBrowser(callback: (tweet: Twitter.Tweet) => void);
-      onRefreshPreferences(callback: () => void);
-      onReload(callback: () => void);
-      onSearch(callback: (keyword: string) => void);
-      onShowChainForTweet(callback: (tweet: Twitter.Tweet) => void);
-      onShowConversationForTweet(callback: (tweet: Twitter.Tweet) => void);
-      onShowVerifierForm(callback: () => void);
-      onZoomIn(callback: () => void);
-      onZoomOut(callback: () => void);
-      onZoomReset(callback: () => void);
+      onAlert(callback: (error: unknown) => void): void;
+      onChangeMode(callback: (identity: ScreenID, mode: TweetListMode) => void): void;
+      onCopyTweetInJSON(callback: (tweet: Twitter.Tweet) => void): void;
+      onFocusLatestTweet(callback: () => void): void;
+      onFocusTweet(callback: (tweet: Twitter.Tweet) => void): void;
+      onFocusUnreadTweet(callback: () => void): void;
+      onForceReload(callback: () => void): void;
+      onLaunch(callback: () => void): void;
+      onOpenTweetInBrowser(callback: (tweet: Twitter.Tweet) => void): void;
+      onRefreshPreferences(callback: () => void): void;
+      onReload(callback: () => void): void;
+      onSearch(callback: (keyword: string) => void): void;
+      onShowChainForTweet(callback: (tweet: Twitter.Tweet) => void): void;
+      onShowConversationForTweet(callback: (tweet: Twitter.Tweet) => void): void;
+      onShowVerifierForm(callback: () => void): void;
+      onZoomIn(callback: () => void): void;
+      onZoomOut(callback: () => void): void;
+      onZoomReset(callback: () => void): void;
     };
     collaborators: {
       growl(): boolean;

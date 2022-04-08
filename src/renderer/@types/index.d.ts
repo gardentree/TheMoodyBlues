@@ -1,4 +1,4 @@
-namespace TheMoodyBlues {
+declare namespace TheMoodyBlues {
   interface State {
     screens: ScreenMap;
     principal: Principal;

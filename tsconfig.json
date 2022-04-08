@@ -16,6 +16,7 @@
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noUnusedLocals": false,
+    "outDir": "./build",
     "sourceMap": true,
     "strict": true,
     "strictNullChecks": true,
