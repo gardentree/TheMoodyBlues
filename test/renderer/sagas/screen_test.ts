@@ -40,7 +40,7 @@ describe(reorder.name, () => {
       })
       .put({
         type: "UPDATE_TWEETS",
-        payload: {tweets: [], query: "くえりー"},
+        payload: {tweets: [], options: {query: "くえりー"}},
         meta: {identity: "search"},
       })
       .put({
@@ -91,7 +91,7 @@ describe(reorder.name, () => {
       })
       .put({
         type: "UPDATE_TWEETS",
-        payload: {tweets: [], query: "くえりー"},
+        payload: {tweets: [], options: {query: "くえりー"}},
         meta: {identity: "search"},
       })
       .put({
@@ -160,7 +160,7 @@ describe(searchTweets.name, () => {
       })
       .put({
         type: "UPDATE_TWEETS",
-        payload: {tweets: [], query: "くえりー"},
+        payload: {tweets: [], options: {query: "くえりー"}},
         meta: {identity: "search"},
       })
       .put({

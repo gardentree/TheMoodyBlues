@@ -79,7 +79,7 @@ describe("search", () => {
         })
         .put({
           type: "UPDATE_TWEETS",
-          payload: {tweets: [{id_str: "new_1"}, {id_str: "new_2"}, {id_str: "old_1"}], query: "くえりー"},
+          payload: {tweets: [{id_str: "new_1"}, {id_str: "new_2"}, {id_str: "old_1"}], options: {query: "くえりー"}},
           meta: {identity: identity},
         })
         .put({
