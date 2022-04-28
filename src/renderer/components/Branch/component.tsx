@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Article from "../Article";
 
 export interface OwnProps {
@@ -7,11 +7,19 @@ export interface OwnProps {
 }
 export interface DispatchProps {
   onClose(): void;
+  didMount(source: Twitter.Tweet): void;
 }
 type Props = OwnProps & TMB.Screen & DispatchProps;
 
 const Branch = (props: Props) => {
-  const {identity, onClose} = props;
+  const {identity, options, onClose, didMount} = props;
+
+  useEffect(() => {
+    console.log(options);
+    if (options?.source) {
+      didMount(options!.source);
+    }
+  }, []);
 
   return (
     <div className="Branch">

@@ -44,18 +44,17 @@ export function* displayUserTimeline(action: Action<{name: Twitter.ScreenName}>)
   yield branch(tweets);
 }
 export function* displayConversation(action: ActionMeta<{tweet: Twitter.Tweet}, {options: {yourself?: boolean}}>) {
-  const {tweet} = action.payload;
-  const tweets: Twitter.Tweet[] = yield call(facade.agent.retrieveConversation, tweet, action.meta.options);
+  const {tweet: source} = action.payload;
+  const tweets: Twitter.Tweet[] = yield call(facade.agent.retrieveConversation, source, action.meta.options);
 
-  yield branch(tweets);
-  yield put(actions.focusTweet(tweet));
+  yield branch(tweets, source);
 }
-export function* branch(tweets: Twitter.Tweet[]) {
+export function* branch(tweets: Twitter.Tweet[], source?: Twitter.Tweet) {
   const root = selectFocusedScreenID(yield select());
   const branch = `${root}.${Date.now()}`;
 
   yield put(actions.prepareScreen(branch));
-  yield put(actions.updateTweets(branch, tweets));
+  yield put(actions.updateTweets(branch, tweets, {source}));
   yield put(actions.mark(branch, "MAX_VALUE"));
   yield put(actions.branch(root, branch));
 }

@@ -20,7 +20,8 @@ declare namespace TheMoodyBlues {
     status: string;
   }
   type ScreenOptions = Partial<{
-    query: string;
+    query?: string;
+    source?: Twitter.Tweet;
   }>;
 
   interface Preference {

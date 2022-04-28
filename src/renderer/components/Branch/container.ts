@@ -11,5 +11,6 @@ const mapStateToProps = (state: TMB.State, own: OwnProps): TMB.Screen => {
 };
 const mapDispatchToProps = (dispatch: Dispatch, own: OwnProps): DispatchProps => ({
   onClose: () => dispatch(actions.clip(own.root, own.identity)),
+  didMount: (source: Twitter.Tweet) => dispatch(actions.focusTweet(source)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Component);
