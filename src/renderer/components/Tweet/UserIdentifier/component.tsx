@@ -1,11 +1,16 @@
 import React from "react";
 
-interface Props {
-  identifier: string;
+export interface OwnProps {
+  identifier: Twitter.ScreenName;
+}
+export interface DispatchProps {
   showUserTimeline(event: React.SyntheticEvent): void;
 }
 
-const UserIdentifier: React.SFC<Props> = ({identifier, showUserTimeline}) => {
+type Props = OwnProps & DispatchProps;
+
+const UserIdentifier = (props: Props) => {
+  const {identifier, showUserTimeline} = props;
   return (
     <span className="UserIdentifier" onClick={showUserTimeline}>
       @{identifier}

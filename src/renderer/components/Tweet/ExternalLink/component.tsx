@@ -1,9 +1,11 @@
 import React from "react";
 
-interface Props {
+export interface OwnProps {
   link: string;
   text: string;
 }
+
+type Props = OwnProps;
 
 const {facade} = window;
 
@@ -12,7 +14,9 @@ const openLinkOnAnchor = function (event: React.MouseEvent<HTMLAnchorElement>) {
   facade.actions.openExternal(event.currentTarget.href);
 };
 
-const ExternalLink: React.SFC<Props> = ({link, text}) => {
+const ExternalLink = (props: Props) => {
+  const {link, text} = props;
+
   return (
     <a className="ExternalLink" href={link} onClick={openLinkOnAnchor}>
       {text}

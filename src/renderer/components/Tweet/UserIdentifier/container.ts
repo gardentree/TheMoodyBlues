@@ -1,8 +1,8 @@
 import {connect} from "react-redux";
-import Component from "./component";
+import Component, {DispatchProps} from "./component";
 import * as actions from "@actions";
 
-const mapDispatchToProps = {
+const mapDispatchToProps: DispatchProps = {
   showUserTimeline: (event: React.SyntheticEvent) => {
     const target = event.target as HTMLElement;
     return actions.displayUserTimeline(target.textContent!);
