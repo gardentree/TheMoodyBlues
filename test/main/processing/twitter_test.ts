@@ -3,7 +3,7 @@ import chaiAsPromised from "chai-as-promised";
 import chaiSubset from "chai-subset";
 import sinon from "sinon";
 import * as fs from "fs";
-import faker from "@faker-js/faker";
+import {faker} from "@faker-js/faker";
 import {incarnate} from "@source/main/processing/twitter";
 import {retry} from "@source/main/processing/twitter/utility";
 import {degrade, degradeDate} from "@source/main/processing/twitter/degrader";
