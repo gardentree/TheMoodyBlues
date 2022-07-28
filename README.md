@@ -1,6 +1,14 @@
 # TheMoodyBlues
 
 Read-only Twitter client built on electron.
+
+## NOTE
+
+- [作成目的] React・TypeScript・Electron の練習
+- [技術構成] React+Redux+Redux-Saga
+
+## Screenshot
+
 ![lightmode](/readme/lightmode.png)
 
 Dark Mode is supported.
