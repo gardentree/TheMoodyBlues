@@ -126,5 +126,8 @@
     "mac": {
       "target": "dir"
     }
+  },
+  "resolutions": {
+    "got": "11.8.5"
   }
 }
