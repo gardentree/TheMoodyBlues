@@ -2,9 +2,9 @@ name: check
 
 on:
   push:
-    branches: [ master ]
+    branches: [master]
   pull_request:
-    branches: [ master ]
+    branches: [master]
 
 jobs:
   build:
@@ -15,13 +15,13 @@ jobs:
         node-version: [16.13.0]
 
     steps:
-    - name: checkout
-      uses: actions/checkout@v3
-    - name: install
-      uses: borales/actions-yarn@v2.3.0
-      with:
-        cmd: install
-    - name: check
-      uses: borales/actions-yarn@v2.3.0
-      with:
-        cmd: run check
+      - name: checkout
+        uses: actions/checkout@v3
+      - name: install
+        uses: borales/actions-yarn@v2.3.0
+        with:
+          cmd: install
+      - name: check
+        uses: borales/actions-yarn@v2.3.0
+        with:
+          cmd: run check
