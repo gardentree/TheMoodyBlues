@@ -1,6 +1,27 @@
-import {contextBridge, ipcRenderer, shell, clipboard} from "electron";
-import logger from "@shared/logger";
+import {contextBridge, ipcRenderer} from "electron";
 import {Actions as FacadeActions} from "@shared/facade";
+import {environment} from "@shared/tools";
+
+let logger;
+if (!environment.isTest()) {
+  logger = {
+    info: (message: TMB.LogMessage) => {
+      console.log(message);
+    },
+    error: (message: TMB.LogMessage) => {
+      console.error(message);
+    },
+    verbose: (message: TMB.LogMessage) => {
+      console.debug(message);
+    },
+  };
+} else {
+  logger = {
+    info: (message: TMB.LogMessage) => {},
+    error: (message: TMB.LogMessage) => {},
+    verbose: (message: TMB.LogMessage) => {},
+  };
+}
 
 const facade: TMB.Facade = {
   agent: {
@@ -22,9 +43,9 @@ const facade: TMB.Facade = {
   },
   actions: {
     authorize: (verifier) => ipcRenderer.send(FacadeActions.AUTHORIZE, {verifier}),
-    copy: (text) => clipboard.writeText(text),
+    copy: (text) => ipcRenderer.send(FacadeActions.COPY_TO_CLIPBOARD, {text}),
     growl: (tweets) => ipcRenderer.send(FacadeActions.GROWL, {tweets}),
-    openExternal: (url) => shell.openExternal(url),
+    openExternal: (url) => ipcRenderer.send(FacadeActions.OPEN_EXTERNAL, {url}),
     openTweetMenu: (context) => ipcRenderer.send(FacadeActions.OPEN_TWEET_MENU, context),
     showModeMenu: (identity, mode) => ipcRenderer.send(FacadeActions.SHOW_MODE_MENU, {identity, mode}),
   },
@@ -54,6 +75,6 @@ const facade: TMB.Facade = {
   collaborators: {
     growl: () => ipcRenderer.sendSync(FacadeActions.GROWL_IS_RUNNING),
   },
-  logger: logger,
+  logger,
 };
 contextBridge.exposeInMainWorld("facade", facade);

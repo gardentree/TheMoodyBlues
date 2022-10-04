@@ -11,6 +11,7 @@ export namespace Actions {
   export const ALERT = "alert";
   export const AUTHORIZE = "authorize";
   export const CHANGE_MODE = "change_mode";
+  export const COPY_TO_CLIPBOARD = "copy";
   export const COPY_TWEET_IN_JSON = "copy_tweet_in_json";
   export const FOCUS_LATEST_TWEET = "focus_latest_tweet";
   export const FOCUS_TWEET = "focus_tweet";
@@ -19,6 +20,7 @@ export namespace Actions {
   export const GROWL = "growl";
   export const GROWL_IS_RUNNING = "growl_is_running";
   export const LAUNCH = "launch";
+  export const OPEN_EXTERNAL = "open_external";
   export const OPEN_TWEET_IN_BROWSER = "open_tweet_in_browser";
   export const OPEN_TWEET_MENU = "openTweetMenu";
   export const REFRESH_PREFERENCES = "refresh_preferences";

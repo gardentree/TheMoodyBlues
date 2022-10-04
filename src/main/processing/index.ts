@@ -1,10 +1,10 @@
-import {ipcMain, shell, WebContents, Menu} from "electron";
+import {ipcMain, shell, clipboard, WebContents, Menu} from "electron";
 import storage from "./storage";
 import {authorize, call, getRequestToken} from "./authentication";
 import * as growl from "./growl";
 import {Actions as FacadeActions} from "@shared/facade";
 import {environment} from "@shared/tools";
-import logger from "@shared/logger";
+import logger from "@libraries/logger";
 
 let observed = false;
 
@@ -78,6 +78,12 @@ function observe(renderer: WebContents, agent: TMB.TwitterAgent) {
     return agent.retrieveTimelineOfList(list_id, since_id);
   });
 
+  ipcMain.on(FacadeActions.COPY_TO_CLIPBOARD, (event, values) => {
+    const {text} = values;
+
+    clipboard.writeText(text);
+  });
+
   ipcMain.on(FacadeActions.GROWL, (event, values) => {
     const {tweets} = values;
 
@@ -85,6 +91,12 @@ function observe(renderer: WebContents, agent: TMB.TwitterAgent) {
   });
   ipcMain.on(FacadeActions.GROWL_IS_RUNNING, (event) => {
     event.returnValue = growl.isRunning();
+  });
+
+  ipcMain.on(FacadeActions.OPEN_EXTERNAL, (event, values) => {
+    const {url} = values;
+
+    shell.openExternal(url);
   });
 
   ipcMain.handle(FacadeActions.STORAGE_SCREEN_PREFERENCES_LOAD, (event, values) => {

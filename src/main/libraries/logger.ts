@@ -1,5 +1,5 @@
 import logger from "electron-log";
-import {environment} from "./tools";
+import {environment} from "@shared/tools";
 
 if (environment.isTest()) {
   logger.transports.console.level = false;

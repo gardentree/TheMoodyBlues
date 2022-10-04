@@ -51,6 +51,11 @@ const main: Configuration = {
   module: {
     rules: [typescript("main")],
   },
+  resolve: {
+    alias: {
+      "@libraries": path.resolve(__dirname, "src/main/libraries"),
+    },
+  },
   plugins: [new webpack.EnvironmentPlugin({CONSUMER_KEY: null, CONSUMER_SECRET: null})],
 };
 const preload: Configuration = {

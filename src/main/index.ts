@@ -3,7 +3,7 @@
 import {app, BrowserWindow, Menu} from "electron";
 import installExtension, {REACT_DEVELOPER_TOOLS, REDUX_DEVTOOLS} from "electron-devtools-installer";
 import * as pathname from "path";
-import logger from "@shared/logger";
+import logger from "@libraries/logger";
 import {setup} from "./processing";
 import {Actions as FacadeActions} from "@shared/facade";
 import {environment} from "@shared/tools";

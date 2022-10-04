@@ -1,4 +1,4 @@
-import logger from "@shared/logger";
+import logger from "@libraries/logger";
 
 export function retry<P>(processing: () => Promise<P>, retryCount: number) {
   let promise: Promise<P> = processing();

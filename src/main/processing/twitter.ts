@@ -1,6 +1,6 @@
 import TwitterClient from "twitter";
 import TwitterClient2, {RequestParameters} from "twitter-v2";
-import logger from "@shared/logger";
+import logger from "@libraries/logger";
 import {retry} from "./twitter/utility";
 import {degrade} from "./twitter/degrader";
 
