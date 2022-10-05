@@ -65,7 +65,7 @@ function createMainWindow() {
 }
 
 // create main BrowserWindow when electron is ready
-app.on("ready", () => {
+app.whenReady().then(() => {
   mainWindow = createMainWindow();
 
   // prettier-ignore
