@@ -1,6 +1,6 @@
 import * as React from "react";
 import {createRoot} from "react-dom/client";
-import {createStore, applyMiddleware} from "redux";
+import {configureStore} from "@reduxjs/toolkit";
 import {Provider} from "react-redux";
 import createSagaMiddleware from "redux-saga";
 import {createLogger} from "redux-logger";
@@ -36,7 +36,11 @@ facade.events.onShowVerifierForm(() => {
 });
 facade.events.onLaunch(() => {
   const sagaMiddleware = createSagaMiddleware();
-  const store = createStore(rootReducer, applyMiddleware(sagaMiddleware, createLogger()));
+  const store = configureStore({
+    reducer: rootReducer,
+    middleware: (getDefaultMiddleware) => [...getDefaultMiddleware(), sagaMiddleware, createLogger()],
+    devTools: true,
+  });
 
   sagaMiddleware.run(rootSaga);
 
