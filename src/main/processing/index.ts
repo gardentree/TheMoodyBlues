@@ -173,13 +173,17 @@ function observe(renderer: WebContents, agent: TMB.TwitterAgent) {
   ipcMain.on(FacadeActions.SHOW_MODE_MENU, (event, {identity, mode}) => {
     const template: Electron.MenuItemConstructorOptions[] = [
       {
-        label: `${mode == "tweet" ? "✔" : "　"}ツイート`,
+        label: "ツイート",
+        type: "radio",
+        checked: mode == "tweet",
         click() {
           renderer.send(FacadeActions.CHANGE_MODE, {identity: identity, mode: "tweet"});
         },
       },
       {
-        label: `${mode == "media" ? "✔" : "　"}メディア`,
+        label: "メディア",
+        type: "radio",
+        checked: mode == "media",
         click() {
           renderer.send(FacadeActions.CHANGE_MODE, {identity: identity, mode: "media"});
         },
