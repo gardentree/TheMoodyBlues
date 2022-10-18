@@ -6,20 +6,22 @@ import StatusBar from "../StatusBar";
 
 export interface DispatchProps {
   focusScreen(event: React.SyntheticEvent<HTMLElement>): void;
-  didMount(identity: TMB.ScreenID): void;
+  focus(identity: TMB.ScreenID): void;
 }
 type Props = TMB.Principal & DispatchProps;
 
 const Principal = (props: Props) => {
-  const {screens, focused, style, focusScreen, nowLoading, didMount} = props;
+  const {screens, focused, style, focusScreen, nowLoading, focus} = props;
+
+  useEffect(() => {
+    if (!screens.includes(focused)) {
+      focus(screens[0]);
+    }
+  }, [screens]);
 
   if (screens.length <= 0) {
     return <div />;
   }
-
-  useEffect(() => {
-    didMount(screens[0]);
-  }, []);
 
   return (
     <div id="principal" className="window Principal" style={style}>
