@@ -1,5 +1,4 @@
 import {createActions, handleActions, Action} from "redux-actions";
-import merge from "@libraries/merger";
 import {INITIAL_VALUE} from "@libraries/screen";
 import adapters from "@libraries/adapter";
 
