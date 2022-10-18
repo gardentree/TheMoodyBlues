@@ -38,7 +38,13 @@ facade.events.onLaunch(() => {
   const sagaMiddleware = createSagaMiddleware();
   const store = configureStore({
     reducer: rootReducer,
-    middleware: (getDefaultMiddleware) => [...getDefaultMiddleware(), sagaMiddleware, createLogger()],
+    middleware: (getDefaultMiddleware) => [
+      ...getDefaultMiddleware({
+        serializableCheck: false,
+      }),
+      sagaMiddleware,
+      createLogger(),
+    ],
     devTools: true,
   });
 
