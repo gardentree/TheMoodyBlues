@@ -8,6 +8,7 @@
       "@test/*": ["test/*"],
       "@shared/*": ["src/shared/*"],
       "@actions": ["src/renderer/actions"],
+      "@actions/*": ["src/renderer/actions/*"],
       "@reducers/*": ["src/renderer/actions/*"],
       "@libraries/*": ["src/main/libraries/*", "src/renderer/libraries/*"]
     }

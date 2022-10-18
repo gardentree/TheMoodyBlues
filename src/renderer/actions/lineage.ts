@@ -1,4 +1,5 @@
 import {createActions, handleActions, Action} from "redux-actions";
+import adapters from "@libraries/adapter";
 
 export const {branch, clip} = createActions({
   BRANCH: (root: TMB.ScreenID, branch: TMB.ScreenID) => ({root, branch}),
@@ -12,25 +13,26 @@ export default handleActions<TMB.Lineage, {root: TMB.ScreenID; branch: TMB.Scree
   {
     [branch.toString()]: (state, action) => {
       const {root, branch} = action.payload;
-      const tree: TMB.Lineage = new Map(state);
+      const tree: TMB.LineageTree | undefined = adapters.lineage.getSelectors().selectById(state, root);
 
-      const branches = (tree.get(root) || []).concat();
+      if (tree) {
+        const newBranches = tree.branches.concat();
+        newBranches.push(branch);
 
-      branches.push(branch);
-      tree.set(root, branches);
-
-      return tree;
+        return adapters.lineage.setOne(state, {root: root, branches: newBranches});
+      } else {
+        return adapters.lineage.addOne(state, {root: root, branches: [branch]});
+      }
     },
     [clip.toString()]: (state, action) => {
       const {root} = action.payload;
-      const tree: TMB.Lineage = new Map(state);
-      const branches = tree.get(root)!.concat();
+      const tree: TMB.LineageTree = adapters.lineage.getSelectors().selectById(state, root)!;
 
-      branches.pop();
-      tree.set(root, branches);
-
-      return tree;
+      return adapters.lineage.setOne(state, {
+        root,
+        branches: tree.branches.slice(0, -1),
+      });
     },
   },
-  new Map()
+  adapters.lineage.getInitialState()
 );

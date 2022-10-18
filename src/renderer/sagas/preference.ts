@@ -3,6 +3,7 @@ import * as actions from "@actions";
 import {BaseAction} from "redux-actions";
 import * as libraries from "@libraries/screen";
 import {wrap} from "./library";
+import adapters from "@libraries/adapter";
 
 function* prepareState(action: BaseAction) {
   const newPreferences = (yield call(libraries.loadPreferences)) as TMB.PreferenceMap;
@@ -31,16 +32,16 @@ function* reconfigure(action: BaseAction) {
   for (const identity of oldIdentities.filter((key) => !newIdentities.includes(key))) {
     yield put(actions.closeScreen(identity));
 
-    for (const branch of lineage.get(identity) || []) {
+    for (const branch of adapters.lineage.getSelectors().selectById(lineage, identity)?.branches || []) {
       yield put(actions.clip(identity, branch));
       yield put(actions.closeScreen(branch));
     }
   }
 }
 function extractActives(preferences: TMB.PreferenceMap): TMB.ScreenID[] {
-  return Array.from(preferences.values())
-    .filter((preference) => preference.screen.active)
-    .map((preference) => preference.identity);
+  return Object.values(preferences.entities)
+    .filter((preference) => preference!.screen.active)
+    .map((preference) => preference!.identity);
 }
 
 // prettier-ignore

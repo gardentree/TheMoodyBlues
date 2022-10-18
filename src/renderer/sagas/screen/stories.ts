@@ -3,13 +3,14 @@ import {Action, ActionMeta} from "redux-actions";
 import {selectFocusedScreenID} from "@libraries/selector";
 import * as actions from "@actions";
 import * as metronome from "../metronome";
+import adapters from "@libraries/adapter";
 
 const {facade} = window;
 
 export function* launch(action: Action<{identity: TMB.ScreenID}>) {
   const {payload} = action;
   const {preferences} = yield select();
-  const preference = preferences.get(payload.identity)!;
+  const preference = adapters.preferences.getSelectors().selectById(preferences, payload.identity)!;
 
   yield metronome.launch(payload.identity, preference.screen);
 }
@@ -24,8 +25,8 @@ export function* reorderFocusedScreen(action: ActionMeta<Record<string, never>, 
 }
 function* order(identity: TMB.ScreenID, force: boolean) {
   const {screens, preferences}: TMB.State = yield select();
-  const screen = screens.get(identity)!;
-  const preference = preferences.get(identity)!;
+  const screen = adapters.screens.getSelectors().selectById(screens, identity)!;
+  const preference = adapters.preferences.getSelectors().selectById(preferences, identity)!;
 
   yield metronome.play(identity, screen, preference, force);
 }

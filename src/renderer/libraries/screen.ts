@@ -1,8 +1,10 @@
 import {HOME, SEARCH, MENTIONS, LIST} from "@shared/defaults";
+import adapters from "./adapter";
 
 const {facade} = window;
 
 export const INITIAL_VALUE: TMB.Screen = {
+  identity: "",
   tweets: [],
   mode: "tweet",
   lastReadID: "",
@@ -22,7 +24,10 @@ export async function loadPreferences(): Promise<TMB.PreferenceMap> {
     await facade.storage.getMutePreference()
   );
 
-  return new Map(screens.map((screen) => [screen.identity, {identity: screen.identity, screen, mute}]));
+  return adapters.preferences.addMany(
+    adapters.preferences.getInitialState(),
+    screens.map((screen) => ({identity: screen.identity, screen, mute}))
+  );
 }
 
 export function mixPreferences(actives: TMB.ScreenPreference[], lists: Twitter.List[]): TMB.ScreenPreference[] {

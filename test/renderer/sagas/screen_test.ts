@@ -1,11 +1,15 @@
 import {expectSaga} from "redux-saga-test-plan";
 import {expect} from "chai";
 import {reorder, reorderFocusedScreen, searchTweets} from "@source/renderer/sagas/screen/stories";
+import adapters from "@source/renderer/libraries/adapter";
 
 describe(reorder.name, () => {
   it("reload", () => {
-    const screens = new Map([["search", {tweets: [], options: {query: "くえりー"}}]]);
-    const preferences = new Map([["search", {screen: {identity: "search", component: "Search"}}]]);
+    const screens = adapters.screens.addOne(adapters.screens.getInitialState(), {identity: "search", tweets: [], options: {query: "くえりー"}});
+    const preferences = adapters.preferences.addOne(adapters.preferences.getInitialState(), {
+      identity: "search",
+      screen: {identity: "search", component: "Search"},
+    });
 
     return expectSaga(reorder, {
       payload: {identity: "search"},
@@ -55,8 +59,11 @@ describe(reorder.name, () => {
       });
   });
   it("reloadFocusedScreen", () => {
-    const screens = new Map([["search", {tweets: [], options: {query: "くえりー"}}]]);
-    const preferences = new Map([["search", {screen: {identity: "search", component: "Search"}}]]);
+    const screens = adapters.screens.addOne(adapters.screens.getInitialState(), {identity: "search", tweets: [], options: {query: "くえりー"}});
+    const preferences = adapters.preferences.addOne(adapters.preferences.getInitialState(), {
+      identity: "search",
+      screen: {identity: "search", component: "Search"},
+    });
 
     return expectSaga(reorderFocusedScreen, {
       payload: {},
@@ -108,24 +115,20 @@ describe(reorder.name, () => {
 });
 
 describe(searchTweets.name, () => {
-  const screens = new Map([
-    [
-      "search",
-      {
-        tweets: [],
-        options: {
-          query: "くえりー",
-        },
+  const screens = adapters.screens.addMany(adapters.screens.getInitialState(), [
+    {
+      identity: "search",
+      tweets: [],
+      options: {
+        query: "くえりー",
       },
-    ],
+    },
   ]);
-  const preferences = new Map([
-    [
-      "search",
-      {
-        screen: {identity: "search", component: "Search"},
-      },
-    ],
+  const preferences = adapters.preferences.addMany(adapters.screens.getInitialState(), [
+    {
+      identity: "search",
+      screen: {identity: "search", component: "Search"},
+    },
   ]);
 
   it("normal", () => {

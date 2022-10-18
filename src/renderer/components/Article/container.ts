@@ -1,13 +1,14 @@
 import {Dispatch} from "redux";
 import {connect} from "react-redux";
-import Component,{OwnProps, StateProps, DispatchProps} from "./component";
+import Component, {OwnProps, StateProps, DispatchProps} from "./component";
 import * as actions from "@actions";
+import adapters from "@libraries/adapter";
 
 const {facade} = window;
 
 const mapStateToProps = (state: TMB.State, own: OwnProps): StateProps => {
   const {screens} = state;
-  const screen = screens.get(own.identity)!;
+  const screen = adapters.screens.getSelectors().selectById(screens, own.identity)!;
 
   return {
     ...screen,

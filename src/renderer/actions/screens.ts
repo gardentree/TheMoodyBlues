@@ -1,18 +1,14 @@
 import {createActions, handleActions, Action} from "redux-actions";
 import merge from "@libraries/merger";
 import {INITIAL_VALUE} from "@libraries/screen";
+import adapters from "@libraries/adapter";
 
 type RecursivePartial<T> = {
   [P in keyof T]?: RecursivePartial<T[P]>;
 };
 
-function mergeScreen(oldScreens: Map<string, TMB.Screen>, identity: TMB.ScreenID, newScreen: RecursivePartial<TMB.Screen>) {
-  const screens = new Map(oldScreens);
-  const screen = screens.get(identity)!;
-
-  screens.set(identity, merge<TMB.Screen>(screen, newScreen as Partial<TMB.Screen>));
-
-  return screens;
+function mergeScreen(oldScreens: TMB.ScreenMap, identity: TMB.ScreenID, newScreen: RecursivePartial<TMB.Screen>) {
+  return adapters.screens.updateOne(oldScreens, {id: identity, changes: newScreen as Partial<TMB.Screen>});
 }
 
 export const {updateTweets, mark, setupSearch, changeMode, prepareScreen, closeScreen, updateScreenStatus} = createActions({
@@ -119,23 +115,17 @@ export default handleActions<TMB.ScreenMap, RecursivePartial<TMB.Screen>, {ident
     },
     [prepareScreen.toString()]: (state, action) => {
       const {identity} = action.meta;
-      const newState = new Map(state);
 
-      newState.set(identity, INITIAL_VALUE);
-
-      return newState;
+      return adapters.screens.addOne(state, Object.assign({}, INITIAL_VALUE, {identity: identity}));
     },
     [closeScreen.toString()]: (state, action) => {
       const {identity} = action.meta;
-      const newState = new Map(state);
 
-      newState.delete(identity);
-
-      return newState;
+      return adapters.screens.removeOne(state, identity);
     },
     [updateScreenStatus.toString()]: (state, action) => {
       return mergeScreen(state, action.meta.identity, action.payload);
     },
   },
-  new Map()
+  adapters.screens.getInitialState()
 );

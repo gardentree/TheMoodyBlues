@@ -1,4 +1,5 @@
-import {createActions, handleActions,Action} from "redux-actions";
+import adapters from "@libraries/adapter";
+import {createActions, handleActions, Action} from "redux-actions";
 
 export const {updatePreferences} = createActions({
   UPDATE_PREFERENCES: (preferences: TMB.PreferenceMap) => preferences,
@@ -12,5 +13,5 @@ export default handleActions<TMB.PreferenceMap, TMB.PreferenceMap>(
       return action.payload;
     },
   },
-  new Map()
+  adapters.preferences.getInitialState()
 );

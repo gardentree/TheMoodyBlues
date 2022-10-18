@@ -1,3 +1,5 @@
+type EntityState<T> = import("@reduxjs/toolkit").EntityState<T>;
+
 declare namespace TheMoodyBlues {
   interface State {
     screens: ScreenMap;
@@ -5,10 +7,11 @@ declare namespace TheMoodyBlues {
     preferences: PreferenceMap;
     lineage: Lineage;
   }
-  type ScreenMap = Map<ScreenID, Screen>;
-  type PreferenceMap = Map<ScreenID, Preference>;
+  type ScreenMap = EntityState<Screen>;
+  type PreferenceMap = EntityState<Preference>;
 
   interface Screen {
+    identity: ScreenID;
     tweets: Twitter.Tweet[];
     mode: ArticleMode;
     lastReadID: Twitter.TweetID;
@@ -30,7 +33,11 @@ declare namespace TheMoodyBlues {
     mute: MutePreference;
   }
 
-  type Lineage = Map<ScreenID, ScreenID[]>;
+  type Lineage = EntityState<LineageTree>;
+  interface LineageTree {
+    root: ScreenID;
+    branches: ScreenID[];
+  }
 
   interface Principal {
     screens: ScreenID[];
