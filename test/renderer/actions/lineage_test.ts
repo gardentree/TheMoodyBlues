@@ -2,10 +2,10 @@ import {expect} from "chai";
 import reducer, {branch, clip} from "@actions/lineage";
 import adapters from "@source/renderer/libraries/adapter";
 
-describe(reducer.toString(), () => {
+describe("@renderer/actions/lineage", () => {
   describe(branch.toString(), () => {
     it("when new tree", () => {
-      expect(reducer(adapters.lineage.getInitialState(), branch("parent", "child") as any)).to.deep.equal({
+      expect(reducer(adapters.lineage.getInitialState(), branch({root: "parent", branch: "child"}))).to.deep.equal({
         ids: ["parent"],
         entities: {
           parent: {
@@ -23,7 +23,7 @@ describe(reducer.toString(), () => {
         },
       ]);
 
-      expect(reducer(state, branch("parent", "child2") as any)).to.deep.equal({
+      expect(reducer(state, branch({root: "parent", branch: "child2"}))).to.deep.equal({
         ids: ["parent"],
         entities: {
           parent: {
@@ -43,9 +43,7 @@ describe(reducer.toString(), () => {
         },
       ]);
 
-      console.log(state);
-
-      expect(reducer(state, clip("parent", "child2") as any)).to.deep.equal({
+      expect(reducer(state, clip({root: "parent", branch: "child2"}))).to.deep.equal({
         ids: ["parent"],
         entities: {
           parent: {

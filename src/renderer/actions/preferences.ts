@@ -1,17 +1,15 @@
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 import adapters from "@libraries/adapter";
-import {createActions, handleActions, Action} from "redux-actions";
 
-export const {updatePreferences} = createActions({
-  UPDATE_PREFERENCES: (preferences: TMB.PreferenceMap) => preferences,
-}) as {
-  updatePreferences(preferences: TMB.PreferenceMap): Action<unknown>;
-};
-
-export default handleActions<TMB.PreferenceMap, TMB.PreferenceMap>(
-  {
-    [updatePreferences.toString()]: (state, action) => {
+export const slice = createSlice({
+  name: "preferences",
+  initialState: adapters.preferences.getInitialState(),
+  reducers: {
+    updatePreferences: (state, action: PayloadAction<TMB.PreferenceMap>) => {
       return action.payload;
     },
   },
-  adapters.preferences.getInitialState()
-);
+});
+
+export const {updatePreferences} = slice.actions;
+export default slice.reducer;

@@ -1,63 +1,36 @@
-import {createActions, handleActions, Action} from "redux-actions";
+import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
-export const {setScreens, focusScreen, zoomIn, zoomOut, zoomReset, showLoading} = createActions({
-  SET_SCREENS: (screens: TMB.ScreenID[]) => ({
-    screens,
-  }),
-  FOCUS_SCREEN: (identity) => ({
-    focused: identity,
-  }),
-  ZOOM_IN: () => {},
-  ZOOM_OUT: () => {},
-  ZOOM_RESET: () => {},
-  SHOW_LOADING: (nowLoading: boolean) => ({
-    nowLoading: nowLoading,
-  }),
-}) as {
-  setScreens(screens: TMB.ScreenID[]): Action<unknown>;
-  focusScreen(identity: TMB.ScreenID): Action<unknown>;
-  zoomIn(): Action<unknown>;
-  zoomOut(): Action<unknown>;
-  zoomReset(): Action<unknown>;
-  showLoading(nowLoading: boolean): Action<unknown>;
-};
-
-export default handleActions<TMB.Principal, Partial<TMB.Principal>>(
-  {
-    [setScreens.toString()]: (state, action) => ({
-      ...state,
-      screens: action.payload.screens!,
-    }),
-    [focusScreen.toString()]: (state, action) => ({
-      ...state,
-      focused: action.payload.focused!,
-    }),
-    [zoomIn.toString()]: (state, action) => ({
-      ...state,
-      style: {fontSize: fontSize(state.style, 1)},
-    }),
-    [zoomOut.toString()]: (state, action) => ({
-      ...state,
-      style: {fontSize: fontSize(state.style, -1)},
-    }),
-    [zoomReset.toString()]: (state, action) => ({
-      ...state,
-      style: {fontSize: fontSize(state.style, 0)},
-    }),
-    [showLoading.toString()]: (state, action) => ({
-      ...state,
-      nowLoading: action.payload.nowLoading!,
-    }),
-  },
-  {
-    screens: [],
+export const slice = createSlice({
+  name: "principal",
+  initialState: {
+    screens: [] as TMB.ScreenID[],
     focused: "",
     style: {
       fontSize: "12px",
     },
     nowLoading: false,
-  }
-);
+  },
+  reducers: {
+    setScreens: (state, action: PayloadAction<TMB.ScreenID[]>) => {
+      state.screens = action.payload;
+    },
+    focusScreen: (state, action: PayloadAction<TMB.ScreenID>) => {
+      state.focused = action.payload;
+    },
+    zoomIn: (state) => {
+      state.style = {fontSize: fontSize(state.style, 1)};
+    },
+    zoomOut: (state) => {
+      state.style = {fontSize: fontSize(state.style, -1)};
+    },
+    zoomReset: (state) => {
+      state.style = {fontSize: fontSize(state.style, 0)};
+    },
+    showLoading: (state, action: PayloadAction<boolean>) => {
+      state.nowLoading = action.payload;
+    },
+  },
+});
 
 function fontSize(style: TMB.PrincipalStyle, offset: number) {
   if (offset == 0) {
@@ -67,3 +40,6 @@ function fontSize(style: TMB.PrincipalStyle, offset: number) {
     return `${Number(matcher![1]) + offset}px`;
   }
 }
+
+export const {setScreens, focusScreen, zoomIn, zoomOut, zoomReset, showLoading} = slice.actions;
+export default slice.reducer;

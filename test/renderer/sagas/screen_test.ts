@@ -2,16 +2,18 @@ import {expectSaga} from "redux-saga-test-plan";
 import {expect} from "chai";
 import {reorder, reorderFocusedScreen, searchTweets} from "@source/renderer/sagas/screen/stories";
 import adapters from "@source/renderer/libraries/adapter";
+import {builders} from "@test/helper";
 
 describe(reorder.name, () => {
   it("reload", () => {
-    const screens = adapters.screens.addOne(adapters.screens.getInitialState(), {identity: "search", tweets: [], options: {query: "くえりー"}});
-    const preferences = adapters.preferences.addOne(adapters.preferences.getInitialState(), {
-      identity: "search",
-      screen: {identity: "search", component: "Search"},
-    });
+    const screen = builders.buildScreen({identity: "search", options: {query: "くえりー"}});
+    const screens = adapters.screens.addOne(adapters.screens.getInitialState(), screen);
+
+    const preference = builders.buildPreference({identity: "search"});
+    const preferences = adapters.preferences.addOne(adapters.preferences.getInitialState(), preference);
 
     return expectSaga(reorder, {
+      type: "",
       payload: {identity: "search"},
       meta: {force: false},
     })
@@ -43,9 +45,8 @@ describe(reorder.name, () => {
         type: "search_STOP_TIMER",
       })
       .put({
-        type: "UPDATE_TWEETS",
-        payload: {tweets: [], options: {query: "くえりー"}},
-        meta: {identity: "search"},
+        type: "screens/updateTweets",
+        payload: {identity: "search", tweets: [], options: {query: "くえりー"}},
       })
       .put({
         type: "search_START_TIMER",
@@ -59,11 +60,11 @@ describe(reorder.name, () => {
       });
   });
   it("reloadFocusedScreen", () => {
-    const screens = adapters.screens.addOne(adapters.screens.getInitialState(), {identity: "search", tweets: [], options: {query: "くえりー"}});
-    const preferences = adapters.preferences.addOne(adapters.preferences.getInitialState(), {
-      identity: "search",
-      screen: {identity: "search", component: "Search"},
-    });
+    const screen = builders.buildScreen({identity: "search", options: {query: "くえりー"}});
+    const screens = adapters.screens.addOne(adapters.screens.getInitialState(), screen);
+
+    const preference = builders.buildPreference({identity: "search"});
+    const preferences = adapters.preferences.addOne(adapters.preferences.getInitialState(), preference);
 
     return expectSaga(reorderFocusedScreen, {
       payload: {},
@@ -97,9 +98,8 @@ describe(reorder.name, () => {
         type: "search_STOP_TIMER",
       })
       .put({
-        type: "UPDATE_TWEETS",
-        payload: {tweets: [], options: {query: "くえりー"}},
-        meta: {identity: "search"},
+        type: "screens/updateTweets",
+        payload: {identity: "search", tweets: [], options: {query: "くえりー"}},
       })
       .put({
         type: "search_START_TIMER",
@@ -115,24 +115,21 @@ describe(reorder.name, () => {
 });
 
 describe(searchTweets.name, () => {
-  const screens = adapters.screens.addMany(adapters.screens.getInitialState(), [
-    {
-      identity: "search",
-      tweets: [],
-      options: {
-        query: "くえりー",
-      },
+  const screen = builders.buildScreen({
+    identity: "search",
+    options: {
+      query: "くえりー",
     },
-  ]);
-  const preferences = adapters.preferences.addMany(adapters.screens.getInitialState(), [
-    {
-      identity: "search",
-      screen: {identity: "search", component: "Search"},
-    },
-  ]);
+  });
+  const screens = adapters.screens.addMany(adapters.screens.getInitialState(), [screen]);
+  const preference = builders.buildPreference({
+    identity: "search",
+  });
+
+  const preferences = adapters.preferences.addMany(adapters.preferences.getInitialState(), [preference]);
 
   it("normal", () => {
-    return expectSaga(searchTweets, {payload: {identity: "search", query: "くえりー"}})
+    return expectSaga(searchTweets, {type: "", payload: {identity: "search", query: "くえりー"}})
       .provide({
         select() {
           return {
@@ -150,21 +147,19 @@ describe(searchTweets.name, () => {
         },
       })
       .put({
-        type: "FOCUS_SCREEN",
-        payload: {focused: "search"},
+        type: "principal/focusScreen",
+        payload: "search",
       })
       .put({
-        type: "SETUP_SEARCH",
-        payload: {options: {query: "くえりー"}},
-        meta: {identity: "search"},
+        type: "screens/setupSearch",
+        payload: {identity: "search", query: "くえりー"},
       })
       .put({
         type: "search_STOP_TIMER",
       })
       .put({
-        type: "UPDATE_TWEETS",
-        payload: {tweets: [], options: {query: "くえりー"}},
-        meta: {identity: "search"},
+        type: "screens/updateTweets",
+        payload: {identity: "search", tweets: [], options: {query: "くえりー"}},
       })
       .put({
         type: "search_START_TIMER",

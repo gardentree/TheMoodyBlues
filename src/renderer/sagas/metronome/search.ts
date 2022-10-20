@@ -24,14 +24,14 @@ export function* order(identity: TMB.ScreenID, screen: TMB.Screen, preference: T
 
     const newTweets = tweets.concat(oldTweets).slice(0, 400);
 
-    yield put(actions.updateTweets(identity, newTweets, {query: query}));
+    yield put(actions.updateTweets({identity, tweets: newTweets, options: {query: query}}));
     if (tweets.length > 0 && oldTweets.length <= 0) {
-      yield put(actions.mark(identity, tweets[0].id_str));
+      yield put(actions.mark({identity, lastReadID: tweets[0].id_str}));
     }
 
     yield timer.start(identity);
   } else {
-    yield put(actions.setupSearch(identity, ""));
+    yield put(actions.setupSearch({identity, query: ""}));
   }
 }
 

@@ -78,9 +78,8 @@ describe("search", () => {
           type: `${identity}_STOP_TIMER`,
         })
         .put({
-          type: "UPDATE_TWEETS",
-          payload: {tweets: [{id_str: "new_1"}, {id_str: "new_2"}, {id_str: "old_1"}], options: {query: "くえりー"}},
-          meta: {identity: identity},
+          type: "screens/updateTweets",
+          payload: {identity, tweets: [{id_str: "new_1"}, {id_str: "new_2"}, {id_str: "old_1"}], options: {query: "くえりー"}},
         })
         .put({
           type: `${identity}_START_TIMER`,
@@ -119,9 +118,8 @@ describe("search", () => {
           type: `${identity}_STOP_TIMER`,
         })
         .put({
-          type: "SETUP_SEARCH",
-          payload: {options: {query: ""}},
-          meta: {identity: identity},
+          type: "screens/setupSearch",
+          payload: {identity, query: ""},
         })
         .run()
         .then((result) => {

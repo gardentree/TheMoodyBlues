@@ -18,7 +18,7 @@ const mapDispatchToProps = (dispatch: Dispatch, own: OwnProps): DispatchProps =>
   onMark: (latest: Twitter.TweetID): void => {
     const {identity} = own;
 
-    dispatch(actions.mark(identity, latest));
+    dispatch(actions.mark({identity, lastReadID: latest}));
   },
   onShowModeMenu: (mode: TMB.ArticleMode): void => {
     const {identity} = own;

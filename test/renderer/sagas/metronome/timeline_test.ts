@@ -31,14 +31,12 @@ describe("retrieveTimeline", () => {
           },
         ])
         .put({
-          type: "UPDATE_TWEETS",
-          payload: {tweets: [{id_str: "1"}]},
-          meta: {identity: identity},
+          type: "screens/updateTweets",
+          payload: {identity, tweets: [{id_str: "1"}]},
         })
         .put({
-          type: "MARK",
-          payload: {lastReadID: "1"},
-          meta: {identity: identity},
+          type: "screens/mark",
+          payload: {identity, lastReadID: "1"},
         })
         .put({
           type: `${identity}_START_TIMER`,
@@ -79,9 +77,8 @@ describe("retrieveTimeline", () => {
           },
         ])
         .put({
-          type: "UPDATE_TWEETS",
-          payload: {tweets: []},
-          meta: {identity: identity},
+          type: "screens/updateTweets",
+          payload: {identity, tweets: []},
         })
         .put({
           type: `${identity}_START_TIMER`,
@@ -136,9 +133,8 @@ describe("retrieveTimeline", () => {
           },
         ])
         .put({
-          type: "UPDATE_TWEETS",
-          payload: {tweets: [{id_str: "new_1"}, {id_str: "new_2"}, {id_str: "old_1"}]},
-          meta: {identity: identity},
+          type: "screens/updateTweets",
+          payload: {identity, tweets: [{id_str: "new_1"}, {id_str: "new_2"}, {id_str: "old_1"}]},
         })
         .put({type: `${identity}_STOP_TIMER`})
         .put({type: `${identity}_START_TIMER`})
@@ -189,9 +185,8 @@ describe("retrieveTimeline", () => {
           },
         ])
         .put({
-          type: "UPDATE_TWEETS",
-          payload: {tweets: [{id_str: "new_1"}, {id_str: "new_2"}]},
-          meta: {identity: identity},
+          type: "screens/updateTweets",
+          payload: {identity, tweets: [{id_str: "new_1"}, {id_str: "new_2"}]},
         })
         .put({type: `${identity}_STOP_TIMER`})
         .put({type: `${identity}_START_TIMER`})

@@ -33,7 +33,7 @@ function* reconfigure(action: BaseAction) {
     yield put(actions.closeScreen(identity));
 
     for (const branch of adapters.lineage.getSelectors().selectById(lineage, identity)?.branches || []) {
-      yield put(actions.clip(identity, branch));
+      yield put(actions.clip({root: identity, branch: branch}));
       yield put(actions.closeScreen(branch));
     }
   }

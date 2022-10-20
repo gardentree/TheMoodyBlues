@@ -10,7 +10,7 @@ function* run(identity: TMB.ScreenID, interval: number) {
 
   while ((yield effects.take(channel)) as ReturnType<typeof effects.take>) {
     while (true) {
-      yield effects.put(actions.updateScreenStatus(identity, `next update ${DateUtility.format(Date.now() + interval, "HH:mm:ss")}`));
+      yield effects.put(actions.updateScreenStatus({identity, status: `next update ${DateUtility.format(Date.now() + interval, "HH:mm:ss")}`}));
 
       const winner: {stopped: boolean; killed: boolean; tick: boolean} = yield effects.race({
         stopped: effects.take(`${identity}_STOP_TIMER`),
@@ -22,7 +22,7 @@ function* run(identity: TMB.ScreenID, interval: number) {
         break;
       }
       if (winner.killed) {
-        yield effects.put(actions.updateScreenStatus(identity, ""));
+        yield effects.put(actions.updateScreenStatus({identity, status: ""}));
         return;
       }
 

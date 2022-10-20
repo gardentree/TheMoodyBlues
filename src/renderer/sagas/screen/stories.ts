@@ -35,7 +35,7 @@ export function* searchTweets(action: Action<{identity: TMB.ScreenID; query: str
   const {identity, query} = action.payload;
 
   yield put(actions.focusScreen(identity));
-  yield put(actions.setupSearch(identity, query));
+  yield put(actions.setupSearch({identity, query}));
   yield order(identity, true);
 }
 
@@ -55,9 +55,9 @@ export function* branch(tweets: Twitter.Tweet[], source?: Twitter.Tweet) {
   const branch = `${root}.${Date.now()}`;
 
   yield put(actions.prepareScreen(branch));
-  yield put(actions.updateTweets(branch, tweets, {source}));
-  yield put(actions.mark(branch, "MAX_VALUE"));
-  yield put(actions.branch(root, branch));
+  yield put(actions.updateTweets({identity: branch, tweets, options: {source}}));
+  yield put(actions.mark({identity: branch, lastReadID: "MAX_VALUE"}));
+  yield put(actions.branch({root, branch}));
 }
 
 export function* shutdown(action: Action<{identity: TMB.ScreenID}>) {
