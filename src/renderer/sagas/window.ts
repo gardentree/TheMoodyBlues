@@ -39,10 +39,10 @@ function* alarm(action: Action<{message: string}>) {
 
 // prettier-ignore
 export default [
-  takeLatest(actions.focusTweet.toString(), wrap(focusTweet)),
-  takeLatest(actions.focusLatestTweet.toString(), wrap(focusLatestTweet)),
-  takeLatest(actions.focusUnreadTweet.toString(), wrap(focusUnreadTweet)),
-  takeEvery(actions.alarm.toString(), alarm),
+  takeLatest(actions.focusTweet.type, wrap(focusTweet)),
+  takeLatest(actions.focusLatestTweet.type, wrap(focusLatestTweet)),
+  takeLatest(actions.focusUnreadTweet.type, wrap(focusUnreadTweet)),
+  takeEvery(actions.alarm.type, alarm),
 ];
 
 function getContainer(): Element {

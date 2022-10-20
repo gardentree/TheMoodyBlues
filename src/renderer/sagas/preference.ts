@@ -46,6 +46,8 @@ function extractActives(preferences: TMB.PreferenceMap): TMB.ScreenID[] {
 
 // prettier-ignore
 export default [
-  takeLatest(actions.prepareState, wrap(prepareState)),
-  takeLatest(actions.reconfigure, wrap(reconfigure)),
+  takeLatest(actions.prepareState.type, wrap(prepareState)),
+  takeLatest(actions.reconfigure.type, wrap(reconfigure)),
 ];
+
+console.log(actions.prepareState.type);

@@ -20,7 +20,10 @@ export const wrap = (saga: Saga) =>
       if (error instanceof Error) {
         facade.logger.error(error.stack);
       }
-      yield put(actions.alarm(error));
+
+      if (error instanceof Error || typeof error === "string") {
+        yield put(actions.alarm(error));
+      }
     } finally {
       if (loading) yield put(actions.showLoading(false));
     }
