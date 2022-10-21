@@ -1,11 +1,11 @@
 import {put, call, takeLatest, select} from "redux-saga/effects";
+import {PayloadAction} from "@reduxjs/toolkit";
 import * as actions from "@actions";
-import {BaseAction} from "redux-actions";
 import * as libraries from "@libraries/screen";
 import {wrap} from "./library";
 import adapters from "@libraries/adapter";
 
-function* prepareState(action: BaseAction) {
+function* prepareState(action: PayloadAction) {
   const newPreferences = (yield call(libraries.loadPreferences)) as TMB.PreferenceMap;
   const actives = extractActives(newPreferences);
 
@@ -15,7 +15,7 @@ function* prepareState(action: BaseAction) {
   }
   yield put(actions.setScreens(actives));
 }
-function* reconfigure(action: BaseAction) {
+function* reconfigure(action: PayloadAction) {
   const state: TMB.State = yield select();
   const {lineage} = state;
 

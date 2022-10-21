@@ -1,9 +1,9 @@
 import {takeLatest, takeEvery} from "redux-saga/effects";
 import * as actions from "@actions";
-import {Action, BaseAction} from "redux-actions";
+import {PayloadAction} from "@reduxjs/toolkit";
 import {wrap} from "./library";
 
-function* focusTweet(action: Action<{tweet: Twitter.Tweet}>) {
+function* focusTweet(action: PayloadAction<{tweet: Twitter.Tweet}>) {
   const {tweet} = action.payload;
   const container = getContainer();
   const element = <HTMLElement>container.querySelector(`li[data-id="${tweet.id_str}"] *[tabindex='-1']`)!;
@@ -12,7 +12,7 @@ function* focusTweet(action: Action<{tweet: Twitter.Tweet}>) {
   yield element.focus();
 }
 
-function* focusLatestTweet(action: BaseAction) {
+function* focusLatestTweet(action: PayloadAction) {
   const container = getContainer();
   const latest = <HTMLElement>container.querySelector("li:first-child *[tabindex='-1']")!;
 
@@ -20,7 +20,7 @@ function* focusLatestTweet(action: BaseAction) {
   yield latest.focus();
 }
 
-function* focusUnreadTweet(action: BaseAction) {
+function* focusUnreadTweet(action: PayloadAction) {
   const container = getContainer();
   const unreads = container.querySelectorAll("li.unread *[tabindex='-1']");
   const oldest = <HTMLElement>Array.from(unreads).slice(-1)[0];
@@ -33,7 +33,7 @@ function* focusUnreadTweet(action: BaseAction) {
   }
 }
 
-function* alarm(action: Action<{message: string}>) {
+function* alarm(action: PayloadAction<{message: string}>) {
   yield window.alert(action.payload.message);
 }
 
