@@ -1,5 +1,4 @@
 import {expectSaga} from "redux-saga-test-plan";
-import {expect} from "chai";
 import {reorder, reorderFocusedScreen, searchTweets} from "@source/renderer/sagas/screen/stories";
 import adapters from "@source/renderer/libraries/adapter";
 import {builders} from "@test/helper";
@@ -55,8 +54,8 @@ describe(reorder.name, () => {
       .then((result) => {
         const {effects} = result;
 
-        expect(effects.put).to.be.undefined;
-        expect(effects.call).to.have.lengthOf(1);
+        expect(effects.put).toBeUndefined();
+        expect(effects.call).toHaveLength(1);
       });
   });
   it("reloadFocusedScreen", () => {
@@ -108,8 +107,8 @@ describe(reorder.name, () => {
       .then((result) => {
         const {effects} = result;
 
-        expect(effects.put).to.be.undefined;
-        expect(effects.call).to.have.lengthOf(1);
+        expect(effects.put).toBeUndefined();
+        expect(effects.call).toHaveLength(1);
       });
   });
 });
@@ -168,8 +167,8 @@ describe(searchTweets.name, () => {
       .then((result) => {
         const {effects} = result;
 
-        expect(effects.put).to.be.undefined;
-        expect(effects.call).to.have.lengthOf(1);
+        expect(effects.put).toBeUndefined();
+        expect(effects.call).toHaveLength(1);
       });
   });
 });

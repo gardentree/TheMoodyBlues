@@ -1,4 +1,3 @@
-import {expect} from "chai";
 import reducer, {setScreens, focusScreen, zoomIn, zoomOut, zoomReset, showLoading} from "@actions/principal";
 
 describe("@renderer/actions/principal", () => {
@@ -12,7 +11,7 @@ describe("@renderer/actions/principal", () => {
         },
         nowLoading: false,
       };
-      expect(reducer(state, setScreens(["first"]))).to.deep.equal({
+      expect(reducer(state, setScreens(["first"]))).toEqual({
         screens: ["first"],
         focused: "",
         style: {
@@ -33,7 +32,7 @@ describe("@renderer/actions/principal", () => {
         },
         nowLoading: false,
       };
-      expect(reducer(state, focusScreen("second"))).to.deep.equal({
+      expect(reducer(state, focusScreen("second"))).toEqual({
         screens: ["first", "second"],
         focused: "second",
         style: {
@@ -54,7 +53,7 @@ describe("@renderer/actions/principal", () => {
         },
         nowLoading: false,
       };
-      expect(reducer(state, zoomIn())).to.deep.equal({
+      expect(reducer(state, zoomIn())).toEqual({
         screens: [],
         focused: "",
         style: {
@@ -74,7 +73,7 @@ describe("@renderer/actions/principal", () => {
         },
         nowLoading: false,
       };
-      expect(reducer(state, zoomOut())).to.deep.equal({
+      expect(reducer(state, zoomOut())).toEqual({
         screens: [],
         focused: "",
         style: {
@@ -94,7 +93,7 @@ describe("@renderer/actions/principal", () => {
         },
         nowLoading: false,
       };
-      expect(reducer(state, zoomReset())).to.deep.equal({
+      expect(reducer(state, zoomReset())).toEqual({
         screens: [],
         focused: "",
         style: {
@@ -115,7 +114,7 @@ describe("@renderer/actions/principal", () => {
         },
         nowLoading: false,
       };
-      expect(reducer(state, showLoading(true))).to.deep.equal({
+      expect(reducer(state, showLoading(true))).toEqual({
         screens: [],
         focused: "",
         style: {

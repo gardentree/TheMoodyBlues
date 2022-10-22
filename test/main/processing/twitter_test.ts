@@ -1,19 +1,13 @@
-import {expect, use} from "chai";
-import chaiAsPromised from "chai-as-promised";
-import chaiSubset from "chai-subset";
-import sinon from "sinon";
 import * as fs from "fs";
 import {faker} from "@faker-js/faker";
 import {incarnate} from "@source/main/processing/twitter";
 import {retry} from "@source/main/processing/twitter/utility";
 import {degrade, degradeDate} from "@source/main/processing/twitter/degrader";
 import {parseElements} from "@source/renderer/libraries/twitter";
+import {recursiveObjectContaining} from "@test/helper";
 
-use(chaiSubset);
-use(chaiAsPromised);
-
-function loadJSON(path) {
-  return JSON.parse(fs.readFileSync(`./test/main/processing/${path}`));
+function loadJSON(path: string) {
+  return JSON.parse(fs.readFileSync(`./test/main/processing/${path}`).toString());
 }
 function fake(elements) {
   const data = [];
@@ -53,19 +47,19 @@ function fake(elements) {
 
 describe("retrieveTimeline", () => {
   it("success", () => {
-    const callback = sinon.stub();
-    callback.returns(Promise.resolve([{id: 1}]));
+    const callback = jest.fn();
+    callback.mockReturnValue(Promise.resolve([{id: 1}]));
 
     const agent = incarnate({get: callback});
 
-    return expect(agent.retrieveTimeline(null)).to.eventually.deep.equal([{id: 1}]);
+    return expect(agent.retrieveTimeline(null)).resolves.toEqual([{id: 1}]);
   });
 });
 
 describe("search", () => {
   it("success", () => {
-    const callback = sinon.stub();
-    callback.returns(
+    const callback = jest.fn();
+    callback.mockReturnValue(
       Promise.resolve({
         statuses: [
           {
@@ -77,14 +71,14 @@ describe("search", () => {
 
     const agent = incarnate({get: callback});
 
-    return expect(agent.search("くえりー")).to.eventually.deep.equal([{id: 1}]);
+    return expect(agent.search("くえりー")).resolves.toEqual([{id: 1}]);
   });
 });
 
 describe("retrieveTimelineOfUser", () => {
   it("success", () => {
-    const callback = sinon.stub();
-    callback.returns(
+    const callback = jest.fn();
+    callback.mockReturnValue(
       Promise.resolve([
         {
           id: 1,
@@ -94,14 +88,14 @@ describe("retrieveTimelineOfUser", () => {
 
     const agent = incarnate({get: callback});
 
-    return expect(agent.retrieveTimelineOfUser("gian")).to.eventually.deep.equal([{id: 1}]);
+    return expect(agent.retrieveTimelineOfUser("gian")).resolves.toEqual([{id: 1}]);
   });
 });
 
 describe("retrieveMentions", () => {
   it("success", () => {
-    const callback = sinon.stub();
-    callback.returns(
+    const callback = jest.fn();
+    callback.mockReturnValue(
       Promise.resolve([
         {
           id: 1,
@@ -111,45 +105,55 @@ describe("retrieveMentions", () => {
 
     const agent = incarnate({get: callback});
 
-    return expect(agent.retrieveMentions(null)).to.eventually.deep.equal([{id: 1}]);
+    return expect(agent.retrieveMentions(null)).resolves.toEqual([{id: 1}]);
   });
 });
 
 describe("retrieveConversation", () => {
   it("success", () => {
-    const callback = sinon.stub();
-    callback.withArgs("tweets/1").returns(
-      Promise.resolve({
-        data: {
-          conversation_id: "2",
-        },
-      })
-    );
-    callback.withArgs("tweets/search/recent").returns(Promise.resolve(Object.assign(loadJSON("./v2/tweet.json"), {meta: {result_count: 1}})));
+    const callback = jest.fn();
+    callback.mockImplementation((endpoint: string) => {
+      switch (endpoint) {
+        case "tweets/1":
+          return Promise.resolve({
+            data: {
+              conversation_id: "2",
+            },
+          });
+        case "tweets/search/recent":
+          return Promise.resolve(Object.assign(loadJSON("./v2/tweet.json"), {meta: {result_count: 1}}));
+      }
+      return Promise.reject(endpoint);
+    });
 
     const agent = incarnate(null, {get: callback});
 
-    return expect(agent.retrieveConversation({id_str: "1"})).to.eventually.lengthOf(2);
+    return expect(agent.retrieveConversation({id_str: "1"})).resolves.toHaveLength(2);
   });
 
   it("when conversation is empty", () => {
-    const callback = sinon.stub();
-    callback.withArgs("tweets/1").returns(
-      Promise.resolve({
-        data: {
-          conversation_id: "2",
-        },
-      })
-    );
-    callback.withArgs("tweets/search/recent").returns(Promise.resolve({meta: {result_count: 0}}));
+    const callback = jest.fn();
+    callback.mockImplementation((endpoint: string) => {
+      switch (endpoint) {
+        case "tweets/1":
+          return Promise.resolve({
+            data: {
+              conversation_id: "2",
+            },
+          });
+        case "tweets/search/recent":
+          return Promise.resolve({meta: {result_count: 0}});
+      }
+      return Promise.reject(endpoint);
+    });
 
     const agent = incarnate(null, {get: callback});
 
-    return expect(agent.retrieveConversation({id_str: "1"})).to.eventually.lengthOf(1);
+    return expect(agent.retrieveConversation({id_str: "1"})).resolves.toHaveLength(1);
   });
 
   it("when result does not include source tweet and replied tweet", () => {
-    const callback = sinon.stub();
+    const callback = jest.fn();
 
     const source2 = loadJSON("./v2/reply.json");
     const source1 = degrade(source2)[0];
@@ -171,135 +175,164 @@ describe("retrieveConversation", () => {
     ]);
     const results1 = degrade(results2);
 
-    callback.withArgs(`tweets/${source2.data.id}`).returns(Promise.resolve(source2));
-    callback.withArgs("tweets/search/recent").returns(Promise.resolve(results2));
-    callback.withArgs(`tweets/${source2.data.referenced_tweets[0].id}`).returns(Promise.resolve(replied2));
+    callback.mockImplementation((endpoint: string) => {
+      switch (endpoint) {
+        case `tweets/${source2.data.id}`:
+          return Promise.resolve(source2);
+        case "tweets/search/recent":
+          return Promise.resolve(results2);
+        case `tweets/${source2.data.referenced_tweets[0].id}`:
+          return Promise.resolve(replied2);
+      }
+      return Promise.reject(endpoint);
+    });
 
     const agent = incarnate(null, {get: callback});
 
-    return expect(agent.retrieveConversation(source1)).to.eventually.deep.equal([].concat(replied1, source1, results1.reverse()));
+    return expect(agent.retrieveConversation(source1)).resolves.toEqual([].concat(replied1, source1, results1.reverse()));
   });
 
   it("when cannot find original", () => {
-    const callback = sinon.stub();
-    callback.withArgs(`tweets/1`).returns(Promise.resolve({errors: [{title: "Not Found Error"}]}));
+    const callback = jest.fn();
+    callback.mockImplementation((endpoint: string) => {
+      switch (endpoint) {
+        case "tweets/1":
+          return Promise.resolve({errors: [{title: "Not Found Error"}]});
+      }
+      return Promise.reject(endpoint);
+    });
 
     const agent = incarnate(null, {get: callback});
 
-    return expect(agent.retrieveConversation({id_str: "1"})).to.be.rejectedWith(JSON.stringify([{title: "Not Found Error"}]));
+    return expect(agent.retrieveConversation({id_str: "1"})).rejects.toThrowError(JSON.stringify([{title: "Not Found Error"}]));
   });
 
   it("when replied tweets is deleted", () => {
-    const callback = sinon.stub();
-    callback.withArgs("tweets/1296887316556980230").resolves(
-      Object.assign(loadJSON("./v2/reply.json"), {
-        errors: [
-          {
-            value: "1503557906574503936",
-            detail: "Could not find tweet with referenced_tweets.id: [1503557906574503936].",
-            title: "Not Found Error",
-            resource_type: "tweet",
-            parameter: "referenced_tweets.id",
-            resource_id: "1503557906574503936",
-            type: "https://api.twitter.com/2/problems/resource-not-found",
-          },
-        ],
-      })
-    );
-    callback.withArgs("tweets/search/recent").resolves(
-      Object.assign(loadJSON("./v2/reply.json"), {
-        meta: {
-          result_count: 1,
-        },
-        errors: [
-          {
-            value: "1503557906574503936",
-            detail: "Could not find tweet with referenced_tweets.id: [1503557906574503936].",
-            title: "Not Found Error",
-            resource_type: "tweet",
-            parameter: "referenced_tweets.id",
-            resource_id: "1503557906574503936",
-            type: "https://api.twitter.com/2/problems/resource-not-found",
-          },
-        ],
-      })
-    );
+    const callback = jest.fn();
+    callback.mockImplementation((endpoint: string) => {
+      switch (endpoint) {
+        case "tweets/1296887316556980230":
+          return Promise.resolve(
+            Object.assign(loadJSON("./v2/reply.json"), {
+              errors: [
+                {
+                  value: "1503557906574503936",
+                  detail: "Could not find tweet with referenced_tweets.id: [1503557906574503936].",
+                  title: "Not Found Error",
+                  resource_type: "tweet",
+                  parameter: "referenced_tweets.id",
+                  resource_id: "1503557906574503936",
+                  type: "https://api.twitter.com/2/problems/resource-not-found",
+                },
+              ],
+            })
+          );
+        case "tweets/search/recent":
+          return Promise.resolve(
+            Object.assign(loadJSON("./v2/reply.json"), {
+              meta: {
+                result_count: 1,
+              },
+              errors: [
+                {
+                  value: "1503557906574503936",
+                  detail: "Could not find tweet with referenced_tweets.id: [1503557906574503936].",
+                  title: "Not Found Error",
+                  resource_type: "tweet",
+                  parameter: "referenced_tweets.id",
+                  resource_id: "1503557906574503936",
+                  type: "https://api.twitter.com/2/problems/resource-not-found",
+                },
+              ],
+            })
+          );
+      }
+    });
 
     const agent = incarnate(null, {get: callback});
 
     const criterion = {id_str: "1296887316556980230"};
-    return expect(agent.retrieveConversation(criterion)).to.eventually.deep.equal(degrade(loadJSON("./v2/reply.json")));
+    return expect(agent.retrieveConversation(criterion)).resolves.toEqual(degrade(loadJSON("./v2/reply.json")));
   });
 
   it("when replied tweets is private account", () => {
-    const callback = sinon.stub();
-    callback.withArgs("tweets/1296887316556980230").resolves(
-      Object.assign(loadJSON("./v2/reply.json"), {
-        errors: [
-          {
-            value: "1503557906574503936",
-            detail: "Sorry, you are not authorized to see the Tweet with  referenced_tweets.id: [1503557906574503936].",
-            title: "Authorization Error",
-            resource_type: "tweet",
-            parameter: "referenced_tweets.id",
-            resource_id: "1503557906574503936",
-            type: "https://api.twitter.com/2/problems/not-authorized-for-resource",
-          },
-        ],
-      })
-    );
-    callback.withArgs("tweets/search/recent").resolves(
-      Object.assign(loadJSON("./v2/reply.json"), {
-        meta: {
-          result_count: 1,
-        },
-        errors: [
-          {
-            value: "1503557906574503936",
-            detail: "Sorry, you are not authorized to see the Tweet with referenced_tweets.id: [1503557906574503936].",
-            title: "Authorization Error",
-            resource_type: "tweet",
-            parameter: "referenced_tweets.id",
-            resource_id: "1503557906574503936",
-            type: "https://api.twitter.com/2/problems/not-authorized-for-resource",
-          },
-        ],
-      })
-    );
+    const callback = jest.fn();
+    callback.mockImplementation((endpoint: string) => {
+      switch (endpoint) {
+        case "tweets/1296887316556980230":
+          return Promise.resolve(
+            Object.assign(loadJSON("./v2/reply.json"), {
+              errors: [
+                {
+                  value: "1503557906574503936",
+                  detail: "Sorry, you are not authorized to see the Tweet with  referenced_tweets.id: [1503557906574503936].",
+                  title: "Authorization Error",
+                  resource_type: "tweet",
+                  parameter: "referenced_tweets.id",
+                  resource_id: "1503557906574503936",
+                  type: "https://api.twitter.com/2/problems/not-authorized-for-resource",
+                },
+              ],
+            })
+          );
+        case "tweets/search/recent":
+          return Promise.resolve(
+            Object.assign(loadJSON("./v2/reply.json"), {
+              meta: {
+                result_count: 1,
+              },
+              errors: [
+                {
+                  value: "1503557906574503936",
+                  detail: "Sorry, you are not authorized to see the Tweet with referenced_tweets.id: [1503557906574503936].",
+                  title: "Authorization Error",
+                  resource_type: "tweet",
+                  parameter: "referenced_tweets.id",
+                  resource_id: "1503557906574503936",
+                  type: "https://api.twitter.com/2/problems/not-authorized-for-resource",
+                },
+              ],
+            })
+          );
+      }
+      return Promise.reject(endpoint);
+    });
 
     const agent = incarnate(null, {get: callback});
 
     const criterion = {id_str: "1296887316556980230"};
-    return expect(agent.retrieveConversation(criterion)).to.eventually.deep.equal(degrade(loadJSON("./v2/reply.json")));
+    return expect(agent.retrieveConversation(criterion)).resolves.toEqual(degrade(loadJSON("./v2/reply.json")));
   });
 });
 
 describe("lists", () => {
   it("success", () => {
-    const callback = sinon.stub();
-    callback.yields(
-      null,
-      [
-        {
-          id: 1,
-        },
-        {
-          id: 2,
-        },
-      ],
-      null
-    );
+    const callback = jest.fn();
+    callback.mockImplementation((endpoint, option, callback) => {
+      callback(
+        null,
+        [
+          {
+            id: 1,
+          },
+          {
+            id: 2,
+          },
+        ],
+        null
+      );
+    });
 
     const agent = incarnate({get: callback});
 
-    return expect(agent.lists()).to.eventually.deep.equal([{id: 2}, {id: 1}]);
+    return expect(agent.lists()).resolves.toEqual([{id: 2}, {id: 1}]);
   });
 });
 
 describe("retrieveTimelineOfList", () => {
   it("success", () => {
-    const callback = sinon.stub();
-    callback.returns(
+    const callback = jest.fn();
+    callback.mockReturnValue(
       Promise.resolve([
         {
           id: 1,
@@ -309,7 +342,7 @@ describe("retrieveTimelineOfList", () => {
 
     const agent = incarnate({get: callback});
 
-    return expect(agent.retrieveTimelineOfList("news")).to.eventually.deep.equal([{id: 1}]);
+    return expect(agent.retrieveTimelineOfList("news")).resolves.toEqual([{id: 1}]);
   });
 });
 
@@ -326,7 +359,7 @@ describe("degrade", () => {
     it(subject, () => {
       const actual = degrade(loadJSON(`./v2/${key}.json`))[0];
 
-      expect(loadJSON(`./v1/${key}.json`)).to.containSubset(actual);
+      expect(loadJSON(`./v1/${key}.json`)).toEqual(recursiveObjectContaining(actual));
 
       parseElements(actual);
     });
@@ -335,48 +368,50 @@ describe("degrade", () => {
 
 describe("degradeDate", () => {
   it("degrade", () => {
-    expect(degradeDate("2021-01-01T00:00:00.000Z")).to.eq("Fri Jan 01 00:00:00 +0000 2021");
-    expect(degradeDate("2021-01-01T01:00:00.000Z")).to.eq("Fri Jan 01 01:00:00 +0000 2021");
+    expect(degradeDate("2021-01-01T00:00:00.000Z")).toBe("Fri Jan 01 00:00:00 +0000 2021");
+    expect(degradeDate("2021-01-01T01:00:00.000Z")).toBe("Fri Jan 01 01:00:00 +0000 2021");
   });
 });
 
 describe("retry", () => {
   it("when success", () => {
-    const processing = sinon.stub();
-    processing.resolves([]);
+    const processing = () => {
+      return Promise.resolve([]);
+    };
 
-    return expect(retry(processing, 3)).to.eventually.deep.equal([]);
+    return expect(retry(processing, 3)).resolves.toEqual([]);
   });
   it("when retry", () => {
-    const processing = sinon.stub();
-    processing.onFirstCall().rejects({
-      code: "ENOTFOUND",
-    });
-    processing.onSecondCall().resolves([]);
+    const processing = jest.fn();
+    processing.mockReturnValueOnce(
+      Promise.reject({
+        code: "ENOTFOUND",
+      })
+    );
+    processing.mockReturnValueOnce(Promise.resolve([]));
 
-    return expect(retry(processing, 3)).to.eventually.deep.equal([]);
+    return expect(retry(processing, 3)).resolves.toEqual([]);
   });
   it("when retries are exceeded", () => {
-    const processing = sinon.stub();
-    processing.onFirstCall().rejects({
-      code: "ENOTFOUND",
-    });
-    processing.onSecondCall().rejects({
-      code: "ENOTFOUND",
-    });
+    const processing = jest.fn();
+    processing.mockReturnValue(
+      Promise.reject({
+        code: "ENOTFOUND",
+      })
+    );
 
-    return expect(retry(processing, 1)).to.be.rejectedWith({
+    return expect(retry(processing, 1)).rejects.toEqual({
       code: "ENOTFOUND",
     });
   });
   it("when other than ENOTFOUND", () => {
-    const processing = sinon.stub();
-    processing.onFirstCall().rejects({
-      code: "others",
-    });
+    const processing = jest.fn();
+    processing.mockReturnValue(
+      Promise.reject({
+        code: "others",
+      })
+    );
 
-    return expect(retry(processing, 3)).to.be.rejectedWith({
-      code: "others",
-    });
+    return expect(retry(processing, 3)).rejects.toThrow();
   });
 });

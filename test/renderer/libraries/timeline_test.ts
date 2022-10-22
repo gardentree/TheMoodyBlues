@@ -1,4 +1,3 @@
-import {expect} from "chai";
 import {mixPreferences} from "@libraries/screen";
 
 const HOME = {
@@ -40,7 +39,9 @@ describe("mixPreferences", () => {
   it("same", () => {
     const actives = [HOME, SEARCH, MENTIONS];
 
-    expect(mixPreferences(actives, [])).to.deep.equal([Object.assign({active: true}, HOME), Object.assign({active: true}, SEARCH), Object.assign({active: true}, MENTIONS)]);
+    expect(mixPreferences(actives, [])).toEqual(
+      [Object.assign({active: true}, HOME), Object.assign({active: true}, SEARCH), Object.assign({active: true}, MENTIONS)]
+    );
   });
 
   it("add list", () => {
@@ -53,12 +54,16 @@ describe("mixPreferences", () => {
           name: "News",
         },
       ])
-    ).to.deep.equal([Object.assign({active: true}, HOME), Object.assign({}, LIST, {identity: "list_news", title: "News", parameters: ["news"]}), Object.assign({active: true}, SEARCH), Object.assign({active: true}, MENTIONS)]);
+    ).toEqual(
+      [Object.assign({active: true}, HOME), Object.assign({}, LIST, {identity: "list_news", title: "News", parameters: ["news"]}), Object.assign({active: true}, SEARCH), Object.assign({active: true}, MENTIONS)]
+    );
   });
 
   it("modify", () => {
     const actives = [Object.assign({}, HOME, {interval: 240}), SEARCH, MENTIONS];
 
-    expect(mixPreferences(actives, [])).to.deep.equal([Object.assign({active: true}, HOME, {interval: 240}), Object.assign({active: true}, SEARCH), Object.assign({active: true}, MENTIONS)]);
+    expect(mixPreferences(actives, [])).toEqual(
+      [Object.assign({active: true}, HOME, {interval: 240}), Object.assign({active: true}, SEARCH), Object.assign({active: true}, MENTIONS)]
+    );
   });
 });

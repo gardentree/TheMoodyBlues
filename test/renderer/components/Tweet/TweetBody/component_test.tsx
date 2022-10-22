@@ -1,7 +1,6 @@
 import * as React from "react";
 import {configure, shallow, render} from "enzyme";
-import Adapter from "enzyme-adapter-react-16";
-import {expect} from "chai";
+import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
 import * as twitter from "../../../../../src/renderer/others/twitter";
 
 import TweetBody from "../../../../../src/renderer/components/Tweet/TweetBody/component";
@@ -26,7 +25,7 @@ describe("<TweetBody />", () => {
       };
 
       const wrapper = shallow(<TweetBody tweet={json} expand={true} />);
-      expect(wrapper.text()).to.equal(" てすとぉ");
+      expect(wrapper.text()).toBe(" てすとぉ");
     });
   });
 
@@ -50,12 +49,12 @@ describe("<TweetBody />", () => {
     it("expand", () => {
       const wrapper = shallow(<TweetBody tweet={json} expand={true} />);
 
-      expect(wrapper.text()).to.equal("てすとぉ ");
+      expect(wrapper.text()).toBe("てすとぉ ");
     });
     it("collapse", () => {
       const wrapper = shallow(<TweetBody tweet={json} />);
 
-      expect(wrapper.text()).to.equal("てすとぉ ");
+      expect(wrapper.text()).toBe("てすとぉ ");
     });
   });
 
@@ -84,12 +83,12 @@ describe("<TweetBody />", () => {
     it("expand", () => {
       const wrapper = shallow(<TweetBody tweet={json} expand={true} />);
 
-      expect(wrapper.text()).to.equal("てすとぉ。");
+      expect(wrapper.text()).toBe("てすとぉ。");
     });
     it("collapse", () => {
       const wrapper = shallow(<TweetBody tweet={json} />);
 
-      expect(wrapper.text()).to.equal("てすとぉ。<ExternalLink />");
+      expect(wrapper.text()).toBe("てすとぉ。<ExternalLink />");
     });
   });
 
@@ -119,12 +118,12 @@ describe("<TweetBody />", () => {
     it("expand", () => {
       const wrapper = shallow(<TweetBody tweet={json} expand={true} />);
 
-      expect(wrapper.text()).to.equal("てすとぉ ");
+      expect(wrapper.text()).toBe("てすとぉ ");
     });
     it("collapse", () => {
       const wrapper = shallow(<TweetBody tweet={json} />);
 
-      expect(wrapper.text()).to.equal("てすとぉ ");
+      expect(wrapper.text()).toBe("てすとぉ ");
     });
   });
 
@@ -150,12 +149,12 @@ describe("<TweetBody />", () => {
     it("expand", () => {
       const wrapper = render(<TweetBody tweet={json} expand={true} />);
 
-      expect(wrapper.text()).to.equal("てすとぉ。");
+      expect(wrapper.text()).toBe("てすとぉ。");
     });
     it("collapse", () => {
       const wrapper = render(<TweetBody tweet={json} />);
 
-      expect(wrapper.text()).to.equal("てすとぉ。pic.twitter.com/test");
+      expect(wrapper.text()).toBe("てすとぉ。pic.twitter.com/test");
     });
   });
 });

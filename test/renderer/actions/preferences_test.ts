@@ -1,4 +1,3 @@
-import {expect} from "chai";
 import reducer, {updatePreferences} from "@actions/preferences";
 import adapters from "@source/renderer/libraries/adapter";
 import {builders} from "@test/helper";
@@ -10,7 +9,7 @@ describe("@renderer/actions/preferences", () => {
       const preference = builders.buildPreference();
       const preferences = adapters.preferences.addMany(adapters.preferences.getInitialState(), [preference]);
 
-      expect(reducer(state, updatePreferences(preferences))).to.deep.equal(preferences);
+      expect(reducer(state, updatePreferences(preferences))).toEqual(preferences);
     });
   });
 });

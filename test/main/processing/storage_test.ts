@@ -1,5 +1,3 @@
-import {expect, use} from "chai";
-import sinon from "sinon";
 import {build} from "@source/main/processing/storage";
 
 const HOME = {
@@ -37,10 +35,10 @@ describe("defaults", () => {
   const storage = build(`${__dirname}/storage/defaults`);
 
   it("screen", () => {
-    expect(storage.getScreenPreferences()).to.deep.equal([HOME, SEARCH, MENTIONS]);
+    expect(storage.getScreenPreferences()).toEqual([HOME, SEARCH, MENTIONS]);
   });
   it("mute", () => {
-    expect(storage.getMutePreference()).to.deep.equal({
+    expect(storage.getMutePreference()).toEqual({
       keywords: [],
       retweetYourself: false,
       withMedia: [],

@@ -1,4 +1,3 @@
-import {expect} from "chai";
 import {prepareState, reconfigure} from "@actions/miscellany";
 import {reload, reloadFocusedScreen, mountScreen, unmountScreen, searchTweets} from "@actions/miscellany";
 import {displayUserTimeline, displayConversation} from "@actions/miscellany";
@@ -9,7 +8,7 @@ import {builders} from "@test/helper";
 describe("@renderer/actions/miscellany", () => {
   describe(prepareState.toString(), () => {
     it("as usual", () => {
-      expect(prepareState()).to.deep.equal({
+      expect(prepareState()).toEqual({
         type: "prepareState",
         payload: undefined,
       });
@@ -17,7 +16,7 @@ describe("@renderer/actions/miscellany", () => {
   });
   describe(reconfigure.toString(), () => {
     it("as usual", () => {
-      expect(reconfigure()).to.deep.equal({
+      expect(reconfigure()).toEqual({
         type: "reconfigure",
         payload: undefined,
       });
@@ -28,7 +27,7 @@ describe("@renderer/actions/miscellany", () => {
     it("as usual", () => {
       const identity = faker.datatype.uuid();
 
-      expect(reload(identity, true)).to.deep.equal({
+      expect(reload(identity, true)).toEqual({
         type: "reload",
         payload: {
           identity,
@@ -42,7 +41,7 @@ describe("@renderer/actions/miscellany", () => {
     it("when silently", () => {
       const identity = faker.datatype.uuid();
 
-      expect(reload(identity, true, true)).to.deep.equal({
+      expect(reload(identity, true, true)).toEqual({
         type: "reload",
         payload: {
           identity,
@@ -56,7 +55,7 @@ describe("@renderer/actions/miscellany", () => {
   });
   describe(reloadFocusedScreen.toString(), () => {
     it("when force is true", () => {
-      expect(reloadFocusedScreen(true)).to.deep.equal({
+      expect(reloadFocusedScreen(true)).toEqual({
         type: "reloadFocusedScreen",
         payload: undefined,
         meta: {
@@ -66,7 +65,7 @@ describe("@renderer/actions/miscellany", () => {
       });
     });
     it("when force is false", () => {
-      expect(reloadFocusedScreen(false)).to.deep.equal({
+      expect(reloadFocusedScreen(false)).toEqual({
         type: "reloadFocusedScreen",
         payload: undefined,
         meta: {
@@ -80,7 +79,7 @@ describe("@renderer/actions/miscellany", () => {
     it("as usual", () => {
       const identity = faker.datatype.uuid();
 
-      expect(mountScreen(identity)).to.deep.equal({
+      expect(mountScreen(identity)).toEqual({
         type: "mountScreen",
         payload: {
           identity,
@@ -92,7 +91,7 @@ describe("@renderer/actions/miscellany", () => {
     it("as usual", () => {
       const identity = faker.datatype.uuid();
 
-      expect(unmountScreen(identity)).to.deep.equal({
+      expect(unmountScreen(identity)).toEqual({
         type: "unmountScreen",
         payload: {identity},
       });
@@ -100,7 +99,7 @@ describe("@renderer/actions/miscellany", () => {
   });
   describe(searchTweets.toString(), () => {
     it("as usual", () => {
-      expect(searchTweets("くえりー")).to.deep.equal({
+      expect(searchTweets("くえりー")).toEqual({
         type: "searchTweets",
         payload: {
           identity: "search",
@@ -114,7 +113,7 @@ describe("@renderer/actions/miscellany", () => {
     it("as usual", () => {
       const name = faker.animal.cat();
 
-      expect(displayUserTimeline(name)).to.deep.equal({
+      expect(displayUserTimeline(name)).toEqual({
         type: "displayUserTimeline",
         payload: {name},
       });
@@ -124,7 +123,7 @@ describe("@renderer/actions/miscellany", () => {
     it("as usual", () => {
       const tweet = builders.buildTweet();
 
-      expect(displayConversation(tweet)).to.deep.equal({
+      expect(displayConversation(tweet)).toEqual({
         type: "displayConversation",
         payload: {
           tweet: tweet,
@@ -137,7 +136,7 @@ describe("@renderer/actions/miscellany", () => {
     it("when specify options", () => {
       const tweet = builders.buildTweet();
 
-      expect(displayConversation(tweet, {yourself: true})).to.deep.equal({
+      expect(displayConversation(tweet, {yourself: true})).toEqual({
         type: "displayConversation",
         payload: {
           tweet: tweet,
@@ -153,7 +152,7 @@ describe("@renderer/actions/miscellany", () => {
     it("as usual", () => {
       const tweet = builders.buildTweet();
 
-      expect(focusTweet(tweet)).to.deep.equal({
+      expect(focusTweet(tweet)).toEqual({
         type: "focusTweet",
         payload: {tweet},
       });
@@ -161,7 +160,7 @@ describe("@renderer/actions/miscellany", () => {
   });
   describe(focusLatestTweet.toString(), () => {
     it("as usual", () => {
-      expect(focusLatestTweet()).to.deep.equal({
+      expect(focusLatestTweet()).toEqual({
         type: "focusLatestTweet",
         payload: undefined,
       });
@@ -169,7 +168,7 @@ describe("@renderer/actions/miscellany", () => {
   });
   describe(focusUnreadTweet.toString(), () => {
     it("as usual", () => {
-      expect(focusUnreadTweet()).to.deep.equal({
+      expect(focusUnreadTweet()).toEqual({
         type: "focusUnreadTweet",
         payload: undefined,
       });
@@ -177,14 +176,14 @@ describe("@renderer/actions/miscellany", () => {
   });
   describe(alarm.toString(), () => {
     it("when message is string", () => {
-      expect(alarm("えらー")).to.deep.equal({
+      expect(alarm("えらー")).toEqual({
         type: "alarm",
         payload: {message: "えらー"},
       });
     });
     it("when message is error", () => {
       const error = new Error("えらー");
-      expect(alarm("えらー")).to.deep.equal({
+      expect(alarm("えらー")).toEqual({
         type: "alarm",
         payload: {message: "えらー"},
       });

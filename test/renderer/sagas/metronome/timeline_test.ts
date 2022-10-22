@@ -1,5 +1,4 @@
 import {expectSaga} from "redux-saga-test-plan";
-import {expect} from "chai";
 import {initialize, order} from "../../../../src/renderer/sagas/metronome/timeline.ts";
 
 describe("retrieveTimeline", () => {
@@ -25,8 +24,8 @@ describe("retrieveTimeline", () => {
           },
           {
             spawn(effect: any, next: any) {
-              expect(effect.fn.name).to.equal("run");
-              expect(effect.args).to.deep.equal([identity, 120 * 1000]);
+              expect(effect.fn.name).toBe("run");
+              expect(effect.args).toEqual([identity, 120 * 1000]);
             },
           },
         ])
@@ -45,9 +44,9 @@ describe("retrieveTimeline", () => {
         .then((result) => {
           const {effects} = result;
 
-          expect(effects.put).to.be.undefined;
-          expect(effects.call).to.have.lengthOf(1);
-          expect(effects.fork).to.have.lengthOf(1);
+          expect(effects.put).toBeUndefined();
+          expect(effects.call).toHaveLength(1);
+          expect(effects.fork).toHaveLength(1);
         });
     });
     it("when no cache", () => {
@@ -71,8 +70,8 @@ describe("retrieveTimeline", () => {
           },
           {
             spawn(effect: any, next: any) {
-              expect(effect.fn.name).to.equal("run");
-              expect(effect.args).to.deep.equal([identity, 120 * 1000]);
+              expect(effect.fn.name).toBe("run");
+              expect(effect.args).toEqual([identity, 120 * 1000]);
             },
           },
         ])
@@ -87,9 +86,9 @@ describe("retrieveTimeline", () => {
         .then((result) => {
           const {effects} = result;
 
-          expect(effects.put).to.be.undefined;
-          expect(effects.call).to.have.lengthOf(1);
-          expect(effects.fork).to.have.lengthOf(1);
+          expect(effects.put).toBeUndefined();
+          expect(effects.call).toHaveLength(1);
+          expect(effects.fork).toHaveLength(1);
         });
     });
   });
@@ -119,11 +118,11 @@ describe("retrieveTimeline", () => {
             call(effect: any, next: any) {
               switch (effect.fn.name) {
                 case "retrieveTimeline":
-                  expect(effect.args[0]).to.equal("old_1");
+                  expect(effect.args[0]).toBe("old_1");
                   return [{id_str: "new_1"}, {id_str: "new_2"}];
                 case "setTweets":
-                  expect(effect.args[0]).to.equal(identity);
-                  expect(effect.args[1]).to.deep.equal([{id_str: "new_1"}, {id_str: "new_2"}, {id_str: "old_1"}]);
+                  expect(effect.args[0]).toBe(identity);
+                  expect(effect.args[1]).toEqual([{id_str: "new_1"}, {id_str: "new_2"}, {id_str: "old_1"}]);
                   return;
                 default:
                   expect.fail(effect.fn.name);
@@ -142,8 +141,8 @@ describe("retrieveTimeline", () => {
         .then((result) => {
           const {effects} = result;
 
-          expect(effects.put).to.be.undefined;
-          expect(effects.call).to.have.lengthOf(2);
+          expect(effects.put).toBeUndefined();
+          expect(effects.call).toHaveLength(2);
         });
     });
 
@@ -171,11 +170,11 @@ describe("retrieveTimeline", () => {
             call(effect: any, next: any) {
               switch (effect.fn.name) {
                 case "retrieveTimeline":
-                  expect(effect.args[0]).to.equal(undefined);
+                  expect(effect.args[0]).toBeUndefined();
                   return [{id_str: "new_1"}, {id_str: "new_2"}];
                 case "setTweets":
-                  expect(effect.args[0]).to.equal(identity);
-                  expect(effect.args[1]).to.deep.equal([{id_str: "new_1"}, {id_str: "new_2"}]);
+                  expect(effect.args[0]).toBe(identity);
+                  expect(effect.args[1]).toEqual([{id_str: "new_1"}, {id_str: "new_2"}]);
                   return;
                 default:
                   expect.fail(effect.fn.name);
@@ -194,8 +193,8 @@ describe("retrieveTimeline", () => {
         .then((result) => {
           const {effects} = result;
 
-          expect(effects.put).to.be.undefined;
-          expect(effects.call).to.have.lengthOf(2);
+          expect(effects.put).toBeUndefined();
+          expect(effects.call).toHaveLength(2);
         });
     });
 
@@ -223,7 +222,7 @@ describe("retrieveTimeline", () => {
             call(effect: any, next: any) {
               switch (effect.fn.name) {
                 case "retrieveTimeline":
-                  expect(effect.args[0]).to.equal("old_1");
+                  expect(effect.args[0]).toBe("old_1");
                   return [];
                 default:
                   expect.fail(effect.fn.name);
@@ -238,8 +237,8 @@ describe("retrieveTimeline", () => {
         .then((result) => {
           const {effects} = result;
 
-          expect(effects.put).to.be.undefined;
-          expect(effects.call).to.have.lengthOf(1);
+          expect(effects.put).toBeUndefined();
+          expect(effects.call).toHaveLength(1);
         });
     });
   });
