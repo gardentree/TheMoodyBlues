@@ -7,7 +7,7 @@ describe("retrieveTimeline", () => {
     it("when have cache", () => {
       const identity = "home";
 
-      const preference = builders.buildScreenPreference({
+      const preference = builders.state.buildScreenPreference({
         identity: identity,
       });
 
@@ -93,15 +93,15 @@ describe("retrieveTimeline", () => {
     it("when reload", () => {
       const identity = "home";
 
-      const old1 = builders.buildTweet({id_str: "old_1"});
-      const new1 = builders.buildTweet({id_str: "new_1"});
-      const new2 = builders.buildTweet({id_str: "new_2"});
+      const old1 = builders.twitter.buildTweet({id_str: "old_1"});
+      const new1 = builders.twitter.buildTweet({id_str: "new_1"});
+      const new2 = builders.twitter.buildTweet({id_str: "new_2"});
 
-      const screen = builders.buildScreen({
+      const screen = builders.state.buildScreen({
         tweets: [old1],
         lastReadID: "0",
       });
-      const preference = builders.buildPreference({
+      const preference = builders.state.buildPreference({
         identity: "home",
       });
 
@@ -142,9 +142,9 @@ describe("retrieveTimeline", () => {
       const identity = "home";
       const title = "Home";
 
-      const old1 = builders.buildTweet({id_str: "old_1"});
-      const new1 = builders.buildTweet({id_str: "new_1"});
-      const new2 = builders.buildTweet({id_str: "new_2"});
+      const old1 = builders.twitter.buildTweet({id_str: "old_1"});
+      const new1 = builders.twitter.buildTweet({id_str: "new_1"});
+      const new2 = builders.twitter.buildTweet({id_str: "new_2"});
 
       const screen = {
         tweets: [old1],

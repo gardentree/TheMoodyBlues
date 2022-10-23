@@ -121,12 +121,16 @@ function buildEntities(specifics?: RecursivePartial<Twitter.Entities>): Twitter.
   );
 }
 export const builders = {
-  buildScreen,
-  buildPreference,
-  buildScreenPreference,
-  buildMutePreference,
-  buildTweet,
-  buildEntities,
+  state: {
+    buildScreen,
+    buildPreference,
+    buildScreenPreference,
+    buildMutePreference,
+  },
+  twitter: {
+    buildTweet,
+    buildEntities,
+  },
 };
 
 export const recursiveObjectContaining = (source: unknown) => {

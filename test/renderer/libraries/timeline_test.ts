@@ -1,7 +1,7 @@
 import {mixPreferences} from "@libraries/screen";
 import {builders} from "@test/helper";
 
-const HOME = builders.buildScreenPreference({
+const HOME = builders.state.buildScreenPreference({
   identity: "home",
   title: "Home",
   component: "Timeline",
@@ -10,7 +10,7 @@ const HOME = builders.buildScreenPreference({
   mute: true,
   growl: true,
 });
-const SEARCH = builders.buildScreenPreference({
+const SEARCH = builders.state.buildScreenPreference({
   identity: "search",
   title: "Search",
   component: "Search",
@@ -19,7 +19,7 @@ const SEARCH = builders.buildScreenPreference({
   mute: false,
   growl: true,
 });
-const MENTIONS = builders.buildScreenPreference({
+const MENTIONS = builders.state.buildScreenPreference({
   identity: "mentions",
   title: "Mentions",
   component: "Timeline",
@@ -28,7 +28,7 @@ const MENTIONS = builders.buildScreenPreference({
   mute: false,
   growl: true,
 });
-const LIST = builders.buildScreenPreference({
+const LIST = builders.state.buildScreenPreference({
   component: "Timeline",
   interval: 120,
   way: "retrieveTimelineOfList",

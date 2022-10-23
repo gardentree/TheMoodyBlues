@@ -5,7 +5,7 @@ if (typeof global.TextEncoder === "undefined") {
   global.TextEncoder = nodeUtility.TextEncoder;
 }
 
-const mutePreference = builders.buildMutePreference();
+const mutePreference = builders.state.buildMutePreference();
 
 const facade: TMB.Facade = {
   agent: {

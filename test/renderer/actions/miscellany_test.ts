@@ -121,7 +121,7 @@ describe("@renderer/actions/miscellany", () => {
   });
   describe(displayConversation.toString(), () => {
     it("as usual", () => {
-      const tweet = builders.buildTweet();
+      const tweet = builders.twitter.buildTweet();
 
       expect(displayConversation(tweet)).toEqual({
         type: "displayConversation",
@@ -134,7 +134,7 @@ describe("@renderer/actions/miscellany", () => {
       });
     });
     it("when specify options", () => {
-      const tweet = builders.buildTweet();
+      const tweet = builders.twitter.buildTweet();
 
       expect(displayConversation(tweet, {yourself: true})).toEqual({
         type: "displayConversation",
@@ -150,7 +150,7 @@ describe("@renderer/actions/miscellany", () => {
 
   describe(focusTweet.toString(), () => {
     it("as usual", () => {
-      const tweet = builders.buildTweet();
+      const tweet = builders.twitter.buildTweet();
 
       expect(focusTweet(tweet)).toEqual({
         type: "focusTweet",

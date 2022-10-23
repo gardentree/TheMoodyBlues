@@ -5,10 +5,10 @@ import {builders, fail} from "@test/helper";
 
 describe(reorder.name, () => {
   it("reload", () => {
-    const screen = builders.buildScreen({identity: "search", options: {query: "くえりー"}});
+    const screen = builders.state.buildScreen({identity: "search", options: {query: "くえりー"}});
     const screens = adapters.screens.addOne(adapters.screens.getInitialState(), screen);
 
-    const preference = builders.buildPreference({identity: "search"});
+    const preference = builders.state.buildPreference({identity: "search"});
     const preferences = adapters.preferences.addOne(adapters.preferences.getInitialState(), preference);
 
     return expectSaga(reorder, {
@@ -58,10 +58,10 @@ describe(reorder.name, () => {
       });
   });
   it("reloadFocusedScreen", () => {
-    const screen = builders.buildScreen({identity: "search", options: {query: "くえりー"}});
+    const screen = builders.state.buildScreen({identity: "search", options: {query: "くえりー"}});
     const screens = adapters.screens.addOne(adapters.screens.getInitialState(), screen);
 
-    const preference = builders.buildPreference({identity: "search"});
+    const preference = builders.state.buildPreference({identity: "search"});
     const preferences = adapters.preferences.addOne(adapters.preferences.getInitialState(), preference);
 
     return expectSaga(reorderFocusedScreen as SagaType, {
@@ -112,14 +112,14 @@ describe(reorder.name, () => {
 });
 
 describe(searchTweets.name, () => {
-  const screen = builders.buildScreen({
+  const screen = builders.state.buildScreen({
     identity: "search",
     options: {
       query: "くえりー",
     },
   });
   const screens = adapters.screens.addMany(adapters.screens.getInitialState(), [screen]);
-  const preference = builders.buildPreference({
+  const preference = builders.state.buildPreference({
     identity: "search",
   });
 

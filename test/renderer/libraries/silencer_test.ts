@@ -2,7 +2,7 @@ import {silence, test} from "@libraries/silencer";
 import {builders} from "@test/helper";
 import * as fs from "fs";
 
-const tweetTemplate: Twitter.Tweet = builders.buildTweet({
+const tweetTemplate: Twitter.Tweet = builders.twitter.buildTweet({
   full_text: "ポケモンGO",
   entities: {
     urls: [{expanded_url: "https://www.pokemongo.jp/"}],
@@ -11,7 +11,7 @@ const tweetTemplate: Twitter.Tweet = builders.buildTweet({
     id_str: "gian",
   },
 });
-const preferenceTemplate: TMB.MutePreference = builders.buildMutePreference({
+const preferenceTemplate: TMB.MutePreference = builders.state.buildMutePreference({
   keywords: [],
   retweetYourself: false,
   withMedia: [],

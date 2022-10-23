@@ -135,7 +135,7 @@ describe("retrieveConversation", () => {
     });
 
     const agent = incarnate({get: fail}, {get: callback});
-    const tweet = builders.buildTweet({id_str: "1"});
+    const tweet = builders.twitter.buildTweet({id_str: "1"});
 
     return expect(agent.retrieveConversation(tweet)).resolves.toHaveLength(2);
   });
@@ -157,7 +157,7 @@ describe("retrieveConversation", () => {
     });
 
     const agent = incarnate({get: fail}, {get: callback});
-    const tweet = builders.buildTweet({id_str: "1"});
+    const tweet = builders.twitter.buildTweet({id_str: "1"});
 
     return expect(agent.retrieveConversation(tweet)).resolves.toHaveLength(1);
   });
@@ -213,7 +213,7 @@ describe("retrieveConversation", () => {
     });
 
     const agent = incarnate({get: fail}, {get: callback});
-    const tweet = builders.buildTweet({id_str: "1"});
+    const tweet = builders.twitter.buildTweet({id_str: "1"});
 
     return expect(agent.retrieveConversation(tweet)).rejects.toThrowError(JSON.stringify([{title: "Not Found Error"}]));
   });
@@ -263,7 +263,7 @@ describe("retrieveConversation", () => {
 
     const agent = incarnate({get: fail}, {get: callback});
 
-    const criterion = builders.buildTweet({id_str: "1296887316556980230"});
+    const criterion = builders.twitter.buildTweet({id_str: "1296887316556980230"});
     return expect(agent.retrieveConversation(criterion)).resolves.toEqual(degrade(loadJSON("./v2/reply.json")));
   });
 
@@ -312,7 +312,7 @@ describe("retrieveConversation", () => {
 
     const agent = incarnate({get: fail}, {get: callback});
 
-    const criterion = builders.buildTweet({id_str: "1296887316556980230"});
+    const criterion = builders.twitter.buildTweet({id_str: "1296887316556980230"});
     return expect(agent.retrieveConversation(criterion)).resolves.toEqual(degrade(loadJSON("./v2/reply.json")));
   });
 });

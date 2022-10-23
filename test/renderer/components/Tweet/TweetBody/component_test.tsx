@@ -10,10 +10,10 @@ configure({adapter: new Adapter()});
 describe("<TweetBody />", () => {
   describe("with mention", () => {
     it("expand", () => {
-      const json = builders.buildTweet({
+      const json = builders.twitter.buildTweet({
         full_text: "@foo てすとぉ",
         display_text_range: [5, 9],
-        entities: builders.buildEntities({
+        entities: builders.twitter.buildEntities({
           user_mentions: [
             {
               indices: [0, 4],
@@ -29,7 +29,7 @@ describe("<TweetBody />", () => {
   });
 
   describe("with indices", () => {
-    const json = builders.buildTweet({
+    const json = builders.twitter.buildTweet({
       full_text: "てすとぉ https://t.co/test",
       display_text_range: [0, 4],
       entities: {
@@ -57,7 +57,7 @@ describe("<TweetBody />", () => {
   });
 
   describe("with quoted_status_permalink", () => {
-    const json = builders.buildTweet({
+    const json = builders.twitter.buildTweet({
       full_text: "てすとぉ。https://t.co/UVKnxHf1IJ",
       display_text_range: [0, 28],
       entities: {
@@ -90,7 +90,7 @@ describe("<TweetBody />", () => {
   });
 
   describe("with indices and quoted_status_permalink", () => {
-    const json = builders.buildTweet({
+    const json = builders.twitter.buildTweet({
       full_text: "てすとぉ https://t.co/test",
       display_text_range: [0, 4],
       entities: {
@@ -124,7 +124,7 @@ describe("<TweetBody />", () => {
   });
 
   describe("media", () => {
-    const json = builders.buildTweet({
+    const json = builders.twitter.buildTweet({
       full_text: "てすとぉ。 https://t.co/test",
       display_text_range: [0, 5],
       entities: {

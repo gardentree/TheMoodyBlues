@@ -6,7 +6,7 @@ describe("search", () => {
   describe("#initialize", () => {
     const identity = "search";
 
-    const preference = builders.buildScreenPreference({
+    const preference = builders.state.buildScreenPreference({
       identity: identity,
     });
 
@@ -35,18 +35,18 @@ describe("search", () => {
     it("normal", () => {
       const identity = "search";
 
-      const old1 = builders.buildTweet({id_str: "old_1"});
-      const new1 = builders.buildTweet({id_str: "new_1"});
-      const new2 = builders.buildTweet({id_str: "new_2"});
+      const old1 = builders.twitter.buildTweet({id_str: "old_1"});
+      const new1 = builders.twitter.buildTweet({id_str: "new_1"});
+      const new2 = builders.twitter.buildTweet({id_str: "new_2"});
 
-      const screen = builders.buildScreen({
+      const screen = builders.state.buildScreen({
         tweets: [old1],
         lastReadID: "0",
         options: {
           query: "くえりー",
         },
       });
-      const preference = builders.buildPreference({
+      const preference = builders.state.buildPreference({
         identity: identity,
       });
 
@@ -86,14 +86,14 @@ describe("search", () => {
     it("query is blank", () => {
       const identity = "search";
 
-      const screen = builders.buildScreen({
-        tweets: [builders.buildTweet({id_str: "old_1"})],
+      const screen = builders.state.buildScreen({
+        tweets: [builders.twitter.buildTweet({id_str: "old_1"})],
         lastReadID: "0",
         options: {
           query: "",
         },
       });
-      const preference = builders.buildPreference({
+      const preference = builders.state.buildPreference({
         identity: identity,
       });
 
