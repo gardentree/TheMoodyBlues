@@ -11,12 +11,7 @@ declare namespace Twitter {
       media: Media[];
     };
     display_text_range: number[];
-    entities: {
-      user_mentions: Mention[];
-      urls: URL[];
-      hashtags: Hashtag[];
-      media?: Media[];
-    };
+    entities: Entities;
     since_id?: string;
     created_at: string;
     quoted_status_permalink?: URL;
@@ -29,6 +24,13 @@ declare namespace Twitter {
     id_str: UserID;
     profile_image_url_https: string;
     screen_name: ScreenName;
+  }
+
+  interface Entities {
+    user_mentions: Twitter.Mention[];
+    urls: Twitter.URL[];
+    hashtags: Twitter.Hashtag[];
+    media?: Twitter.Media[];
   }
   interface URL {
     url: string;

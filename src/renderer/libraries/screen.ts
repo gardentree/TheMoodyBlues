@@ -37,7 +37,7 @@ export function mixPreferences(actives: TMB.ScreenPreference[], lists: Twitter.L
   screens.push(Object.assign({}, HOME, activeMap.get("home")));
   for (const list of lists) {
     const identity = `list_${list.id_str}`;
-    screens.push(Object.assign({}, LIST, {identity: identity, title: list.name, parameters: [list.id_str]}, activeMap.get(identity)));
+    screens.push(Object.assign({active: true}, LIST, {identity: identity, title: list.name, parameters: [list.id_str]}, activeMap.get(identity)));
   }
   screens.push(Object.assign({}, SEARCH, activeMap.get("search")));
   screens.push(Object.assign({}, MENTIONS, activeMap.get("mentions")));

@@ -1,7 +1,8 @@
 import {silence, test} from "@libraries/silencer";
+import {builders} from "@test/helper";
 import * as fs from "fs";
 
-const tweetTemplate: Twitter.Tweet = {
+const tweetTemplate: Twitter.Tweet = builders.buildTweet({
   full_text: "ポケモンGO",
   entities: {
     urls: [{expanded_url: "https://www.pokemongo.jp/"}],
@@ -9,12 +10,12 @@ const tweetTemplate: Twitter.Tweet = {
   user: {
     id_str: "gian",
   },
-};
-const preferenceTemplate: TMB.MutePreference = {
+});
+const preferenceTemplate: TMB.MutePreference = builders.buildMutePreference({
   keywords: [],
   retweetYourself: false,
   withMedia: [],
-};
+});
 
 describe("silence", () => {
   describe("withMedia", () => {
@@ -102,12 +103,12 @@ describe("test", () => {
       });
 
       it("when retweet", () => {
-        const tweet = JSON.parse(fs.readFileSync("./test/renderer/libraries/silencer/retweet.json"));
+        const tweet = JSON.parse(fs.readFileSync("./test/renderer/libraries/silencer/retweet.json").toString());
 
         expect(test(tweet, ["here"])).not.toBeNull();
       });
       it("when quote tweet", () => {
-        const tweet = JSON.parse(fs.readFileSync("./test/renderer/libraries/silencer/quote.json"));
+        const tweet = JSON.parse(fs.readFileSync("./test/renderer/libraries/silencer/quote.json").toString());
 
         expect(test(tweet, ["Friendly"])).not.toBeNull();
       });

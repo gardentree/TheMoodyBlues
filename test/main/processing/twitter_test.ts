@@ -4,33 +4,41 @@ import {incarnate} from "@source/main/processing/twitter";
 import {retry} from "@source/main/processing/twitter/utility";
 import {degrade, degradeDate} from "@source/main/processing/twitter/degrader";
 import {parseElements} from "@source/renderer/libraries/twitter";
-import {recursiveObjectContaining} from "@test/helper";
+import {builders, recursiveObjectContaining, fail} from "@test/helper";
 
 function loadJSON(path: string) {
   return JSON.parse(fs.readFileSync(`./test/main/processing/${path}`).toString());
 }
-function fake(elements) {
-  const data = [];
-  const users = [];
 
-  function duel(specified, generated) {
+function fake(elements: Partial<Twitter2.Tweet>[]): RecursivePartial<Twitter2.Response> {
+  const data: Partial<Twitter2.Tweet>[] = [];
+  const users: Partial<Twitter2.User>[] = [];
+
+  function duel(specified: string | undefined, generated: () => string): string {
     return specified !== undefined ? specified : generated();
+  }
+  function fakeNumberString() {
+    return faker.datatype.number().toString();
+  }
+  function fakeDateString() {
+    return faker.date.past().toString();
   }
 
   for (const element of elements) {
-    const author_id = duel(element.author_id, faker.datatype.number).toString();
+    const author_id = duel(element.author_id, () => {
+      return faker.datatype.number().toString();
+    });
 
     data.push({
-      id: duel(element.id, faker.datatype.number).toString(),
+      id: duel(element.id, fakeNumberString),
       text: duel(element.text, faker.random.words),
-      conversation_id: duel(element.conversation_id, faker.datatype.number).toString(),
-      created_at: duel(element.created_at, faker.date.past),
+      conversation_id: duel(element.conversation_id, fakeNumberString),
+      created_at: duel(element.created_at, fakeDateString),
       author_id,
     });
 
     users.push({
       id: author_id,
-      username: duel(element.username, faker.internet.userName),
     });
   }
 
@@ -50,7 +58,7 @@ describe("retrieveTimeline", () => {
     const callback = jest.fn();
     callback.mockReturnValue(Promise.resolve([{id: 1}]));
 
-    const agent = incarnate({get: callback});
+    const agent = incarnate({get: callback}, {get: fail});
 
     return expect(agent.retrieveTimeline(null)).resolves.toEqual([{id: 1}]);
   });
@@ -69,9 +77,9 @@ describe("search", () => {
       })
     );
 
-    const agent = incarnate({get: callback});
+    const agent = incarnate({get: callback}, {get: fail});
 
-    return expect(agent.search("くえりー")).resolves.toEqual([{id: 1}]);
+    return expect(agent.search("くえりー", null)).resolves.toEqual([{id: 1}]);
   });
 });
 
@@ -86,7 +94,7 @@ describe("retrieveTimelineOfUser", () => {
       ])
     );
 
-    const agent = incarnate({get: callback});
+    const agent = incarnate({get: callback}, {get: fail});
 
     return expect(agent.retrieveTimelineOfUser("gian")).resolves.toEqual([{id: 1}]);
   });
@@ -103,7 +111,7 @@ describe("retrieveMentions", () => {
       ])
     );
 
-    const agent = incarnate({get: callback});
+    const agent = incarnate({get: callback}, {get: fail});
 
     return expect(agent.retrieveMentions(null)).resolves.toEqual([{id: 1}]);
   });
@@ -126,9 +134,10 @@ describe("retrieveConversation", () => {
       return Promise.reject(endpoint);
     });
 
-    const agent = incarnate(null, {get: callback});
+    const agent = incarnate({get: fail}, {get: callback});
+    const tweet = builders.buildTweet({id_str: "1"});
 
-    return expect(agent.retrieveConversation({id_str: "1"})).resolves.toHaveLength(2);
+    return expect(agent.retrieveConversation(tweet)).resolves.toHaveLength(2);
   });
 
   it("when conversation is empty", () => {
@@ -147,9 +156,10 @@ describe("retrieveConversation", () => {
       return Promise.reject(endpoint);
     });
 
-    const agent = incarnate(null, {get: callback});
+    const agent = incarnate({get: fail}, {get: callback});
+    const tweet = builders.buildTweet({id_str: "1"});
 
-    return expect(agent.retrieveConversation({id_str: "1"})).resolves.toHaveLength(1);
+    return expect(agent.retrieveConversation(tweet)).resolves.toHaveLength(1);
   });
 
   it("when result does not include source tweet and replied tweet", () => {
@@ -163,7 +173,7 @@ describe("retrieveConversation", () => {
         id: "1296887091901718529",
       },
     ]);
-    const replied1 = degrade(replied2);
+    const replied1 = degrade(replied2 as Twitter2.Response);
 
     const results2 = fake([
       {
@@ -173,7 +183,7 @@ describe("retrieveConversation", () => {
         conversation_id: "1296887091901718529",
       },
     ]);
-    const results1 = degrade(results2);
+    const results1 = degrade(results2 as Twitter2.Response);
 
     callback.mockImplementation((endpoint: string) => {
       switch (endpoint) {
@@ -187,9 +197,9 @@ describe("retrieveConversation", () => {
       return Promise.reject(endpoint);
     });
 
-    const agent = incarnate(null, {get: callback});
+    const agent = incarnate({get: fail}, {get: callback});
 
-    return expect(agent.retrieveConversation(source1)).resolves.toEqual([].concat(replied1, source1, results1.reverse()));
+    return expect(agent.retrieveConversation(source1)).resolves.toEqual(([] as Twitter.Tweet[]).concat(replied1, source1, results1.reverse()));
   });
 
   it("when cannot find original", () => {
@@ -202,9 +212,10 @@ describe("retrieveConversation", () => {
       return Promise.reject(endpoint);
     });
 
-    const agent = incarnate(null, {get: callback});
+    const agent = incarnate({get: fail}, {get: callback});
+    const tweet = builders.buildTweet({id_str: "1"});
 
-    return expect(agent.retrieveConversation({id_str: "1"})).rejects.toThrowError(JSON.stringify([{title: "Not Found Error"}]));
+    return expect(agent.retrieveConversation(tweet)).rejects.toThrowError(JSON.stringify([{title: "Not Found Error"}]));
   });
 
   it("when replied tweets is deleted", () => {
@@ -247,11 +258,12 @@ describe("retrieveConversation", () => {
             })
           );
       }
+      return Promise.reject(endpoint);
     });
 
-    const agent = incarnate(null, {get: callback});
+    const agent = incarnate({get: fail}, {get: callback});
 
-    const criterion = {id_str: "1296887316556980230"};
+    const criterion = builders.buildTweet({id_str: "1296887316556980230"});
     return expect(agent.retrieveConversation(criterion)).resolves.toEqual(degrade(loadJSON("./v2/reply.json")));
   });
 
@@ -298,9 +310,9 @@ describe("retrieveConversation", () => {
       return Promise.reject(endpoint);
     });
 
-    const agent = incarnate(null, {get: callback});
+    const agent = incarnate({get: fail}, {get: callback});
 
-    const criterion = {id_str: "1296887316556980230"};
+    const criterion = builders.buildTweet({id_str: "1296887316556980230"});
     return expect(agent.retrieveConversation(criterion)).resolves.toEqual(degrade(loadJSON("./v2/reply.json")));
   });
 });
@@ -323,7 +335,7 @@ describe("lists", () => {
       );
     });
 
-    const agent = incarnate({get: callback});
+    const agent = incarnate({get: callback}, {get: fail});
 
     return expect(agent.lists()).resolves.toEqual([{id: 2}, {id: 1}]);
   });
@@ -340,9 +352,9 @@ describe("retrieveTimelineOfList", () => {
       ])
     );
 
-    const agent = incarnate({get: callback});
+    const agent = incarnate({get: callback}, {get: fail});
 
-    return expect(agent.retrieveTimelineOfList("news")).resolves.toEqual([{id: 1}]);
+    return expect(agent.retrieveTimelineOfList("news", null)).resolves.toEqual([{id: 1}]);
   });
 });
 
@@ -361,7 +373,7 @@ describe("degrade", () => {
 
       expect(loadJSON(`./v1/${key}.json`)).toEqual(recursiveObjectContaining(actual));
 
-      parseElements(actual);
+      parseElements(actual, false);
     });
   }
 });

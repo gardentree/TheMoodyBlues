@@ -1,29 +1,25 @@
 import {expectSaga} from "redux-saga-test-plan";
-import {initialize, order} from "../../../../src/renderer/sagas/metronome/timeline.ts";
+import {initialize, order} from "@source/renderer/sagas/metronome/timeline";
+import {builders, fail} from "@test/helper";
 
 describe("retrieveTimeline", () => {
   describe("#initialize", () => {
     it("when have cache", () => {
       const identity = "home";
-      const title = "Home";
 
-      const preference = {
+      const preference = builders.buildScreenPreference({
         identity: identity,
-        title: title,
-        component: "Timeline",
-        interval: 120,
-        way: "retrieveTimeline",
-      };
+      });
 
-      return expectSaga(initialize, identity, preference)
+      return expectSaga(initialize as SagaType, identity, preference)
         .provide([
           {
-            call(effect: any, next: any) {
+            call(effect) {
               return [{id_str: "1"}];
             },
           },
           {
-            spawn(effect: any, next: any) {
+            spawn(effect, next) {
               expect(effect.fn.name).toBe("run");
               expect(effect.args).toEqual([identity, 120 * 1000]);
             },
@@ -61,15 +57,15 @@ describe("retrieveTimeline", () => {
         way: "retrieveTimeline",
       };
 
-      return expectSaga(initialize, identity, preference)
+      return expectSaga(initialize as SagaType, identity, preference)
         .provide([
           {
-            call(effect: any, next: any) {
+            call(effect, next) {
               return [];
             },
           },
           {
-            spawn(effect: any, next: any) {
+            spawn(effect, next) {
               expect(effect.fn.name).toBe("run");
               expect(effect.args).toEqual([identity, 120 * 1000]);
             },
@@ -96,44 +92,40 @@ describe("retrieveTimeline", () => {
   describe("#order", () => {
     it("when reload", () => {
       const identity = "home";
-      const title = "Home";
 
-      const screen = {
-        tweets: [{id_str: "old_1"}],
-        lastReadID: 0,
-      };
-      const preference = {
-        screen: {
-          identity: "home",
-          title: title,
-          component: "Timeline",
-          interval: 120,
-          way: "retrieveTimeline",
-        },
-      };
+      const old1 = builders.buildTweet({id_str: "old_1"});
+      const new1 = builders.buildTweet({id_str: "new_1"});
+      const new2 = builders.buildTweet({id_str: "new_2"});
 
-      return expectSaga(order, identity, screen, preference, false)
+      const screen = builders.buildScreen({
+        tweets: [old1],
+        lastReadID: "0",
+      });
+      const preference = builders.buildPreference({
+        identity: "home",
+      });
+
+      return expectSaga(order as SagaType, identity, screen, preference, false)
         .provide([
           {
-            call(effect: any, next: any) {
+            call(effect, next) {
               switch (effect.fn.name) {
                 case "retrieveTimeline":
                   expect(effect.args[0]).toBe("old_1");
-                  return [{id_str: "new_1"}, {id_str: "new_2"}];
+                  return [new1, new2];
                 case "setTweets":
                   expect(effect.args[0]).toBe(identity);
-                  expect(effect.args[1]).toEqual([{id_str: "new_1"}, {id_str: "new_2"}, {id_str: "old_1"}]);
+                  expect(effect.args[1]).toEqual([new1, new2, old1]);
                   return;
                 default:
-                  expect.fail(effect.fn.name);
-                  return;
+                  fail(effect.fn.name);
               }
             },
           },
         ])
         .put({
           type: "screens/updateTweets",
-          payload: {identity, tweets: [{id_str: "new_1"}, {id_str: "new_2"}, {id_str: "old_1"}]},
+          payload: {identity, tweets: [new1, new2, old1]},
         })
         .put({type: `${identity}_STOP_TIMER`})
         .put({type: `${identity}_START_TIMER`})
@@ -150,8 +142,12 @@ describe("retrieveTimeline", () => {
       const identity = "home";
       const title = "Home";
 
+      const old1 = builders.buildTweet({id_str: "old_1"});
+      const new1 = builders.buildTweet({id_str: "new_1"});
+      const new2 = builders.buildTweet({id_str: "new_2"});
+
       const screen = {
-        tweets: [{id_str: "old_1"}],
+        tweets: [old1],
         lastReadID: 0,
       };
       const preference = {
@@ -164,28 +160,27 @@ describe("retrieveTimeline", () => {
         },
       };
 
-      return expectSaga(order, identity, screen, preference, true)
+      return expectSaga(order as SagaType, identity, screen, preference, true)
         .provide([
           {
-            call(effect: any, next: any) {
+            call(effect, next) {
               switch (effect.fn.name) {
                 case "retrieveTimeline":
                   expect(effect.args[0]).toBeUndefined();
-                  return [{id_str: "new_1"}, {id_str: "new_2"}];
+                  return [new1, new2];
                 case "setTweets":
                   expect(effect.args[0]).toBe(identity);
-                  expect(effect.args[1]).toEqual([{id_str: "new_1"}, {id_str: "new_2"}]);
+                  expect(effect.args[1]).toEqual([new1, new2]);
                   return;
                 default:
-                  expect.fail(effect.fn.name);
-                  return;
+                  fail(effect.fn.name);
               }
             },
           },
         ])
         .put({
           type: "screens/updateTweets",
-          payload: {identity, tweets: [{id_str: "new_1"}, {id_str: "new_2"}]},
+          payload: {identity, tweets: [new1, new2]},
         })
         .put({type: `${identity}_STOP_TIMER`})
         .put({type: `${identity}_START_TIMER`})
@@ -216,17 +211,16 @@ describe("retrieveTimeline", () => {
         },
       };
 
-      return expectSaga(order, identity, screen, preference, false)
+      return expectSaga(order as SagaType, identity, screen, preference, false)
         .provide([
           {
-            call(effect: any, next: any) {
+            call(effect, next) {
               switch (effect.fn.name) {
                 case "retrieveTimeline":
                   expect(effect.args[0]).toBe("old_1");
                   return [];
                 default:
-                  expect.fail(effect.fn.name);
-                  return;
+                  fail(effect.fn.name);
               }
             },
           },

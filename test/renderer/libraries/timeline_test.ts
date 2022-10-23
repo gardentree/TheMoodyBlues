@@ -1,6 +1,7 @@
 import {mixPreferences} from "@libraries/screen";
+import {builders} from "@test/helper";
 
-const HOME = {
+const HOME = builders.buildScreenPreference({
   identity: "home",
   title: "Home",
   component: "Timeline",
@@ -8,8 +9,8 @@ const HOME = {
   way: "retrieveTimeline",
   mute: true,
   growl: true,
-};
-const SEARCH = {
+});
+const SEARCH = builders.buildScreenPreference({
   identity: "search",
   title: "Search",
   component: "Search",
@@ -17,8 +18,8 @@ const SEARCH = {
   way: "search",
   mute: false,
   growl: true,
-};
-const MENTIONS = {
+});
+const MENTIONS = builders.buildScreenPreference({
   identity: "mentions",
   title: "Mentions",
   component: "Timeline",
@@ -26,22 +27,20 @@ const MENTIONS = {
   way: "retrieveMentions",
   mute: false,
   growl: true,
-};
-const LIST = {
+});
+const LIST = builders.buildScreenPreference({
   component: "Timeline",
   interval: 120,
   way: "retrieveTimelineOfList",
   mute: true,
   growl: true,
-};
+});
 
 describe("mixPreferences", () => {
   it("same", () => {
     const actives = [HOME, SEARCH, MENTIONS];
 
-    expect(mixPreferences(actives, [])).toEqual(
-      [Object.assign({active: true}, HOME), Object.assign({active: true}, SEARCH), Object.assign({active: true}, MENTIONS)]
-    );
+    expect(mixPreferences(actives, [])).toEqual([Object.assign({active: true}, HOME), Object.assign({active: true}, SEARCH), Object.assign({active: true}, MENTIONS)]);
   });
 
   it("add list", () => {
@@ -54,16 +53,12 @@ describe("mixPreferences", () => {
           name: "News",
         },
       ])
-    ).toEqual(
-      [Object.assign({active: true}, HOME), Object.assign({}, LIST, {identity: "list_news", title: "News", parameters: ["news"]}), Object.assign({active: true}, SEARCH), Object.assign({active: true}, MENTIONS)]
-    );
+    ).toEqual([HOME, Object.assign({}, LIST, {identity: "list_news", title: "News", parameters: ["news"]}), SEARCH, MENTIONS]);
   });
 
   it("modify", () => {
     const actives = [Object.assign({}, HOME, {interval: 240}), SEARCH, MENTIONS];
 
-    expect(mixPreferences(actives, [])).toEqual(
-      [Object.assign({active: true}, HOME, {interval: 240}), Object.assign({active: true}, SEARCH), Object.assign({active: true}, MENTIONS)]
-    );
+    expect(mixPreferences(actives, [])).toEqual([Object.assign({active: true}, HOME, {interval: 240}), Object.assign({active: true}, SEARCH), Object.assign({active: true}, MENTIONS)]);
   });
 });

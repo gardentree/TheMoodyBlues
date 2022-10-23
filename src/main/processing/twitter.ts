@@ -4,7 +4,7 @@ import logger from "@libraries/logger";
 import {retry} from "./twitter/utility";
 import {degrade} from "./twitter/degrader";
 
-export function incarnate(client: TwitterClient, client2: TwitterClient2): TMB.TwitterAgent {
+export function incarnate(client: Pick<TwitterClient, "get">, client2: Pick<TwitterClient2, "get">): TMB.TwitterAgent {
   async function retrieve2(endpoint: string, parameters: RequestParameters, allows?: Twitter2.Error[]): Promise<Twitter2.Response> {
     const response: Twitter2.Response = await client2.get(endpoint, parameters);
     if (response.errors) {

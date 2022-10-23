@@ -1,8 +1,8 @@
 import * as fs from "fs";
 import {degrade} from "@source/main/processing/twitter/degrader";
 
-function loadJSON(path) {
-  return JSON.parse(fs.readFileSync(`./test/main/processing/${path}`));
+function loadJSON(path: string) {
+  return JSON.parse(fs.readFileSync(`./test/main/processing/${path}`).toString());
 }
 describe("degradeTweet", () => {
   it("when quoted & replied", () => {

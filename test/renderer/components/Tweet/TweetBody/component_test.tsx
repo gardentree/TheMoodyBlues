@@ -1,37 +1,35 @@
 import * as React from "react";
 import {configure, shallow, render} from "enzyme";
 import Adapter from "@wojtekmaj/enzyme-adapter-react-17";
-import * as twitter from "../../../../../src/renderer/others/twitter";
 
-import TweetBody from "../../../../../src/renderer/components/Tweet/TweetBody/component";
+import TweetBody from "@source/renderer/components/Tweet/TweetBody/component";
+import {builders, fail} from "@test/helper";
 
 configure({adapter: new Adapter()});
 
 describe("<TweetBody />", () => {
   describe("with mention", () => {
     it("expand", () => {
-      // @ts-ignore
-      const json: twitter.Tweet = {
+      const json = builders.buildTweet({
         full_text: "@foo てすとぉ",
         display_text_range: [5, 9],
-        entities: {
+        entities: builders.buildEntities({
           user_mentions: [
             {
               indices: [0, 4],
             },
           ],
           urls: [],
-        },
-      };
+        }),
+      });
 
-      const wrapper = shallow(<TweetBody tweet={json} expand={true} />);
+      const wrapper = shallow(<TweetBody tweet={json} expand={true} search={fail} />);
       expect(wrapper.text()).toBe(" てすとぉ");
     });
   });
 
   describe("with indices", () => {
-    // @ts-ignore
-    const json: twitter.Tweet = {
+    const json = builders.buildTweet({
       full_text: "てすとぉ https://t.co/test",
       display_text_range: [0, 4],
       entities: {
@@ -44,23 +42,22 @@ describe("<TweetBody />", () => {
           },
         ],
       },
-    };
+    });
 
     it("expand", () => {
-      const wrapper = shallow(<TweetBody tweet={json} expand={true} />);
+      const wrapper = shallow(<TweetBody tweet={json} expand={true} search={fail} />);
 
       expect(wrapper.text()).toBe("てすとぉ ");
     });
     it("collapse", () => {
-      const wrapper = shallow(<TweetBody tweet={json} />);
+      const wrapper = shallow(<TweetBody tweet={json} search={fail} />);
 
       expect(wrapper.text()).toBe("てすとぉ ");
     });
   });
 
   describe("with quoted_status_permalink", () => {
-    // @ts-ignore
-    const json: twitter.Tweet = {
+    const json = builders.buildTweet({
       full_text: "てすとぉ。https://t.co/UVKnxHf1IJ",
       display_text_range: [0, 28],
       entities: {
@@ -78,23 +75,22 @@ describe("<TweetBody />", () => {
         expanded_url: "https://twitter.com/test",
         display_url: "twitter.com/test…",
       },
-    };
+    });
 
     it("expand", () => {
-      const wrapper = shallow(<TweetBody tweet={json} expand={true} />);
+      const wrapper = shallow(<TweetBody tweet={json} expand={true} search={fail} />);
 
       expect(wrapper.text()).toBe("てすとぉ。");
     });
     it("collapse", () => {
-      const wrapper = shallow(<TweetBody tweet={json} />);
+      const wrapper = shallow(<TweetBody tweet={json} search={fail} />);
 
       expect(wrapper.text()).toBe("てすとぉ。<ExternalLink />");
     });
   });
 
   describe("with indices and quoted_status_permalink", () => {
-    // @ts-ignore
-    const json: twitter.Tweet = {
+    const json = builders.buildTweet({
       full_text: "てすとぉ https://t.co/test",
       display_text_range: [0, 4],
       entities: {
@@ -113,46 +109,42 @@ describe("<TweetBody />", () => {
         display_url: "twitter.com/test…",
         indices: [5, 23],
       },
-    };
+    });
 
     it("expand", () => {
-      const wrapper = shallow(<TweetBody tweet={json} expand={true} />);
+      const wrapper = shallow(<TweetBody tweet={json} expand={true} search={fail} />);
 
       expect(wrapper.text()).toBe("てすとぉ ");
     });
     it("collapse", () => {
-      const wrapper = shallow(<TweetBody tweet={json} />);
+      const wrapper = shallow(<TweetBody tweet={json} search={fail} />);
 
       expect(wrapper.text()).toBe("てすとぉ ");
     });
   });
 
   describe("media", () => {
-    // @ts-ignore
-    const json: twitter.Tweet = {
+    const json = builders.buildTweet({
       full_text: "てすとぉ。 https://t.co/test",
       display_text_range: [0, 5],
       entities: {
         media: [
           {
             indices: [5, 23],
-            media_url: "http://pbs.twimg.com/media/test.jpg",
             media_url_https: "https://pbs.twimg.com/media/test.jpg",
-            url: "https://t.co/test",
             display_url: "pic.twitter.com/test",
-            expanded_url: "https://twitter.com/test/status/1/photo/1",
           },
         ],
       },
-    };
+    });
 
     it("expand", () => {
-      const wrapper = render(<TweetBody tweet={json} expand={true} />);
+      const wrapper = render(<TweetBody tweet={json} expand={true} search={fail} />);
 
       expect(wrapper.text()).toBe("てすとぉ。");
     });
     it("collapse", () => {
-      const wrapper = render(<TweetBody tweet={json} />);
+      const wrapper = render(<TweetBody tweet={json} search={fail} />);
 
       expect(wrapper.text()).toBe("てすとぉ。pic.twitter.com/test");
     });

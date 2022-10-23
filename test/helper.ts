@@ -91,7 +91,7 @@ function buildMutePreference(specifics?: Partial<TMB.MutePreference>): TMB.MuteP
     specifics
   );
 }
-function buildTweet(specifics?: Partial<Twitter.Tweet>): Twitter.Tweet {
+function buildTweet(specifics?: RecursivePartial<Twitter.Tweet>): Twitter.Tweet {
   const id_str = specifics?.id_str || faker.helpers.unique(faker.random.numeric);
   const full_text = specifics?.full_text || faker.lorem.lines();
 
@@ -102,15 +102,21 @@ function buildTweet(specifics?: Partial<Twitter.Tweet>): Twitter.Tweet {
       full_text: full_text,
       user: {},
       display_text_range: [0, full_text.length],
-      entities: {
-        user_mentions: [],
-        urls: [],
-        hashtags: [],
-      },
+      entities: buildEntities(specifics?.entities),
       created_at: DateUtility.format(faker.date.past(), "E MMM d H:m:s x yyyy"),
       in_reply_to_status_id_str: null,
       is_quote_status: false,
-    },
+    } as Twitter.Tweet,
+    specifics
+  );
+}
+function buildEntities(specifics?: RecursivePartial<Twitter.Entities>): Twitter.Entities {
+  return Object.assign(
+    {
+      user_mentions: [],
+      urls: [],
+      hashtags: [],
+    } as Twitter.Entities,
     specifics
   );
 }
@@ -120,6 +126,7 @@ export const builders = {
   buildScreenPreference,
   buildMutePreference,
   buildTweet,
+  buildEntities,
 };
 
 export const recursiveObjectContaining = (source: unknown) => {
@@ -132,4 +139,9 @@ export const recursiveObjectContaining = (source: unknown) => {
   } else {
     return source;
   }
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const fail = (message: any) => {
+  throw new Error(message);
 };

@@ -5,7 +5,7 @@ module.exports = {
     "^.+\\.(t|j)sx?$": "@swc/jest",
   },
   testEnvironment: "jest-environment-jsdom-global",
-  setupFilesAfterEnv: ["<rootDir>/jest.setup.ts"],
+  setupFilesAfterEnv: ["<rootDir>/test/jest.setup.ts"],
   moduleNameMapper: {
     "^@source/(.*)$": ["<rootDir>/src/$1"],
     "^@test/(.*)$": ["<rootDir>/test/$1"],

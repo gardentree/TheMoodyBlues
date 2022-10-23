@@ -10,7 +10,7 @@ describe(wrap.name, () => {
       yield;
     }
 
-    return expectSaga(wrap(fail), {type: "", payload: undefined, meta: undefined})
+    return expectSaga(wrap(fail), {type: "", payload: undefined as never, meta: undefined})
       .put({
         type: "principal/showLoading",
         payload: true,

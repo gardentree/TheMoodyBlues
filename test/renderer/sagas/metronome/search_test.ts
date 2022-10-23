@@ -1,24 +1,20 @@
 import {expectSaga} from "redux-saga-test-plan";
-import {initialize, order} from "../../../../src/renderer/sagas/metronome/search.ts";
+import {initialize, order} from "@source/renderer/sagas/metronome/search";
+import {builders, fail} from "@test/helper";
 
 describe("search", () => {
   describe("#initialize", () => {
     const identity = "search";
-    const title = identity;
 
-    const preference = {
+    const preference = builders.buildScreenPreference({
       identity: identity,
-      title: title,
-      component: identity,
-      interval: 60,
-      way: "search",
-    };
+    });
 
     it("when no cache", () => {
       return expectSaga(initialize, identity, preference)
         .provide([
           {
-            spawn(effect: any, next: any) {
+            spawn(effect, next) {
               expect(effect.fn.name).toBe("run");
               expect(effect.args).toEqual([identity, 60 * 1000]);
             },
@@ -38,37 +34,33 @@ describe("search", () => {
   describe("#order", () => {
     it("normal", () => {
       const identity = "search";
-      const title = identity;
 
-      const screen = {
-        tweets: [{id_str: "old_1"}],
-        lastReadID: 0,
+      const old1 = builders.buildTweet({id_str: "old_1"});
+      const new1 = builders.buildTweet({id_str: "new_1"});
+      const new2 = builders.buildTweet({id_str: "new_2"});
+
+      const screen = builders.buildScreen({
+        tweets: [old1],
+        lastReadID: "0",
         options: {
           query: "くえりー",
         },
-      };
-      const preference = {
-        screen: {
-          identity: identity,
-          title: title,
-          component: identity,
-          interval: 60,
-          way: "search",
-        },
-      };
+      });
+      const preference = builders.buildPreference({
+        identity: identity,
+      });
 
-      return expectSaga(order, identity, screen, preference, false)
+      return expectSaga(order as SagaType, identity, screen, preference, false)
         .provide([
           {
-            call(effect: any, next: any) {
+            call(effect, next) {
               switch (effect.fn.name) {
                 case "search":
                   expect(effect.args[0]).toBe("くえりー");
                   expect(effect.args[1]).toBe("old_1");
-                  return [{id_str: "new_1"}, {id_str: "new_2"}];
+                  return [new1, new2];
                 default:
-                  expect.fail(effect.fn.name);
-                  return;
+                  fail(effect.fn.name);
               }
             },
           },
@@ -78,7 +70,7 @@ describe("search", () => {
         })
         .put({
           type: "screens/updateTweets",
-          payload: {identity, tweets: [{id_str: "new_1"}, {id_str: "new_2"}, {id_str: "old_1"}], options: {query: "くえりー"}},
+          payload: {identity, tweets: [new1, new2, old1], options: {query: "くえりー"}},
         })
         .put({
           type: `${identity}_START_TIMER`,
@@ -93,26 +85,19 @@ describe("search", () => {
     });
     it("query is blank", () => {
       const identity = "search";
-      const title = identity;
 
-      const screen = {
-        tweets: [{id_str: "old_1"}],
-        lastReadID: 0,
+      const screen = builders.buildScreen({
+        tweets: [builders.buildTweet({id_str: "old_1"})],
+        lastReadID: "0",
         options: {
           query: "",
         },
-      };
-      const preference = {
-        screen: {
-          identity: identity,
-          title: title,
-          component: identity,
-          interval: 60,
-          way: "search",
-        },
-      };
+      });
+      const preference = builders.buildPreference({
+        identity: identity,
+      });
 
-      return expectSaga(order, identity, screen, preference, false)
+      return expectSaga(order as SagaType, identity, screen, preference, false)
         .put({
           type: `${identity}_STOP_TIMER`,
         })

@@ -1,7 +1,7 @@
 import {expectSaga} from "redux-saga-test-plan";
 import {reorder, reorderFocusedScreen, searchTweets} from "@source/renderer/sagas/screen/stories";
 import adapters from "@source/renderer/libraries/adapter";
-import {builders} from "@test/helper";
+import {builders, fail} from "@test/helper";
 
 describe(reorder.name, () => {
   it("reload", () => {
@@ -29,13 +29,12 @@ describe(reorder.name, () => {
           },
         },
         {
-          call(effect: any, next: any) {
+          call(effect, next) {
             switch (effect.fn.name) {
               case "search":
                 return [];
               default:
-                expect.fail(effect.fn.name);
-                return;
+                fail(effect.fn.name);
             }
           },
         },
@@ -65,7 +64,7 @@ describe(reorder.name, () => {
     const preference = builders.buildPreference({identity: "search"});
     const preferences = adapters.preferences.addOne(adapters.preferences.getInitialState(), preference);
 
-    return expectSaga(reorderFocusedScreen, {
+    return expectSaga(reorderFocusedScreen as SagaType, {
       payload: {},
       meta: {force: false},
     })
@@ -82,13 +81,12 @@ describe(reorder.name, () => {
           },
         },
         {
-          call(effect: any, next: any) {
+          call(effect, next) {
             switch (effect.fn.name) {
               case "search":
                 return [];
               default:
-                expect.fail(effect.fn.name);
-                return;
+                fail(effect.fn.name);
             }
           },
         },
