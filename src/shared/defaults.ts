@@ -33,9 +33,14 @@ export const LIST: Omit<TMB.ScreenPreference, "identity" | "title" | "active"> =
   growl: true,
 };
 
+export const EVERYONE = "@everyone";
 export const MUTE: TMB.MutePreference = {
-  keywords: [],
-  retweetYourself: false,
-  withMedia: [],
-  retweetReaction: [],
+  [EVERYONE]: {
+    identifier: EVERYONE,
+    name: "全員",
+    taboos: {},
+    withMedia: false,
+    retweetYourself: false,
+    retweetReaction: false,
+  },
 };

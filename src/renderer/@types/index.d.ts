@@ -1,5 +1,3 @@
-type EntityState<T> = import("@reduxjs/toolkit").EntityState<T>;
-
 declare namespace TheMoodyBlues {
   interface State {
     screens: ScreenMap;
@@ -44,10 +42,16 @@ declare namespace TheMoodyBlues {
     focused: ScreenID;
     nowLoading: boolean;
     style: PrincipalStyle;
+    dialog: Dialog;
   }
   interface PrincipalStyle {
     fontSize: string;
   }
+  interface DialogWithGatekeeper {
+    type: "mute";
+    context: TweetMenu;
+  }
+  type Dialog = DialogWithGatekeeper | null;
 }
 
 interface Window {

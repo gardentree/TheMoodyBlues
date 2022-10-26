@@ -15,14 +15,7 @@ export const INITIAL_VALUE: TMB.Screen = {
 
 export async function loadPreferences(): Promise<TMB.PreferenceMap> {
   const screens = await facade.storage.getScreenPreferences();
-  const mute: TMB.MutePreference = Object.assign(
-    {
-      keywords: [],
-      retweetYourself: false,
-      media: [],
-    },
-    await facade.storage.getMutePreference()
-  );
+  const mute: TMB.MutePreference = await facade.storage.getMutePreference();
 
   return adapters.preferences.addMany(
     adapters.preferences.getInitialState(),

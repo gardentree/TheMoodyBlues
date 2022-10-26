@@ -1,4 +1,5 @@
 import {faker} from "@faker-js/faker";
+import {MUTE} from "@source/shared/defaults";
 import * as DateUtility from "date-fns";
 
 function buildScreen(specifics?: Partial<TMB.Screen>): TMB.Screen {
@@ -80,16 +81,8 @@ function buildScreenPreference(specifics?: Partial<TMB.ScreenPreference>): TMB.S
 
   return Object.assign(preference, specifics);
 }
-function buildMutePreference(specifics?: Partial<TMB.MutePreference>): TMB.MutePreference {
-  return Object.assign(
-    {
-      keywords: [],
-      retweetYourself: false,
-      withMedia: [],
-      retweetReaction: [],
-    },
-    specifics
-  );
+function buildMutePreference(specifics?: TMB.MutePreference): TMB.MutePreference {
+  return Object.assign(MUTE, specifics);
 }
 function buildTweet(specifics?: RecursivePartial<Twitter.Tweet>): Twitter.Tweet {
   const id_str = specifics?.id_str || faker.helpers.unique(faker.random.numeric);

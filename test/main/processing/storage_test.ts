@@ -1,4 +1,5 @@
 import {build} from "@source/main/processing/storage";
+import {EVERYONE} from "@source/shared/defaults";
 
 const HOME = {
   identity: "home",
@@ -39,10 +40,14 @@ describe("defaults", () => {
   });
   it("mute", () => {
     expect(storage.getMutePreference()).toEqual({
-      keywords: [],
-      retweetYourself: false,
-      withMedia: [],
-      retweetReaction: [],
+      [EVERYONE]: {
+        identifier: EVERYONE,
+        name: "全員",
+        taboos: {},
+        withMedia: false,
+        retweetYourself: false,
+        retweetReaction: false,
+      },
     });
   });
 });

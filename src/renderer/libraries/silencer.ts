@@ -1,34 +1,51 @@
+import {EVERYONE} from "@shared/defaults";
+
 const {facade} = window;
 
 export function silence(tweets: Twitter.Tweet[], preference: TMB.MutePreference): Twitter.Tweet[] {
-  const {keywords, retweetYourself, withMedia, retweetReaction} = preference;
-
   return tweets.filter((tweet) => {
-    const {id_str, screen_name} = tweet.user;
-
-    const matched = test(tweet, keywords);
-    if (matched) {
-      facade.logger.info(`silence: ${matched} of ${screen_name}`);
-      return false;
-    }
-
-    if (retweetYourself && tweet.retweeted_status?.user.id_str == id_str) {
-      facade.logger.info(`silence: self retweet of ${screen_name}`);
-      return false;
-    }
-
-    if (withMedia?.includes(id_str) && (tweet.entities.media?.length || 0) > 0) {
-      facade.logger.info(`silence: media of ${screen_name}`);
-      return false;
-    }
-
-    if (retweetReaction?.includes(id_str) && tweet.retweeted_status?.quoted_status?.user.id_str == id_str) {
-      facade.logger.info(`silence: retweet reaction of ${screen_name}`);
-      return false;
+    for (const user of Object.values(preference)) {
+      if (!check(tweet, user!)) {
+        return false;
+      }
     }
 
     return true;
   });
+}
+function check(tweet: Twitter.Tweet, user: TMB.PassengerPreference) {
+  if ([EVERYONE, tweet.user.id_str].includes(user.identifier)) {
+    const matched = test(
+      tweet,
+      Object.values(user.taboos).map((keyword) => keyword.keyword)
+    );
+    if (matched) {
+      facade.logger.info(`silence: ${matched} of ${user.name}`);
+      return false;
+    }
+
+    if (user.withMedia) {
+      if ((tweet.entities.media?.length || 0) > 0) {
+        facade.logger.info(`silence: media of ${user.name}`);
+        return false;
+      }
+    }
+  }
+
+  if (user.retweetYourself) {
+    if (tweet.user.id_str == tweet.retweeted_status?.user.id_str) {
+      facade.logger.info(`silence: self retweet of ${user.name}`);
+      return false;
+    }
+  }
+  if (user.retweetReaction) {
+    if (tweet.user.id_str == tweet.retweeted_status?.quoted_status?.user.id_str) {
+      facade.logger.info(`silence: retweet reaction of ${user.name}`);
+      return false;
+    }
+  }
+
+  return true;
 }
 
 const MATCHER = new RegExp("^/(.+)/$");
@@ -48,14 +65,14 @@ export function test(tweet: Twitter.Tweet, keywords: string[]): string | null {
 
   for (const expression of expressions) {
     if (expression.test(tweet.full_text)) {
-      return tweet.full_text;
+      return `${expression} in ${tweet.full_text}`;
     }
   }
 
   for (const expression of expressions) {
     for (const url of tweet.entities.urls) {
       if (expression.test(url.expanded_url)) {
-        return url.expanded_url;
+        return `${expression} in ${url.expanded_url}`;
       }
     }
   }

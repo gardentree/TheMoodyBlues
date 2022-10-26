@@ -1,3 +1,5 @@
+type EntityState<T> = import("@reduxjs/toolkit").EntityState<T>;
+
 declare namespace TheMoodyBlues {
   type ScreenID = string;
 
@@ -12,11 +14,19 @@ declare namespace TheMoodyBlues {
     growl: boolean;
     mute: boolean;
   }
-  interface MutePreference {
-    keywords: string[];
+  type PassengerIdentifier = "@everyone" | Twitter.UserID;
+  type MutePreference = Record<PassengerIdentifier, PassengerPreference>;
+  interface PassengerPreference {
+    identifier: PassengerIdentifier;
+    name: Twitter.ScreenName;
+    taboos: Record<string, Taboo>;
+    withMedia: boolean;
     retweetYourself: boolean;
-    withMedia: Twitter.UserID[];
-    retweetReaction: Twitter.UserID[];
+    retweetReaction: boolean;
+  }
+  interface Taboo {
+    keyword: string;
+    expireAt: number;
   }
 
   interface TwitterAgent {
@@ -56,6 +66,7 @@ declare namespace TheMoodyBlues {
       onAlert(callback: (error: unknown) => void): void;
       onChangeMode(callback: (identity: ScreenID, mode: ArticleMode) => void): void;
       onCopyTweetInJSON(callback: (tweet: Twitter.Tweet) => void): void;
+      onDialog(callback: (context: TMB.Dialog) => void): void;
       onFocusLatestTweet(callback: () => void): void;
       onFocusTweet(callback: (tweet: Twitter.Tweet) => void): void;
       onFocusUnreadTweet(callback: () => void): void;

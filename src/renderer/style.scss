@@ -23,7 +23,17 @@ body {
 }
 
 .ReactModal__Content {
-  background-color: var(--background-color) !important;
+  filter: var(--filter);
+
+  img,
+  video,
+  button {
+    filter: var(--filter);
+  }
+
+  p + form {
+    margin-top: 10px;
+  }
 }
 .modal-container {
   height: 100%;
@@ -44,7 +54,7 @@ body {
 }
 
 form {
-  input.form-control {
+  .form-control {
     color: var(--text-color);
     background-color: var(--background-color);
   }

@@ -10,6 +10,9 @@ export function setup(store: MiddlewareAPI) {
   facade.events.onCopyTweetInJSON((tweet: Twitter.Tweet) => {
     facade.actions.copy(JSON.stringify(tweet, null, "  "));
   });
+  facade.events.onDialog((context: TMB.Dialog) => {
+    store.dispatch(actions.openDialog(context));
+  });
   facade.events.onFocusTweet((tweet: Twitter.Tweet) => {
     store.dispatch(actions.focusTweet(tweet));
   });

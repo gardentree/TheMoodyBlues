@@ -9,6 +9,7 @@ export const slice = createSlice({
       fontSize: "12px",
     },
     nowLoading: false,
+    dialog: null as TMB.Dialog,
   },
   reducers: {
     setScreens: (state, action: PayloadAction<TMB.ScreenID[]>) => {
@@ -29,6 +30,12 @@ export const slice = createSlice({
     showLoading: (state, action: PayloadAction<boolean>) => {
       state.nowLoading = action.payload;
     },
+    openDialog: (state, action: PayloadAction<TMB.Dialog>) => {
+      state.dialog = action.payload;
+    },
+    closeDialog: (state) => {
+      state.dialog = null;
+    },
   },
 });
 
@@ -41,5 +48,5 @@ function fontSize(style: TMB.PrincipalStyle, offset: number) {
   }
 }
 
-export const {setScreens, focusScreen, zoomIn, zoomOut, zoomReset, showLoading} = slice.actions;
+export const {setScreens, focusScreen, zoomIn, zoomOut, zoomReset, showLoading, openDialog, closeDialog} = slice.actions;
 export default slice.reducer;

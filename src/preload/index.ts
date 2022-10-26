@@ -52,6 +52,7 @@ const facade: TMB.Facade = {
   events: {
     onAlert: (callback) => ipcRenderer.on(FacadeActions.ALERT, (event, error) => callback(error)),
     onCopyTweetInJSON: (callback) => ipcRenderer.on(FacadeActions.COPY_TWEET_IN_JSON, (event, context: TMB.TweetMenu) => callback(context.tweet)),
+    onDialog: (callback) => ipcRenderer.on(FacadeActions.DIALOG, (event, context: TMB.TweetMenu) => callback(context)),
     onFocusLatestTweet: (callback) => ipcRenderer.on(FacadeActions.FOCUS_LATEST_TWEET, (event, ...values) => callback()),
     onFocusTweet: (callback) => ipcRenderer.on(FacadeActions.FOCUS_TWEET, (event, tweet) => callback(tweet)),
     onFocusUnreadTweet: (callback) => ipcRenderer.on(FacadeActions.FOCUS_UNREAD_TWEET, (event, ...values) => callback()),

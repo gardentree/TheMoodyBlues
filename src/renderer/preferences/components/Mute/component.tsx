@@ -1,7 +1,7 @@
 import * as React from "react";
 import {useState, useEffect} from "react";
 import {test} from "@libraries/silencer";
-import {MUTE} from "@shared/defaults";
+import {MUTE, EVERYONE} from "@shared/defaults";
 
 const {facade} = window;
 
@@ -13,6 +13,8 @@ const Mute = () => {
   const [preference, setPreference] = useState<TMB.MutePreference>(MUTE);
   const [tweets, setTweets] = useState<Twitter.Tweet[]>([]);
   const [matched, setMatched] = useState<string[]>([]);
+
+  const everyone = preference[EVERYONE];
 
   useEffect(() => {
     (async () => {
@@ -38,12 +40,9 @@ const Mute = () => {
     event.preventDefault();
 
     const keyword = event.currentTarget.keyword.value.toLowerCase();
-    let keywords = preference.keywords.concat();
-    keywords.push(keyword);
-    keywords.sort();
-    keywords = [...new Set(keywords)];
+    everyone.taboos[keyword] = {keyword, expireAt: 0};
 
-    const newPreference = Object.assign({}, preference, {keywords});
+    const newPreference = Object.assign({}, preference, {[everyone.identifier]: everyone});
     facade.storage.setMutePreference(newPreference);
 
     event.currentTarget.keyword.value = "";
@@ -52,13 +51,10 @@ const Mute = () => {
   };
   const handleKeyDown = (event: React.KeyboardEvent) => {
     if (event.keyCode == 8) {
-      const keywords = preference.keywords.concat();
-
       const keyword = event.currentTarget.textContent!;
-      const index = keywords.indexOf(keyword);
-      keywords.splice(index, 1);
+      delete everyone.taboos[keyword];
 
-      const newPreference = Object.assign({}, preference, {keywords});
+      const newPreference = Object.assign({}, preference, {[everyone.identifier]: everyone});
       facade.storage.setMutePreference(newPreference);
 
       setPreference(newPreference);
@@ -76,7 +72,7 @@ const Mute = () => {
     }
   };
 
-  const list = preference.keywords.map((keyword, index: number) => {
+  const list = Object.keys(everyone.taboos).map((keyword: string, index: number) => {
     return (
       <li key={index} onKeyDown={handleKeyDown} tabIndex={-1}>
         {keyword}

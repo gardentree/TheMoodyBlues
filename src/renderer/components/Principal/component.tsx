@@ -3,6 +3,7 @@ import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import TabItem from "../TabItem";
 import WindowContent from "../WindowContent";
 import StatusBar from "../StatusBar";
+import Dialog from "../Dialog";
 
 export interface DispatchProps {
   focusScreen(event: React.SyntheticEvent<HTMLElement>): void;
@@ -51,6 +52,7 @@ const Principal = (props: Props) => {
       <div className="loading" style={{display: nowLoading ? "flex" : "none"}}>
         <FontAwesomeIcon icon="spinner" size="4x" spin />
       </div>
+      <Dialog />
     </div>
   );
 };

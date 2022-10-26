@@ -1,4 +1,5 @@
 import {silence, test} from "@libraries/silencer";
+import {EVERYONE} from "@source/shared/defaults";
 import {builders} from "@test/helper";
 import * as fs from "fs";
 
@@ -11,23 +12,21 @@ const tweetTemplate: Twitter.Tweet = builders.twitter.buildTweet({
     id_str: "gian",
   },
 });
-const preferenceTemplate: TMB.MutePreference = builders.state.buildMutePreference({
-  keywords: [],
-  retweetYourself: false,
-  withMedia: [],
-});
+const preferenceTemplate: TMB.MutePreference = builders.state.buildMutePreference();
 
 describe("silence", () => {
   describe("withMedia", () => {
     it("don't have media", () => {
       const tweet = Object.assign({}, tweetTemplate, {entities: {media: []}});
-      const preference = Object.assign({}, preferenceTemplate, {withMedia: ["gian"]});
+      const preference = Object.assign({}, preferenceTemplate);
+      preference[EVERYONE].withMedia = true;
 
       expect(silence([tweet], preference)).toEqual([tweet]);
     });
     it("have media", () => {
       const tweet = Object.assign({}, tweetTemplate, {entities: {media: [{}]}});
-      const preference = Object.assign({}, preferenceTemplate, {withMedia: ["gian"]});
+      const preference = Object.assign({}, preferenceTemplate);
+      preference[EVERYONE].withMedia = true;
 
       expect(silence([tweet], preference)).toEqual([]);
     });
@@ -42,7 +41,8 @@ describe("silence", () => {
           },
         },
       });
-      const preference = Object.assign({}, preferenceTemplate, {retweetYourself: true});
+      const preference = Object.assign({}, preferenceTemplate);
+      preference[EVERYONE].retweetYourself = true;
 
       expect(silence([tweet], preference)).toEqual([]);
     });
@@ -75,7 +75,8 @@ describe("silence", () => {
           },
         },
       });
-      const preference = Object.assign({}, preferenceTemplate, {retweetReaction: ["gian"]});
+      const preference = Object.assign({}, preferenceTemplate);
+      preference[EVERYONE].retweetReaction = true;
 
       expect(silence([tweet], preference)).toEqual([]);
     });
@@ -86,20 +87,20 @@ describe("test", () => {
   describe("full_text", () => {
     describe("use text", () => {
       it("when upper and upper", () => {
-        expect(test(tweetTemplate, ["GO"])).toEqual("ポケモンGO");
+        expect(test(tweetTemplate, ["GO"])).toEqual("/GO/i in ポケモンGO");
       });
       it("when upper and lower", () => {
-        expect(test(tweetTemplate, ["go"])).toEqual("ポケモンGO");
+        expect(test(tweetTemplate, ["go"])).toEqual("/go/i in ポケモンGO");
       });
       it("when lower and upper", () => {
         const tweet = Object.assign({}, tweetTemplate, {full_text: "ポケモンgo"});
 
-        expect(test(tweet, ["GO"])).toEqual("ポケモンgo");
+        expect(test(tweet, ["GO"])).toEqual("/GO/i in ポケモンgo");
       });
       it("when lower and lower", () => {
         const tweet = Object.assign({}, tweetTemplate, {full_text: "ポケモンgo"});
 
-        expect(test(tweet, ["go"])).toEqual("ポケモンgo");
+        expect(test(tweet, ["go"])).toEqual("/go/i in ポケモンgo");
       });
 
       it("when retweet", () => {
@@ -115,7 +116,7 @@ describe("test", () => {
     });
     describe("use regex", () => {
       it("when matche whole", () => {
-        expect(test(tweetTemplate, ["/^ポケモンGO$/"])).toEqual("ポケモンGO");
+        expect(test(tweetTemplate, ["/^ポケモンGO$/"])).toEqual("/^ポケモンGO$/i in ポケモンGO");
       });
       it("when doesn't matche whole", () => {
         expect(test(tweetTemplate, ["/^GO$/"])).toBeNull();
@@ -125,10 +126,10 @@ describe("test", () => {
 
   describe("url", () => {
     it("when lower and lower", () => {
-      expect(test(tweetTemplate, ["pokemon"])).toEqual("https://www.pokemongo.jp/");
+      expect(test(tweetTemplate, ["pokemon"])).toEqual("/pokemon/i in https://www.pokemongo.jp/");
     });
     it("when lower and upper", () => {
-      expect(test(tweetTemplate, ["POKEMON"])).toEqual("https://www.pokemongo.jp/");
+      expect(test(tweetTemplate, ["POKEMON"])).toEqual("/POKEMON/i in https://www.pokemongo.jp/");
     });
     it("when upper and lower", () => {
       const tweet = Object.assign({}, tweetTemplate, {
@@ -137,7 +138,7 @@ describe("test", () => {
         },
       });
 
-      expect(test(tweet, ["pokemon"])).toEqual("HTTPS://WWW.POKEMONGO.JP/");
+      expect(test(tweet, ["pokemon"])).toEqual("/pokemon/i in HTTPS://WWW.POKEMONGO.JP/");
     });
     it("when upper and upper", () => {
       const tweet = Object.assign({}, tweetTemplate, {
@@ -146,7 +147,7 @@ describe("test", () => {
         },
       });
 
-      expect(test(tweet, ["pokemon"])).toEqual("HTTPS://WWW.POKEMONGO.JP/");
+      expect(test(tweet, ["pokemon"])).toEqual("/pokemon/i in HTTPS://WWW.POKEMONGO.JP/");
     });
   });
 

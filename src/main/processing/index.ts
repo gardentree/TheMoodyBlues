@@ -155,6 +155,13 @@ function observe(renderer: WebContents, agent: TMB.TwitterAgent) {
           renderer.send(FacadeActions.SEARCH, context);
         },
       });
+
+      template.push({
+        label: `"${context.keyword}"をミュート`,
+        click() {
+          renderer.send(FacadeActions.DIALOG, {type: "mute", context});
+        },
+      });
     }
 
     if (environment.isDevelopment()) {
