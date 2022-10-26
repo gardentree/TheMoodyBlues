@@ -7,7 +7,7 @@ import Dialog from "../Dialog";
 
 export interface DispatchProps {
   focusScreen(event: React.SyntheticEvent<HTMLElement>): void;
-  focus(identity: TMB.ScreenID): void;
+  focus(identifier: TMB.ScreenID): void;
 }
 type Props = TMB.Principal & DispatchProps;
 
@@ -30,19 +30,19 @@ const Principal = (props: Props) => {
         <h1 className="title">The Moody Blues</h1>
       </header>
       <div className="tab-group">
-        {screens.map((identity) => {
+        {screens.map((identifier) => {
           return (
-            <div key={identity} className={`tab-item${focused == identity ? " active" : ""}`} data-name={identity} onClick={focusScreen}>
-              <TabItem identity={identity} />
+            <div key={identifier} className={`tab-item${focused == identifier ? " active" : ""}`} data-name={identifier} onClick={focusScreen}>
+              <TabItem identifier={identifier} />
             </div>
           );
         })}
       </div>
 
-      {screens.map((identity) => {
+      {screens.map((identifier) => {
         return (
-          <div key={identity} className="window-content" style={{display: focused == identity ? "block" : "none"}} data-name={identity}>
-            <WindowContent identity={identity} />
+          <div key={identifier} className="window-content" style={{display: focused == identifier ? "block" : "none"}} data-name={identifier}>
+            <WindowContent identifier={identifier} />
           </div>
         );
       })}

@@ -4,7 +4,7 @@ declare namespace TheMoodyBlues {
   type ScreenID = string;
 
   interface ScreenPreference {
-    identity: ScreenID;
+    identifier: ScreenID;
     title: string;
     component: "Timeline" | "Search";
     interval: number;
@@ -60,11 +60,11 @@ declare namespace TheMoodyBlues {
       growl(tweets: Twitter.Tweet[]): void;
       openExternal(url: string): void;
       openTweetMenu(context: TweetMenu): void;
-      showModeMenu(identity: ScreenID, mode: ArticleMode): void;
+      showModeMenu(identifier: ScreenID, mode: ArticleMode): void;
     };
     events: {
       onAlert(callback: (error: unknown) => void): void;
-      onChangeMode(callback: (identity: ScreenID, mode: ArticleMode) => void): void;
+      onChangeMode(callback: (identifier: ScreenID, mode: ArticleMode) => void): void;
       onCopyTweetInJSON(callback: (tweet: Twitter.Tweet) => void): void;
       onDialog(callback: (context: TMB.Dialog) => void): void;
       onFocusLatestTweet(callback: () => void): void;

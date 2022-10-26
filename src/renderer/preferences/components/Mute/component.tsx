@@ -27,7 +27,7 @@ const Mute = () => {
       const promises = preferences
         .filter((preference) => preference.mute)
         .map((preference: TMB.ScreenPreference) => {
-          return facade.storage.getTweets(preference.identity);
+          return facade.storage.getTweets(preference.identifier);
         });
 
       Promise.all(promises).then((allTweets: Twitter.Tweet[][]) => {

@@ -4,8 +4,8 @@ import Component, {OwnProps, StateProps} from "./component";
 
 const mapStateToProps = (state: TMB.State, own: OwnProps): StateProps => {
   const {screens, preferences} = state;
-  const screen = adapters.screens.getSelectors().selectById(screens, own.identity)!;
-  const preference = adapters.preferences.getSelectors().selectById(preferences, own.identity)!;
+  const screen = adapters.screens.getSelectors().selectById(screens, own.identifier)!;
+  const preference = adapters.preferences.getSelectors().selectById(preferences, own.identifier)!;
 
   const {tweets, lastReadID} = screen;
   const unread = tweets ? tweets.filter((tweet: Twitter.Tweet) => tweet.id_str > lastReadID).length : 0;

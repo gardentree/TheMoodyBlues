@@ -177,14 +177,14 @@ function observe(renderer: WebContents, agent: TMB.TwitterAgent) {
     menu.popup();
   });
 
-  ipcMain.on(FacadeActions.SHOW_MODE_MENU, (event, {identity, mode}) => {
+  ipcMain.on(FacadeActions.SHOW_MODE_MENU, (event, {identifier, mode}) => {
     const template: Electron.MenuItemConstructorOptions[] = [
       {
         label: "ツイート",
         type: "radio",
         checked: mode == "tweet",
         click() {
-          renderer.send(FacadeActions.CHANGE_MODE, {identity: identity, mode: "tweet"});
+          renderer.send(FacadeActions.CHANGE_MODE, {identifier: identifier, mode: "tweet"});
         },
       },
       {
@@ -192,7 +192,7 @@ function observe(renderer: WebContents, agent: TMB.TwitterAgent) {
         type: "radio",
         checked: mode == "media",
         click() {
-          renderer.send(FacadeActions.CHANGE_MODE, {identity: identity, mode: "media"});
+          renderer.send(FacadeActions.CHANGE_MODE, {identifier: identifier, mode: "media"});
         },
       },
     ];

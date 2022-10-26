@@ -32,11 +32,11 @@ const facade: TMB.Facade = {
     growl: function (tweets: Twitter.Tweet[]): void {},
     openExternal: function (url: string): void {},
     openTweetMenu: function (context: TMB.TweetMenu): void {},
-    showModeMenu: function (identity: string, mode: TMB.ArticleMode): void {},
+    showModeMenu: function (identifier: string, mode: TMB.ArticleMode): void {},
   },
   events: {
     onAlert: function (callback: (error: unknown) => void): void {},
-    onChangeMode: function (callback: (identity: string, mode: TMB.ArticleMode) => void): void {},
+    onChangeMode: function (callback: (identifier: string, mode: TMB.ArticleMode) => void): void {},
     onCopyTweetInJSON: function (callback: (tweet: Twitter.Tweet) => void): void {},
     onFocusLatestTweet: function (callback: () => void): void {},
     onFocusTweet: function (callback: (tweet: Twitter.Tweet) => void): void {},

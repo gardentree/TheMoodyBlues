@@ -3,7 +3,7 @@ import Article from "../Article";
 import BranchBundle from "../BranchBundle";
 
 export interface OwnProps {
-  identity: TMB.ScreenID;
+  identifier: TMB.ScreenID;
 }
 export interface StateProps {
   branches: TMB.ScreenID[];
@@ -16,7 +16,7 @@ export interface DispatchProps {
 type Props = OwnProps & StateProps & DispatchProps;
 
 const Timeline = (props: Props) => {
-  const {identity, branches, didMount, willUnmount} = props;
+  const {identifier, branches, didMount, willUnmount} = props;
 
   useEffect(() => {
     didMount();
@@ -28,9 +28,9 @@ const Timeline = (props: Props) => {
 
   return (
     <React.Fragment>
-      <Article identity={identity} />
+      <Article identifier={identifier} />
 
-      <BranchBundle root={identity} branches={branches} />
+      <BranchBundle root={identifier} branches={branches} />
     </React.Fragment>
   );
 };

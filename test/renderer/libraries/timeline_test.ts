@@ -2,7 +2,7 @@ import {mixPreferences} from "@libraries/screen";
 import {builders} from "@test/helper";
 
 const HOME = builders.state.buildScreenPreference({
-  identity: "home",
+  identifier: "home",
   title: "Home",
   component: "Timeline",
   interval: 120,
@@ -11,7 +11,7 @@ const HOME = builders.state.buildScreenPreference({
   growl: true,
 });
 const SEARCH = builders.state.buildScreenPreference({
-  identity: "search",
+  identifier: "search",
   title: "Search",
   component: "Search",
   interval: 60,
@@ -20,7 +20,7 @@ const SEARCH = builders.state.buildScreenPreference({
   growl: true,
 });
 const MENTIONS = builders.state.buildScreenPreference({
-  identity: "mentions",
+  identifier: "mentions",
   title: "Mentions",
   component: "Timeline",
   interval: 300,
@@ -53,7 +53,7 @@ describe("mixPreferences", () => {
           name: "News",
         },
       ])
-    ).toEqual([HOME, Object.assign({}, LIST, {identity: "list_news", title: "News", parameters: ["news"]}), SEARCH, MENTIONS]);
+    ).toEqual([HOME, Object.assign({}, LIST, {identifier: "list_news", title: "News", parameters: ["news"]}), SEARCH, MENTIONS]);
   });
 
   it("modify", () => {

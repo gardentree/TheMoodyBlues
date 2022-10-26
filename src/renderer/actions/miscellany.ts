@@ -3,9 +3,9 @@ import {createAction} from "@reduxjs/toolkit";
 export const prepareState = createAction("prepareState");
 export const reconfigure = createAction("reconfigure");
 
-export const reload = createAction("reload", (identity: TMB.ScreenID, force: boolean, silently = false) => ({
+export const reload = createAction("reload", (identifier: TMB.ScreenID, force: boolean, silently = false) => ({
   payload: {
-    identity,
+    identifier,
   },
   meta: {
     force,
@@ -20,15 +20,15 @@ export const reloadFocusedScreen = createAction("reloadFocusedScreen", (force: b
   },
 }));
 
-export const mountScreen = createAction("mountScreen", (identity: TMB.ScreenID) => ({
-  payload: {identity},
+export const mountScreen = createAction("mountScreen", (identifier: TMB.ScreenID) => ({
+  payload: {identifier},
 }));
-export const unmountScreen = createAction("unmountScreen", (identity: TMB.ScreenID) => ({
-  payload: {identity},
+export const unmountScreen = createAction("unmountScreen", (identifier: TMB.ScreenID) => ({
+  payload: {identifier},
 }));
 
 export const searchTweets = createAction("searchTweets", (query: string) => ({
-  payload: {identity: "search", query},
+  payload: {identifier: "search", query},
 }));
 
 export const displayUserTimeline = createAction("displayUserTimeline", (name: Twitter.ScreenName) => ({

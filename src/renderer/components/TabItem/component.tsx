@@ -1,7 +1,7 @@
 import React from "react";
 
 export interface OwnProps {
-  identity: TMB.ScreenID;
+  identifier: TMB.ScreenID;
 }
 export interface StateProps {
   title: string;

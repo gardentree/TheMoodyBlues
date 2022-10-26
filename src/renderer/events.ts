@@ -4,8 +4,8 @@ import * as actions from "@actions";
 const {facade} = window;
 
 export function setup(store: MiddlewareAPI) {
-  facade.events.onChangeMode((identity, mode) => {
-    store.dispatch(actions.changeMode({identity, mode}));
+  facade.events.onChangeMode((identifier, mode) => {
+    store.dispatch(actions.changeMode({identifier, mode}));
   });
   facade.events.onCopyTweetInJSON((tweet: Twitter.Tweet) => {
     facade.actions.copy(JSON.stringify(tweet, null, "  "));

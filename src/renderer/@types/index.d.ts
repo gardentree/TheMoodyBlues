@@ -9,7 +9,7 @@ declare namespace TheMoodyBlues {
   type PreferenceMap = EntityState<Preference>;
 
   interface Screen {
-    identity: ScreenID;
+    identifier: ScreenID;
     tweets: Twitter.Tweet[];
     mode: ArticleMode;
     lastReadID: Twitter.TweetID;
@@ -26,7 +26,7 @@ declare namespace TheMoodyBlues {
   }>;
 
   interface Preference {
-    identity: ScreenID;
+    identifier: ScreenID;
     screen: ScreenPreference;
     mute: MutePreference;
   }

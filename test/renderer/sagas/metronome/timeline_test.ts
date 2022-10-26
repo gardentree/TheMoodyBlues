@@ -5,13 +5,13 @@ import {builders, fail} from "@test/helper";
 describe("retrieveTimeline", () => {
   describe("#initialize", () => {
     it("when have cache", () => {
-      const identity = "home";
+      const identifier = "home";
 
       const preference = builders.state.buildScreenPreference({
-        identity: identity,
+        identifier: identifier,
       });
 
-      return expectSaga(initialize as SagaType, identity, preference)
+      return expectSaga(initialize as SagaType, identifier, preference)
         .provide([
           {
             call(effect) {
@@ -21,20 +21,20 @@ describe("retrieveTimeline", () => {
           {
             spawn(effect, next) {
               expect(effect.fn.name).toBe("run");
-              expect(effect.args).toEqual([identity, 120 * 1000]);
+              expect(effect.args).toEqual([identifier, 120 * 1000]);
             },
           },
         ])
         .put({
           type: "screens/updateTweets",
-          payload: {identity, tweets: [{id_str: "1"}]},
+          payload: {identifier, tweets: [{id_str: "1"}]},
         })
         .put({
           type: "screens/mark",
-          payload: {identity, lastReadID: "1"},
+          payload: {identifier, lastReadID: "1"},
         })
         .put({
-          type: `${identity}_START_TIMER`,
+          type: `${identifier}_START_TIMER`,
         })
         .run()
         .then((result) => {
@@ -46,18 +46,18 @@ describe("retrieveTimeline", () => {
         });
     });
     it("when no cache", () => {
-      const identity = "home";
+      const identifier = "home";
       const title = "Home";
 
       const preference = {
-        identity: "home",
+        identifier: "home",
         title: title,
         component: "Timeline",
         interval: 120,
         way: "retrieveTimeline",
       };
 
-      return expectSaga(initialize as SagaType, identity, preference)
+      return expectSaga(initialize as SagaType, identifier, preference)
         .provide([
           {
             call(effect, next) {
@@ -67,16 +67,16 @@ describe("retrieveTimeline", () => {
           {
             spawn(effect, next) {
               expect(effect.fn.name).toBe("run");
-              expect(effect.args).toEqual([identity, 120 * 1000]);
+              expect(effect.args).toEqual([identifier, 120 * 1000]);
             },
           },
         ])
         .put({
           type: "screens/updateTweets",
-          payload: {identity, tweets: []},
+          payload: {identifier, tweets: []},
         })
         .put({
-          type: `${identity}_START_TIMER`,
+          type: `${identifier}_START_TIMER`,
         })
         .run()
         .then((result) => {
@@ -91,7 +91,7 @@ describe("retrieveTimeline", () => {
 
   describe("#order", () => {
     it("when reload", () => {
-      const identity = "home";
+      const identifier = "home";
 
       const old1 = builders.twitter.buildTweet({id_str: "old_1"});
       const new1 = builders.twitter.buildTweet({id_str: "new_1"});
@@ -102,10 +102,10 @@ describe("retrieveTimeline", () => {
         lastReadID: "0",
       });
       const preference = builders.state.buildPreference({
-        identity: "home",
+        identifier: "home",
       });
 
-      return expectSaga(order as SagaType, identity, screen, preference, false)
+      return expectSaga(order as SagaType, identifier, screen, preference, false)
         .provide([
           {
             call(effect, next) {
@@ -114,7 +114,7 @@ describe("retrieveTimeline", () => {
                   expect(effect.args[0]).toBe("old_1");
                   return [new1, new2];
                 case "setTweets":
-                  expect(effect.args[0]).toBe(identity);
+                  expect(effect.args[0]).toBe(identifier);
                   expect(effect.args[1]).toEqual([new1, new2, old1]);
                   return;
                 default:
@@ -125,10 +125,10 @@ describe("retrieveTimeline", () => {
         ])
         .put({
           type: "screens/updateTweets",
-          payload: {identity, tweets: [new1, new2, old1]},
+          payload: {identifier, tweets: [new1, new2, old1]},
         })
-        .put({type: `${identity}_STOP_TIMER`})
-        .put({type: `${identity}_START_TIMER`})
+        .put({type: `${identifier}_STOP_TIMER`})
+        .put({type: `${identifier}_START_TIMER`})
         .run()
         .then((result) => {
           const {effects} = result;
@@ -139,7 +139,7 @@ describe("retrieveTimeline", () => {
     });
 
     it("when force reload", () => {
-      const identity = "home";
+      const identifier = "home";
       const title = "Home";
 
       const old1 = builders.twitter.buildTweet({id_str: "old_1"});
@@ -152,7 +152,7 @@ describe("retrieveTimeline", () => {
       };
       const preference = {
         screen: {
-          identity: "home",
+          identifier: "home",
           title: title,
           component: "Timeline",
           interval: 120,
@@ -160,7 +160,7 @@ describe("retrieveTimeline", () => {
         },
       };
 
-      return expectSaga(order as SagaType, identity, screen, preference, true)
+      return expectSaga(order as SagaType, identifier, screen, preference, true)
         .provide([
           {
             call(effect, next) {
@@ -169,7 +169,7 @@ describe("retrieveTimeline", () => {
                   expect(effect.args[0]).toBeUndefined();
                   return [new1, new2];
                 case "setTweets":
-                  expect(effect.args[0]).toBe(identity);
+                  expect(effect.args[0]).toBe(identifier);
                   expect(effect.args[1]).toEqual([new1, new2]);
                   return;
                 default:
@@ -180,10 +180,10 @@ describe("retrieveTimeline", () => {
         ])
         .put({
           type: "screens/updateTweets",
-          payload: {identity, tweets: [new1, new2]},
+          payload: {identifier, tweets: [new1, new2]},
         })
-        .put({type: `${identity}_STOP_TIMER`})
-        .put({type: `${identity}_START_TIMER`})
+        .put({type: `${identifier}_STOP_TIMER`})
+        .put({type: `${identifier}_START_TIMER`})
         .run()
         .then((result) => {
           const {effects} = result;
@@ -194,7 +194,7 @@ describe("retrieveTimeline", () => {
     });
 
     it("when no new tweets", () => {
-      const identity = "home";
+      const identifier = "home";
       const title = "Home";
 
       const screen = {
@@ -203,7 +203,7 @@ describe("retrieveTimeline", () => {
       };
       const preference = {
         screen: {
-          identity: "home",
+          identifier: "home",
           title: title,
           component: "Timeline",
           interval: 120,
@@ -211,7 +211,7 @@ describe("retrieveTimeline", () => {
         },
       };
 
-      return expectSaga(order as SagaType, identity, screen, preference, false)
+      return expectSaga(order as SagaType, identifier, screen, preference, false)
         .provide([
           {
             call(effect, next) {
@@ -225,8 +225,8 @@ describe("retrieveTimeline", () => {
             },
           },
         ])
-        .put({type: `${identity}_STOP_TIMER`})
-        .put({type: `${identity}_START_TIMER`})
+        .put({type: `${identifier}_STOP_TIMER`})
+        .put({type: `${identifier}_START_TIMER`})
         .run()
         .then((result) => {
           const {effects} = result;

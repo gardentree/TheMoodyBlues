@@ -9,10 +9,10 @@ describe("@renderer/actions/screens", () => {
       const state = adapters.screens.addMany(adapters.screens.getInitialState(), [screen]);
       const tweet = builders.twitter.buildTweet({id_str: "1"});
 
-      expect(reducer(state, updateTweets({identity: screen.identity, tweets: [tweet]}))).toEqual({
-        ids: [screen.identity],
+      expect(reducer(state, updateTweets({identifier: screen.identifier, tweets: [tweet]}))).toEqual({
+        ids: [screen.identifier],
         entities: {
-          [screen.identity]: Object.assign({}, screen, {tweets: [tweet]}),
+          [screen.identifier]: Object.assign({}, screen, {tweets: [tweet]}),
         },
       });
     });
@@ -24,10 +24,10 @@ describe("@renderer/actions/screens", () => {
       const state = adapters.screens.addMany(adapters.screens.getInitialState(), [screen]);
       const tweet = builders.twitter.buildTweet({id_str: "1"});
 
-      expect(reducer(state, mark({identity: screen.identity, lastReadID: "1"}))).toEqual({
-        ids: [screen.identity],
+      expect(reducer(state, mark({identifier: screen.identifier, lastReadID: "1"}))).toEqual({
+        ids: [screen.identifier],
         entities: {
-          [screen.identity]: Object.assign({}, screen, {lastReadID: "1"}),
+          [screen.identifier]: Object.assign({}, screen, {lastReadID: "1"}),
         },
       });
     });
@@ -38,10 +38,10 @@ describe("@renderer/actions/screens", () => {
       const screen = builders.state.buildScreen();
       const state = adapters.screens.addMany(adapters.screens.getInitialState(), [screen]);
 
-      expect(reducer(state, setupSearch({identity: screen.identity, query: "くえりー"}))).toEqual({
-        ids: [screen.identity],
+      expect(reducer(state, setupSearch({identifier: screen.identifier, query: "くえりー"}))).toEqual({
+        ids: [screen.identifier],
         entities: {
-          [screen.identity]: Object.assign({}, screen, {
+          [screen.identifier]: Object.assign({}, screen, {
             options: {
               query: "くえりー",
             },
@@ -54,10 +54,10 @@ describe("@renderer/actions/screens", () => {
       const screen = builders.state.buildScreen();
       const state = adapters.screens.addMany(adapters.screens.getInitialState(), [screen]);
 
-      expect(reducer(state, setupSearch({identity: screen.identity, query: " く え り ー "}))).toEqual({
-        ids: [screen.identity],
+      expect(reducer(state, setupSearch({identifier: screen.identifier, query: " く え り ー "}))).toEqual({
+        ids: [screen.identifier],
         entities: {
-          [screen.identity]: Object.assign({}, screen, {
+          [screen.identifier]: Object.assign({}, screen, {
             options: {
               query: "く え り ー",
             },
@@ -69,10 +69,10 @@ describe("@renderer/actions/screens", () => {
       const screen = builders.state.buildScreen();
       const state = adapters.screens.addMany(adapters.screens.getInitialState(), [screen]);
 
-      expect(reducer(state, setupSearch({identity: screen.identity, query: ""}))).toEqual({
-        ids: [screen.identity],
+      expect(reducer(state, setupSearch({identifier: screen.identifier, query: ""}))).toEqual({
+        ids: [screen.identifier],
         entities: {
-          [screen.identity]: Object.assign({}, screen, {
+          [screen.identifier]: Object.assign({}, screen, {
             options: {
               query: "",
             },
@@ -86,10 +86,10 @@ describe("@renderer/actions/screens", () => {
       const screen = builders.state.buildScreen();
       const state = adapters.screens.addMany(adapters.screens.getInitialState(), [screen]);
 
-      expect(reducer(state, changeMode({identity: screen.identity, mode: "media"}))).toEqual({
-        ids: [screen.identity],
+      expect(reducer(state, changeMode({identifier: screen.identifier, mode: "media"}))).toEqual({
+        ids: [screen.identifier],
         entities: {
-          [screen.identity]: Object.assign({}, screen, {
+          [screen.identifier]: Object.assign({}, screen, {
             mode: "media",
           }),
         },
@@ -102,7 +102,7 @@ describe("@renderer/actions/screens", () => {
       const state = adapters.screens.getInitialState();
       const expected = adapters.screens.addMany(state, [screen]);
 
-      expect(reducer(state, prepareScreen(screen.identity))).toEqual(expected);
+      expect(reducer(state, prepareScreen(screen.identifier))).toEqual(expected);
     });
   });
   describe(closeScreen.toString(), () => {
@@ -111,10 +111,10 @@ describe("@renderer/actions/screens", () => {
       const screen2 = builders.state.buildScreen();
       const state = adapters.screens.addMany(adapters.screens.getInitialState(), [screen1, screen2]);
 
-      expect(reducer(state, closeScreen(screen2.identity))).toEqual({
-        ids: [screen1.identity],
+      expect(reducer(state, closeScreen(screen2.identifier))).toEqual({
+        ids: [screen1.identifier],
         entities: {
-          [screen1.identity]: screen1,
+          [screen1.identifier]: screen1,
         },
       });
     });
@@ -124,10 +124,10 @@ describe("@renderer/actions/screens", () => {
       const screen = builders.state.buildScreen();
       const state = adapters.screens.addMany(adapters.screens.getInitialState(), [screen]);
 
-      expect(reducer(state, updateScreenStatus({identity: screen.identity, status: "loading"}))).toEqual({
-        ids: [screen.identity],
+      expect(reducer(state, updateScreenStatus({identifier: screen.identifier, status: "loading"}))).toEqual({
+        ids: [screen.identifier],
         entities: {
-          [screen.identity]: Object.assign({}, screen, {status: {status: "loading"}}),
+          [screen.identifier]: Object.assign({}, screen, {status: {status: "loading"}}),
         },
       });
     });

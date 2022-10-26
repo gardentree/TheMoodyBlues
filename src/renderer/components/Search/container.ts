@@ -7,8 +7,8 @@ import adapters from "@libraries/adapter";
 
 const mapStateToProps = (state: TMB.State, own: OwnProps): StateProps => {
   const {screens, lineage} = state;
-  const screen = adapters.screens.getSelectors().selectById(screens, own.identity)!;
-  const branches = adapters.lineage.getSelectors().selectById(lineage, own.identity)?.branches || [];
+  const screen = adapters.screens.getSelectors().selectById(screens, own.identifier)!;
+  const branches = adapters.lineage.getSelectors().selectById(lineage, own.identifier)?.branches || [];
 
   const selector = formValueSelector("Search");
   const query = selector(state, "query");
@@ -22,7 +22,7 @@ const mapStateToProps = (state: TMB.State, own: OwnProps): StateProps => {
 const mapDispatchToProps = (dispatch: Dispatch, own: OwnProps): DispatchProps => {
   return {
     search: (values: {query: string}) => dispatch(actions.searchTweets(values.query)),
-    didMount: () => dispatch(actions.mountScreen(own.identity)),
+    didMount: () => dispatch(actions.mountScreen(own.identifier)),
   };
 };
 

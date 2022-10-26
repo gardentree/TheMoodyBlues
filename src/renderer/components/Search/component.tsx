@@ -4,7 +4,7 @@ import BranchBundle from "../BranchBundle";
 import {reduxForm, Field, InjectedFormProps} from "redux-form";
 
 export interface OwnProps {
-  identity: TMB.ScreenID;
+  identifier: TMB.ScreenID;
 }
 export interface StateProps {
   initialValues: {query: string};
@@ -22,7 +22,7 @@ type ComponentProperty = OwnProps & StateProps & DispatchProps;
 type Props = ComponentProperty & InjectedFormProps<FormProperty, ComponentProperty>;
 
 const Search = (props: Props) => {
-  const {identity, hasQuery, branches, handleSubmit, search, reset, didMount} = props;
+  const {identifier, hasQuery, branches, handleSubmit, search, reset, didMount} = props;
 
   useEffect(() => {
     didMount();
@@ -31,7 +31,7 @@ const Search = (props: Props) => {
   return (
     <div className="Search">
       <div style={{height: "100%"}}>
-        <Article identity={identity}>
+        <Article identifier={identifier}>
           <form className="search" onSubmit={handleSubmit(search)}>
             <div className="field">
               <Field name="query" component="input" type="search" className="form-control" />
@@ -47,7 +47,7 @@ const Search = (props: Props) => {
           </form>
         </Article>
 
-        <BranchBundle root={identity} branches={branches} />
+        <BranchBundle root={identifier} branches={branches} />
       </div>
     </div>
   );

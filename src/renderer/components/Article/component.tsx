@@ -3,7 +3,7 @@ import TweetList from "../TweetList";
 import MediaList from "../MediaList";
 
 export interface OwnProps {
-  identity: TMB.ScreenID;
+  identifier: TMB.ScreenID;
   children?: React.ReactNode;
 }
 export type StateProps = TMB.Screen;
@@ -15,14 +15,14 @@ export interface DispatchProps {
 type Props = OwnProps & StateProps & DispatchProps;
 
 const Article = (props: Props) => {
-  const {identity, tweets, mode, lastReadID, onMark, onShowModeMenu, children} = props;
+  const {identifier, tweets, mode, lastReadID, onMark, onShowModeMenu, children} = props;
 
   const article = (() => {
     switch (mode) {
       case "tweet":
-        return <TweetList identity={identity} tweets={tweets} lastReadID={lastReadID} />;
+        return <TweetList identifier={identifier} tweets={tweets} lastReadID={lastReadID} />;
       case "media":
-        return <MediaList identity={identity} tweets={tweets} />;
+        return <MediaList identifier={identifier} tweets={tweets} />;
       default:
         throw new Error(mode);
     }

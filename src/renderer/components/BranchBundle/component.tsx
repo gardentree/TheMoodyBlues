@@ -16,7 +16,7 @@ const BranchBundle = (props: Props) => {
     <TransitionGroup>
       {branches.map((branch) => (
         <CSSTransition key={branch} timeout={300} classNames="fade">
-          <Branch root={root} identity={branch} />
+          <Branch root={root} identifier={branch} />
         </CSSTransition>
       ))}
     </TransitionGroup>

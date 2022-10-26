@@ -25,12 +25,12 @@ describe("@renderer/actions/miscellany", () => {
 
   describe(reload.toString(), () => {
     it("as usual", () => {
-      const identity = faker.datatype.uuid();
+      const identifier = faker.datatype.uuid();
 
-      expect(reload(identity, true)).toEqual({
+      expect(reload(identifier, true)).toEqual({
         type: "reload",
         payload: {
-          identity,
+          identifier,
         },
         meta: {
           force: true,
@@ -39,12 +39,12 @@ describe("@renderer/actions/miscellany", () => {
       });
     });
     it("when silently", () => {
-      const identity = faker.datatype.uuid();
+      const identifier = faker.datatype.uuid();
 
-      expect(reload(identity, true, true)).toEqual({
+      expect(reload(identifier, true, true)).toEqual({
         type: "reload",
         payload: {
-          identity,
+          identifier,
         },
         meta: {
           force: true,
@@ -77,23 +77,23 @@ describe("@renderer/actions/miscellany", () => {
   });
   describe(mountScreen.toString(), () => {
     it("as usual", () => {
-      const identity = faker.datatype.uuid();
+      const identifier = faker.datatype.uuid();
 
-      expect(mountScreen(identity)).toEqual({
+      expect(mountScreen(identifier)).toEqual({
         type: "mountScreen",
         payload: {
-          identity,
+          identifier,
         },
       });
     });
   });
   describe(unmountScreen.toString(), () => {
     it("as usual", () => {
-      const identity = faker.datatype.uuid();
+      const identifier = faker.datatype.uuid();
 
-      expect(unmountScreen(identity)).toEqual({
+      expect(unmountScreen(identifier)).toEqual({
         type: "unmountScreen",
-        payload: {identity},
+        payload: {identifier},
       });
     });
   });
@@ -102,7 +102,7 @@ describe("@renderer/actions/miscellany", () => {
       expect(searchTweets("くえりー")).toEqual({
         type: "searchTweets",
         payload: {
-          identity: "search",
+          identifier: "search",
           query: "くえりー",
         },
       });

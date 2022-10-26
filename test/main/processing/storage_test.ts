@@ -2,7 +2,7 @@ import {build} from "@source/main/processing/storage";
 import {EVERYONE} from "@source/shared/defaults";
 
 const HOME = {
-  identity: "home",
+  identifier: "home",
   title: "Home",
   component: "Timeline",
   interval: 120,
@@ -12,7 +12,7 @@ const HOME = {
   active: true,
 };
 const SEARCH = {
-  identity: "search",
+  identifier: "search",
   title: "Search",
   component: "Search",
   interval: 60,
@@ -22,7 +22,7 @@ const SEARCH = {
   active: true,
 };
 const MENTIONS = {
-  identity: "mentions",
+  identifier: "mentions",
   title: "Mentions",
   component: "Timeline",
   interval: 300,

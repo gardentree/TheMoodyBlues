@@ -5,20 +5,20 @@ import * as timer from "./timer";
 
 const {facade} = window;
 
-export function* initialize(identity: TMB.ScreenID, preference: TMB.ScreenPreference) {
-  const tweets: Twitter.Tweet[] = yield call(facade.storage.getTweets, identity);
+export function* initialize(identifier: TMB.ScreenID, preference: TMB.ScreenPreference) {
+  const tweets: Twitter.Tweet[] = yield call(facade.storage.getTweets, identifier);
 
   if (tweets.length > 0) {
-    yield put(actions.updateTweets({identity, tweets}));
-    yield put(actions.mark({identity, lastReadID: tweets[0].id_str}));
+    yield put(actions.updateTweets({identifier, tweets}));
+    yield put(actions.mark({identifier, lastReadID: tweets[0].id_str}));
   } else {
-    yield put(actions.updateTweets({identity, tweets: []}));
+    yield put(actions.updateTweets({identifier, tweets: []}));
   }
 
-  yield timer.spawn(identity, preference.interval);
-  yield timer.start(identity);
+  yield timer.spawn(identifier, preference.interval);
+  yield timer.start(identifier);
 }
-export function* order(identity: TMB.ScreenID, screen: TMB.Screen, preference: TMB.Preference, force: boolean) {
+export function* order(identifier: TMB.ScreenID, screen: TMB.Screen, preference: TMB.Preference, force: boolean) {
   const oldTweets = force ? [] : screen.tweets;
 
   const parameters = (preference.screen.parameters || []).concat(latest(oldTweets) || []);
@@ -33,10 +33,10 @@ export function* order(identity: TMB.ScreenID, screen: TMB.Screen, preference: T
 
     const newTweets = tweets.concat(oldTweets).slice(0, 400);
 
-    yield call(facade.storage.setTweets, identity, newTweets);
-    yield put(actions.updateTweets({identity, tweets: newTweets}));
+    yield call(facade.storage.setTweets, identifier, newTweets);
+    yield put(actions.updateTweets({identifier, tweets: newTweets}));
   }
-  yield timer.restart(identity);
+  yield timer.restart(identifier);
 }
 
 function latest(tweets: Twitter.Tweet[]): string | null {

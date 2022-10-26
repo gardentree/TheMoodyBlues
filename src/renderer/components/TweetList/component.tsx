@@ -4,7 +4,7 @@ import {ErrorBoundary} from "react-error-boundary";
 import {CSSTransition, TransitionGroup} from "react-transition-group";
 
 export interface OwnProps {
-  identity: TMB.ScreenID;
+  identifier: TMB.ScreenID;
   tweets: Twitter.Tweet[];
   lastReadID: string | null;
 }

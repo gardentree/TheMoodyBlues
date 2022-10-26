@@ -1,5 +1,5 @@
 export const HOME: Omit<TMB.ScreenPreference, "active"> = {
-  identity: "home",
+  identifier: "home",
   title: "Home",
   component: "Timeline",
   interval: 120,
@@ -8,7 +8,7 @@ export const HOME: Omit<TMB.ScreenPreference, "active"> = {
   growl: true,
 };
 export const SEARCH: Omit<TMB.ScreenPreference, "active"> = {
-  identity: "search",
+  identifier: "search",
   title: "Search",
   component: "Search",
   interval: 60,
@@ -17,7 +17,7 @@ export const SEARCH: Omit<TMB.ScreenPreference, "active"> = {
   growl: false,
 };
 export const MENTIONS: Omit<TMB.ScreenPreference, "active"> = {
-  identity: "mentions",
+  identifier: "mentions",
   title: "Mentions",
   component: "Timeline",
   interval: 300,
@@ -25,7 +25,7 @@ export const MENTIONS: Omit<TMB.ScreenPreference, "active"> = {
   mute: false,
   growl: true,
 };
-export const LIST: Omit<TMB.ScreenPreference, "identity" | "title" | "active"> = {
+export const LIST: Omit<TMB.ScreenPreference, "identifier" | "title" | "active"> = {
   component: "Timeline",
   interval: 120,
   way: "retrieveTimelineOfList",

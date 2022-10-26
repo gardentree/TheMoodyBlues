@@ -5,15 +5,15 @@ import {builders, fail} from "@test/helper";
 
 describe(reorder.name, () => {
   it("reload", () => {
-    const screen = builders.state.buildScreen({identity: "search", options: {query: "くえりー"}});
+    const screen = builders.state.buildScreen({identifier: "search", options: {query: "くえりー"}});
     const screens = adapters.screens.addOne(adapters.screens.getInitialState(), screen);
 
-    const preference = builders.state.buildPreference({identity: "search"});
+    const preference = builders.state.buildPreference({identifier: "search"});
     const preferences = adapters.preferences.addOne(adapters.preferences.getInitialState(), preference);
 
     return expectSaga(reorder, {
       type: "",
-      payload: {identity: "search"},
+      payload: {identifier: "search"},
       meta: {force: false},
     })
       .provide([
@@ -44,7 +44,7 @@ describe(reorder.name, () => {
       })
       .put({
         type: "screens/updateTweets",
-        payload: {identity: "search", tweets: [], options: {query: "くえりー"}},
+        payload: {identifier: "search", tweets: [], options: {query: "くえりー"}},
       })
       .put({
         type: "search_START_TIMER",
@@ -58,10 +58,10 @@ describe(reorder.name, () => {
       });
   });
   it("reloadFocusedScreen", () => {
-    const screen = builders.state.buildScreen({identity: "search", options: {query: "くえりー"}});
+    const screen = builders.state.buildScreen({identifier: "search", options: {query: "くえりー"}});
     const screens = adapters.screens.addOne(adapters.screens.getInitialState(), screen);
 
-    const preference = builders.state.buildPreference({identity: "search"});
+    const preference = builders.state.buildPreference({identifier: "search"});
     const preferences = adapters.preferences.addOne(adapters.preferences.getInitialState(), preference);
 
     return expectSaga(reorderFocusedScreen as SagaType, {
@@ -96,7 +96,7 @@ describe(reorder.name, () => {
       })
       .put({
         type: "screens/updateTweets",
-        payload: {identity: "search", tweets: [], options: {query: "くえりー"}},
+        payload: {identifier: "search", tweets: [], options: {query: "くえりー"}},
       })
       .put({
         type: "search_START_TIMER",
@@ -113,20 +113,20 @@ describe(reorder.name, () => {
 
 describe(searchTweets.name, () => {
   const screen = builders.state.buildScreen({
-    identity: "search",
+    identifier: "search",
     options: {
       query: "くえりー",
     },
   });
   const screens = adapters.screens.addMany(adapters.screens.getInitialState(), [screen]);
   const preference = builders.state.buildPreference({
-    identity: "search",
+    identifier: "search",
   });
 
   const preferences = adapters.preferences.addMany(adapters.preferences.getInitialState(), [preference]);
 
   it("normal", () => {
-    return expectSaga(searchTweets, {type: "", payload: {identity: "search", query: "くえりー"}})
+    return expectSaga(searchTweets, {type: "", payload: {identifier: "search", query: "くえりー"}})
       .provide({
         select() {
           return {
@@ -149,14 +149,14 @@ describe(searchTweets.name, () => {
       })
       .put({
         type: "screens/setupSearch",
-        payload: {identity: "search", query: "くえりー"},
+        payload: {identifier: "search", query: "くえりー"},
       })
       .put({
         type: "search_STOP_TIMER",
       })
       .put({
         type: "screens/updateTweets",
-        payload: {identity: "search", tweets: [], options: {query: "くえりー"}},
+        payload: {identifier: "search", tweets: [], options: {query: "くえりー"}},
       })
       .put({
         type: "search_START_TIMER",

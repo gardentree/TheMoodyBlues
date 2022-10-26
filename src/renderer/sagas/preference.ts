@@ -10,8 +10,8 @@ function* prepareState(action: PayloadAction) {
   const actives = extractActives(newPreferences);
 
   yield put(actions.updatePreferences(newPreferences));
-  for (const identity of actives) {
-    yield put(actions.prepareScreen(identity));
+  for (const identifier of actives) {
+    yield put(actions.prepareScreen(identifier));
   }
   yield put(actions.setScreens(actives));
 }
@@ -21,19 +21,19 @@ function* reconfigure(action: PayloadAction) {
 
   const oldPreferences = state.preferences;
   const newPreferences = (yield call(libraries.loadPreferences)) as TMB.PreferenceMap;
-  const newIdentities = extractActives(newPreferences);
-  const oldIdentities = extractActives(oldPreferences);
+  const newIdentifiers = extractActives(newPreferences);
+  const oldIdentifiers = extractActives(oldPreferences);
 
   yield put(actions.updatePreferences(newPreferences));
-  for (const identity of newIdentities.filter((key) => !oldIdentities.includes(key))) {
-    yield put(actions.prepareScreen(identity));
+  for (const identifier of newIdentifiers.filter((key) => !oldIdentifiers.includes(key))) {
+    yield put(actions.prepareScreen(identifier));
   }
-  yield put(actions.setScreens(newIdentities));
-  for (const identity of oldIdentities.filter((key) => !newIdentities.includes(key))) {
-    yield put(actions.closeScreen(identity));
+  yield put(actions.setScreens(newIdentifiers));
+  for (const identifier of oldIdentifiers.filter((key) => !newIdentifiers.includes(key))) {
+    yield put(actions.closeScreen(identifier));
 
-    for (const branch of adapters.lineage.getSelectors().selectById(lineage, identity)?.branches || []) {
-      yield put(actions.clip({root: identity, branch: branch}));
+    for (const branch of adapters.lineage.getSelectors().selectById(lineage, identifier)?.branches || []) {
+      yield put(actions.clip({root: identifier, branch: branch}));
       yield put(actions.closeScreen(branch));
     }
   }
@@ -41,7 +41,7 @@ function* reconfigure(action: PayloadAction) {
 function extractActives(preferences: TMB.PreferenceMap): TMB.ScreenID[] {
   return Object.values(preferences.entities)
     .filter((preference) => preference!.screen.active)
-    .map((preference) => preference!.identity);
+    .map((preference) => preference!.identifier);
 }
 
 // prettier-ignore

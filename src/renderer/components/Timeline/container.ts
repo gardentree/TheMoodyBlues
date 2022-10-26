@@ -6,7 +6,7 @@ import adapters from "@libraries/adapter";
 
 const mapStateToProps = (state: TMB.State, own: OwnProps): StateProps => {
   const {lineage} = state;
-  const branches = adapters.lineage.getSelectors().selectById(lineage, own.identity)?.branches || [];
+  const branches = adapters.lineage.getSelectors().selectById(lineage, own.identifier)?.branches || [];
 
   return {
     branches,
@@ -14,8 +14,8 @@ const mapStateToProps = (state: TMB.State, own: OwnProps): StateProps => {
 };
 const mapDispatchToProps = (dispatch: Dispatch, own: OwnProps): DispatchProps => {
   return {
-    didMount: () => dispatch(actions.mountScreen(own.identity)),
-    willUnmount: () => dispatch(actions.unmountScreen(own.identity)),
+    didMount: () => dispatch(actions.mountScreen(own.identifier)),
+    willUnmount: () => dispatch(actions.unmountScreen(own.identifier)),
   };
 };
 

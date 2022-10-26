@@ -22,11 +22,11 @@ async function save() {
       continue;
     }
 
-    const [, identity, key] = matcher;
-    let preference = map.get(identity);
+    const [, identifier, key] = matcher;
+    let preference = map.get(identifier);
     if (!preference) {
       preference = {};
-      map.set(identity, preference);
+      map.set(identifier, preference);
     }
 
     let value: string | number | boolean;
@@ -42,15 +42,15 @@ async function save() {
     }
     preference[key] = value;
   }
-  const submitted = Array.from(map).map(([identity, preference]) => {
-    preference.identity = identity;
+  const submitted = Array.from(map).map(([identifier, preference]) => {
+    preference.identifier = identifier;
 
     return preference;
   });
 
   const currents = await getCurrentPreferences();
   const newPreferences = submitted.map((preference) => {
-    const current = currents.find((entry) => entry.identity == preference.identity);
+    const current = currents.find((entry) => entry.identifier == preference.identifier);
     return Object.assign({}, current, preference);
   });
 
@@ -81,25 +81,25 @@ const Screens = () => {
       <li key={index}>
         <fieldset disabled={!screen.active}>
           <legend>
-            <input name={`${screen.identity}[active]`} type="checkbox" defaultChecked={screen.active} onChange={handleFieldSetChange} />
+            <input name={`${screen.identifier}[active]`} type="checkbox" defaultChecked={screen.active} onChange={handleFieldSetChange} />
             {screen.title}
           </legend>
 
           <div className="checkbox">
             <label>
-              <input name={`${screen.identity}[mute]`} type="checkbox" defaultChecked={screen.mute} onChange={handleChange} />
+              <input name={`${screen.identifier}[mute]`} type="checkbox" defaultChecked={screen.mute} onChange={handleChange} />
               Mute
             </label>
           </div>
           <div className="checkbox">
             <label>
-              <input disabled={!growlIsRunning} name={`${screen.identity}[growl]`} type="checkbox" defaultChecked={growlIsRunning && screen.growl} onChange={handleChange} />
+              <input disabled={!growlIsRunning} name={`${screen.identifier}[growl]`} type="checkbox" defaultChecked={growlIsRunning && screen.growl} onChange={handleChange} />
               Growl
             </label>
           </div>
           <div className="form-group">
             <label>Interval</label>
-            <input name={`${screen.identity}[interval]`} type="number" className="form-control" defaultValue={screen.interval} min="60" max="300" step="60" onChange={handleChange} />
+            <input name={`${screen.identifier}[interval]`} type="number" className="form-control" defaultValue={screen.interval} min="60" max="300" step="60" onChange={handleChange} />
           </div>
         </fieldset>
       </li>

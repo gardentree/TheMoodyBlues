@@ -6,12 +6,12 @@ import adapters from "@libraries/adapter";
 
 const mapStateToProps = (state: TMB.State, own: OwnProps): TMB.Screen => {
   const {screens} = state;
-  const screen = adapters.screens.getSelectors().selectById(screens, own.identity)!;
+  const screen = adapters.screens.getSelectors().selectById(screens, own.identifier)!;
 
   return screen;
 };
 const mapDispatchToProps = (dispatch: Dispatch, own: OwnProps): DispatchProps => ({
-  onClose: () => dispatch(actions.clip({root: own.root, branch: own.identity})),
+  onClose: () => dispatch(actions.clip({root: own.root, branch: own.identifier})),
   didMount: (source: Twitter.Tweet) => dispatch(actions.focusTweet(source)),
 });
 export default connect(mapStateToProps, mapDispatchToProps)(Component);

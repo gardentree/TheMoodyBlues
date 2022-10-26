@@ -4,19 +4,19 @@ import {builders, fail} from "@test/helper";
 
 describe("search", () => {
   describe("#initialize", () => {
-    const identity = "search";
+    const identifier = "search";
 
     const preference = builders.state.buildScreenPreference({
-      identity: identity,
+      identifier: identifier,
     });
 
     it("when no cache", () => {
-      return expectSaga(initialize, identity, preference)
+      return expectSaga(initialize, identifier, preference)
         .provide([
           {
             spawn(effect, next) {
               expect(effect.fn.name).toBe("run");
-              expect(effect.args).toEqual([identity, 60 * 1000]);
+              expect(effect.args).toEqual([identifier, 60 * 1000]);
             },
           },
         ])
@@ -33,7 +33,7 @@ describe("search", () => {
 
   describe("#order", () => {
     it("normal", () => {
-      const identity = "search";
+      const identifier = "search";
 
       const old1 = builders.twitter.buildTweet({id_str: "old_1"});
       const new1 = builders.twitter.buildTweet({id_str: "new_1"});
@@ -47,10 +47,10 @@ describe("search", () => {
         },
       });
       const preference = builders.state.buildPreference({
-        identity: identity,
+        identifier: identifier,
       });
 
-      return expectSaga(order as SagaType, identity, screen, preference, false)
+      return expectSaga(order as SagaType, identifier, screen, preference, false)
         .provide([
           {
             call(effect, next) {
@@ -66,14 +66,14 @@ describe("search", () => {
           },
         ])
         .put({
-          type: `${identity}_STOP_TIMER`,
+          type: `${identifier}_STOP_TIMER`,
         })
         .put({
           type: "screens/updateTweets",
-          payload: {identity, tweets: [new1, new2, old1], options: {query: "くえりー"}},
+          payload: {identifier, tweets: [new1, new2, old1], options: {query: "くえりー"}},
         })
         .put({
-          type: `${identity}_START_TIMER`,
+          type: `${identifier}_START_TIMER`,
         })
         .run()
         .then((result) => {
@@ -84,7 +84,7 @@ describe("search", () => {
         });
     });
     it("query is blank", () => {
-      const identity = "search";
+      const identifier = "search";
 
       const screen = builders.state.buildScreen({
         tweets: [builders.twitter.buildTweet({id_str: "old_1"})],
@@ -94,16 +94,16 @@ describe("search", () => {
         },
       });
       const preference = builders.state.buildPreference({
-        identity: identity,
+        identifier: identifier,
       });
 
-      return expectSaga(order as SagaType, identity, screen, preference, false)
+      return expectSaga(order as SagaType, identifier, screen, preference, false)
         .put({
-          type: `${identity}_STOP_TIMER`,
+          type: `${identifier}_STOP_TIMER`,
         })
         .put({
           type: "screens/setupSearch",
-          payload: {identity, query: ""},
+          payload: {identifier, query: ""},
         })
         .run()
         .then((result) => {

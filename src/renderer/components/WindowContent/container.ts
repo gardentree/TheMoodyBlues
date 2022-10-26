@@ -11,7 +11,7 @@ const components = new Map<string, ContentComponent>([
 
 const mapStateToProps = (state: TMB.State, own: OwnProps): StateProps => {
   const {preferences} = state;
-  const preference = adapters.preferences.getSelectors().selectById(preferences, own.identity)!;
+  const preference = adapters.preferences.getSelectors().selectById(preferences, own.identifier)!;
 
   return {
     component: components.get(preference.screen.component)!,

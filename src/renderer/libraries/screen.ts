@@ -4,7 +4,7 @@ import adapters from "./adapter";
 const {facade} = window;
 
 export const INITIAL_VALUE: TMB.Screen = {
-  identity: "",
+  identifier: "",
   tweets: [],
   mode: "tweet",
   lastReadID: "",
@@ -19,18 +19,18 @@ export async function loadPreferences(): Promise<TMB.PreferenceMap> {
 
   return adapters.preferences.addMany(
     adapters.preferences.getInitialState(),
-    screens.map((screen) => ({identity: screen.identity, screen, mute}))
+    screens.map((screen) => ({identifier: screen.identifier, screen, mute}))
   );
 }
 
 export function mixPreferences(actives: TMB.ScreenPreference[], lists: Twitter.List[]): TMB.ScreenPreference[] {
-  const activeMap = new Map(actives.map((active) => [active.identity, Object.assign({active: true}, active)]));
+  const activeMap = new Map(actives.map((active) => [active.identifier, Object.assign({active: true}, active)]));
 
   const screens: TMB.ScreenPreference[] = [];
   screens.push(Object.assign({}, HOME, activeMap.get("home")));
   for (const list of lists) {
-    const identity = `list_${list.id_str}`;
-    screens.push(Object.assign({active: true}, LIST, {identity: identity, title: list.name, parameters: [list.id_str]}, activeMap.get(identity)));
+    const identifier = `list_${list.id_str}`;
+    screens.push(Object.assign({active: true}, LIST, {identifier: identifier, title: list.name, parameters: [list.id_str]}, activeMap.get(identifier)));
   }
   screens.push(Object.assign({}, SEARCH, activeMap.get("search")));
   screens.push(Object.assign({}, MENTIONS, activeMap.get("mentions")));

@@ -15,7 +15,7 @@ export const slice = createSlice({
     builder.addCase(addTaboo.fulfilled, (state, action: PayloadAction<TMB.MutePreference>) => {
       const mute = action.payload;
       for (const preference of adapters.preferences.getSelectors().selectAll(state)) {
-        adapters.preferences.updateOne(state, {id: preference.identity, changes: {mute: mute}});
+        adapters.preferences.updateOne(state, {id: preference.identifier, changes: {mute: mute}});
       }
     });
   },

@@ -3,7 +3,7 @@ import Article from "../Article";
 
 export interface OwnProps {
   root: TMB.ScreenID;
-  identity: TMB.ScreenID;
+  identifier: TMB.ScreenID;
 }
 export interface DispatchProps {
   onClose(): void;
@@ -12,7 +12,7 @@ export interface DispatchProps {
 type Props = OwnProps & TMB.Screen & DispatchProps;
 
 const Branch = (props: Props) => {
-  const {identity, options, onClose, didMount} = props;
+  const {identifier, options, onClose, didMount} = props;
 
   useEffect(() => {
     console.log(options);
@@ -23,7 +23,7 @@ const Branch = (props: Props) => {
 
   return (
     <div className="Branch">
-      <Article identity={identity}>
+      <Article identifier={identifier}>
         <button className="btn btn-default" onClick={onClose}>
           <span className="icon icon-cancel" />
         </button>

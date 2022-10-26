@@ -45,9 +45,9 @@ export function build(directory?: string) {
       setStore("preferences.mute", preference);
     },
 
-    getTweets: (identity: TMB.ScreenID) => {
+    getTweets: (identifier: TMB.ScreenID) => {
       return new Promise((resolve, reject) => {
-        storage.get(`${identity}.tweets`, (error: string, data: object) => {
+        storage.get(`${identifier}.tweets`, (error: string, data: object) => {
           if (error) return reject(error);
 
           let tweets: Twitter.Tweet[];
@@ -61,9 +61,9 @@ export function build(directory?: string) {
         });
       });
     },
-    setTweets: (identity: TMB.ScreenID, tweets: Twitter.Tweet[]) => {
+    setTweets: (identifier: TMB.ScreenID, tweets: Twitter.Tweet[]) => {
       return new Promise<void>((resolve, reject) => {
-        storage.set(`${identity}.tweets`, tweets, (error: string) => {
+        storage.set(`${identifier}.tweets`, tweets, (error: string) => {
           if (error) return reject(error);
 
           resolve();

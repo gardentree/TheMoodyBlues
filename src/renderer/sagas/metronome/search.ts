@@ -5,11 +5,11 @@ import * as timer from "./timer";
 
 const {facade} = window;
 
-export function* initialize(identity: TMB.ScreenID, preference: TMB.ScreenPreference) {
-  yield timer.spawn(identity, preference.interval);
+export function* initialize(identifier: TMB.ScreenID, preference: TMB.ScreenPreference) {
+  yield timer.spawn(identifier, preference.interval);
 }
-export function* order(identity: TMB.ScreenID, screen: TMB.Screen, preference: TMB.Preference, force: boolean) {
-  yield timer.stop(identity);
+export function* order(identifier: TMB.ScreenID, screen: TMB.Screen, preference: TMB.Preference, force: boolean) {
+  yield timer.stop(identifier);
 
   const oldTweets = screen.tweets;
   const query = screen.options?.query || "";
@@ -24,14 +24,14 @@ export function* order(identity: TMB.ScreenID, screen: TMB.Screen, preference: T
 
     const newTweets = tweets.concat(oldTweets).slice(0, 400);
 
-    yield put(actions.updateTweets({identity, tweets: newTweets, options: {query: query}}));
+    yield put(actions.updateTweets({identifier, tweets: newTweets, options: {query: query}}));
     if (tweets.length > 0 && oldTweets.length <= 0) {
-      yield put(actions.mark({identity, lastReadID: tweets[0].id_str}));
+      yield put(actions.mark({identifier, lastReadID: tweets[0].id_str}));
     }
 
-    yield timer.start(identity);
+    yield timer.start(identifier);
   } else {
-    yield put(actions.setupSearch({identity, query: ""}));
+    yield put(actions.setupSearch({identifier, query: ""}));
   }
 }
 

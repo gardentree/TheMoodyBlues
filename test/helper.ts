@@ -5,7 +5,7 @@ import * as DateUtility from "date-fns";
 function buildScreen(specifics?: Partial<TMB.Screen>): TMB.Screen {
   return Object.assign(
     {
-      identity: faker.helpers.unique(faker.datatype.uuid),
+      identifier: faker.helpers.unique(faker.datatype.uuid),
       tweets: [],
       mode: "tweet",
       lastReadID: "",
@@ -15,12 +15,12 @@ function buildScreen(specifics?: Partial<TMB.Screen>): TMB.Screen {
   );
 }
 function buildPreference(specifics?: Partial<TMB.Preference>): TMB.Preference {
-  const identity = specifics?.identity || faker.helpers.unique(faker.datatype.uuid);
+  const identifier = specifics?.identifier || faker.helpers.unique(faker.datatype.uuid);
 
   return Object.assign(
     {
-      identity: identity,
-      screen: buildScreenPreference({identity}),
+      identifier: identifier,
+      screen: buildScreenPreference({identifier}),
       mute: buildMutePreference(),
     },
     specifics
@@ -28,11 +28,11 @@ function buildPreference(specifics?: Partial<TMB.Preference>): TMB.Preference {
 }
 function buildScreenPreference(specifics?: Partial<TMB.ScreenPreference>): TMB.ScreenPreference {
   let preference: TMB.ScreenPreference | null;
-  switch (specifics?.identity) {
+  switch (specifics?.identifier) {
     case "home":
     case undefined:
       preference = {
-        identity: "home",
+        identifier: "home",
         title: "Home",
         component: "Timeline",
         interval: 120,
@@ -44,7 +44,7 @@ function buildScreenPreference(specifics?: Partial<TMB.ScreenPreference>): TMB.S
       break;
     case "search":
       preference = {
-        identity: "search",
+        identifier: "search",
         title: "Search",
         component: "Search",
         interval: 60,
@@ -56,7 +56,7 @@ function buildScreenPreference(specifics?: Partial<TMB.ScreenPreference>): TMB.S
       break;
     case "mentions":
       preference = {
-        identity: "mentions",
+        identifier: "mentions",
         title: "Mentions",
         component: "Timeline",
         interval: 300,
@@ -68,7 +68,7 @@ function buildScreenPreference(specifics?: Partial<TMB.ScreenPreference>): TMB.S
       break;
     default:
       preference = {
-        identity: specifics!.identity!,
+        identifier: specifics!.identifier!,
         title: "List",
         component: "Timeline",
         interval: 120,

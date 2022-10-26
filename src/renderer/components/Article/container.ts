@@ -8,7 +8,7 @@ const {facade} = window;
 
 const mapStateToProps = (state: TMB.State, own: OwnProps): StateProps => {
   const {screens} = state;
-  const screen = adapters.screens.getSelectors().selectById(screens, own.identity)!;
+  const screen = adapters.screens.getSelectors().selectById(screens, own.identifier)!;
 
   return {
     ...screen,
@@ -16,14 +16,14 @@ const mapStateToProps = (state: TMB.State, own: OwnProps): StateProps => {
 };
 const mapDispatchToProps = (dispatch: Dispatch, own: OwnProps): DispatchProps => ({
   onMark: (latest: Twitter.TweetID): void => {
-    const {identity} = own;
+    const {identifier} = own;
 
-    dispatch(actions.mark({identity, lastReadID: latest}));
+    dispatch(actions.mark({identifier, lastReadID: latest}));
   },
   onShowModeMenu: (mode: TMB.ArticleMode): void => {
-    const {identity} = own;
+    const {identifier} = own;
 
-    facade.actions.showModeMenu(identity, mode);
+    facade.actions.showModeMenu(identifier, mode);
   },
 });
 
