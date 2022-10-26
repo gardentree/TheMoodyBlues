@@ -14,6 +14,15 @@ import {setup as setupEvents} from "./events";
 import VerifierForm from "./components/VerifierForm";
 import Principal from "./components/Principal";
 
+import {CacheProvider} from "@emotion/react";
+import createCache from "@emotion/cache";
+
+const emotionalNonce = "WWvF+wAkbaqRKw52+C4eZ12x4WDR9TEVVScZgKVrwAI=";
+const styleCache = createCache({
+  key: "the-moody-blues",
+  nonce: emotionalNonce,
+});
+
 (() => {
   require("photon/dist/css/photon.css");
   require("@fortawesome/fontawesome-svg-core/styles.css");
@@ -54,10 +63,12 @@ facade.events.onLaunch(() => {
   store.dispatch(actions.prepareState());
 
   createRoot(document.getElementById("container")!).render(
-    <Provider store={store}>
-      <Principal />
-      <div id="modals" />
-    </Provider>
+    <CacheProvider value={styleCache}>
+      <Provider store={store}>
+        <Principal />
+        <div id="modals" />
+      </Provider>
+    </CacheProvider>
   );
 });
 facade.events.onAlert((error: unknown) => {
