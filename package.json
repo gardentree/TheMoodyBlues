@@ -48,7 +48,8 @@
     "redux-saga": "^1.2.1",
     "source-map-support": "^0.5.21",
     "twitter": "^1.7.1",
-    "twitter-v2": "https://github.com/gardentree/twitter-v2#7ef5812c311df805b60a59d876550c1b637eef98"
+    "twitter-v2": "https://github.com/gardentree/twitter-v2#7ef5812c311df805b60a59d876550c1b637eef98",
+    "typed-redux-saga": "^1.5.0"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.5.0",
