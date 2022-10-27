@@ -36,6 +36,7 @@ describe(reorder.name, () => {
               default:
                 fail(effect.fn.name);
             }
+            return;
           },
         },
       ])
@@ -88,6 +89,7 @@ describe(reorder.name, () => {
               default:
                 fail(effect.fn.name);
             }
+            return;
           },
         },
       ])

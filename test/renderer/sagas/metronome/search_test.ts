@@ -62,6 +62,7 @@ describe("search", () => {
                 default:
                   fail(effect.fn.name);
               }
+              return;
             },
           },
         ])

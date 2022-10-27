@@ -10,6 +10,7 @@ describe("@renderer/actions/principal", () => {
           fontSize: "12px",
         },
         nowLoading: false,
+        dialog: null,
       };
       expect(reducer(state, setScreens(["first"]))).toEqual({
         screens: ["first"],
@@ -18,6 +19,7 @@ describe("@renderer/actions/principal", () => {
           fontSize: "12px",
         },
         nowLoading: false,
+        dialog: null,
       });
     });
   });
@@ -31,6 +33,7 @@ describe("@renderer/actions/principal", () => {
           fontSize: "12px",
         },
         nowLoading: false,
+        dialog: null,
       };
       expect(reducer(state, focusScreen("second"))).toEqual({
         screens: ["first", "second"],
@@ -39,6 +42,7 @@ describe("@renderer/actions/principal", () => {
           fontSize: "12px",
         },
         nowLoading: false,
+        dialog: null,
       });
     });
   });
@@ -52,6 +56,7 @@ describe("@renderer/actions/principal", () => {
           fontSize: "12px",
         },
         nowLoading: false,
+        dialog: null,
       };
       expect(reducer(state, zoomIn())).toEqual({
         screens: [],
@@ -60,6 +65,7 @@ describe("@renderer/actions/principal", () => {
           fontSize: "13px",
         },
         nowLoading: false,
+        dialog: null,
       });
     });
   });
@@ -72,6 +78,7 @@ describe("@renderer/actions/principal", () => {
           fontSize: "12px",
         },
         nowLoading: false,
+        dialog: null,
       };
       expect(reducer(state, zoomOut())).toEqual({
         screens: [],
@@ -80,6 +87,7 @@ describe("@renderer/actions/principal", () => {
           fontSize: "11px",
         },
         nowLoading: false,
+        dialog: null,
       });
     });
   });
@@ -92,6 +100,7 @@ describe("@renderer/actions/principal", () => {
           fontSize: "20px",
         },
         nowLoading: false,
+        dialog: null,
       };
       expect(reducer(state, zoomReset())).toEqual({
         screens: [],
@@ -100,6 +109,7 @@ describe("@renderer/actions/principal", () => {
           fontSize: "12px",
         },
         nowLoading: false,
+        dialog: null,
       });
     });
   });
@@ -113,6 +123,7 @@ describe("@renderer/actions/principal", () => {
           fontSize: "12px",
         },
         nowLoading: false,
+        dialog: null,
       };
       expect(reducer(state, showLoading(true))).toEqual({
         screens: [],
@@ -121,6 +132,7 @@ describe("@renderer/actions/principal", () => {
           fontSize: "12px",
         },
         nowLoading: true,
+        dialog: null,
       });
     });
   });

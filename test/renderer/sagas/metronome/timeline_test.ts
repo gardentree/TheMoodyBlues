@@ -121,6 +121,7 @@ describe("retrieveTimeline", () => {
                 default:
                   fail(effect.fn.name);
               }
+              return;
             },
           },
         ])
@@ -175,6 +176,8 @@ describe("retrieveTimeline", () => {
                 default:
                   fail(effect.fn.name);
               }
+
+              return;
             },
           },
         ])
@@ -220,6 +223,7 @@ describe("retrieveTimeline", () => {
                 default:
                   fail(effect.fn.name);
               }
+              return;
             },
           },
         ])

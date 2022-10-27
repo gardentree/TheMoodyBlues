@@ -1,3 +1,4 @@
+import adapters from "@source/renderer/libraries/adapter";
 import nodeUtility from "util";
 import {builders} from "./helper";
 
@@ -20,8 +21,8 @@ const facade: TMB.Facade = {
   storage: {
     getGatekeeperPreference: () => Promise.resolve(mutePreference),
     setGatekeeperPreference: () => {},
-    getScreenPreferences: () => Promise.resolve([]),
-    setScreenPreferences: (screens: TMB.ScreenPreference[]) => {},
+    getScreenPreferences: () => Promise.resolve(adapters.preferences.getInitialState()),
+    setScreenPreferences: (screens) => {},
     getTweets: (name) => Promise.resolve([]),
     setTweets: (name, tweets) => {},
   },
