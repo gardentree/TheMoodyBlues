@@ -49,5 +49,3 @@ export default [
   takeLatest(actions.prepareState.type, wrap(prepareState)),
   takeLatest(actions.reconfigure.type, wrap(reconfigure)),
 ];
-
-console.log(actions.prepareState.type);

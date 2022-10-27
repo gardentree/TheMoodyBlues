@@ -15,7 +15,6 @@ const Branch = (props: Props) => {
   const {identifier, options, onClose, didMount} = props;
 
   useEffect(() => {
-    console.log(options);
     if (options?.source) {
       didMount(options!.source);
     }
