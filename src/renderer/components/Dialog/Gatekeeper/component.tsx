@@ -23,6 +23,7 @@ const MuteDialog = (props: Props) => {
     event.preventDefault();
 
     const expireAt = DateUtility.addMinutes(Date.now(), Number.parseInt(event.currentTarget.available.value));
+    const identifier = event.currentTarget.passenger.value;
 
     if (identifier == EVERYONE) {
       addTaboo({identifier: EVERYONE, name: "全員", keyword, expireAt: expireAt.getTime()});
