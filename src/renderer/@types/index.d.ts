@@ -6,7 +6,7 @@ declare namespace TheMoodyBlues {
     principal: Principal;
     preferences: NormalizedScreenPreference;
     gatekeeper: GatekeeperPreference;
-    lineage: Lineage;
+    lineage: NormalizedLineage;
     form: FormState;
   }
   type NormalizedScreen = EntityState<Screen>;
@@ -27,8 +27,8 @@ declare namespace TheMoodyBlues {
     source?: Twitter.Tweet;
   }>;
 
-  type Lineage = EntityState<LineageTree>;
-  interface LineageTree {
+  type NormalizedLineage = EntityState<Lineage>;
+  interface Lineage {
     root: ScreenID;
     branches: ScreenID[];
   }
