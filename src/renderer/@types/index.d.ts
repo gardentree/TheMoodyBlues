@@ -1,9 +1,12 @@
+type FormState = import("redux-form").FormState | Record<string, unknown>;
+
 declare namespace TheMoodyBlues {
   interface State {
     screens: ScreenMap;
     principal: Principal;
     preferences: PreferenceMap;
     lineage: Lineage;
+    form: FormState;
   }
   type ScreenMap = EntityState<Screen>;
   type PreferenceMap = EntityState<Preference>;
