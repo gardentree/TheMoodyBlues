@@ -19,7 +19,6 @@ declare namespace TheMoodyBlues {
     status: ScreenStatus;
     options?: ScreenOptions;
   }
-  type ArticleMode = "tweet" | "media";
   interface ScreenStatus {
     status: string;
   }

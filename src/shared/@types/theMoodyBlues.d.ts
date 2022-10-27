@@ -48,6 +48,7 @@ declare namespace TheMoodyBlues {
     keyword: string;
   }
 
+  type ArticleMode = "tweet" | "media";
   interface Facade {
     agent: TwitterAgent;
     storage: {
