@@ -8,17 +8,17 @@ const {facade} = window;
 export function* initialize(identifier: TMB.ScreenID, preference: TMB.ScreenPreference) {
   yield timer.spawn(identifier, preference.interval);
 }
-export function* order(identifier: TMB.ScreenID, screen: TMB.Screen, preference: TMB.Preference, force: boolean) {
+export function* order(identifier: TMB.ScreenID, screen: TMB.Screen, preference: TMB.ScreenPreference, gatekeeper: TMB.GatekeeperPreference, force: boolean) {
   yield timer.stop(identifier);
 
   const oldTweets = screen.tweets;
   const query = screen.options?.query || "";
   if (query.length > 0) {
     let tweets: Twitter.Tweet[] = yield call(facade.agent.search, query, latest(oldTweets));
-    if (preference.screen.mute) {
-      tweets = silence(tweets, preference.mute);
+    if (preference.mute) {
+      tweets = silence(tweets, gatekeeper);
     }
-    if (preference.screen.growl) {
+    if (preference.growl) {
       facade.actions.growl(tweets);
     }
 

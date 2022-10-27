@@ -14,15 +14,19 @@ declare namespace TheMoodyBlues {
     growl: boolean;
     mute: boolean;
   }
+  type NormalizedScreenPreference = EntityState<ScreenPreference>;
+
   type PassengerIdentifier = "@everyone" | Twitter.UserID;
-  type MutePreference = Record<PassengerIdentifier, PassengerPreference>;
+  type GatekeeperPreference = {
+    passengers: Record<PassengerIdentifier, PassengerPreference>;
+  };
   interface PassengerPreference {
     identifier: PassengerIdentifier;
     name: Twitter.ScreenName;
     taboos: Record<string, Taboo>;
-    withMedia: boolean;
-    retweetYourself: boolean;
-    retweetReaction: boolean;
+    withMedia?: boolean;
+    retweetYourself?: boolean;
+    retweetReaction?: boolean;
   }
   interface Taboo {
     keyword: string;
@@ -49,10 +53,10 @@ declare namespace TheMoodyBlues {
     storage: {
       getTweets(name: string): Promise<Twitter.Tweet[]>;
       setTweets(name: string, tweets: Twitter.Tweet[]): void;
-      getScreenPreferences(): Promise<ScreenPreference[]>;
-      setScreenPreferences(screens: ScreenPreference[]): void;
-      getMutePreference(): Promise<MutePreference>;
-      setMutePreference(preference: MutePreference): void;
+      getScreenPreferences(): Promise<NormalizedScreenPreference>;
+      setScreenPreferences(screens: NormalizedScreenPreference): void;
+      getGatekeeperPreference(): Promise<GatekeeperPreference>;
+      setGatekeeperPreference(preference: GatekeeperPreference): void;
     };
     actions: {
       authorize(verifier: string): void;

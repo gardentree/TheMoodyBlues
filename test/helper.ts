@@ -1,5 +1,5 @@
 import {faker} from "@faker-js/faker";
-import {MUTE} from "@source/shared/defaults";
+import {GATEKEEPER} from "@source/shared/defaults";
 import * as DateUtility from "date-fns";
 
 function buildScreen(specifics?: Partial<TMB.Screen>): TMB.Screen {
@@ -14,17 +14,10 @@ function buildScreen(specifics?: Partial<TMB.Screen>): TMB.Screen {
     specifics
   );
 }
-function buildPreference(specifics?: Partial<TMB.Preference>): TMB.Preference {
+function buildPreference(specifics?: Partial<TMB.ScreenPreference>): TMB.ScreenPreference {
   const identifier = specifics?.identifier || faker.helpers.unique(faker.datatype.uuid);
 
-  return Object.assign(
-    {
-      identifier: identifier,
-      screen: buildScreenPreference({identifier}),
-      mute: buildMutePreference(),
-    },
-    specifics
-  );
+  return Object.assign(buildScreenPreference({identifier}), specifics);
 }
 function buildScreenPreference(specifics?: Partial<TMB.ScreenPreference>): TMB.ScreenPreference {
   let preference: TMB.ScreenPreference | null;
@@ -81,8 +74,8 @@ function buildScreenPreference(specifics?: Partial<TMB.ScreenPreference>): TMB.S
 
   return Object.assign(preference, specifics);
 }
-function buildMutePreference(specifics?: TMB.MutePreference): TMB.MutePreference {
-  return Object.assign(MUTE, specifics);
+function buildGatekeeperPreference(specifics?: TMB.GatekeeperPreference): TMB.GatekeeperPreference {
+  return Object.assign(GATEKEEPER, specifics);
 }
 function buildTweet(specifics?: RecursivePartial<Twitter.Tweet>): Twitter.Tweet {
   const id_str = specifics?.id_str || faker.helpers.unique(faker.random.numeric);
@@ -118,7 +111,7 @@ export const builders = {
     buildScreen,
     buildPreference,
     buildScreenPreference,
-    buildMutePreference,
+    buildGatekeeperPreference,
   },
   twitter: {
     buildTweet,

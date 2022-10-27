@@ -2,10 +2,10 @@ import {EVERYONE} from "@shared/defaults";
 
 const {facade} = window;
 
-export function silence(tweets: Twitter.Tweet[], preference: TMB.MutePreference): Twitter.Tweet[] {
+export function silence(tweets: Twitter.Tweet[], preference: TMB.GatekeeperPreference): Twitter.Tweet[] {
   return tweets.filter((tweet) => {
-    for (const user of Object.values(preference)) {
-      if (!check(tweet, user!)) {
+    for (const passenger of Object.values(preference.passengers)) {
+      if (!check(tweet, passenger!)) {
         return false;
       }
     }
@@ -13,34 +13,34 @@ export function silence(tweets: Twitter.Tweet[], preference: TMB.MutePreference)
     return true;
   });
 }
-function check(tweet: Twitter.Tweet, user: TMB.PassengerPreference) {
-  if ([EVERYONE, tweet.user.id_str].includes(user.identifier)) {
+function check(tweet: Twitter.Tweet, passenger: TMB.PassengerPreference) {
+  if ([EVERYONE, tweet.user.id_str].includes(passenger.identifier)) {
     const matched = test(
       tweet,
-      Object.values(user.taboos).map((keyword) => keyword.keyword)
+      Object.values(passenger.taboos).map((keyword) => keyword.keyword)
     );
     if (matched) {
-      facade.logger.info(`silence: ${matched} of ${user.name}`);
+      facade.logger.info(`silence: ${matched} of ${passenger.name}`);
       return false;
     }
 
-    if (user.withMedia) {
+    if (passenger.withMedia) {
       if ((tweet.entities.media?.length || 0) > 0) {
-        facade.logger.info(`silence: media of ${user.name}`);
+        facade.logger.info(`silence: media of ${passenger.name}`);
         return false;
       }
     }
   }
 
-  if (user.retweetYourself) {
+  if (passenger.retweetYourself) {
     if (tweet.user.id_str == tweet.retweeted_status?.user.id_str) {
-      facade.logger.info(`silence: self retweet of ${user.name}`);
+      facade.logger.info(`silence: self retweet of ${passenger.name}`);
       return false;
     }
   }
-  if (user.retweetReaction) {
+  if (passenger.retweetReaction) {
     if (tweet.user.id_str == tweet.retweeted_status?.quoted_status?.user.id_str) {
-      facade.logger.info(`silence: retweet reaction of ${user.name}`);
+      facade.logger.info(`silence: retweet reaction of ${passenger.name}`);
       return false;
     }
   }

@@ -12,21 +12,21 @@ const tweetTemplate: Twitter.Tweet = builders.twitter.buildTweet({
     id_str: "gian",
   },
 });
-const preferenceTemplate: TMB.MutePreference = builders.state.buildMutePreference();
+const preferenceTemplate: TMB.GatekeeperPreference = builders.state.buildGatekeeperPreference();
 
 describe("silence", () => {
   describe("withMedia", () => {
     it("don't have media", () => {
       const tweet = Object.assign({}, tweetTemplate, {entities: {media: []}});
       const preference = Object.assign({}, preferenceTemplate);
-      preference[EVERYONE].withMedia = true;
+      preference.passengers[EVERYONE].withMedia = true;
 
       expect(silence([tweet], preference)).toEqual([tweet]);
     });
     it("have media", () => {
       const tweet = Object.assign({}, tweetTemplate, {entities: {media: [{}]}});
       const preference = Object.assign({}, preferenceTemplate);
-      preference[EVERYONE].withMedia = true;
+      preference.passengers[EVERYONE].withMedia = true;
 
       expect(silence([tweet], preference)).toEqual([]);
     });
@@ -42,7 +42,7 @@ describe("silence", () => {
         },
       });
       const preference = Object.assign({}, preferenceTemplate);
-      preference[EVERYONE].retweetYourself = true;
+      preference.passengers[EVERYONE].retweetYourself = true;
 
       expect(silence([tweet], preference)).toEqual([]);
     });
@@ -76,7 +76,7 @@ describe("silence", () => {
         },
       });
       const preference = Object.assign({}, preferenceTemplate);
-      preference[EVERYONE].retweetReaction = true;
+      preference.passengers[EVERYONE].retweetReaction = true;
 
       expect(silence([tweet], preference)).toEqual([]);
     });

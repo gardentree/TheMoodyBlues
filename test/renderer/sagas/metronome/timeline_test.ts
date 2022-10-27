@@ -104,8 +104,9 @@ describe("retrieveTimeline", () => {
       const preference = builders.state.buildPreference({
         identifier: "home",
       });
+      const gatekeeper = builders.state.buildGatekeeperPreference();
 
-      return expectSaga(order as SagaType, identifier, screen, preference, false)
+      return expectSaga(order as SagaType, identifier, screen, preference, gatekeeper, false)
         .provide([
           {
             call(effect, next) {
@@ -151,16 +152,15 @@ describe("retrieveTimeline", () => {
         lastReadID: 0,
       };
       const preference = {
-        screen: {
-          identifier: "home",
-          title: title,
-          component: "Timeline",
-          interval: 120,
-          way: "retrieveTimeline",
-        },
+        identifier: "home",
+        title: title,
+        component: "Timeline",
+        interval: 120,
+        way: "retrieveTimeline",
       };
+      const gatekeeper = builders.state.buildGatekeeperPreference();
 
-      return expectSaga(order as SagaType, identifier, screen, preference, true)
+      return expectSaga(order as SagaType, identifier, screen, preference, gatekeeper, true)
         .provide([
           {
             call(effect, next) {
@@ -202,13 +202,11 @@ describe("retrieveTimeline", () => {
         lastReadID: 0,
       };
       const preference = {
-        screen: {
-          identifier: "home",
-          title: title,
-          component: "Timeline",
-          interval: 120,
-          way: "retrieveTimeline",
-        },
+        identifier: "home",
+        title: title,
+        component: "Timeline",
+        interval: 120,
+        way: "retrieveTimeline",
       };
 
       return expectSaga(order as SagaType, identifier, screen, preference, false)

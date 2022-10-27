@@ -1,5 +1,5 @@
 import ElectronStore from "electron-store";
-import {HOME, SEARCH, MENTIONS, MUTE} from "@shared/defaults";
+import {HOME, SEARCH, MENTIONS, GATEKEEPER} from "@shared/defaults";
 import storage from "electron-json-storage";
 
 const SCREENS: TMB.ScreenPreference[] = [HOME, SEARCH, MENTIONS].map((template) => Object.assign({active: true}, template));
@@ -31,18 +31,18 @@ export function build(directory?: string) {
       setStore("access_token.secret", value);
     },
 
-    getScreenPreferences: (): TMB.ScreenPreference[] => {
-      return (getStore("preferences.screens") as TMB.ScreenPreference[]) || SCREENS;
+    getScreenPreferences: (): TMB.NormalizedScreenPreference => {
+      return (getStore("screens") as TMB.NormalizedScreenPreference) || SCREENS;
     },
-    setScreenPreferences: (screens: TMB.ScreenPreference[]) => {
-      setStore("preferences.screens", screens);
+    setScreenPreferences: (screens: TMB.NormalizedScreenPreference) => {
+      setStore("screens", screens);
     },
 
-    getMutePreference: (): TMB.MutePreference => {
-      return (getStore("preferences.mute") as TMB.MutePreference) || MUTE;
+    getGatekeeperPreference: (): TMB.GatekeeperPreference => {
+      return (getStore("gatekeeper") as TMB.GatekeeperPreference) || GATEKEEPER;
     },
-    setMutePreference: (preference: TMB.MutePreference) => {
-      setStore("preferences.mute", preference);
+    setGatekeeperPreference: (preference: TMB.GatekeeperPreference) => {
+      setStore("gatekeeper", preference);
     },
 
     getTweets: (identifier: TMB.ScreenID) => {

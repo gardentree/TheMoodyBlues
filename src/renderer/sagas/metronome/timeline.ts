@@ -18,16 +18,16 @@ export function* initialize(identifier: TMB.ScreenID, preference: TMB.ScreenPref
   yield timer.spawn(identifier, preference.interval);
   yield timer.start(identifier);
 }
-export function* order(identifier: TMB.ScreenID, screen: TMB.Screen, preference: TMB.Preference, force: boolean) {
+export function* order(identifier: TMB.ScreenID, screen: TMB.Screen, preference: TMB.ScreenPreference, gatekeeper: TMB.GatekeeperPreference, force: boolean) {
   const oldTweets = force ? [] : screen.tweets;
 
-  const parameters = (preference.screen.parameters || []).concat(latest(oldTweets) || []);
-  let tweets: Twitter.Tweet[] = yield call(facade.agent[preference.screen.way] as (...parameters: unknown[]) => Promise<Twitter.Tweet[]>, ...parameters);
+  const parameters = (preference.parameters || []).concat(latest(oldTweets) || []);
+  let tweets: Twitter.Tweet[] = yield call(facade.agent[preference.way] as (...parameters: unknown[]) => Promise<Twitter.Tweet[]>, ...parameters);
   if (tweets.length > 0) {
-    if (preference.screen.mute) {
-      tweets = silence(tweets, preference.mute);
+    if (preference.mute) {
+      tweets = silence(tweets, gatekeeper);
     }
-    if (preference.screen.growl) {
+    if (preference.growl) {
       facade.actions.growl(tweets);
     }
 

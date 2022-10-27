@@ -10,7 +10,7 @@ export interface OwnProps {
 type Props = OwnProps & DispatchProps;
 
 interface Form extends HTMLFormElement {
-  user: HTMLSelectElement;
+  passenger: HTMLSelectElement;
   available: HTMLSelectElement;
 }
 
@@ -40,7 +40,7 @@ const MuteDialog = (props: Props) => {
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>対象ユーザ</label>
-          <select name="user" className="form-control">
+          <select name="passenger" className="form-control">
             <option value={identifier}>{name}のみ</option>
             <option value={EVERYONE}>全員</option>
           </select>

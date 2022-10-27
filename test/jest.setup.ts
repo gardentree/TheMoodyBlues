@@ -5,7 +5,7 @@ if (typeof global.TextEncoder === "undefined") {
   global.TextEncoder = nodeUtility.TextEncoder;
 }
 
-const mutePreference = builders.state.buildMutePreference();
+const mutePreference = builders.state.buildGatekeeperPreference();
 
 const facade: TMB.Facade = {
   agent: {
@@ -18,8 +18,8 @@ const facade: TMB.Facade = {
     retrieveTimelineOfList: (list_id, since_id) => Promise.resolve([]),
   },
   storage: {
-    getMutePreference: () => Promise.resolve(mutePreference),
-    setMutePreference: () => {},
+    getGatekeeperPreference: () => Promise.resolve(mutePreference),
+    setGatekeeperPreference: () => {},
     getScreenPreferences: () => Promise.resolve([]),
     setScreenPreferences: (screens: TMB.ScreenPreference[]) => {},
     getTweets: (name) => Promise.resolve([]),

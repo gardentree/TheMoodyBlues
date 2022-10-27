@@ -1,11 +1,12 @@
 import * as React from "react";
 import {useState, useEffect} from "react";
 import {mixPreferences} from "@libraries/screen";
+import adapters from "@libraries/adapter";
 
 const {facade} = window;
 const growlIsRunning = facade.collaborators.growl();
 
-async function getCurrentPreferences() {
+async function getAllPreference() {
   const lists = await facade.agent.lists();
   const current = await facade.storage.getScreenPreferences();
 
@@ -15,7 +16,7 @@ async function getCurrentPreferences() {
 async function save() {
   const inputs = document.querySelectorAll("input");
 
-  const map = new Map();
+  const map = new Map<string, Partial<TMB.ScreenPreference>>();
   for (const input of inputs) {
     const matcher = /([^\[]+)\[([^\]]+)\]/.exec(input.name);
     if (!matcher) {
@@ -48,20 +49,19 @@ async function save() {
     return preference;
   });
 
-  const currents = await getCurrentPreferences();
-  const newPreferences = submitted.map((preference) => {
-    const current = currents.find((entry) => entry.identifier == preference.identifier);
-    return Object.assign({}, current, preference);
+  let allPreference = await getAllPreference();
+  submitted.forEach((preference) => {
+    allPreference = adapters.preferences.upsertOne(allPreference, preference as TMB.ScreenPreference);
   });
 
-  facade.storage.setScreenPreferences(newPreferences);
+  facade.storage.setScreenPreferences(allPreference);
 }
 
 const Screens = () => {
-  const [screens, setScreens] = useState<TMB.ScreenPreference[]>([]);
+  const [screens, setScreens] = useState<TMB.NormalizedScreenPreference>(adapters.preferences.getInitialState());
   useEffect(() => {
     (async () => {
-      setScreens(await getCurrentPreferences());
+      setScreens(await getAllPreference());
     })();
   }, []);
 
@@ -76,35 +76,38 @@ const Screens = () => {
     save();
   };
 
-  const elements = screens.map((screen, index) => {
-    return (
-      <li key={index}>
-        <fieldset disabled={!screen.active}>
-          <legend>
-            <input name={`${screen.identifier}[active]`} type="checkbox" defaultChecked={screen.active} onChange={handleFieldSetChange} />
-            {screen.title}
-          </legend>
+  const elements = adapters.preferences
+    .getSelectors()
+    .selectAll(screens)
+    .map((screen) => {
+      return (
+        <li key={screen.identifier}>
+          <fieldset disabled={!screen.active}>
+            <legend>
+              <input name={`${screen.identifier}[active]`} type="checkbox" defaultChecked={screen.active} onChange={handleFieldSetChange} />
+              {screen.title}
+            </legend>
 
-          <div className="checkbox">
-            <label>
-              <input name={`${screen.identifier}[mute]`} type="checkbox" defaultChecked={screen.mute} onChange={handleChange} />
-              Mute
-            </label>
-          </div>
-          <div className="checkbox">
-            <label>
-              <input disabled={!growlIsRunning} name={`${screen.identifier}[growl]`} type="checkbox" defaultChecked={growlIsRunning && screen.growl} onChange={handleChange} />
-              Growl
-            </label>
-          </div>
-          <div className="form-group">
-            <label>Interval</label>
-            <input name={`${screen.identifier}[interval]`} type="number" className="form-control" defaultValue={screen.interval} min="60" max="300" step="60" onChange={handleChange} />
-          </div>
-        </fieldset>
-      </li>
-    );
-  });
+            <div className="checkbox">
+              <label>
+                <input name={`${screen.identifier}[mute]`} type="checkbox" defaultChecked={screen.mute} onChange={handleChange} />
+                Mute
+              </label>
+            </div>
+            <div className="checkbox">
+              <label>
+                <input disabled={!growlIsRunning} name={`${screen.identifier}[growl]`} type="checkbox" defaultChecked={growlIsRunning && screen.growl} onChange={handleChange} />
+                Growl
+              </label>
+            </div>
+            <div className="form-group">
+              <label>Interval</label>
+              <input name={`${screen.identifier}[interval]`} type="number" className="form-control" defaultValue={screen.interval} min="60" max="300" step="60" onChange={handleChange} />
+            </div>
+          </fieldset>
+        </li>
+      );
+    });
 
   return (
     <div className="PreferencesScreens">

@@ -2,14 +2,14 @@ type FormState = import("redux-form").FormState | Record<string, unknown>;
 
 declare namespace TheMoodyBlues {
   interface State {
-    screens: ScreenMap;
+    screens: NormalizedScreen;
     principal: Principal;
-    preferences: PreferenceMap;
+    preferences: NormalizedScreenPreference;
+    gatekeeper: GatekeeperPreference;
     lineage: Lineage;
     form: FormState;
   }
-  type ScreenMap = EntityState<Screen>;
-  type PreferenceMap = EntityState<Preference>;
+  type NormalizedScreen = EntityState<Screen>;
 
   interface Screen {
     identifier: ScreenID;
@@ -27,12 +27,6 @@ declare namespace TheMoodyBlues {
     query?: string;
     source?: Twitter.Tweet;
   }>;
-
-  interface Preference {
-    identifier: ScreenID;
-    screen: ScreenPreference;
-    mute: MutePreference;
-  }
 
   type Lineage = EntityState<LineageTree>;
   interface LineageTree {

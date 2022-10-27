@@ -12,7 +12,7 @@ export function* launch(action: PayloadAction<{identifier: TMB.ScreenID}>) {
   const {preferences} = yield select();
   const preference = adapters.preferences.getSelectors().selectById(preferences, payload.identifier)!;
 
-  yield metronome.launch(payload.identifier, preference.screen);
+  yield metronome.launch(payload.identifier, preference);
 }
 
 export function* reorder(action: PayloadAction<{identifier: TMB.ScreenID}, string, {force: boolean}>) {
@@ -24,11 +24,11 @@ export function* reorderFocusedScreen(action: PayloadAction<Record<string, never
   yield order(focused, action.meta.force);
 }
 function* order(identifier: TMB.ScreenID, force: boolean) {
-  const {screens, preferences}: TMB.State = yield select();
+  const {screens, preferences, gatekeeper}: TMB.State = yield select();
   const screen = adapters.screens.getSelectors().selectById(screens, identifier)!;
   const preference = adapters.preferences.getSelectors().selectById(preferences, identifier)!;
 
-  yield metronome.play(identifier, screen, preference, force);
+  yield metronome.play(identifier, screen, preference, gatekeeper, force);
 }
 
 export function* searchTweets(action: PayloadAction<{identifier: TMB.ScreenID; query: string}>) {

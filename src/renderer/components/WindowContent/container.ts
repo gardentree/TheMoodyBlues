@@ -14,7 +14,7 @@ const mapStateToProps = (state: TMB.State, own: OwnProps): StateProps => {
   const preference = adapters.preferences.getSelectors().selectById(preferences, own.identifier)!;
 
   return {
-    component: components.get(preference.screen.component)!,
+    component: components.get(preference.component)!,
   };
 };
 export default connect(mapStateToProps)(Component);

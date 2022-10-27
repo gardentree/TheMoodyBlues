@@ -38,15 +38,14 @@ describe("defaults", () => {
   it("screen", () => {
     expect(storage.getScreenPreferences()).toEqual([HOME, SEARCH, MENTIONS]);
   });
-  it("mute", () => {
-    expect(storage.getMutePreference()).toEqual({
-      [EVERYONE]: {
-        identifier: EVERYONE,
-        name: "全員",
-        taboos: {},
-        withMedia: false,
-        retweetYourself: false,
-        retweetReaction: false,
+  it("gatekeeper", () => {
+    expect(storage.getGatekeeperPreference()).toEqual({
+      passengers: {
+        [EVERYONE]: {
+          identifier: EVERYONE,
+          name: "全員",
+          taboos: {},
+        },
       },
     });
   });

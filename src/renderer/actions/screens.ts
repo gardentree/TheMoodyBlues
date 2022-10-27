@@ -4,7 +4,7 @@ import {INITIAL_VALUE} from "@libraries/screen";
 
 type PartialScreen = Pick<TMB.Screen, "identifier"> & Partial<TMB.Screen>;
 
-function mergeScreen(state: TMB.ScreenMap, screen: PartialScreen) {
+function mergeScreen(state: TMB.NormalizedScreen, screen: PartialScreen) {
   return adapters.screens.updateOne(state, {id: screen.identifier, changes: screen});
 }
 

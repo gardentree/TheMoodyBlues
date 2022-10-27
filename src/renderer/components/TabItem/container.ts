@@ -11,7 +11,7 @@ const mapStateToProps = (state: TMB.State, own: OwnProps): StateProps => {
   const unread = tweets ? tweets.filter((tweet: Twitter.Tweet) => tweet.id_str > lastReadID).length : 0;
 
   return {
-    title: preference.screen.title,
+    title: preference.title,
     unread,
   };
 };

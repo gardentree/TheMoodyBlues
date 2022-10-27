@@ -16,8 +16,8 @@ const components = {
 export function* launch(identifier: TMB.ScreenID, preference: TMB.ScreenPreference) {
   yield components[preference.component].initialize(identifier, preference);
 }
-export function* play(identifier: TMB.ScreenID, screen: TMB.Screen, preference: TMB.Preference, force: boolean) {
-  yield components[preference.screen.component].order(identifier, screen, preference, force);
+export function* play(identifier: TMB.ScreenID, screen: TMB.Screen, preference: TMB.ScreenPreference, gatekeeper: TMB.GatekeeperPreference, force: boolean) {
+  yield components[preference.component].order(identifier, screen, preference, gatekeeper, force);
 }
 export function* close(identifier: TMB.ScreenID) {
   yield timer.shutdown(identifier);

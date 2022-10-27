@@ -118,12 +118,12 @@ function observe(renderer: WebContents, agent: TMB.TwitterAgent) {
     storage.setTweets(name, tweets);
   });
   ipcMain.handle(FacadeActions.STORAGE_MUTE_LOAD, (event, values) => {
-    return storage.getMutePreference();
+    return storage.getGatekeeperPreference();
   });
   ipcMain.on(FacadeActions.STORAGE_MUTE_SAVE, (event, values) => {
     const {preference} = values;
 
-    storage.setMutePreference(preference);
+    storage.setGatekeeperPreference(preference);
   });
 
   ipcMain.on(FacadeActions.OPEN_TWEET_MENU, (event, context: TMB.TweetMenu) => {

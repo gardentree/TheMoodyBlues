@@ -1,7 +1,8 @@
 import * as React from "react";
 import {useState, useEffect} from "react";
 import {test} from "@libraries/silencer";
-import {MUTE, EVERYONE} from "@shared/defaults";
+import {GATEKEEPER, EVERYONE} from "@shared/defaults";
+import adapters from "@libraries/adapter";
 
 const {facade} = window;
 
@@ -10,21 +11,23 @@ interface Form extends HTMLFormElement {
 }
 
 const Mute = () => {
-  const [preference, setPreference] = useState<TMB.MutePreference>(MUTE);
+  const [preference, setPreference] = useState<TMB.GatekeeperPreference>(GATEKEEPER);
   const [tweets, setTweets] = useState<Twitter.Tweet[]>([]);
   const [matched, setMatched] = useState<string[]>([]);
 
-  const everyone = preference[EVERYONE];
+  const everyone = preference.passengers[EVERYONE];
 
   useEffect(() => {
     (async () => {
-      setPreference(await facade.storage.getMutePreference());
+      setPreference(await facade.storage.getGatekeeperPreference());
     })();
   }, []);
   useEffect(() => {
     (async () => {
       const preferences = await facade.storage.getScreenPreferences();
-      const promises = preferences
+      const promises = adapters.preferences
+        .getSelectors()
+        .selectAll(preferences)
         .filter((preference) => preference.mute)
         .map((preference: TMB.ScreenPreference) => {
           return facade.storage.getTweets(preference.identifier);
@@ -43,7 +46,7 @@ const Mute = () => {
     everyone.taboos[keyword] = {keyword, expireAt: 0};
 
     const newPreference = Object.assign({}, preference, {[everyone.identifier]: everyone});
-    facade.storage.setMutePreference(newPreference);
+    facade.storage.setGatekeeperPreference(newPreference);
 
     event.currentTarget.keyword.value = "";
     setPreference(newPreference);
@@ -55,7 +58,7 @@ const Mute = () => {
       delete everyone.taboos[keyword];
 
       const newPreference = Object.assign({}, preference, {[everyone.identifier]: everyone});
-      facade.storage.setMutePreference(newPreference);
+      facade.storage.setGatekeeperPreference(newPreference);
 
       setPreference(newPreference);
     }

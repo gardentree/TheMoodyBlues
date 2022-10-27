@@ -1,12 +1,14 @@
-import {put, call, takeLatest, select} from "redux-saga/effects";
+import {put, call, takeLatest, select} from "typed-redux-saga";
 import {PayloadAction} from "@reduxjs/toolkit";
 import * as actions from "@actions";
 import * as libraries from "@libraries/screen";
 import {wrap} from "./library";
 import adapters from "@libraries/adapter";
 
-function* prepareState(action: PayloadAction) {
-  const newPreferences = (yield call(libraries.loadPreferences)) as TMB.PreferenceMap;
+const facade = window.facade;
+
+export function* prepareState(action: PayloadAction) {
+  const newPreferences = (yield call(libraries.loadPreferences)) as TMB.NormalizedScreenPreference;
   const actives = extractActives(newPreferences);
 
   yield put(actions.updatePreferences(newPreferences));
@@ -14,13 +16,16 @@ function* prepareState(action: PayloadAction) {
     yield put(actions.prepareScreen(identifier));
   }
   yield put(actions.setScreens(actives));
+
+  const gatekeeper = yield* call(facade.storage.getGatekeeperPreference);
+  yield put(actions.updateGatekeeper(gatekeeper));
 }
-function* reconfigure(action: PayloadAction) {
+export function* reconfigure(action: PayloadAction) {
   const state: TMB.State = yield select();
   const {lineage} = state;
 
   const oldPreferences = state.preferences;
-  const newPreferences = (yield call(libraries.loadPreferences)) as TMB.PreferenceMap;
+  const newPreferences = (yield call(libraries.loadPreferences)) as TMB.NormalizedScreenPreference;
   const newIdentifiers = extractActives(newPreferences);
   const oldIdentifiers = extractActives(oldPreferences);
 
@@ -38,9 +43,9 @@ function* reconfigure(action: PayloadAction) {
     }
   }
 }
-function extractActives(preferences: TMB.PreferenceMap): TMB.ScreenID[] {
+function extractActives(preferences: TMB.NormalizedScreenPreference): TMB.ScreenID[] {
   return Object.values(preferences.entities)
-    .filter((preference) => preference!.screen.active)
+    .filter((preference) => preference!.active)
     .map((preference) => preference!.identifier);
 }
 

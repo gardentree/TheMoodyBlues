@@ -13,27 +13,29 @@ export const INITIAL_VALUE: TMB.Screen = {
   },
 };
 
-export async function loadPreferences(): Promise<TMB.PreferenceMap> {
-  const screens = await facade.storage.getScreenPreferences();
-  const mute: TMB.MutePreference = await facade.storage.getMutePreference();
-
-  return adapters.preferences.addMany(
-    adapters.preferences.getInitialState(),
-    screens.map((screen) => ({identifier: screen.identifier, screen, mute}))
-  );
+export async function loadPreferences(): Promise<TMB.NormalizedScreenPreference> {
+  return await facade.storage.getScreenPreferences();
 }
 
-export function mixPreferences(actives: TMB.ScreenPreference[], lists: Twitter.List[]): TMB.ScreenPreference[] {
-  const activeMap = new Map(actives.map((active) => [active.identifier, Object.assign({active: true}, active)]));
+export function mixPreferences(current: TMB.NormalizedScreenPreference, lists: Twitter.List[]): TMB.NormalizedScreenPreference {
+  let allPreference = adapters.preferences.getInitialState();
+  const selector = adapters.preferences.getSelectors();
 
-  const screens: TMB.ScreenPreference[] = [];
-  screens.push(Object.assign({}, HOME, activeMap.get("home")));
+  allPreference = adapters.preferences.addOne(allPreference, selector.selectById(current, HOME.identifier)!);
+
   for (const list of lists) {
     const identifier = `list_${list.id_str}`;
-    screens.push(Object.assign({active: true}, LIST, {identifier: identifier, title: list.name, parameters: [list.id_str]}, activeMap.get(identifier)));
+    const currentList = selector.selectById(current, identifier);
+    if (currentList) {
+      allPreference = adapters.preferences.addOne(allPreference, currentList);
+    } else {
+      const newList = Object.assign({}, LIST, {active: true, identifier: identifier, title: list.name, parameters: [list.id_str]});
+      allPreference = adapters.preferences.addOne(allPreference, newList);
+    }
   }
-  screens.push(Object.assign({}, SEARCH, activeMap.get("search")));
-  screens.push(Object.assign({}, MENTIONS, activeMap.get("mentions")));
 
-  return screens;
+  allPreference = adapters.preferences.addOne(allPreference, selector.selectById(current, SEARCH.identifier)!);
+  allPreference = adapters.preferences.addOne(allPreference, selector.selectById(current, MENTIONS.identifier)!);
+
+  return allPreference;
 }

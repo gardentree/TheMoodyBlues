@@ -34,13 +34,12 @@ export const LIST: Omit<TMB.ScreenPreference, "identifier" | "title" | "active">
 };
 
 export const EVERYONE = "@everyone";
-export const MUTE: TMB.MutePreference = {
-  [EVERYONE]: {
-    identifier: EVERYONE,
-    name: "全員",
-    taboos: {},
-    withMedia: false,
-    retweetYourself: false,
-    retweetReaction: false,
+export const GATEKEEPER: TMB.GatekeeperPreference = {
+  passengers: {
+    [EVERYONE]: {
+      identifier: EVERYONE,
+      name: "全員",
+      taboos: {},
+    },
   },
 };
