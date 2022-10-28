@@ -96,3 +96,11 @@ form {
     align-items: center;
   }
 }
+
+.pane-group {
+  filter: var(--filter);
+
+  table {
+    color: initial;
+  }
+}
