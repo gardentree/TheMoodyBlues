@@ -1,6 +1,6 @@
 import {guard, test} from "@libraries/gatekeeper";
 import {EVERYONE} from "@source/shared/defaults";
-import {builders} from "@test/helper";
+import {builders, convertRecord} from "@test/helper";
 import * as fs from "fs";
 
 const tweetTemplate: Twitter.Tweet = builders.twitter.buildTweet({
@@ -15,6 +15,28 @@ const tweetTemplate: Twitter.Tweet = builders.twitter.buildTweet({
 const preferenceTemplate: TMB.GatekeeperPreference = builders.preference.buildGatekeeper();
 
 describe(guard.name, () => {
+  describe("taboo", () => {
+    it("when own tweet", () => {
+      const tweet = builders.twitter.buildTweet();
+
+      const taboo = builders.preference.buildTaboo({keyword: "/.*/"});
+      const passenger = builders.preference.buildPassenger({identifier: tweet.user.id_str, taboos: convertRecord([taboo], "keyword")});
+      const gatekeeper = builders.preference.buildGatekeeper([passenger]);
+
+      expect(guard([tweet], gatekeeper)).toEqual([]);
+    });
+    it("when retweet", () => {
+      const tweet = builders.twitter.buildTweet();
+      const retweet = builders.twitter.buildTweet({retweeted_status: tweet});
+
+      const taboo = builders.preference.buildTaboo({keyword: "/.*/"});
+      const passenger = builders.preference.buildPassenger({identifier: retweet.user.id_str, taboos: convertRecord([taboo], "keyword")});
+      const gatekeeper = builders.preference.buildGatekeeper([passenger]);
+
+      expect(guard([retweet], gatekeeper)).toEqual([]);
+    });
+  });
+
   describe("withMedia", () => {
     it("don't have media", () => {
       const tweet = Object.assign({}, tweetTemplate, {entities: {media: []}});

@@ -16,21 +16,23 @@ interface Form extends HTMLFormElement {
 
 const Gatekeeper = (props: Props) => {
   const {context, addTaboo, requestClose} = props;
-  const {id_str: identifier, screen_name: name} = context.tweet.user;
   const {keyword} = context;
+
+  const passengers = [];
+  passengers.push(makePassengerTag(context.tweet.user.id_str, context.tweet.user.screen_name));
+  if (context.tweet.retweeted_status) {
+    passengers.push(makePassengerTag(context.tweet.retweeted_status.user.id_str, context.tweet.retweeted_status.user.screen_name));
+  }
+  passengers.push(makePassengerTag(EVERYONE, "全員"));
 
   const handleSubmit = (event: React.SyntheticEvent<Form>) => {
     event.preventDefault();
 
     const available = Number.parseInt(event.currentTarget.available.value);
     const expireAt = available ? DateUtility.addMinutes(Date.now(), Number.parseInt(event.currentTarget.available.value)).getTime() : 0;
-    const identifier = event.currentTarget.passenger.value;
+    const [identifier, name] = event.currentTarget.passenger.value.split(":");
 
-    if (identifier == EVERYONE) {
-      addTaboo({identifier: EVERYONE, name: "全員", keyword, expireAt});
-    } else {
-      addTaboo({identifier, name, keyword, expireAt});
-    }
+    addTaboo({identifier, name, keyword, expireAt});
 
     requestClose();
   };
@@ -42,8 +44,7 @@ const Gatekeeper = (props: Props) => {
         <div className="form-group">
           <label>対象ユーザ</label>
           <select name="passenger" className="form-control">
-            <option value={identifier}>{name}のみ</option>
-            <option value={EVERYONE}>全員</option>
+            {passengers}
           </select>
         </div>
         <div className="form-group">
@@ -67,5 +68,8 @@ const Gatekeeper = (props: Props) => {
     </>
   );
 };
+function makePassengerTag(identifier: TMB.PassengerIdentifier, name: string) {
+  return <option value={`${identifier}:${name}`}>{name}</option>;
+}
 
 export default Gatekeeper;

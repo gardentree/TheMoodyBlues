@@ -4,15 +4,16 @@ export function showMenuForTweet(tweet: Twitter.Tweet) {
   return (event: React.SyntheticEvent<HTMLElement>) => {
     event.stopPropagation();
 
-    let target: Twitter.Tweet;
-    if (tweet.retweeted_status) {
-      target = tweet.retweeted_status;
-    } else {
-      target = tweet;
-    }
-
     const keyword = (window.getSelection() || "").toString().trim();
 
-    facade.actions.openTweetMenu({tweet: target, keyword: keyword});
+    facade.actions.openTweetMenu({tweet: tweet, keyword: keyword});
   };
+}
+
+export function extractOriginalFrom(tweet: Twitter.Tweet) {
+  if (tweet.retweeted_status) {
+    return tweet.retweeted_status;
+  } else {
+    return tweet;
+  }
 }

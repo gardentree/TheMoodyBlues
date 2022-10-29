@@ -14,7 +14,7 @@ export function guard(tweets: Twitter.Tweet[], preference: TMB.GatekeeperPrefere
   });
 }
 function check(tweet: Twitter.Tweet, passenger: TMB.PassengerPreference) {
-  if ([EVERYONE, tweet.user.id_str].includes(passenger.identifier)) {
+  if ([EVERYONE, tweet.user.id_str, tweet.retweeted_status?.user.id_str].includes(passenger.identifier)) {
     const matched = test(
       tweet,
       Object.values(passenger.taboos).map((keyword) => keyword.keyword)

@@ -13,14 +13,14 @@ describe("<TweetBody />", () => {
       const json = builders.twitter.buildTweet({
         full_text: "@foo てすとぉ",
         display_text_range: [5, 9],
-        entities: builders.twitter.buildEntities({
+        entities: {
           user_mentions: [
             {
               indices: [0, 4],
             },
           ],
           urls: [],
-        }),
+        },
       });
 
       const wrapper = shallow(<TweetBody tweet={json} expand={true} search={fail} />);

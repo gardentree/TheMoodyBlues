@@ -113,7 +113,7 @@ const preference = {
 
 const twitter = {
   buildTweet: (specifics?: RecursivePartial<Twitter.Tweet>): Twitter.Tweet => {
-    const id_str = specifics?.id_str || faker.helpers.unique(faker.random.numeric);
+    const id_str = specifics?.id_str || faker.helpers.unique(faker.random.numeric, [16]);
     const full_text = specifics?.full_text || faker.lorem.lines();
 
     return Object.assign(
@@ -121,7 +121,11 @@ const twitter = {
         id: parseInt(id_str),
         id_str,
         full_text: full_text,
-        user: {},
+        user: {
+          id_str: faker.helpers.unique(faker.random.numeric, [16]),
+          profile_image_url_https: faker.internet.url(),
+          screen_name: faker.lorem.word(),
+        },
         display_text_range: [0, full_text.length],
         entities: twitter.buildEntities(specifics?.entities),
         created_at: DateUtility.format(faker.date.past(), "E MMM d H:m:s x yyyy"),

@@ -1,5 +1,6 @@
 import {MiddlewareAPI} from "redux";
 import * as actions from "@actions";
+import {extractOriginalFrom} from "@libraries/tools";
 
 const {facade} = window;
 
@@ -26,7 +27,8 @@ export function setup(store: MiddlewareAPI) {
     store.dispatch(actions.reloadFocusedScreen(true));
   });
   facade.events.onOpenTweetInBrowser((tweet: Twitter.Tweet) => {
-    facade.actions.openExternal(`https://twitter.com/${tweet.user.screen_name}/status/${tweet.id_str}`);
+    const {user, id_str} = extractOriginalFrom(tweet);
+    facade.actions.openExternal(`https://twitter.com/${user.screen_name}/status/${id_str}`);
   });
   facade.events.onRefreshPreferences(() => {
     store.dispatch(actions.reconfigure());
@@ -38,10 +40,10 @@ export function setup(store: MiddlewareAPI) {
     store.dispatch(actions.searchTweets(keyword));
   });
   facade.events.onShowChainForTweet((tweet: Twitter.Tweet) => {
-    store.dispatch(actions.displayConversation(tweet, {yourself: true}));
+    store.dispatch(actions.displayConversation(extractOriginalFrom(tweet), {yourself: true}));
   });
   facade.events.onShowConversationForTweet((tweet: Twitter.Tweet) => {
-    store.dispatch(actions.displayConversation(tweet));
+    store.dispatch(actions.displayConversation(extractOriginalFrom(tweet)));
   });
   facade.events.onZoomIn(() => {
     store.dispatch(actions.zoomIn());
