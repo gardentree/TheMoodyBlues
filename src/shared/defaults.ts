@@ -42,4 +42,5 @@ export const GATEKEEPER: TMB.GatekeeperPreference = {
       taboos: {},
     },
   },
+  checkedAt: Date.now(),
 };

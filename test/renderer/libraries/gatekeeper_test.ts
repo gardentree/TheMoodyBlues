@@ -1,4 +1,4 @@
-import {silence, test} from "@libraries/silencer";
+import {guard, test} from "@libraries/gatekeeper";
 import {EVERYONE} from "@source/shared/defaults";
 import {builders} from "@test/helper";
 import * as fs from "fs";
@@ -14,21 +14,21 @@ const tweetTemplate: Twitter.Tweet = builders.twitter.buildTweet({
 });
 const preferenceTemplate: TMB.GatekeeperPreference = builders.state.buildGatekeeperPreference();
 
-describe("silence", () => {
+describe(guard.name, () => {
   describe("withMedia", () => {
     it("don't have media", () => {
       const tweet = Object.assign({}, tweetTemplate, {entities: {media: []}});
       const preference = Object.assign({}, preferenceTemplate);
       preference.passengers[EVERYONE].withMedia = true;
 
-      expect(silence([tweet], preference)).toEqual([tweet]);
+      expect(guard([tweet], preference)).toEqual([tweet]);
     });
     it("have media", () => {
       const tweet = Object.assign({}, tweetTemplate, {entities: {media: [{}]}});
       const preference = Object.assign({}, preferenceTemplate);
       preference.passengers[EVERYONE].withMedia = true;
 
-      expect(silence([tweet], preference)).toEqual([]);
+      expect(guard([tweet], preference)).toEqual([]);
     });
   });
 
@@ -44,7 +44,7 @@ describe("silence", () => {
       const preference = Object.assign({}, preferenceTemplate);
       preference.passengers[EVERYONE].retweetYourself = true;
 
-      expect(silence([tweet], preference)).toEqual([]);
+      expect(guard([tweet], preference)).toEqual([]);
     });
 
     it("when others retweet", () => {
@@ -57,7 +57,7 @@ describe("silence", () => {
       });
       const preference = Object.assign({}, preferenceTemplate, {retweetYourself: true});
 
-      expect(silence([tweet], preference)).toEqual([tweet]);
+      expect(guard([tweet], preference)).toEqual([tweet]);
     });
   });
 
@@ -78,7 +78,7 @@ describe("silence", () => {
       const preference = Object.assign({}, preferenceTemplate);
       preference.passengers[EVERYONE].retweetReaction = true;
 
-      expect(silence([tweet], preference)).toEqual([]);
+      expect(guard([tweet], preference)).toEqual([]);
     });
   });
 });
@@ -104,12 +104,12 @@ describe("test", () => {
       });
 
       it("when retweet", () => {
-        const tweet = JSON.parse(fs.readFileSync("./test/renderer/libraries/silencer/retweet.json").toString());
+        const tweet = JSON.parse(fs.readFileSync("./test/renderer/libraries/gatekeeper/retweet.json").toString());
 
         expect(test(tweet, ["here"])).not.toBeNull();
       });
       it("when quote tweet", () => {
-        const tweet = JSON.parse(fs.readFileSync("./test/renderer/libraries/silencer/quote.json").toString());
+        const tweet = JSON.parse(fs.readFileSync("./test/renderer/libraries/gatekeeper/quote.json").toString());
 
         expect(test(tweet, ["Friendly"])).not.toBeNull();
       });

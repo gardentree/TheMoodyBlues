@@ -47,6 +47,7 @@ describe("defaults", () => {
           taboos: {},
         },
       },
+      checkedAt: expect.anything(),
     });
   });
 });

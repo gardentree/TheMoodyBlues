@@ -14,7 +14,7 @@ interface Form extends HTMLFormElement {
   available: HTMLSelectElement;
 }
 
-const MuteDialog = (props: Props) => {
+const Gatekeeper = (props: Props) => {
   const {context, addTaboo, requestClose} = props;
   const {id_str: identifier, screen_name: name} = context.tweet.user;
   const {keyword} = context;
@@ -22,13 +22,14 @@ const MuteDialog = (props: Props) => {
   const handleSubmit = (event: React.SyntheticEvent<Form>) => {
     event.preventDefault();
 
-    const expireAt = DateUtility.addMinutes(Date.now(), Number.parseInt(event.currentTarget.available.value));
+    const available = Number.parseInt(event.currentTarget.available.value);
+    const expireAt = available ? DateUtility.addMinutes(Date.now(), Number.parseInt(event.currentTarget.available.value)).getTime() : 0;
     const identifier = event.currentTarget.passenger.value;
 
     if (identifier == EVERYONE) {
-      addTaboo({identifier: EVERYONE, name: "全員", keyword, expireAt: expireAt.getTime()});
+      addTaboo({identifier: EVERYONE, name: "全員", keyword, expireAt});
     } else {
-      addTaboo({identifier, name, keyword, expireAt: expireAt.getTime()});
+      addTaboo({identifier, name, keyword, expireAt});
     }
 
     requestClose();
@@ -48,12 +49,13 @@ const MuteDialog = (props: Props) => {
         <div className="form-group">
           <label>期限</label>
           <select name="available" className="form-control">
+            <option value={1}>1分</option>
             <option value={30}>30分</option>
             <option value={60}>1時間</option>
             <option value={60 * 24 * 7}>7日</option>
             <option value={60 * 24 * 30}>30日</option>
             <option value={60 * 24 * 90}>90日</option>
-            <option value={60 * 24 * 365 * 10}>無期限</option>
+            <option value={0}>無期限</option>
           </select>
         </div>
         <div className="form-actions">
@@ -66,4 +68,4 @@ const MuteDialog = (props: Props) => {
   );
 };
 
-export default MuteDialog;
+export default Gatekeeper;

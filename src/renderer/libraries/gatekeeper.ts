@@ -2,7 +2,7 @@ import {EVERYONE} from "@shared/defaults";
 
 const {facade} = window;
 
-export function silence(tweets: Twitter.Tweet[], preference: TMB.GatekeeperPreference): Twitter.Tweet[] {
+export function guard(tweets: Twitter.Tweet[], preference: TMB.GatekeeperPreference): Twitter.Tweet[] {
   return tweets.filter((tweet) => {
     for (const passenger of Object.values(preference.passengers)) {
       if (!check(tweet, passenger!)) {

@@ -1,6 +1,6 @@
 import {put, call} from "redux-saga/effects";
 import * as actions from "@actions";
-import {silence} from "@libraries/silencer";
+import {guard} from "@libraries/gatekeeper";
 import * as timer from "./timer";
 
 const {facade} = window;
@@ -16,7 +16,7 @@ export function* order(identifier: TMB.ScreenID, screen: TMB.Screen, preference:
   if (query.length > 0) {
     let tweets: Twitter.Tweet[] = yield call(facade.agent.search, query, latest(oldTweets));
     if (preference.mute) {
-      tweets = silence(tweets, gatekeeper);
+      tweets = guard(tweets, gatekeeper);
     }
     if (preference.growl) {
       facade.actions.growl(tweets);

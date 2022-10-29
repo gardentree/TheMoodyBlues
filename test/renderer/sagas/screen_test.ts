@@ -2,6 +2,7 @@ import {expectSaga} from "redux-saga-test-plan";
 import {reorder, reorderFocusedScreen, searchTweets} from "@source/renderer/sagas/screen/stories";
 import adapters from "@source/renderer/libraries/adapter";
 import {builders, fail} from "@test/helper";
+import {GATEKEEPER} from "@source/shared/defaults";
 
 describe(reorder.name, () => {
   it("reload", () => {
@@ -25,6 +26,7 @@ describe(reorder.name, () => {
               principal: {
                 focused: "Timeline",
               },
+              gatekeeper: GATEKEEPER,
             };
           },
         },
@@ -78,6 +80,7 @@ describe(reorder.name, () => {
               principal: {
                 focused: "search",
               },
+              gatekeeper: GATEKEEPER,
             };
           },
         },
@@ -142,6 +145,7 @@ describe(searchTweets.name, () => {
             principal: {
               focused: "Timeline",
             },
+            gatekeeper: GATEKEEPER,
           };
         },
       })

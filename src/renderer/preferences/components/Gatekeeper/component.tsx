@@ -40,7 +40,7 @@ const Gatekeeper = () => {
     return (
       <tr key={taboo.keyword}>
         <td>{taboo.keyword}</td>
-        <td>{`${DateUtility.format(new Date(taboo.expireAt), "yyyy-MM-dd HH:mm")}まで`}</td>
+        <td>{taboo.expireAt ? `${DateUtility.format(new Date(taboo.expireAt), "yyyy-MM-dd HH:mm")}まで` : "無期限"}</td>
       </tr>
     );
   });

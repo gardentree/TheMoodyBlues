@@ -4,6 +4,7 @@ import {selectFocusedScreenID} from "@libraries/selector";
 import * as actions from "@actions";
 import * as metronome from "../metronome";
 import adapters from "@libraries/adapter";
+import * as lodash from "lodash";
 
 const {facade} = window;
 
@@ -28,7 +29,35 @@ function* order(identifier: TMB.ScreenID, force: boolean) {
   const screen = adapters.screens.getSelectors().selectById(screens, identifier)!;
   const preference = adapters.preferences.getSelectors().selectById(preferences, identifier)!;
 
-  yield metronome.play(identifier, screen, preference, gatekeeper, force);
+  const checkedGatekeeper = checkGatekeeper(gatekeeper);
+  if (checkedGatekeeper.checkedAt != gatekeeper.checkedAt) {
+    yield put(actions.updateGatekeeper(checkedGatekeeper));
+  }
+
+  yield metronome.play(identifier, screen, preference, checkedGatekeeper, force);
+}
+export function checkGatekeeper(gatekeeper: TMB.GatekeeperPreference): TMB.GatekeeperPreference {
+  const newGatekeeper = lodash.cloneDeep(gatekeeper);
+  let modified = false;
+
+  const now = Date.now();
+  if (newGatekeeper.checkedAt + 1000 * 60 < now) {
+    for (const passenger of Object.values(newGatekeeper.passengers)) {
+      for (const taboo of Object.values(passenger.taboos)) {
+        if (taboo.expireAt && taboo.expireAt < now) {
+          delete newGatekeeper.passengers[passenger.identifier].taboos[taboo.keyword];
+          modified = true;
+        }
+      }
+    }
+
+    newGatekeeper.checkedAt = now;
+    if (modified) {
+      facade.storage.setGatekeeperPreference(newGatekeeper);
+    }
+  }
+
+  return newGatekeeper;
 }
 
 export function* searchTweets(action: PayloadAction<{identifier: TMB.ScreenID; query: string}>) {

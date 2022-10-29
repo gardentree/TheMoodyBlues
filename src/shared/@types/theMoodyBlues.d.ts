@@ -19,6 +19,7 @@ declare namespace TheMoodyBlues {
   type PassengerIdentifier = "@everyone" | Twitter.UserID;
   type GatekeeperPreference = {
     passengers: Record<PassengerIdentifier, PassengerPreference>;
+    checkedAt: number;
   };
   interface PassengerPreference {
     identifier: PassengerIdentifier;

@@ -1,5 +1,5 @@
 import {faker} from "@faker-js/faker";
-import {GATEKEEPER} from "@source/shared/defaults";
+import {EVERYONE, GATEKEEPER} from "@source/shared/defaults";
 import * as DateUtility from "date-fns";
 
 function buildScreen(specifics?: Partial<TMB.Screen>): TMB.Screen {
@@ -74,9 +74,41 @@ function buildScreenPreference(specifics?: Partial<TMB.ScreenPreference>): TMB.S
 
   return Object.assign(preference, specifics);
 }
-function buildGatekeeperPreference(specifics?: TMB.GatekeeperPreference): TMB.GatekeeperPreference {
-  return Object.assign(GATEKEEPER, specifics);
+function buildGatekeeperPreference(specifics?: Partial<TMB.GatekeeperPreference> | TMB.PassengerPreference[]): TMB.GatekeeperPreference {
+  if (Array.isArray(specifics)) {
+    return {passengers: convertRecord(specifics, "identifier"), checkedAt: Date.now()};
+  } else {
+    return Object.assign({}, GATEKEEPER, specifics);
+  }
 }
+function buildPassengerPreference(specifics?: Partial<TMB.PassengerPreference> | TMB.Taboo[]): TMB.PassengerPreference {
+  if (Array.isArray(specifics)) {
+    return {
+      identifier: EVERYONE,
+      name: "everyone",
+      taboos: convertRecord(specifics, "keyword"),
+    };
+  } else {
+    return Object.assign(
+      {
+        identifier: EVERYONE,
+        name: "everyone",
+        taboos: {},
+      },
+      specifics
+    );
+  }
+}
+function buildTabooPreference(specifics?: Partial<TMB.Taboo>): TMB.Taboo {
+  return Object.assign(
+    {
+      keyword: faker.helpers.unique(faker.animal.cat),
+      expireAt: 0,
+    },
+    specifics
+  );
+}
+
 function buildTweet(specifics?: RecursivePartial<Twitter.Tweet>): Twitter.Tweet {
   const id_str = specifics?.id_str || faker.helpers.unique(faker.random.numeric);
   const full_text = specifics?.full_text || faker.lorem.lines();
@@ -112,11 +144,16 @@ export const builders = {
     buildPreference,
     buildScreenPreference,
     buildGatekeeperPreference,
+    buildPassengerPreference,
+    buildTabooPreference,
   },
   twitter: {
     buildTweet,
     buildEntities,
   },
+};
+export const convertRecord = <E>(entities: E[], key: string): Record<string, E> => {
+  return Object.fromEntries(entities.map((entity) => [entity[key], entity]));
 };
 
 export const recursiveObjectContaining = (source: unknown) => {
