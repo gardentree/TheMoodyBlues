@@ -21,7 +21,7 @@ export const slice = createSlice({
     setupSearch: (state, action: PayloadAction<{identifier: TMB.ScreenID; query: string}>) => {
       const {identifier, query} = action.payload;
 
-      return mergeScreen(state, {identifier, options: {query: query.trim()}});
+      return mergeScreen(state, {identifier, tweets: [], options: {query: query.trim()}});
     },
     changeMode: (state, action: PayloadAction<{identifier: TMB.ScreenID; mode: TMB.ArticleMode}>) => {
       return mergeScreen(state, action.payload);

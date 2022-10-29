@@ -35,13 +35,15 @@ describe("@renderer/actions/screens", () => {
 
   describe(setupSearch.toString(), () => {
     it("as usual", () => {
-      const screen = builders.state.buildScreen();
+      const tweet = builders.twitter.buildTweet();
+      const screen = builders.state.buildScreen({tweets: [tweet]});
       const state = adapters.screens.addMany(adapters.screens.getInitialState(), [screen]);
 
       expect(reducer(state, setupSearch({identifier: screen.identifier, query: "くえりー"}))).toEqual({
         ids: [screen.identifier],
         entities: {
           [screen.identifier]: Object.assign({}, screen, {
+            tweets: [],
             options: {
               query: "くえりー",
             },
