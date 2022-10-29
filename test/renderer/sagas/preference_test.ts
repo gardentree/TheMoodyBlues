@@ -7,8 +7,8 @@ import rootReducer from "@source/renderer/actions/reducer";
 
 describe(prepareState.name, () => {
   it("reload", () => {
-    const preferences: TMB.NormalizedScreenPreference = adapters.preferences.addMany(adapters.preferences.getInitialState(), [builders.state.buildScreenPreference({identifier: "home"})]);
-    const gatekeeper: TMB.GatekeeperPreference = builders.state.buildGatekeeperPreference();
+    const preferences: TMB.NormalizedScreenPreference = adapters.preferences.addMany(adapters.preferences.getInitialState(), [builders.preference.buildScreen({identifier: "home"})]);
+    const gatekeeper: TMB.GatekeeperPreference = builders.preference.buildGatekeeper();
 
     return expectSaga(prepareState as SagaType, {
       type: "",

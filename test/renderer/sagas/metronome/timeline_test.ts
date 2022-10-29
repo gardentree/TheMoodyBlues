@@ -7,7 +7,7 @@ describe("retrieveTimeline", () => {
     it("when have cache", () => {
       const identifier = "home";
 
-      const preference = builders.state.buildScreenPreference({
+      const preference = builders.preference.buildScreen({
         identifier: identifier,
       });
 
@@ -101,10 +101,10 @@ describe("retrieveTimeline", () => {
         tweets: [old1],
         lastReadID: "0",
       });
-      const preference = builders.state.buildPreference({
+      const preference = builders.preference.buildScreen({
         identifier: "home",
       });
-      const gatekeeper = builders.state.buildGatekeeperPreference();
+      const gatekeeper = builders.preference.buildGatekeeper();
 
       return expectSaga(order as SagaType, identifier, screen, preference, gatekeeper, false)
         .provide([
@@ -159,7 +159,7 @@ describe("retrieveTimeline", () => {
         interval: 120,
         way: "retrieveTimeline",
       };
-      const gatekeeper = builders.state.buildGatekeeperPreference();
+      const gatekeeper = builders.preference.buildGatekeeper();
 
       return expectSaga(order as SagaType, identifier, screen, preference, gatekeeper, true)
         .provide([

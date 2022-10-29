@@ -9,7 +9,7 @@ describe(reorder.name, () => {
     const screen = builders.state.buildScreen({identifier: "search", options: {query: "くえりー"}});
     const screens = adapters.screens.addOne(adapters.screens.getInitialState(), screen);
 
-    const preference = builders.state.buildPreference({identifier: "search"});
+    const preference = builders.preference.buildScreen({identifier: "search"});
     const preferences = adapters.preferences.addOne(adapters.preferences.getInitialState(), preference);
 
     return expectSaga(reorder, {
@@ -64,7 +64,7 @@ describe(reorder.name, () => {
     const screen = builders.state.buildScreen({identifier: "search", options: {query: "くえりー"}});
     const screens = adapters.screens.addOne(adapters.screens.getInitialState(), screen);
 
-    const preference = builders.state.buildPreference({identifier: "search"});
+    const preference = builders.preference.buildScreen({identifier: "search"});
     const preferences = adapters.preferences.addOne(adapters.preferences.getInitialState(), preference);
 
     return expectSaga(reorderFocusedScreen as SagaType, {
@@ -124,7 +124,7 @@ describe(searchTweets.name, () => {
     },
   });
   const screens = adapters.screens.addMany(adapters.screens.getInitialState(), [screen]);
-  const preference = builders.state.buildPreference({
+  const preference = builders.preference.buildScreen({
     identifier: "search",
   });
 

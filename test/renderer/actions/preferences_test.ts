@@ -6,7 +6,7 @@ describe("@renderer/actions/preferences", () => {
   describe(updatePreferences.toString(), () => {
     it("when initialization", () => {
       const state = adapters.preferences.getInitialState();
-      const preference = builders.state.buildPreference();
+      const preference = builders.preference.buildScreen();
       const preferences = adapters.preferences.addMany(adapters.preferences.getInitialState(), [preference]);
 
       expect(reducer(state, updatePreferences(preferences))).toEqual(preferences);

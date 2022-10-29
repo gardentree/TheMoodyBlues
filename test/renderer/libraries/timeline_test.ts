@@ -2,13 +2,13 @@ import {mixPreferences} from "@libraries/screen";
 import adapters from "@source/renderer/libraries/adapter";
 import {builders} from "@test/helper";
 
-const HOME = builders.state.buildScreenPreference({
+const HOME = builders.preference.buildScreen({
   identifier: "home",
 });
-const SEARCH = builders.state.buildScreenPreference({
+const SEARCH = builders.preference.buildScreen({
   identifier: "search",
 });
-const MENTIONS = builders.state.buildScreenPreference({
+const MENTIONS = builders.preference.buildScreen({
   identifier: "mentions",
 });
 
@@ -26,7 +26,7 @@ describe("mixPreferences", () => {
   it("when add list", () => {
     const current = adapters.preferences.addMany(adapters.preferences.getInitialState(), [HOME, SEARCH, MENTIONS]);
 
-    const list = builders.state.buildScreenPreference({
+    const list = builders.preference.buildScreen({
       identifier: "list_news",
       title: "News",
       growl: true,

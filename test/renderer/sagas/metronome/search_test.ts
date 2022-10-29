@@ -6,7 +6,7 @@ describe("search", () => {
   describe("#initialize", () => {
     const identifier = "search";
 
-    const preference = builders.state.buildScreenPreference({
+    const preference = builders.preference.buildScreen({
       identifier: identifier,
     });
 
@@ -46,7 +46,7 @@ describe("search", () => {
           query: "くえりー",
         },
       });
-      const preference = builders.state.buildPreference({
+      const preference = builders.preference.buildScreen({
         identifier: identifier,
       });
 
@@ -94,7 +94,7 @@ describe("search", () => {
           query: "",
         },
       });
-      const preference = builders.state.buildPreference({
+      const preference = builders.preference.buildScreen({
         identifier: identifier,
       });
 

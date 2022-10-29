@@ -12,15 +12,15 @@ describe(reorder.name, () => {
     const home = builders.state.buildScreen({identifier: "home"});
     const screens = adapters.screens.addOne(adapters.screens.getInitialState(), home);
 
-    const preference = builders.state.buildPreference({identifier: home.identifier});
+    const preference = builders.preference.buildScreen({identifier: home.identifier});
     const preferences = adapters.preferences.addOne(adapters.preferences.getInitialState(), preference);
 
-    const indefinite = builders.state.buildTabooPreference({keyword: "indefinite", expireAt: 0});
-    const valid = builders.state.buildTabooPreference({keyword: "valid", expireAt: now + 1000 * 60 * 30});
-    const expired = builders.state.buildTabooPreference({keyword: "expired", expireAt: now - 1000 * 60 * 30});
+    const indefinite = builders.preference.buildTaboo({keyword: "indefinite", expireAt: 0});
+    const valid = builders.preference.buildTaboo({keyword: "valid", expireAt: now + 1000 * 60 * 30});
+    const expired = builders.preference.buildTaboo({keyword: "expired", expireAt: now - 1000 * 60 * 30});
 
-    const passenger = builders.state.buildPassengerPreference([indefinite, valid, expired]);
-    const gatekeeper = builders.state.buildGatekeeperPreference({passengers: {[passenger.identifier]: passenger}, checkedAt: now - 1000 * 60 * 10});
+    const passenger = builders.preference.buildPassenger([indefinite, valid, expired]);
+    const gatekeeper = builders.preference.buildGatekeeper({passengers: {[passenger.identifier]: passenger}, checkedAt: now - 1000 * 60 * 10});
 
     return expectSaga(reorder, {
       type: "",
@@ -64,7 +64,7 @@ describe(reorder.name, () => {
 
         expect(effects.put).toHaveLength(1);
         const actual = effects.put[0].payload.action.payload;
-        expect(actual.passengers).toEqual({[passenger.identifier]: builders.state.buildPassengerPreference([indefinite, valid])});
+        expect(actual.passengers).toEqual({[passenger.identifier]: builders.preference.buildPassenger([indefinite, valid])});
         expect(actual.checkedAt).toBeGreaterThan(now);
 
         expect(effects.call).toHaveLength(1);
@@ -75,7 +75,7 @@ describe(reorder.name, () => {
 describe(checkGatekeeper.name, () => {
   it("when valid", () => {
     const spy = jest.spyOn(facade.storage, "setGatekeeperPreference");
-    const gatekeeper = builders.state.buildGatekeeperPreference({checkedAt: Date.now()});
+    const gatekeeper = builders.preference.buildGatekeeper({checkedAt: Date.now()});
 
     expect(checkGatekeeper(gatekeeper)).toEqual(gatekeeper);
     expect(spy).not.toBeCalled();
@@ -86,7 +86,7 @@ describe(checkGatekeeper.name, () => {
     const now = Date.now();
     jest.useFakeTimers().setSystemTime(now);
 
-    const gatekeeper = builders.state.buildGatekeeperPreference({checkedAt: now - 1000 * 60 * 10});
+    const gatekeeper = builders.preference.buildGatekeeper({checkedAt: now - 1000 * 60 * 10});
 
     expect(checkGatekeeper(gatekeeper)).toEqual(Object.assign({}, gatekeeper, {checkedAt: now}));
     expect(spy).not.toBeCalled();
@@ -98,12 +98,12 @@ describe(checkGatekeeper.name, () => {
     const now = Date.now();
     jest.useFakeTimers().setSystemTime(now);
 
-    const indefinite = builders.state.buildTabooPreference({keyword: "indefinite", expireAt: 0});
-    const valid = builders.state.buildTabooPreference({keyword: "valid", expireAt: now + 1000 * 60 * 30});
-    const expired = builders.state.buildTabooPreference({keyword: "expired", expireAt: now - 1000 * 60 * 30});
+    const indefinite = builders.preference.buildTaboo({keyword: "indefinite", expireAt: 0});
+    const valid = builders.preference.buildTaboo({keyword: "valid", expireAt: now + 1000 * 60 * 30});
+    const expired = builders.preference.buildTaboo({keyword: "expired", expireAt: now - 1000 * 60 * 30});
 
-    const passenger = builders.state.buildPassengerPreference([indefinite, valid, expired]);
-    const gatekeeper = builders.state.buildGatekeeperPreference({passengers: {[passenger.identifier]: passenger}, checkedAt: now - 1000 * 60 * 10});
+    const passenger = builders.preference.buildPassenger([indefinite, valid, expired]);
+    const gatekeeper = builders.preference.buildGatekeeper({passengers: {[passenger.identifier]: passenger}, checkedAt: now - 1000 * 60 * 10});
 
     const expected = {
       passengers: {
