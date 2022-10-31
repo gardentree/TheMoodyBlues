@@ -21,6 +21,8 @@ module.exports = {
     "no-useless-escape": ["off"],
     quotes: ["error", "double"],
     semi: ["error", "always"],
+    "react/no-unknown-property": ["error", {ignore: ["css"]}],
+    "react/react-in-jsx-scope": "off",
   },
   settings: {
     react: {

@@ -1,0 +1,75 @@
+import {useDispatch} from "react-redux";
+import * as DateUtility from "date-fns";
+import {EVERYONE} from "@shared/defaults";
+import * as actions from "@actions";
+
+interface OwnProps {
+  context: TMB.TweetMenu;
+  requestClose(): void;
+}
+
+interface Form extends HTMLFormElement {
+  passenger: HTMLSelectElement;
+  available: HTMLSelectElement;
+}
+
+const Gatekeeper = (props: OwnProps) => {
+  const {context, requestClose} = props;
+  const {keyword} = context;
+  const dispatch = useDispatch<actions.Dispatch>();
+
+  const passengers = [];
+  passengers.push(makePassengerTag(context.tweet.user.id_str, context.tweet.user.screen_name));
+  if (context.tweet.retweeted_status) {
+    passengers.push(makePassengerTag(context.tweet.retweeted_status.user.id_str, context.tweet.retweeted_status.user.screen_name));
+  }
+  passengers.push(makePassengerTag(EVERYONE, "全員"));
+
+  const handleSubmit = (event: React.SyntheticEvent<Form>) => {
+    event.preventDefault();
+
+    const available = Number.parseInt(event.currentTarget.available.value);
+    const expireAt = available ? DateUtility.addMinutes(Date.now(), Number.parseInt(event.currentTarget.available.value)).getTime() : 0;
+    const [identifier, name] = event.currentTarget.passenger.value.split(":");
+
+    dispatch(actions.addTaboo({identifier, name, keyword, expireAt}));
+
+    requestClose();
+  };
+
+  return (
+    <>
+      <p className="title">[{keyword}]のミュート設定</p>
+      <form onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label>対象ユーザ</label>
+          <select name="passenger" className="form-control">
+            {passengers}
+          </select>
+        </div>
+        <div className="form-group">
+          <label>期限</label>
+          <select name="available" className="form-control">
+            <option value={1}>1分</option>
+            <option value={30}>30分</option>
+            <option value={60}>1時間</option>
+            <option value={60 * 24 * 7}>7日</option>
+            <option value={60 * 24 * 30}>30日</option>
+            <option value={60 * 24 * 90}>90日</option>
+            <option value={0}>無期限</option>
+          </select>
+        </div>
+        <div className="form-actions">
+          <button type="submit" className="btn btn-form btn-primary">
+            追加する
+          </button>
+        </div>
+      </form>
+    </>
+  );
+};
+export default Gatekeeper;
+
+function makePassengerTag(identifier: TMB.PassengerIdentifier, name: string) {
+  return <option value={`${identifier}:${name}`}>{name}</option>;
+}

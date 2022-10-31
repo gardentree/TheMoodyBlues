@@ -12,3 +12,7 @@ export const {setScreens, focusScreen, zoomIn, zoomOut, zoomReset, showLoading, 
 export const {branch, clip} = lineage;
 
 export const {prepareState, reconfigure, reload, reloadFocusedScreen, mountScreen, unmountScreen, searchTweets, displayUserTimeline, displayConversation, focusTweet, focusLatestTweet, focusUnreadTweet, alarm} = miscellany;
+
+import recucers from "./reducer";
+import {AnyAction, ThunkDispatch} from "@reduxjs/toolkit";
+export type Dispatch = ThunkDispatch<ReturnType<typeof recucers>, unknown, AnyAction>;

@@ -1,4 +1,3 @@
-import * as React from "react";
 import {useState, useEffect} from "react";
 import {GATEKEEPER, EVERYONE} from "@shared/defaults";
 import * as DateUtility from "date-fns";
