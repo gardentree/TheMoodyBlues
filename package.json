@@ -3,7 +3,7 @@
   "productName": "TheMoodyBlues",
   "author": "(ю:】",
   "description": "read-only twitter client made by electron",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "main": "build/main.js",
   "scripts": {
