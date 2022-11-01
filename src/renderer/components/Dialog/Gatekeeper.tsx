@@ -39,7 +39,7 @@ const Gatekeeper = (props: OwnProps) => {
 
   return (
     <>
-      <p className="title">[{keyword}]のミュート設定</p>
+      <h1 className="title invert">[{keyword}]のミュート設定</h1>
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label>対象ユーザ</label>

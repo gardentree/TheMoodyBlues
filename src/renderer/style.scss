@@ -17,19 +17,28 @@
   }
 }
 
+@mixin theme() {
+  color: var(--text-color) !important;
+  background-color: var(--background-color) !important;
+
+  form {
+    input,
+    select {
+      color: initial !important;
+    }
+  }
+}
+.invert {
+  filter: var(--filter);
+}
+
 body {
   margin: 0;
   -webkit-app-region: drag;
 }
 
 .ReactModal__Content {
-  filter: var(--filter);
-
-  img,
-  video:not(:fullscreen),
-  button {
-    filter: var(--filter);
-  }
+  @include theme;
 
   p + form {
     margin-top: 10px;
@@ -53,13 +62,6 @@ body {
   }
 }
 
-form {
-  .form-control {
-    color: var(--text-color);
-    background-color: var(--background-color);
-  }
-}
-
 .window {
   font-size: 12px;
 
@@ -68,8 +70,7 @@ form {
     -webkit-font-smoothing: antialiased;
     -webkit-app-region: no-drag;
 
-    color: var(--text-color);
-    background-color: var(--background-color);
+    @include theme;
   }
 
   & > .toolbar {
@@ -94,13 +95,5 @@ form {
     display: flex;
     justify-content: center;
     align-items: center;
-  }
-}
-
-.pane-group {
-  filter: var(--filter);
-
-  table {
-    color: initial;
   }
 }

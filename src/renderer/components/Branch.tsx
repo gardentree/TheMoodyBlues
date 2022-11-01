@@ -50,23 +50,17 @@ export default Branch;
 const styles = css`
   height: 100%;
   position: absolute;
-  background-color: var(--background-color);
   top: 0;
   bottom: 0;
   left: 0;
   right: 0;
 
-  color: var(--text-color);
-  background-color: var(--background-color);
-
   .header {
-    filter: var(--filter);
     position: fixed;
     top: 56px;
     left: 0;
     right: 0;
     padding: 3px;
-    background-color: #d4d2d4;
   }
 
   &.fade-enter {
