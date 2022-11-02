@@ -50,13 +50,21 @@ const Gatekeeper = (props: OwnProps) => {
         <div className="form-group">
           <label>期限</label>
           <select name="available" className="form-control">
-            <option value={0}>無期限</option>
-            <option value={1}>1分</option>
-            <option value={30}>30分</option>
-            <option value={60}>1時間</option>
-            <option value={60 * 24 * 7}>7日</option>
-            <option value={60 * 24 * 30}>30日</option>
-            <option value={60 * 24 * 90}>90日</option>
+            {[
+              [0, "無期限"],
+              [1, "1分"],
+              [30, "30分"],
+              [60, "1時間"],
+              [60 * 24 * 7, "7日"],
+              [60 * 24 * 30, "30日"],
+              [60 * 24 * 90, "90日"],
+            ].map(([value, title]) => {
+              return (
+                <option key={value} value={value}>
+                  {title}
+                </option>
+              );
+            })}
           </select>
         </div>
         <div className="form-actions">
@@ -71,5 +79,9 @@ const Gatekeeper = (props: OwnProps) => {
 export default Gatekeeper;
 
 function makePassengerTag(identifier: TMB.PassengerIdentifier, name: string) {
-  return <option value={`${identifier}:${name}`}>{name}</option>;
+  return (
+    <option key={identifier} value={`${identifier}:${name}`}>
+      {name}
+    </option>
+  );
 }
