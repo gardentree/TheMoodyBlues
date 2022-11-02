@@ -7,10 +7,11 @@ import {css} from "@emotion/react";
 import * as actions from "@actions";
 
 const {facade} = window;
-const growlIsRunning = facade.collaborators.growl();
 
 const Screens = () => {
   const [screens, setScreens] = useState<TMB.NormalizedScreenPreference>(useSelector<TMB.State, TMB.NormalizedScreenPreference>((state) => state.preferences));
+  const growlIsRunning = facade.collaborators.growl();
+
   useEffect(() => {
     (async () => {
       setScreens(await getLatestBackstages(screens));
