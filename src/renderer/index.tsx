@@ -25,11 +25,7 @@ const styleCache = createCache({
 (() => {
   require("photon/dist/css/photon.css");
   require("@fortawesome/fontawesome-svg-core/styles.css");
-
-  function requireAll(context: __WebpackModuleApi.RequireContext) {
-    context.keys().forEach(context);
-  }
-  requireAll(require.context("./", true, /\.scss$/));
+  require("./style.scss");
 
   config.autoAddCss = false;
   library.add(fab, faSpinner);
