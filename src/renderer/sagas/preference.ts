@@ -17,7 +17,7 @@ export function* prepareState(action: PayloadAction) {
   }
   yield put(actions.setScreens(actives));
 
-  const gatekeeper = yield* call(facade.storage.getGatekeeperPreference);
+  const gatekeeper = yield* call(facade.storage.getGatekeeper);
   yield put(actions.updateGatekeeper(gatekeeper));
 }
 export function* reconfigure(action: PayloadAction<{backstages: TMB.NormalizedBackstage}>) {

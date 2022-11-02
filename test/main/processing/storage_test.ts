@@ -39,7 +39,7 @@ describe("defaults", () => {
     expect(storage.getBackstages()).toEqual([HOME, SEARCH, MENTIONS]);
   });
   it("gatekeeper", () => {
-    expect(storage.getGatekeeperPreference()).toEqual({
+    expect(storage.getGatekeeper()).toEqual({
       passengers: {
         [EVERYONE]: {
           identifier: EVERYONE,

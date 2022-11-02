@@ -18,7 +18,7 @@ export function* initialize(identifier: TMB.ScreenID, preference: TMB.Backstage)
   yield timer.spawn(identifier, preference.interval);
   yield timer.start(identifier);
 }
-export function* order(identifier: TMB.ScreenID, screen: TMB.Screen, preference: TMB.Backstage, gatekeeper: TMB.GatekeeperPreference, force: boolean) {
+export function* order(identifier: TMB.ScreenID, screen: TMB.Screen, preference: TMB.Backstage, gatekeeper: TMB.Gatekeeper, force: boolean) {
   const oldTweets = force ? [] : screen.tweets;
 
   const parameters = (preference.parameters || []).concat(latest(oldTweets) || []);

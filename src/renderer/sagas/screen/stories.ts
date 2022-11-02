@@ -36,7 +36,7 @@ function* order(identifier: TMB.ScreenID, force: boolean) {
 
   yield metronome.play(identifier, screen, backstage, checkedGatekeeper, force);
 }
-export function checkGatekeeper(gatekeeper: TMB.GatekeeperPreference): TMB.GatekeeperPreference {
+export function checkGatekeeper(gatekeeper: TMB.Gatekeeper): TMB.Gatekeeper {
   const newGatekeeper = lodash.cloneDeep(gatekeeper);
 
   const now = Date.now();

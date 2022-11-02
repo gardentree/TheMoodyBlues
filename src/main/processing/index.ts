@@ -117,13 +117,13 @@ function observe(renderer: WebContents, agent: TMB.TwitterAgent) {
 
     storage.setTweets(name, tweets);
   });
-  ipcMain.handle(FacadeActions.STORAGE_MUTE_LOAD, (event, values) => {
-    return storage.getGatekeeperPreference();
+  ipcMain.handle(FacadeActions.STORAGE_GATEKEEPER_LOAD, (event, values) => {
+    return storage.getGatekeeper();
   });
-  ipcMain.on(FacadeActions.STORAGE_MUTE_SAVE, (event, values) => {
+  ipcMain.on(FacadeActions.STORAGE_GATEKEEPER_SAVE, (event, values) => {
     const {preference} = values;
 
-    storage.setGatekeeperPreference(preference);
+    storage.setGatekeeper(preference);
   });
 
   ipcMain.on(FacadeActions.OPEN_TWEET_MENU, (event, context: TMB.TweetMenu) => {

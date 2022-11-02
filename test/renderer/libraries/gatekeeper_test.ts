@@ -12,7 +12,7 @@ const tweetTemplate: Twitter.Tweet = builders.twitter.buildTweet({
     id_str: "gian",
   },
 });
-const preferenceTemplate: TMB.GatekeeperPreference = builders.preference.buildGatekeeper();
+const preferenceTemplate: TMB.Gatekeeper = builders.preference.buildGatekeeper();
 
 describe(guard.name, () => {
   describe("taboo", () => {

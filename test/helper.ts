@@ -75,7 +75,7 @@ const preference = {
 
     return Object.assign(preference, specifics);
   },
-  buildGatekeeper: (specifics?: Partial<TMB.GatekeeperPreference> | TMB.PassengerPreference[]): TMB.GatekeeperPreference => {
+  buildGatekeeper: (specifics?: Partial<TMB.Gatekeeper> | TMB.PassengerPreference[]): TMB.Gatekeeper => {
     if (Array.isArray(specifics)) {
       return {passengers: convertRecord(specifics, "identifier"), checkedAt: Date.now()};
     } else {

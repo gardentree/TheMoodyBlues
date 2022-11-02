@@ -38,10 +38,10 @@ export function build(directory?: string) {
       setStore("backstages", screens);
     },
 
-    getGatekeeperPreference: (): TMB.GatekeeperPreference => {
-      return (getStore("gatekeeper") as TMB.GatekeeperPreference) || GATEKEEPER;
+    getGatekeeper: (): TMB.Gatekeeper => {
+      return (getStore("gatekeeper") as TMB.Gatekeeper) || GATEKEEPER;
     },
-    setGatekeeperPreference: (preference: TMB.GatekeeperPreference) => {
+    setGatekeeper: (preference: TMB.Gatekeeper) => {
       setStore("gatekeeper", preference);
     },
 

@@ -5,7 +5,7 @@ declare namespace TheMoodyBlues {
     screens: NormalizedScreen;
     principal: Principal;
     backstages: NormalizedBackstage;
-    gatekeeper: GatekeeperPreference;
+    gatekeeper: Gatekeeper;
     lineage: NormalizedLineage;
     form: FormState;
   }

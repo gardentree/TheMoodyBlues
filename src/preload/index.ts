@@ -38,8 +38,8 @@ const facade: TMB.Facade = {
     setBackstages: (screens) => ipcRenderer.send(FacadeActions.STORAGE_BACKSTAGES_SAVE, {screens}),
     getTweets: (name) => ipcRenderer.invoke(FacadeActions.STORAGE_TWEETS_LOAD, {name}),
     setTweets: (name, tweets) => ipcRenderer.send(FacadeActions.STORAGE_TWEETS_SAVE, {name, tweets}),
-    getGatekeeperPreference: () => ipcRenderer.invoke(FacadeActions.STORAGE_MUTE_LOAD),
-    setGatekeeperPreference: (preference) => ipcRenderer.send(FacadeActions.STORAGE_MUTE_SAVE, {preference}),
+    getGatekeeper: () => ipcRenderer.invoke(FacadeActions.STORAGE_GATEKEEPER_LOAD),
+    setGatekeeper: (preference) => ipcRenderer.send(FacadeActions.STORAGE_GATEKEEPER_SAVE, {preference}),
   },
   actions: {
     authorize: (verifier) => ipcRenderer.send(FacadeActions.AUTHORIZE, {verifier}),

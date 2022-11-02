@@ -7,13 +7,13 @@ export const slice = createSlice({
   name: "gatekeeper",
   initialState: GATEKEEPER,
   reducers: {
-    prepare: (state, action: PayloadAction<TMB.GatekeeperPreference>) => {
+    prepare: (state, action: PayloadAction<TMB.Gatekeeper>) => {
       return action.payload;
     },
-    update: (state, action: PayloadAction<TMB.GatekeeperPreference>) => {
+    update: (state, action: PayloadAction<TMB.Gatekeeper>) => {
       const newState = action.payload;
 
-      facade.storage.setGatekeeperPreference(newState);
+      facade.storage.setGatekeeper(newState);
 
       return newState;
     },
@@ -33,7 +33,7 @@ export const slice = createSlice({
         });
       }
 
-      facade.storage.setGatekeeperPreference(state);
+      facade.storage.setGatekeeper(state);
 
       return state;
     },
@@ -42,7 +42,7 @@ export const slice = createSlice({
 
       delete state.passengers[identifier].taboos[keyword];
 
-      facade.storage.setGatekeeperPreference(state);
+      facade.storage.setGatekeeper(state);
 
       return state;
     },

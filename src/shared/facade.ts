@@ -32,8 +32,8 @@ export namespace Actions {
   export const SHOW_VERIFIER_FORM = "show_verifier_form";
   export const STORAGE_BACKSTAGES_LOAD = "storage_backstages_load";
   export const STORAGE_BACKSTAGES_SAVE = "storage_backstages_save";
-  export const STORAGE_MUTE_LOAD = "storage_mute_load";
-  export const STORAGE_MUTE_SAVE = "storage_mute_save";
+  export const STORAGE_GATEKEEPER_LOAD = "storage_gatekeeper_load";
+  export const STORAGE_GATEKEEPER_SAVE = "storage_gatekeeper_save";
   export const STORAGE_TWEETS_LOAD = "storage_tweets_load";
   export const STORAGE_TWEETS_SAVE = "storage_tweets_save";
   export const ZOOM_IN = "zoom_in";

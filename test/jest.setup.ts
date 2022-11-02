@@ -19,8 +19,8 @@ const facade: TMB.Facade = {
     retrieveTimelineOfList: (list_id, since_id) => Promise.resolve([]),
   },
   storage: {
-    getGatekeeperPreference: () => Promise.resolve(gatekeeper),
-    setGatekeeperPreference: () => {},
+    getGatekeeper: () => Promise.resolve(gatekeeper),
+    setGatekeeper: () => {},
     getBackstages: () => Promise.resolve(adapters.backstages.getInitialState()),
     setBackstages: (screens) => {},
     getTweets: (name) => Promise.resolve([]),

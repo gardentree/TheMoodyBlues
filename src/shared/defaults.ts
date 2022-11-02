@@ -34,7 +34,7 @@ export const LIST: Omit<TMB.Backstage, "identifier" | "title" | "active"> = {
 };
 
 export const EVERYONE = "@everyone";
-export const GATEKEEPER: TMB.GatekeeperPreference = {
+export const GATEKEEPER: TMB.Gatekeeper = {
   passengers: {
     [EVERYONE]: {
       identifier: EVERYONE,

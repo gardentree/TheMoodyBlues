@@ -74,14 +74,14 @@ describe(reorder.name, () => {
 
 describe(checkGatekeeper.name, () => {
   it("when valid", () => {
-    const spy = jest.spyOn(facade.storage, "setGatekeeperPreference");
+    const spy = jest.spyOn(facade.storage, "setGatekeeper");
     const gatekeeper = builders.preference.buildGatekeeper({checkedAt: Date.now()});
 
     expect(checkGatekeeper(gatekeeper)).toEqual(gatekeeper);
     expect(spy).not.toBeCalled();
   });
   it("when expired", () => {
-    const spy = jest.spyOn(facade.storage, "setGatekeeperPreference");
+    const spy = jest.spyOn(facade.storage, "setGatekeeper");
 
     const now = Date.now();
     jest.useFakeTimers().setSystemTime(now);
@@ -93,7 +93,7 @@ describe(checkGatekeeper.name, () => {
   });
 
   it("when expired", () => {
-    const spy = jest.spyOn(facade.storage, "setGatekeeperPreference");
+    const spy = jest.spyOn(facade.storage, "setGatekeeper");
 
     const now = Date.now();
     jest.useFakeTimers().setSystemTime(now);

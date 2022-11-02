@@ -5,7 +5,7 @@ import * as DateUtility from "date-fns";
 import * as actions from "@actions";
 
 const Gatekeeper = () => {
-  const gatekeeper = useSelector<TMB.State, TMB.GatekeeperPreference>((state) => {
+  const gatekeeper = useSelector<TMB.State, TMB.Gatekeeper>((state) => {
     return state.gatekeeper;
   });
   const [selectedPassenger, setSelectedPassenger] = useState<TMB.PassengerPreference>(gatekeeper.passengers[EVERYONE]);

@@ -17,7 +17,7 @@ declare namespace TheMoodyBlues {
   type NormalizedBackstage = EntityState<Backstage>;
 
   type PassengerIdentifier = "@everyone" | Twitter.UserID;
-  type GatekeeperPreference = {
+  type Gatekeeper = {
     passengers: Record<PassengerIdentifier, PassengerPreference>;
     checkedAt: number;
   };
@@ -57,8 +57,8 @@ declare namespace TheMoodyBlues {
       setTweets(name: string, tweets: Twitter.Tweet[]): void;
       getBackstages(): Promise<NormalizedBackstage>;
       setBackstages(screens: NormalizedBackstage): void;
-      getGatekeeperPreference(): Promise<GatekeeperPreference>;
-      setGatekeeperPreference(preference: GatekeeperPreference): void;
+      getGatekeeper(): Promise<Gatekeeper>;
+      setGatekeeper(preference: Gatekeeper): void;
     };
     actions: {
       authorize(verifier: string): void;
