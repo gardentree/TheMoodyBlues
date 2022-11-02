@@ -1,4 +1,17 @@
 {
-  "extends": "../tsconfig/test.json",
-  "include": ["**/*", "../src/**/*"]
+  "extends": "../tsconfig.json",
+  "include": ["**/*", "../src/**/*"],
+  "compilerOptions": {
+    "module": "commonjs",
+    "baseUrl": "../",
+    "paths": {
+      "@source/*": ["src/*"],
+      "@test/*": ["test/*"],
+      "@shared/*": ["src/shared/*"],
+      "@actions": ["src/renderer/actions"],
+      "@actions/*": ["src/renderer/actions/*"],
+      "@reducers/*": ["src/renderer/actions/*"],
+      "@libraries/*": ["src/main/libraries/*", "src/renderer/libraries/*"]
+    }
+  }
 }
