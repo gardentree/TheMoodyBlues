@@ -13,7 +13,7 @@ interface Form extends HTMLFormElement {
   available: HTMLSelectElement;
 }
 
-const Gatekeeper = (props: OwnProps) => {
+const Taboo = (props: OwnProps) => {
   const {context, requestClose} = props;
   const {keyword} = context;
   const dispatch = useDispatch<actions.Dispatch>();
@@ -76,7 +76,7 @@ const Gatekeeper = (props: OwnProps) => {
     </>
   );
 };
-export default Gatekeeper;
+export default Taboo;
 
 function makePassengerTag(identifier: TMB.PassengerIdentifier, name: string) {
   return (

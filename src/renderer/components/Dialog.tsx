@@ -1,7 +1,7 @@
 import {useSelector, useDispatch} from "react-redux";
 import {Global, css} from "@emotion/react";
 import Modal from "react-modal";
-import Gatekeeper from "./Dialog/Gatekeeper";
+import Taboo from "./Dialog/Taboo";
 import * as actions from "@actions";
 import Preferences from "./Dialog/Preferences";
 
@@ -31,7 +31,7 @@ const Dialog = () => {
   };
 
   switch (dialog?.type) {
-    case "mute":
+    case "taboo":
       return (
         <>
           <Global
@@ -42,7 +42,7 @@ const Dialog = () => {
             `}
           />
           <Modal isOpen={true} onRequestClose={requestClose} style={style} parentSelector={() => document.querySelector("#principal")!}>
-            <Gatekeeper context={dialog.context} requestClose={requestClose} />
+            <Taboo context={dialog.context} requestClose={requestClose} />
           </Modal>
         </>
       );

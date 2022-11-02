@@ -159,7 +159,7 @@ function observe(renderer: WebContents, agent: TMB.TwitterAgent) {
       template.push({
         label: `"${context.keyword}"をミュート`,
         click() {
-          renderer.send(FacadeActions.DIALOG, {type: "mute", context});
+          renderer.send(FacadeActions.DIALOG, {type: "taboo", context});
         },
       });
     }

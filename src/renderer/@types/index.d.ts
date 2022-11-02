@@ -43,14 +43,14 @@ declare namespace TheMoodyBlues {
   interface PrincipalStyle {
     fontSize: string;
   }
-  interface DialogWithGatekeeper {
-    type: "mute";
+  interface DialogWithTaboo {
+    type: "taboo";
     context: TweetMenu;
   }
   interface DialogWithPreferences {
     type: "preferences";
   }
-  type Dialog = DialogWithGatekeeper | DialogWithPreferences | null;
+  type Dialog = DialogWithTaboo | DialogWithPreferences | null;
 }
 
 interface Window {
