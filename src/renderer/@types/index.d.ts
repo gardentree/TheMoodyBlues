@@ -47,7 +47,10 @@ declare namespace TheMoodyBlues {
     type: "mute";
     context: TweetMenu;
   }
-  type Dialog = DialogWithGatekeeper | null;
+  interface DialogWithPreferences {
+    type: "preferences";
+  }
+  type Dialog = DialogWithGatekeeper | DialogWithPreferences | null;
 }
 
 interface Window {

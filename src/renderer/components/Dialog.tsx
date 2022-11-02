@@ -3,6 +3,7 @@ import {Global, css} from "@emotion/react";
 import Modal from "react-modal";
 import Gatekeeper from "./Dialog/Gatekeeper";
 import * as actions from "@actions";
+import Preferences from "./Dialog/Preferences";
 
 type StateProps = {dialog: TMB.Dialog};
 
@@ -44,6 +45,12 @@ const Dialog = () => {
             <Gatekeeper context={dialog.context} requestClose={requestClose} />
           </Modal>
         </>
+      );
+    case "preferences":
+      return (
+        <Modal isOpen={true} onRequestClose={requestClose} parentSelector={() => document.querySelector("#principal")!}>
+          <Preferences requestClose={requestClose} />
+        </Modal>
       );
     default:
       return <Modal isOpen={false} />;

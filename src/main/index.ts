@@ -78,7 +78,7 @@ app.whenReady().then(() => {
           label: "Preferences...",
           accelerator: "Command+,",
           click() {
-            openPreferences();
+            mainWindow!.webContents.send(FacadeActions.DIALOG, {type: "preferences"});
           },
         },
         {role: "quit"},
@@ -150,37 +150,6 @@ app.whenReady().then(() => {
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
 });
-
-let preferences: BrowserWindow | null;
-function openPreferences() {
-  if (preferences) {
-    preferences.focus();
-    return;
-  }
-
-  preferences = new BrowserWindow({
-    webPreferences: {
-      preload: pathname.join(__dirname, "preload.js"),
-
-      spellcheck: false,
-    },
-    title: "Preferences",
-    titleBarStyle: "hidden",
-    width: 640,
-    height: 480,
-  });
-
-  load(preferences, "preferences.html");
-  if (environment.isDevelopment()) {
-    preferences.webContents.openDevTools();
-  }
-
-  preferences.on("closed", () => {
-    mainWindow!.webContents.send(FacadeActions.REFRESH_PREFERENCES, {});
-
-    preferences = null;
-  });
-}
 
 function load(target: BrowserWindow, path: string) {
   if (environment.isDevelopment()) {

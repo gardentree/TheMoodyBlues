@@ -18,7 +18,7 @@
 }
 
 @mixin theme() {
-  color: var(--text-color) !important;
+  color: var(--text-color);
   background-color: var(--background-color) !important;
 
   form {
@@ -28,8 +28,13 @@
     }
   }
 }
+.theme {
+  @include theme();
+}
 .invert {
   filter: var(--filter);
+  color: initial;
+  background-color: initial;
 }
 
 body {
@@ -38,8 +43,6 @@ body {
 }
 
 .ReactModal__Content {
-  @include theme;
-
   p + form {
     margin-top: 10px;
   }
@@ -69,8 +72,6 @@ body {
     font-family: "Hiragino Sans";
     -webkit-font-smoothing: antialiased;
     -webkit-app-region: no-drag;
-
-    @include theme;
   }
 
   & > .toolbar {
@@ -84,6 +85,8 @@ body {
   .toolbar,
   .tab-group {
     filter: var(--filter);
+    color: initial;
+
     form {
       filter: var(--filter);
     }
@@ -96,4 +99,8 @@ body {
     justify-content: center;
     align-items: center;
   }
+}
+
+.ReactModal__Content {
+  @include theme();
 }

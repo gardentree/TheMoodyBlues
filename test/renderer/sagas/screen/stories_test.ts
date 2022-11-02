@@ -113,8 +113,7 @@ describe(checkGatekeeper.name, () => {
     };
 
     expect(checkGatekeeper(gatekeeper)).toEqual(expected);
-    expect(spy).toBeCalled();
-    expect(spy).toBeCalledWith(expected);
+    expect(spy).not.toBeCalled();
   });
 
   afterEach(() => {

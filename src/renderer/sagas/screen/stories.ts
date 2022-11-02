@@ -38,22 +38,17 @@ function* order(identifier: TMB.ScreenID, force: boolean) {
 }
 export function checkGatekeeper(gatekeeper: TMB.GatekeeperPreference): TMB.GatekeeperPreference {
   const newGatekeeper = lodash.cloneDeep(gatekeeper);
-  let modified = false;
 
   const now = Date.now();
   if (newGatekeeper.checkedAt + 1000 * 60 < now) {
+    newGatekeeper.checkedAt = now;
+
     for (const passenger of Object.values(newGatekeeper.passengers)) {
       for (const taboo of Object.values(passenger.taboos)) {
         if (taboo.expireAt && taboo.expireAt < now) {
           delete newGatekeeper.passengers[passenger.identifier].taboos[taboo.keyword];
-          modified = true;
         }
       }
-    }
-
-    newGatekeeper.checkedAt = now;
-    if (modified) {
-      facade.storage.setGatekeeperPreference(newGatekeeper);
     }
   }
 

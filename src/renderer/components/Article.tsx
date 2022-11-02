@@ -55,7 +55,7 @@ const Article = (props: OwnProps) => {
   };
 
   return (
-    <div css={styles} onScroll={onScroll}>
+    <div css={styles} className="theme" onScroll={onScroll}>
       <header className="toolbar toolbar-header">
         <div className="actions">
           <div className="actions-center">{children}</div>

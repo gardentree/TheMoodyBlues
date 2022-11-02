@@ -1,33 +1,31 @@
-import {useState, useEffect} from "react";
-import {GATEKEEPER, EVERYONE} from "@shared/defaults";
+import {useState} from "react";
+import {useSelector, useDispatch} from "react-redux";
+import {EVERYONE} from "@shared/defaults";
 import * as DateUtility from "date-fns";
-import lodash from "lodash";
-
-const {facade} = window;
+import * as actions from "@actions";
 
 const Gatekeeper = () => {
-  const [gatekeeper, setGatekeeper] = useState<TMB.GatekeeperPreference>(GATEKEEPER);
-  const [currentPassenger, setCurrentPassenger] = useState<TMB.PassengerPreference>(gatekeeper.passengers[EVERYONE]);
+  const gatekeeper = useSelector<TMB.State, TMB.GatekeeperPreference>((state) => {
+    return state.gatekeeper;
+  });
+  const [selectedPassenger, setSelectedPassenger] = useState<TMB.PassengerPreference>(gatekeeper.passengers[EVERYONE]);
 
-  useEffect(() => {
-    (async () => {
-      const gatekeeper = await facade.storage.getGatekeeperPreference();
-      setGatekeeper(gatekeeper);
-      setCurrentPassenger(gatekeeper.passengers[EVERYONE]);
-    })();
-  }, []);
+  const dispatch = useDispatch();
+  function handleDelete(keyword: string) {
+    dispatch(actions.deleteTaboo({identifier: selectedPassenger.identifier, keyword}));
+  }
 
   const passengerLinks = Object.values(gatekeeper.passengers)
     .sort((a, b) => {
       return a.identifier < b.identifier ? 1 : -1;
     })
     .map((passenger) => {
-      const active = currentPassenger.identifier == passenger.identifier ? "active" : "";
+      const active = selectedPassenger.identifier == passenger.identifier ? "active" : "";
       return (
         <span
           key={passenger.identifier}
           onClick={() => {
-            setCurrentPassenger(passenger);
+            setSelectedPassenger(passenger);
           }}
           className={`nav-group-item ${active}`}
         >
@@ -36,17 +34,7 @@ const Gatekeeper = () => {
       );
     });
 
-  function handleDelete(keyword: string) {
-    const newGatekeeper = lodash.cloneDeep(gatekeeper);
-    const newPassenger = newGatekeeper.passengers[currentPassenger.identifier];
-    delete newPassenger.taboos[keyword];
-
-    facade.storage.setGatekeeperPreference(newGatekeeper);
-    setGatekeeper(newGatekeeper);
-    setCurrentPassenger(newPassenger);
-  }
-
-  const tabooRows = Object.values(currentPassenger.taboos).map((taboo) => {
+  const tabooRows = Object.values(selectedPassenger.taboos).map((taboo) => {
     return (
       <tr key={taboo.keyword}>
         <td>{taboo.keyword}</td>
@@ -63,12 +51,12 @@ const Gatekeeper = () => {
   });
 
   return (
-    <div className="pane-group">
-      <div className="pane pane-sm sidebar">
+    <div className="pane-group theme">
+      <div className="pane pane-sm sidebar invert">
         <nav className="nav-group">{passengerLinks}</nav>
       </div>
       <div className="pane">
-        <table className="table-striped">
+        <table className="table-striped invert">
           <thead>
             <tr className="active">
               <th>Keyword</th>

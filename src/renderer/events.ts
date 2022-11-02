@@ -30,9 +30,6 @@ export function setup(store: MiddlewareAPI) {
     const {user, id_str} = extractOriginalFrom(tweet);
     facade.actions.openExternal(`https://twitter.com/${user.screen_name}/status/${id_str}`);
   });
-  facade.events.onRefreshPreferences(() => {
-    store.dispatch(actions.reconfigure());
-  });
   facade.events.onReload(() => {
     store.dispatch(actions.reloadFocusedScreen(false));
   });

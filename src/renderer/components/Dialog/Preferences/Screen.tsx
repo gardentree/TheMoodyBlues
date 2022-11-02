@@ -1,74 +1,70 @@
 import * as React from "react";
+import {useSelector, useDispatch} from "react-redux";
 import {useState, useEffect} from "react";
 import {mixPreferences} from "@libraries/screen";
 import adapters from "@libraries/adapter";
+import {css} from "@emotion/react";
+import * as actions from "@actions";
 
 const {facade} = window;
 const growlIsRunning = facade.collaborators.growl();
 
-async function getAllPreference() {
-  const lists = await facade.agent.lists();
-  const current = await facade.storage.getScreenPreferences();
-
-  return mixPreferences(current, lists);
-}
-
-async function save() {
-  const inputs = document.querySelectorAll("input");
-
-  const map = new Map<string, Partial<TMB.ScreenPreference>>();
-  for (const input of inputs) {
-    const matcher = /([^\[]+)\[([^\]]+)\]/.exec(input.name);
-    if (!matcher) {
-      continue;
-    }
-
-    const [, identifier, key] = matcher;
-    let preference = map.get(identifier);
-    if (!preference) {
-      preference = {};
-      map.set(identifier, preference);
-    }
-
-    let value: string | number | boolean;
-    switch (input.type) {
-      case "checkbox":
-        value = input.checked || false;
-        break;
-      case "number":
-        value = Number(input.value);
-        break;
-      default:
-        value = input.value;
-    }
-    preference[key] = value;
-  }
-  const submitted = Array.from(map).map(([identifier, preference]) => {
-    preference.identifier = identifier;
-
-    return preference;
-  });
-
-  let allPreference = await getAllPreference();
-  submitted.forEach((preference) => {
-    allPreference = adapters.preferences.upsertOne(allPreference, preference as TMB.ScreenPreference);
-  });
-
-  facade.storage.setScreenPreferences(allPreference);
-}
-
 const Screens = () => {
-  const [screens, setScreens] = useState<TMB.NormalizedScreenPreference>(adapters.preferences.getInitialState());
+  const [screens, setScreens] = useState<TMB.NormalizedScreenPreference>(useSelector<TMB.State, TMB.NormalizedScreenPreference>((state) => state.preferences));
   useEffect(() => {
     (async () => {
-      setScreens(await getAllPreference());
+      setScreens(await getLatestBackstages(screens));
     })();
   }, []);
+
+  const dispatch = useDispatch();
+  const save = () => {
+    const inputs = document.querySelectorAll("input");
+
+    const map = new Map<string, Partial<TMB.ScreenPreference>>();
+    for (const input of inputs) {
+      const matcher = /([^\[]+)\[([^\]]+)\]/.exec(input.name);
+      if (!matcher) {
+        continue;
+      }
+
+      const [, identifier, key] = matcher;
+      let preference = map.get(identifier);
+      if (!preference) {
+        preference = {};
+        map.set(identifier, preference);
+      }
+
+      let value: string | number | boolean;
+      switch (input.type) {
+        case "checkbox":
+          value = input.checked || false;
+          break;
+        case "number":
+          value = Number(input.value);
+          break;
+        default:
+          value = input.value;
+      }
+      preference[key] = value;
+    }
+    const submitted = Array.from(map).map(([identifier, preference]) => {
+      preference.identifier = identifier;
+
+      return preference;
+    });
+
+    let allPreference = screens;
+    submitted.forEach((preference) => {
+      allPreference = adapters.preferences.upsertOne(allPreference, preference as TMB.ScreenPreference);
+    });
+
+    dispatch(actions.reconfigure(allPreference));
+  };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     save();
   };
-
   const handleFieldSetChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const fieldset = event.currentTarget.parentNode!.parentNode! as ParentNode & {disabled: boolean};
     fieldset.disabled = !event.currentTarget.checked;
@@ -110,7 +106,7 @@ const Screens = () => {
     });
 
   return (
-    <div className="PreferencesScreens">
+    <div css={styles} className="theme">
       <form>
         <ol>{elements}</ol>
       </form>
@@ -118,3 +114,29 @@ const Screens = () => {
   );
 };
 export default Screens;
+
+async function getLatestBackstages(current: TMB.NormalizedScreenPreference): Promise<TMB.NormalizedScreenPreference> {
+  const lists = await facade.agent.lists();
+
+  return mixPreferences(current, lists);
+}
+
+const styles = css`
+  height: 100%;
+  overflow-y: auto;
+
+  legend {
+    input {
+      margin-right: 8px;
+    }
+  }
+  ol {
+    padding: 16px;
+    margin: 0;
+    list-style-type: none;
+
+    li + li {
+      margin-top: 8px;
+    }
+  }
+`;

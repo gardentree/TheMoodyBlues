@@ -59,7 +59,6 @@ const facade: TMB.Facade = {
     onForceReload: (callback) => ipcRenderer.on(FacadeActions.FORCE_RELOAD, (event, ...values) => callback()),
     onLaunch: (callback) => ipcRenderer.on(FacadeActions.LAUNCH, (event, ...values) => callback()),
     onOpenTweetInBrowser: (callback) => ipcRenderer.on(FacadeActions.OPEN_TWEET_IN_BROWSER, (event, context: TMB.TweetMenu) => callback(context.tweet)),
-    onRefreshPreferences: (callback) => ipcRenderer.on(FacadeActions.REFRESH_PREFERENCES, (event, ...values) => callback()),
     onReload: (callback) => ipcRenderer.on(FacadeActions.RELOAD, (event, ...values) => callback()),
     onSearch: (callback) => ipcRenderer.on(FacadeActions.SEARCH, (event, context: TMB.TweetMenu) => callback(context.keyword)),
     onShowChainForTweet: (callback) => ipcRenderer.on(FacadeActions.SHOW_CHAIN_FOR_TWEET, (event, context: TMB.TweetMenu) => callback(context.tweet)),

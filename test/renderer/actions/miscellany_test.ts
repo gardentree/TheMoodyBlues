@@ -3,6 +3,7 @@ import {reload, reloadFocusedScreen, mountScreen, unmountScreen, searchTweets} f
 import {displayUserTimeline, displayConversation} from "@actions/miscellany";
 import {focusTweet, focusLatestTweet, focusUnreadTweet, alarm} from "@actions/miscellany";
 import {faker} from "@faker-js/faker";
+import adapters from "@source/renderer/libraries/adapter";
 import {builders} from "@test/helper";
 
 describe("@renderer/actions/miscellany", () => {
@@ -15,10 +16,12 @@ describe("@renderer/actions/miscellany", () => {
     });
   });
   describe(reconfigure.toString(), () => {
+    const backstages = adapters.preferences.addMany(adapters.preferences.getInitialState(), [builders.preference.buildScreen()]);
+
     it("as usual", () => {
-      expect(reconfigure()).toEqual({
+      expect(reconfigure(backstages)).toEqual({
         type: "reconfigure",
-        payload: undefined,
+        payload: {backstages},
       });
     });
   });

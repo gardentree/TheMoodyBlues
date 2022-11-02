@@ -79,7 +79,6 @@ declare namespace TheMoodyBlues {
       onForceReload(callback: () => void): void;
       onLaunch(callback: () => void): void;
       onOpenTweetInBrowser(callback: (tweet: Twitter.Tweet) => void): void;
-      onRefreshPreferences(callback: () => void): void;
       onReload(callback: () => void): void;
       onSearch(callback: (keyword: string) => void): void;
       onShowChainForTweet(callback: (tweet: Twitter.Tweet) => void): void;

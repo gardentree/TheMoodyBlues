@@ -46,7 +46,6 @@ const facade: TMB.Facade = {
     onForceReload: (callback) => {},
     onLaunch: (callback) => {},
     onOpenTweetInBrowser: (callback) => {},
-    onRefreshPreferences: (callback) => {},
     onReload: (callback) => {},
     onSearch: (callback) => {},
     onShowChainForTweet: (callback) => {},

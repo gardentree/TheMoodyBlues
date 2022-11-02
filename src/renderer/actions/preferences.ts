@@ -5,11 +5,11 @@ export const slice = createSlice({
   name: "preferences",
   initialState: adapters.preferences.getInitialState(),
   reducers: {
-    updatePreferences: (state, action: PayloadAction<TMB.NormalizedScreenPreference>) => {
+    prepare: (state, action: PayloadAction<TMB.NormalizedScreenPreference>) => {
       return action.payload;
     },
   },
 });
 
-export const {updatePreferences} = slice.actions;
+export const {prepare} = slice.actions;
 export default slice.reducer;

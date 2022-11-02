@@ -6,8 +6,8 @@ import * as lineage from "./lineage";
 import * as miscellany from "./miscellany";
 
 export const {updateTweets, mark, setupSearch, changeMode, prepareScreen, closeScreen, updateScreenStatus} = screens;
-export const {updatePreferences} = preferences;
-export const {update: updateGatekeeper, addTaboo} = gatekeeper;
+export const {prepare: preparePreferences} = preferences;
+export const {prepare: prepareGatekeeper, update: updateGatekeeper, addTaboo, deleteTaboo} = gatekeeper;
 export const {setScreens, focusScreen, zoomIn, zoomOut, zoomReset, showLoading, openDialog, closeDialog} = principal;
 export const {branch, clip} = lineage;
 

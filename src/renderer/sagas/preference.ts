@@ -11,7 +11,7 @@ export function* prepareState(action: PayloadAction) {
   const newPreferences = (yield call(libraries.loadPreferences)) as TMB.NormalizedScreenPreference;
   const actives = extractActives(newPreferences);
 
-  yield put(actions.updatePreferences(newPreferences));
+  yield put(actions.preparePreferences(newPreferences));
   for (const identifier of actives) {
     yield put(actions.prepareScreen(identifier));
   }
@@ -20,16 +20,16 @@ export function* prepareState(action: PayloadAction) {
   const gatekeeper = yield* call(facade.storage.getGatekeeperPreference);
   yield put(actions.updateGatekeeper(gatekeeper));
 }
-export function* reconfigure(action: PayloadAction) {
-  const state: TMB.State = yield select();
-  const {lineage} = state;
+export function* reconfigure(action: PayloadAction<{backstages: TMB.NormalizedScreenPreference}>) {
+  const {backstages: newBackstages} = action.payload;
+  const {preferences: oldBackstages, lineage} = yield select();
 
-  const oldPreferences = state.preferences;
-  const newPreferences = (yield call(libraries.loadPreferences)) as TMB.NormalizedScreenPreference;
-  const newIdentifiers = extractActives(newPreferences);
-  const oldIdentifiers = extractActives(oldPreferences);
+  facade.storage.setScreenPreferences(newBackstages);
 
-  yield put(actions.updatePreferences(newPreferences));
+  const newIdentifiers = extractActives(newBackstages);
+  const oldIdentifiers = extractActives(oldBackstages);
+
+  yield put(actions.preparePreferences(newBackstages));
   for (const identifier of newIdentifiers.filter((key) => !oldIdentifiers.includes(key))) {
     yield put(actions.prepareScreen(identifier));
   }

@@ -24,7 +24,6 @@ export namespace Actions {
   export const OPEN_EXTERNAL = "open_external";
   export const OPEN_TWEET_IN_BROWSER = "open_tweet_in_browser";
   export const OPEN_TWEET_MENU = "openTweetMenu";
-  export const REFRESH_PREFERENCES = "refresh_preferences";
   export const RELOAD = "reload";
   export const SEARCH = "search";
   export const SHOW_CHAIN_FOR_TWEET = "show_chain_for_tweet";
