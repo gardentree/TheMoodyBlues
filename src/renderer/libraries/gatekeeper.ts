@@ -13,7 +13,7 @@ export function guard(tweets: Twitter.Tweet[], preference: TMB.Gatekeeper): Twit
     return true;
   });
 }
-function check(tweet: Twitter.Tweet, passenger: TMB.PassengerPreference) {
+function check(tweet: Twitter.Tweet, passenger: TMB.Passenger) {
   if ([EVERYONE, tweet.user.id_str, tweet.retweeted_status?.user.id_str].includes(passenger.identifier)) {
     const matched = test(
       tweet,

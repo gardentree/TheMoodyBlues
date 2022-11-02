@@ -8,7 +8,7 @@ const Gatekeeper = () => {
   const gatekeeper = useSelector<TMB.State, TMB.Gatekeeper>((state) => {
     return state.gatekeeper;
   });
-  const [selectedPassenger, setSelectedPassenger] = useState<TMB.PassengerPreference>(gatekeeper.passengers[EVERYONE]);
+  const [selectedPassenger, setSelectedPassenger] = useState<TMB.Passenger>(gatekeeper.passengers[EVERYONE]);
 
   const dispatch = useDispatch();
   function handleDelete(keyword: string) {

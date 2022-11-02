@@ -75,14 +75,14 @@ const preference = {
 
     return Object.assign(preference, specifics);
   },
-  buildGatekeeper: (specifics?: Partial<TMB.Gatekeeper> | TMB.PassengerPreference[]): TMB.Gatekeeper => {
+  buildGatekeeper: (specifics?: Partial<TMB.Gatekeeper> | TMB.Passenger[]): TMB.Gatekeeper => {
     if (Array.isArray(specifics)) {
       return {passengers: convertRecord(specifics, "identifier"), checkedAt: Date.now()};
     } else {
       return Object.assign({}, GATEKEEPER, specifics);
     }
   },
-  buildPassenger: (specifics?: Partial<TMB.PassengerPreference> | TMB.Taboo[]): TMB.PassengerPreference => {
+  buildPassenger: (specifics?: Partial<TMB.Passenger> | TMB.Taboo[]): TMB.Passenger => {
     if (Array.isArray(specifics)) {
       return {
         identifier: EVERYONE,
