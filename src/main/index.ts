@@ -147,6 +147,21 @@ app.whenReady().then(() => {
     },
   ];
 
+  if (environment.isDevelopment()) {
+    template.push({
+      label: "Tool",
+      submenu: [
+        {
+          label: "Open DevTools",
+          accelerator: "F12",
+          click() {
+            mainWindow!.webContents.openDevTools();
+          },
+        },
+      ],
+    });
+  }
+
   const menu = Menu.buildFromTemplate(template);
   Menu.setApplicationMenu(menu);
 });
