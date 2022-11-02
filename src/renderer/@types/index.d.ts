@@ -4,7 +4,7 @@ declare namespace TheMoodyBlues {
   interface State {
     screens: NormalizedScreen;
     principal: Principal;
-    preferences: NormalizedScreenPreference;
+    backstages: NormalizedBackstage;
     gatekeeper: GatekeeperPreference;
     lineage: NormalizedLineage;
     form: FormState;

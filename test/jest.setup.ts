@@ -21,8 +21,8 @@ const facade: TMB.Facade = {
   storage: {
     getGatekeeperPreference: () => Promise.resolve(gatekeeper),
     setGatekeeperPreference: () => {},
-    getScreenPreferences: () => Promise.resolve(adapters.preferences.getInitialState()),
-    setScreenPreferences: (screens) => {},
+    getBackstages: () => Promise.resolve(adapters.backstages.getInitialState()),
+    setBackstages: (screens) => {},
     getTweets: (name) => Promise.resolve([]),
     setTweets: (name, tweets) => {},
   },

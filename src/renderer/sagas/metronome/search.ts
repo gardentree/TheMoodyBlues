@@ -5,10 +5,10 @@ import * as timer from "./timer";
 
 const {facade} = window;
 
-export function* initialize(identifier: TMB.ScreenID, preference: TMB.ScreenPreference) {
+export function* initialize(identifier: TMB.ScreenID, preference: TMB.Backstage) {
   yield timer.spawn(identifier, preference.interval);
 }
-export function* order(identifier: TMB.ScreenID, screen: TMB.Screen, preference: TMB.ScreenPreference, gatekeeper: TMB.GatekeeperPreference, force: boolean) {
+export function* order(identifier: TMB.ScreenID, screen: TMB.Screen, preference: TMB.Backstage, gatekeeper: TMB.GatekeeperPreference, force: boolean) {
   yield timer.stop(identifier);
 
   const oldTweets = screen.tweets;

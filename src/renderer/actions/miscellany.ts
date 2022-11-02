@@ -1,7 +1,7 @@
 import {createAction} from "@reduxjs/toolkit";
 
 export const prepareState = createAction("prepareState");
-export const reconfigure = createAction("reconfigure", (backstages: TMB.NormalizedScreenPreference) => ({
+export const reconfigure = createAction("reconfigure", (backstages: TMB.NormalizedBackstage) => ({
   payload: {
     backstages,
   },

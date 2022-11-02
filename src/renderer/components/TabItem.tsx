@@ -13,9 +13,9 @@ interface StateProps {
 const TabItem = (props: OwnProps) => {
   const {identifier} = props;
   const {title, unread} = useSelector<TMB.State, StateProps>((state) => {
-    const {screens, preferences} = state;
+    const {screens, backstages} = state;
     const screen = adapters.screens.getSelectors().selectById(screens, identifier)!;
-    const preference = adapters.preferences.getSelectors().selectById(preferences, identifier)!;
+    const preference = adapters.backstages.getSelectors().selectById(backstages, identifier)!;
 
     const {tweets, lastReadID} = screen;
     const unread = tweets ? tweets.filter((tweet: Twitter.Tweet) => tweet.id_str > lastReadID).length : 0;

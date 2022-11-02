@@ -9,8 +9,8 @@ describe(reorder.name, () => {
     const screen = builders.state.buildScreen({identifier: "search", options: {query: "くえりー"}});
     const screens = adapters.screens.addOne(adapters.screens.getInitialState(), screen);
 
-    const preference = builders.preference.buildScreen({identifier: "search"});
-    const preferences = adapters.preferences.addOne(adapters.preferences.getInitialState(), preference);
+    const backstage = builders.preference.buildBackstage({identifier: "search"});
+    const backstages = adapters.backstages.addOne(adapters.backstages.getInitialState(), backstage);
 
     return expectSaga(reorder, {
       type: "",
@@ -22,7 +22,7 @@ describe(reorder.name, () => {
           select() {
             return {
               screens: screens,
-              preferences: preferences,
+              backstages,
               principal: {
                 focused: "Timeline",
               },
@@ -64,8 +64,8 @@ describe(reorder.name, () => {
     const screen = builders.state.buildScreen({identifier: "search", options: {query: "くえりー"}});
     const screens = adapters.screens.addOne(adapters.screens.getInitialState(), screen);
 
-    const preference = builders.preference.buildScreen({identifier: "search"});
-    const preferences = adapters.preferences.addOne(adapters.preferences.getInitialState(), preference);
+    const backstage = builders.preference.buildBackstage({identifier: "search"});
+    const backstages = adapters.backstages.addOne(adapters.backstages.getInitialState(), backstage);
 
     return expectSaga(reorderFocusedScreen as SagaType, {
       payload: {},
@@ -76,7 +76,7 @@ describe(reorder.name, () => {
           select() {
             return {
               screens: screens,
-              preferences: preferences,
+              backstages,
               principal: {
                 focused: "search",
               },
@@ -124,11 +124,11 @@ describe(searchTweets.name, () => {
     },
   });
   const screens = adapters.screens.addMany(adapters.screens.getInitialState(), [screen]);
-  const preference = builders.preference.buildScreen({
+  const backstage = builders.preference.buildBackstage({
     identifier: "search",
   });
 
-  const preferences = adapters.preferences.addMany(adapters.preferences.getInitialState(), [preference]);
+  const backstages = adapters.backstages.addMany(adapters.backstages.getInitialState(), [backstage]);
 
   it("normal", () => {
     return expectSaga(searchTweets, {type: "", payload: {identifier: "search", query: "くえりー"}})
@@ -141,7 +141,7 @@ describe(searchTweets.name, () => {
               },
             },
             screens: screens,
-            preferences: preferences,
+            backstages,
             principal: {
               focused: "Timeline",
             },

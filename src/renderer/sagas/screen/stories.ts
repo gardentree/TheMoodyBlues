@@ -10,10 +10,10 @@ const {facade} = window;
 
 export function* launch(action: PayloadAction<{identifier: TMB.ScreenID}>) {
   const {payload} = action;
-  const {preferences} = yield select();
-  const preference = adapters.preferences.getSelectors().selectById(preferences, payload.identifier)!;
+  const {backstages} = yield select();
+  const backstage = adapters.backstages.getSelectors().selectById(backstages, payload.identifier)!;
 
-  yield metronome.launch(payload.identifier, preference);
+  yield metronome.launch(payload.identifier, backstage);
 }
 
 export function* reorder(action: PayloadAction<{identifier: TMB.ScreenID}, string, {force: boolean}>) {
@@ -25,16 +25,16 @@ export function* reorderFocusedScreen(action: PayloadAction<Record<string, never
   yield order(focused, action.meta.force);
 }
 function* order(identifier: TMB.ScreenID, force: boolean) {
-  const {screens, preferences, gatekeeper}: TMB.State = yield select();
+  const {screens, backstages, gatekeeper}: TMB.State = yield select();
   const screen = adapters.screens.getSelectors().selectById(screens, identifier)!;
-  const preference = adapters.preferences.getSelectors().selectById(preferences, identifier)!;
+  const backstage = adapters.backstages.getSelectors().selectById(backstages, identifier)!;
 
   const checkedGatekeeper = checkGatekeeper(gatekeeper);
   if (checkedGatekeeper.checkedAt != gatekeeper.checkedAt) {
     yield put(actions.updateGatekeeper(checkedGatekeeper));
   }
 
-  yield metronome.play(identifier, screen, preference, checkedGatekeeper, force);
+  yield metronome.play(identifier, screen, backstage, checkedGatekeeper, force);
 }
 export function checkGatekeeper(gatekeeper: TMB.GatekeeperPreference): TMB.GatekeeperPreference {
   const newGatekeeper = lodash.cloneDeep(gatekeeper);

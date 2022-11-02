@@ -18,10 +18,10 @@ const state = {
 };
 
 const preference = {
-  buildScreen: (specifics?: Partial<TMB.ScreenPreference>): TMB.ScreenPreference => {
+  buildBackstage: (specifics?: Partial<TMB.Backstage>): TMB.Backstage => {
     const identifier = specifics?.identifier || faker.helpers.unique(faker.datatype.uuid);
 
-    let preference: TMB.ScreenPreference | null;
+    let preference: TMB.Backstage | null;
     switch (specifics?.identifier) {
       case "home":
       case undefined:

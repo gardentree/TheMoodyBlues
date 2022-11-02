@@ -12,8 +12,8 @@ describe(reorder.name, () => {
     const home = builders.state.buildScreen({identifier: "home"});
     const screens = adapters.screens.addOne(adapters.screens.getInitialState(), home);
 
-    const preference = builders.preference.buildScreen({identifier: home.identifier});
-    const preferences = adapters.preferences.addOne(adapters.preferences.getInitialState(), preference);
+    const backstage = builders.preference.buildBackstage({identifier: home.identifier});
+    const backstages = adapters.backstages.addOne(adapters.backstages.getInitialState(), backstage);
 
     const indefinite = builders.preference.buildTaboo({keyword: "indefinite", expireAt: 0});
     const valid = builders.preference.buildTaboo({keyword: "valid", expireAt: now + 1000 * 60 * 30});
@@ -32,9 +32,9 @@ describe(reorder.name, () => {
           select() {
             return {
               screens: screens,
-              preferences: preferences,
+              backstages,
               principal: {
-                focused: preference.component,
+                focused: backstage.component,
               },
               gatekeeper: gatekeeper,
             };

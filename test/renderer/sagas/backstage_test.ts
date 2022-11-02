@@ -7,7 +7,7 @@ import rootReducer from "@source/renderer/actions/reducer";
 
 describe(prepareState.name, () => {
   it("reload", () => {
-    const preferences: TMB.NormalizedScreenPreference = adapters.preferences.addMany(adapters.preferences.getInitialState(), [builders.preference.buildScreen({identifier: "home"})]);
+    const backstages: TMB.NormalizedBackstage = adapters.backstages.addMany(adapters.backstages.getInitialState(), [builders.preference.buildBackstage({identifier: "home"})]);
     const gatekeeper: TMB.GatekeeperPreference = builders.preference.buildGatekeeper();
 
     return expectSaga(prepareState as SagaType, {
@@ -19,8 +19,8 @@ describe(prepareState.name, () => {
         {
           call(effect, next) {
             switch (effect.fn.name) {
-              case "loadPreferences":
-                return preferences;
+              case "loadBackstages":
+                return backstages;
               case "getGatekeeperPreference":
                 return gatekeeper;
               default:
@@ -58,7 +58,7 @@ describe(prepareState.name, () => {
               },
             },
           },
-          preferences: {
+          backstages: {
             ids: ["home"],
             entities: {
               home: {

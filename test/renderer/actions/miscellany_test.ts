@@ -16,7 +16,7 @@ describe("@renderer/actions/miscellany", () => {
     });
   });
   describe(reconfigure.toString(), () => {
-    const backstages = adapters.preferences.addMany(adapters.preferences.getInitialState(), [builders.preference.buildScreen()]);
+    const backstages = adapters.backstages.addMany(adapters.backstages.getInitialState(), [builders.preference.buildBackstage()]);
 
     it("as usual", () => {
       expect(reconfigure(backstages)).toEqual({

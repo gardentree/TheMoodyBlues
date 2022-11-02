@@ -20,8 +20,8 @@ const components = new Map<string, ContentComponent>([
 const WindowContent = (props: OwnProps) => {
   const {identifier} = props;
   const {component} = useSelector<TMB.State, StateProps>((state) => {
-    const {preferences} = state;
-    const preference = adapters.preferences.getSelectors().selectById(preferences, identifier)!;
+    const {backstages} = state;
+    const preference = adapters.backstages.getSelectors().selectById(backstages, identifier)!;
 
     return {
       component: components.get(preference.component)!,

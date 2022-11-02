@@ -30,10 +30,10 @@ export namespace Actions {
   export const SHOW_CONVERSATION_FOR_TWEET = "show_conversation_for_tweet";
   export const SHOW_MODE_MENU = "show_mode_menu";
   export const SHOW_VERIFIER_FORM = "show_verifier_form";
+  export const STORAGE_BACKSTAGES_LOAD = "storage_backstages_load";
+  export const STORAGE_BACKSTAGES_SAVE = "storage_backstages_save";
   export const STORAGE_MUTE_LOAD = "storage_mute_load";
   export const STORAGE_MUTE_SAVE = "storage_mute_save";
-  export const STORAGE_SCREEN_PREFERENCES_LOAD = "storage_screen_preferences_load";
-  export const STORAGE_SCREEN_PREFERENCES_SAVE = "storage_screen_preferences_save";
   export const STORAGE_TWEETS_LOAD = "storage_tweets_load";
   export const STORAGE_TWEETS_SAVE = "storage_tweets_save";
   export const ZOOM_IN = "zoom_in";

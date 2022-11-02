@@ -1,12 +1,12 @@
 import React, {useState} from "react";
-import Screen from "./Preferences/Screen";
+import Backstage from "./Preferences/Backstage";
 import Gatekeeper from "./Preferences/Gatekeeper";
 
 interface OwnProps {
   requestClose(): void;
 }
 
-const components: {[key: string]: React.FC} = {Gatekeeper, Screen};
+const components: {[key: string]: React.FC} = {Gatekeeper, Backstage};
 
 const Preferences = (_props: OwnProps) => {
   const [active, setActive] = useState("Gatekeeper");

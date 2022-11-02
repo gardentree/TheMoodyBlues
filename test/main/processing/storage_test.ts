@@ -36,7 +36,7 @@ describe("defaults", () => {
   const storage = build(`${__dirname}/storage/defaults`);
 
   it("screen", () => {
-    expect(storage.getScreenPreferences()).toEqual([HOME, SEARCH, MENTIONS]);
+    expect(storage.getBackstages()).toEqual([HOME, SEARCH, MENTIONS]);
   });
   it("gatekeeper", () => {
     expect(storage.getGatekeeperPreference()).toEqual({

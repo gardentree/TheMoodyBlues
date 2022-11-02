@@ -2,19 +2,19 @@ import {mixPreferences} from "@libraries/screen";
 import adapters from "@source/renderer/libraries/adapter";
 import {builders} from "@test/helper";
 
-const HOME = builders.preference.buildScreen({
+const HOME = builders.preference.buildBackstage({
   identifier: "home",
 });
-const SEARCH = builders.preference.buildScreen({
+const SEARCH = builders.preference.buildBackstage({
   identifier: "search",
 });
-const MENTIONS = builders.preference.buildScreen({
+const MENTIONS = builders.preference.buildBackstage({
   identifier: "mentions",
 });
 
 describe("mixPreferences", () => {
   it("when add empty", () => {
-    const current = adapters.preferences.addMany(adapters.preferences.getInitialState(), [HOME, SEARCH, MENTIONS]);
+    const current = adapters.backstages.addMany(adapters.backstages.getInitialState(), [HOME, SEARCH, MENTIONS]);
 
     expect(mixPreferences(current, []).entities).toEqual({
       home: HOME,
@@ -24,9 +24,9 @@ describe("mixPreferences", () => {
   });
 
   it("when add list", () => {
-    const current = adapters.preferences.addMany(adapters.preferences.getInitialState(), [HOME, SEARCH, MENTIONS]);
+    const current = adapters.backstages.addMany(adapters.backstages.getInitialState(), [HOME, SEARCH, MENTIONS]);
 
-    const list = builders.preference.buildScreen({
+    const list = builders.preference.buildBackstage({
       identifier: "list_news",
       title: "News",
       growl: true,
@@ -50,7 +50,7 @@ describe("mixPreferences", () => {
 
   it("modify", () => {
     const home = Object.assign({}, HOME, {interval: 240});
-    const current = adapters.preferences.addMany(adapters.preferences.getInitialState(), [home, SEARCH, MENTIONS]);
+    const current = adapters.backstages.addMany(adapters.backstages.getInitialState(), [home, SEARCH, MENTIONS]);
 
     expect(mixPreferences(current, []).entities).toEqual({
       home,

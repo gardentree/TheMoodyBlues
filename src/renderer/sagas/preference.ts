@@ -8,10 +8,10 @@ import adapters from "@libraries/adapter";
 const facade = window.facade;
 
 export function* prepareState(action: PayloadAction) {
-  const newPreferences = (yield call(libraries.loadPreferences)) as TMB.NormalizedScreenPreference;
+  const newPreferences = (yield call(libraries.loadBackstages)) as TMB.NormalizedBackstage;
   const actives = extractActives(newPreferences);
 
-  yield put(actions.preparePreferences(newPreferences));
+  yield put(actions.prepareBackstages(newPreferences));
   for (const identifier of actives) {
     yield put(actions.prepareScreen(identifier));
   }
@@ -20,16 +20,16 @@ export function* prepareState(action: PayloadAction) {
   const gatekeeper = yield* call(facade.storage.getGatekeeperPreference);
   yield put(actions.updateGatekeeper(gatekeeper));
 }
-export function* reconfigure(action: PayloadAction<{backstages: TMB.NormalizedScreenPreference}>) {
+export function* reconfigure(action: PayloadAction<{backstages: TMB.NormalizedBackstage}>) {
   const {backstages: newBackstages} = action.payload;
-  const {preferences: oldBackstages, lineage} = yield select();
+  const {backstages: oldBackstages, lineage} = yield select();
 
-  facade.storage.setScreenPreferences(newBackstages);
+  facade.storage.setBackstages(newBackstages);
 
   const newIdentifiers = extractActives(newBackstages);
   const oldIdentifiers = extractActives(oldBackstages);
 
-  yield put(actions.preparePreferences(newBackstages));
+  yield put(actions.prepareBackstages(newBackstages));
   for (const identifier of newIdentifiers.filter((key) => !oldIdentifiers.includes(key))) {
     yield put(actions.prepareScreen(identifier));
   }
@@ -43,10 +43,10 @@ export function* reconfigure(action: PayloadAction<{backstages: TMB.NormalizedSc
     }
   }
 }
-function extractActives(preferences: TMB.NormalizedScreenPreference): TMB.ScreenID[] {
-  return Object.values(preferences.entities)
-    .filter((preference) => preference!.active)
-    .map((preference) => preference!.identifier);
+function extractActives(backstages: TMB.NormalizedBackstage): TMB.ScreenID[] {
+  return Object.values(backstages.entities)
+    .filter((backstage) => backstage!.active)
+    .map((backstage) => backstage!.identifier);
 }
 
 // prettier-ignore

@@ -5,7 +5,7 @@ import * as timer from "./timer";
 
 const {facade} = window;
 
-export function* initialize(identifier: TMB.ScreenID, preference: TMB.ScreenPreference) {
+export function* initialize(identifier: TMB.ScreenID, preference: TMB.Backstage) {
   const tweets: Twitter.Tweet[] = yield call(facade.storage.getTweets, identifier);
 
   if (tweets.length > 0) {
@@ -18,7 +18,7 @@ export function* initialize(identifier: TMB.ScreenID, preference: TMB.ScreenPref
   yield timer.spawn(identifier, preference.interval);
   yield timer.start(identifier);
 }
-export function* order(identifier: TMB.ScreenID, screen: TMB.Screen, preference: TMB.ScreenPreference, gatekeeper: TMB.GatekeeperPreference, force: boolean) {
+export function* order(identifier: TMB.ScreenID, screen: TMB.Screen, preference: TMB.Backstage, gatekeeper: TMB.GatekeeperPreference, force: boolean) {
   const oldTweets = force ? [] : screen.tweets;
 
   const parameters = (preference.parameters || []).concat(latest(oldTweets) || []);

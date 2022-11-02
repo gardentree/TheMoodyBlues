@@ -3,7 +3,7 @@ type EntityState<T> = import("@reduxjs/toolkit").EntityState<T>;
 declare namespace TheMoodyBlues {
   type ScreenID = string;
 
-  interface ScreenPreference {
+  interface Backstage {
     identifier: ScreenID;
     title: string;
     component: "Timeline" | "Search";
@@ -14,7 +14,7 @@ declare namespace TheMoodyBlues {
     growl: boolean;
     mute: boolean;
   }
-  type NormalizedScreenPreference = EntityState<ScreenPreference>;
+  type NormalizedBackstage = EntityState<Backstage>;
 
   type PassengerIdentifier = "@everyone" | Twitter.UserID;
   type GatekeeperPreference = {
@@ -55,8 +55,8 @@ declare namespace TheMoodyBlues {
     storage: {
       getTweets(name: string): Promise<Twitter.Tweet[]>;
       setTweets(name: string, tweets: Twitter.Tweet[]): void;
-      getScreenPreferences(): Promise<NormalizedScreenPreference>;
-      setScreenPreferences(screens: NormalizedScreenPreference): void;
+      getBackstages(): Promise<NormalizedBackstage>;
+      setBackstages(screens: NormalizedBackstage): void;
       getGatekeeperPreference(): Promise<GatekeeperPreference>;
       setGatekeeperPreference(preference: GatekeeperPreference): void;
     };

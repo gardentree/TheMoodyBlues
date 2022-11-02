@@ -13,29 +13,29 @@ export const INITIAL_VALUE: TMB.Screen = {
   },
 };
 
-export async function loadPreferences(): Promise<TMB.NormalizedScreenPreference> {
-  return await facade.storage.getScreenPreferences();
+export async function loadBackstages(): Promise<TMB.NormalizedBackstage> {
+  return await facade.storage.getBackstages();
 }
 
-export function mixPreferences(current: TMB.NormalizedScreenPreference, lists: Twitter.List[]): TMB.NormalizedScreenPreference {
-  let allPreference = adapters.preferences.getInitialState();
-  const selector = adapters.preferences.getSelectors();
+export function mixPreferences(current: TMB.NormalizedBackstage, lists: Twitter.List[]): TMB.NormalizedBackstage {
+  let allPreference = adapters.backstages.getInitialState();
+  const selector = adapters.backstages.getSelectors();
 
-  allPreference = adapters.preferences.addOne(allPreference, selector.selectById(current, HOME.identifier)!);
+  allPreference = adapters.backstages.addOne(allPreference, selector.selectById(current, HOME.identifier)!);
 
   for (const list of lists) {
     const identifier = `list_${list.id_str}`;
     const currentList = selector.selectById(current, identifier);
     if (currentList) {
-      allPreference = adapters.preferences.addOne(allPreference, currentList);
+      allPreference = adapters.backstages.addOne(allPreference, currentList);
     } else {
       const newList = Object.assign({}, LIST, {active: true, identifier: identifier, title: list.name, parameters: [list.id_str]});
-      allPreference = adapters.preferences.addOne(allPreference, newList);
+      allPreference = adapters.backstages.addOne(allPreference, newList);
     }
   }
 
-  allPreference = adapters.preferences.addOne(allPreference, selector.selectById(current, SEARCH.identifier)!);
-  allPreference = adapters.preferences.addOne(allPreference, selector.selectById(current, MENTIONS.identifier)!);
+  allPreference = adapters.backstages.addOne(allPreference, selector.selectById(current, SEARCH.identifier)!);
+  allPreference = adapters.backstages.addOne(allPreference, selector.selectById(current, MENTIONS.identifier)!);
 
   return allPreference;
 }

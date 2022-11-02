@@ -7,7 +7,7 @@ describe("retrieveTimeline", () => {
     it("when have cache", () => {
       const identifier = "home";
 
-      const preference = builders.preference.buildScreen({
+      const preference = builders.preference.buildBackstage({
         identifier: identifier,
       });
 
@@ -101,7 +101,7 @@ describe("retrieveTimeline", () => {
         tweets: [old1],
         lastReadID: "0",
       });
-      const preference = builders.preference.buildScreen({
+      const preference = builders.preference.buildBackstage({
         identifier: "home",
       });
       const gatekeeper = builders.preference.buildGatekeeper();
