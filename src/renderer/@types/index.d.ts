@@ -1,5 +1,3 @@
-type FormState = import("redux-form").FormState | Record<string, unknown>;
-
 declare namespace TheMoodyBlues {
   interface State {
     screens: NormalizedScreen;
@@ -7,7 +5,6 @@ declare namespace TheMoodyBlues {
     backstages: NormalizedBackstage;
     gatekeeper: Gatekeeper;
     lineage: NormalizedLineage;
-    form: FormState;
   }
   type NormalizedScreen = EntityState<Screen>;
 

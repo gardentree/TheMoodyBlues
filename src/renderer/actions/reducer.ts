@@ -1,5 +1,4 @@
 import {combineReducers} from "redux";
-import {reducer as formReducer} from "redux-form";
 
 import screens from "./screens";
 import backstages from "./backstages";
@@ -13,5 +12,4 @@ export default combineReducers({
   gatekeeper,
   principal,
   lineage,
-  form: formReducer,
 });

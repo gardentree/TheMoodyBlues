@@ -78,7 +78,6 @@ describe(prepareState.name, () => {
             ids: [],
           },
           gatekeeper: gatekeeper,
-          form: {},
         };
 
         expect(storeState).toEqual(state);

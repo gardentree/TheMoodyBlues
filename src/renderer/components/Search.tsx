@@ -2,41 +2,37 @@ import {useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux";
 import Article from "./Article";
 import BranchBundle from "./BranchBundle";
-import {reduxForm, Field, InjectedFormProps} from "redux-form";
-import {formValueSelector} from "redux-form";
 import adapters from "@libraries/adapter";
 import * as actions from "@actions";
 import {css} from "@emotion/react";
+import {useForm} from "react-hook-form";
 
 interface OwnProps {
   identifier: TMB.ScreenID;
 }
 interface StateProps {
-  initialValues: {query: string};
-  hasQuery: boolean;
   branches: TMB.ScreenID[];
+  query: string;
 }
 interface FormProperty {
   query: string;
 }
 
-const Search = (props: OwnProps & InjectedFormProps<FormProperty, OwnProps>) => {
-  const {identifier, handleSubmit, reset} = props;
+const Search = (props: OwnProps) => {
+  const {identifier} = props;
+  const {register, handleSubmit, setValue} = useForm<FormProperty>();
 
-  const {hasQuery, branches} = useSelector<TMB.State, StateProps>((state) => {
+  const {branches, query} = useSelector<TMB.State, StateProps>((state) => {
     const {screens, lineage} = state;
     const screen = adapters.screens.getSelectors().selectById(screens, identifier)!;
     const branches = adapters.lineage.getSelectors().selectById(lineage, identifier)?.branches || [];
 
-    const selector = formValueSelector("Search");
-    const query = selector(state, "query");
-
     return {
-      initialValues: {query: screen.options?.query || ""},
-      hasQuery: query && query.length > 0,
       branches,
+      query: screen.options?.query || "",
     };
   });
+  setValue("query", query);
 
   const dispatch = useDispatch();
   function search(values: {query: string}) {
@@ -56,12 +52,11 @@ const Search = (props: OwnProps & InjectedFormProps<FormProperty, OwnProps>) => 
         <Article identifier={identifier}>
           <form className="search" onSubmit={handleSubmit(search)}>
             <div className="field">
-              <Field name="query" component="input" type="search" className="form-control" />
+              <input defaultValue="" {...register("query")} />
               <span
                 className="icon icon-cancel-circled"
-                style={{display: hasQuery ? "inline-block" : "none"}}
+                style={{display: query ? "inline-block" : "none"}}
                 onClick={() => {
-                  reset();
                   search({query: ""});
                 }}
               />
@@ -74,10 +69,7 @@ const Search = (props: OwnProps & InjectedFormProps<FormProperty, OwnProps>) => 
     </div>
   );
 };
-export default reduxForm<FormProperty, OwnProps>({
-  form: "Search",
-  enableReinitialize: true,
-})(Search);
+export default Search;
 
 const styles = css`
   height: 100%;
