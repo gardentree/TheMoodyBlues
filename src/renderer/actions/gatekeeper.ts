@@ -1,4 +1,4 @@
-import {createSlice, PayloadAction} from "@reduxjs/toolkit";
+import {createSlice, current, PayloadAction} from "@reduxjs/toolkit";
 import {GATEKEEPER} from "@shared/defaults";
 
 const facade = window.facade;
@@ -33,7 +33,7 @@ export const slice = createSlice({
         });
       }
 
-      facade.storage.setGatekeeper(state);
+      facade.storage.setGatekeeper(current(state));
 
       return state;
     },
@@ -42,7 +42,7 @@ export const slice = createSlice({
 
       delete state.passengers[identifier].taboos[keyword];
 
-      facade.storage.setGatekeeper(state);
+      facade.storage.setGatekeeper(current(state));
 
       return state;
     },
