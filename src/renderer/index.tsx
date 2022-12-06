@@ -36,7 +36,11 @@ facade.events.onShowVerifierForm(() => {
   const callback = (verifier: string) => {
     facade.actions.authorize(verifier);
   };
-  createRoot(document.getElementById("container")!).render(<VerifierForm callback={callback} />);
+  createRoot(document.getElementById("container")!).render(
+    <CacheProvider value={styleCache}>
+      <VerifierForm callback={callback} />
+    </CacheProvider>
+  );
 });
 facade.events.onLaunch(() => {
   const sagaMiddleware = createSagaMiddleware();

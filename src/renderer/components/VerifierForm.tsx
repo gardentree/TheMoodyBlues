@@ -22,7 +22,7 @@ const VerifierForm = (props: OwnProps) => {
       <header className="toolbar toolbar-header">
         <h1 className="title">The Moody Blues</h1>
       </header>
-      <div className="window-content">
+      <div className="window-content theme">
         <div css={styles}>
           <form onSubmit={handleSubmit}>
             <div className="form-group">
