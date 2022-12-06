@@ -19,7 +19,7 @@ describe(prepareState.name, () => {
         {
           call(effect, next) {
             switch (effect.fn.name) {
-              case "loadBackstages":
+              case "getBackstages":
                 return backstages;
               case "getGatekeeper":
                 return gatekeeper;

@@ -1,8 +1,5 @@
 import ElectronStore from "electron-store";
-import {HOME, SEARCH, MENTIONS, GATEKEEPER} from "@shared/defaults";
 import storage from "electron-json-storage";
-
-const SCREENS: TMB.Backstage[] = [HOME, SEARCH, MENTIONS].map((template) => Object.assign({active: true}, template));
 
 export function build(directory?: string) {
   const store = new ElectronStore({
@@ -31,15 +28,15 @@ export function build(directory?: string) {
       setStore("access_token.secret", value);
     },
 
-    getBackstages: (): TMB.NormalizedBackstage => {
-      return (getStore("backstages") as TMB.NormalizedBackstage) || SCREENS;
+    getBackstages: (): TMB.NormalizedBackstage | null => {
+      return getStore("backstages") as TMB.NormalizedBackstage | null;
     },
     setBackstages: (screens: TMB.NormalizedBackstage) => {
       setStore("backstages", screens);
     },
 
-    getGatekeeper: (): TMB.Gatekeeper => {
-      return (getStore("gatekeeper") as TMB.Gatekeeper) || GATEKEEPER;
+    getGatekeeper: (): TMB.Gatekeeper | null => {
+      return getStore("gatekeeper") as TMB.Gatekeeper | null;
     },
     setGatekeeper: (preference: TMB.Gatekeeper) => {
       setStore("gatekeeper", preference);

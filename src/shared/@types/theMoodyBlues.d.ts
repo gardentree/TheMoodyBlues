@@ -55,9 +55,9 @@ declare namespace TheMoodyBlues {
     storage: {
       getTweets(name: string): Promise<Twitter.Tweet[]>;
       setTweets(name: string, tweets: Twitter.Tweet[]): void;
-      getBackstages(): Promise<NormalizedBackstage>;
+      getBackstages(): Promise<NormalizedBackstage | null>;
       setBackstages(screens: NormalizedBackstage): void;
-      getGatekeeper(): Promise<Gatekeeper>;
+      getGatekeeper(): Promise<Gatekeeper | null>;
       setGatekeeper(preference: Gatekeeper): void;
     };
     actions: {

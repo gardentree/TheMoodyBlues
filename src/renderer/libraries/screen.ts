@@ -1,8 +1,6 @@
 import {HOME, SEARCH, MENTIONS, LIST} from "@shared/defaults";
 import adapters from "./adapter";
 
-const {facade} = window;
-
 export const INITIAL_VALUE: TMB.Screen = {
   identifier: "",
   tweets: [],
@@ -12,10 +10,6 @@ export const INITIAL_VALUE: TMB.Screen = {
     status: "",
   },
 };
-
-export async function loadBackstages(): Promise<TMB.NormalizedBackstage> {
-  return await facade.storage.getBackstages();
-}
 
 export function mixPreferences(current: TMB.NormalizedBackstage, lists: Twitter.List[]): TMB.NormalizedBackstage {
   let allPreference = adapters.backstages.getInitialState();

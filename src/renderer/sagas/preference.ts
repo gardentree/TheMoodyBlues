@@ -1,14 +1,14 @@
 import {put, call, takeLatest, select} from "typed-redux-saga";
 import {PayloadAction} from "@reduxjs/toolkit";
 import * as actions from "@actions";
-import * as libraries from "@libraries/screen";
 import {wrap} from "./library";
 import adapters from "@libraries/adapter";
+import {BACKSTAGES, GATEKEEPER} from "@shared/defaults";
 
 const facade = window.facade;
 
 export function* prepareState(action: PayloadAction) {
-  const newPreferences = (yield call(libraries.loadBackstages)) as TMB.NormalizedBackstage;
+  const newPreferences: TMB.NormalizedBackstage = ((yield call(facade.storage.getBackstages)) as TMB.NormalizedBackstage) || BACKSTAGES;
   const actives = extractActives(newPreferences);
 
   yield put(actions.prepareBackstages(newPreferences));
@@ -17,7 +17,7 @@ export function* prepareState(action: PayloadAction) {
   }
   yield put(actions.setScreens(actives));
 
-  const gatekeeper = yield* call(facade.storage.getGatekeeper);
+  const gatekeeper: TMB.Gatekeeper = (yield* call(facade.storage.getGatekeeper)) || GATEKEEPER;
   yield put(actions.updateGatekeeper(gatekeeper));
 }
 export function* reconfigure(action: PayloadAction<{backstages: TMB.NormalizedBackstage}>) {

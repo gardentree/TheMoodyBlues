@@ -11,7 +11,7 @@ async function getAllBackstage() {
   const lists = await facade.agent.lists();
   const current = await facade.storage.getBackstages();
 
-  return mixPreferences(current, lists);
+  return mixPreferences(current!, lists);
 }
 
 async function save() {

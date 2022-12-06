@@ -33,6 +33,16 @@ export const LIST: Omit<TMB.Backstage, "identifier" | "title" | "active"> = {
   growl: true,
 };
 
+export const BACKSTAGES = (() => {
+  return {
+    ids: [HOME, SEARCH, MENTIONS].map((backstage) => backstage.identifier),
+    entities: [HOME, SEARCH, MENTIONS].reduce((previous, current) => {
+      previous[current.identifier] = Object.assign({active: true}, current);
+      return previous;
+    }, {}),
+  };
+})();
+
 export const EVERYONE = "@everyone";
 export const GATEKEEPER: TMB.Gatekeeper = {
   passengers: {
