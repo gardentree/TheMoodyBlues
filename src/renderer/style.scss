@@ -39,7 +39,6 @@
 
 body {
   margin: 0;
-  -webkit-app-region: drag;
 }
 
 .ReactModal__Content {
@@ -71,7 +70,6 @@ body {
   .window-content {
     font-family: "Hiragino Sans";
     -webkit-font-smoothing: antialiased;
-    -webkit-app-region: no-drag;
   }
 
   & > .toolbar {

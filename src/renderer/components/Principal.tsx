@@ -70,6 +70,10 @@ const Principal = () => {
 export default Principal;
 
 const styles = css`
+  header {
+    -webkit-app-region: drag;
+  }
+
   .window-content {
     overflow: hidden;
   }
