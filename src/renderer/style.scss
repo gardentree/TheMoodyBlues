@@ -85,8 +85,13 @@ body {
   .toolbar,
   .tab-group {
     filter: var(--filter);
-    color: initial;
+    color: var(--text-color);
 
+    .tab-item {
+      & > * {
+        filter: var(--filter);
+      }
+    }
     form {
       filter: var(--filter);
     }

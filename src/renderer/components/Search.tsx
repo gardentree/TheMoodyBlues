@@ -75,12 +75,16 @@ const styles = css`
   height: 100%;
 
   form {
+    height: 100%;
+
     & > div {
       position: relative;
     }
 
     .field {
+      height: 100%;
       input {
+        height: 100%;
         width: 100%;
         border: solid 1px #ddd;
         border-radius: 4px;

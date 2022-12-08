@@ -27,20 +27,27 @@ const TabItem = (props: OwnProps) => {
   });
 
   return (
-    <div className="TabItem">
-      {title}
-      {unread > 0 && <span css={styles}>{unread}</span>}
+    <div css={container}>
+      <span>{title}</span>
+      {unread > 0 && <span css={badge}>{unread}</span>}
     </div>
   );
 };
 export default TabItem;
 
-const styles = css({
-  position: "absolute",
-  display: "inline-block",
-  right: "10px",
-  color: "white",
-  backgroundColor: "#969696",
-  padding: "0 10px",
-  borderRadius: "8px",
-});
+const container = css`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  line-height: 1;
+  padding: 2px 0;
+`;
+const badge = css`
+  position: absolute;
+  right: 10px;
+  color: white;
+  background-color: #969696;
+  padding: 2px 10px;
+  border-radius: 8px;
+`;

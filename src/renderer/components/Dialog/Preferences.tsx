@@ -27,7 +27,7 @@ const Preferences = (_props: OwnProps) => {
                 setActive(title);
               }}
             >
-              {title}
+              <span>{title}</span>
             </div>
           );
         })}
