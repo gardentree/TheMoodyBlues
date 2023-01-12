@@ -3,7 +3,6 @@ import createSagaMiddleware from "redux-saga";
 import {createLogger} from "redux-logger";
 import rootSaga from "./sagas";
 import rootReducer from "./actions/reducer";
-import * as actions from "@actions";
 import {setup as setupEvents} from "./events";
 import {environment} from "@shared/tools";
 
@@ -31,7 +30,6 @@ export function createStore() {
   sagaMiddleware.run(rootSaga);
 
   setupEvents(store);
-  store.dispatch(actions.prepareState());
 
   return store;
 }

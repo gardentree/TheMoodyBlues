@@ -32,7 +32,7 @@ const Principal = () => {
   }, [screens]);
 
   if (screens.length <= 0) {
-    return <div />;
+    return <div>loading</div>;
   }
 
   return (

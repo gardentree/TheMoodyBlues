@@ -4,7 +4,5 @@ import preference from "./preference";
 import window from "./window";
 
 export default function* rootSaga() {
-  yield all([...screen]);
-  yield all([...preference]);
-  yield all([...window]);
+  yield all([...screen, ...preference, ...window]);
 }

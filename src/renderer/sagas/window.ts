@@ -14,7 +14,7 @@ function* focusTweet(action: PayloadAction<{tweet: Twitter.Tweet}>) {
 
 function* focusLatestTweet(action: PayloadAction) {
   const container = getContainer();
-  const latest = <HTMLElement>container.querySelector("li:first-child *[tabindex='-1']")!;
+  const latest = <HTMLElement>container.querySelector("li:first-child > *[tabindex='-1']")!;
 
   yield scrollTo(container, latest, 500);
   yield latest.focus();
@@ -22,7 +22,7 @@ function* focusLatestTweet(action: PayloadAction) {
 
 function* focusUnreadTweet(action: PayloadAction) {
   const container = getContainer();
-  const unreads = container.querySelectorAll("li.unread *[tabindex='-1']");
+  const unreads = container.querySelectorAll("li.unread > *[tabindex='-1']");
   const oldest = <HTMLElement>Array.from(unreads).slice(-1)[0];
 
   if (oldest) {
@@ -46,7 +46,7 @@ export default [
 ];
 
 function getContainer(): Element {
-  const lists = document.querySelectorAll(".window-content[style*=block] .Article")!;
+  const lists = document.querySelectorAll("#principal > .window-content[style*=block] ol.tweets")!;
 
   return lists[lists.length - 1];
 }

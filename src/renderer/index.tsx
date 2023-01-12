@@ -5,6 +5,7 @@ import Principal from "./components/Principal";
 import {CacheProvider} from "@emotion/react";
 import {createStyleCache} from "./styles";
 import {createStore} from "./store";
+import * as actions from "@actions";
 
 const styleCache = createStyleCache();
 
@@ -21,6 +22,8 @@ facade.events.onShowVerifierForm(() => {
 });
 facade.events.onLaunch(() => {
   const store = createStore();
+
+  store.dispatch(actions.prepareState());
 
   createRoot(document.getElementById("container")!).render(
     <CacheProvider value={styleCache}>
