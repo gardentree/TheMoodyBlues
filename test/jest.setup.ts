@@ -1,4 +1,5 @@
 import adapters from "@source/renderer/libraries/adapter";
+import {GATEKEEPER} from "@source/shared/defaults";
 import nodeUtility from "util";
 import {builders} from "./helper";
 
@@ -6,9 +7,19 @@ if (typeof global.TextEncoder === "undefined") {
   global.TextEncoder = nodeUtility.TextEncoder;
 }
 
-const gatekeeper = builders.preference.buildGatekeeper();
+function createInitialStorage() {
+  return {
+    gatekeeper: GATEKEEPER,
+    backstages: adapters.backstages.getInitialState(),
+    tweets: {},
+  };
+}
+let storage = createInitialStorage();
+afterEach(() => {
+  storage = createInitialStorage();
+});
 
-const facade: TMB.Facade = {
+export const facade: TMB.Facade = {
   agent: {
     retrieveTimeline: (since_id) => Promise.resolve([]),
     search: (query, since_id) => Promise.resolve([]),
@@ -19,12 +30,18 @@ const facade: TMB.Facade = {
     retrieveTimelineOfList: (list_id, since_id) => Promise.resolve([]),
   },
   storage: {
-    getGatekeeper: () => Promise.resolve(gatekeeper),
-    setGatekeeper: () => {},
-    getBackstages: () => Promise.resolve(adapters.backstages.getInitialState()),
-    setBackstages: (screens) => {},
-    getTweets: (name) => Promise.resolve([]),
-    setTweets: (name, tweets) => {},
+    getGatekeeper: () => Promise.resolve(storage.gatekeeper),
+    setGatekeeper: (gatekeeper: TMB.Gatekeeper) => {
+      storage.gatekeeper = gatekeeper;
+    },
+    getBackstages: () => Promise.resolve(storage.backstages),
+    setBackstages: (backstages: TMB.NormalizedBackstage) => {
+      storage.backstages = backstages;
+    },
+    getTweets: (name) => Promise.resolve(storage.tweets[name]),
+    setTweets: (name, tweets) => {
+      storage.tweets[name] = tweets;
+    },
   },
   logger: {info: () => {}, verbose: () => {}, error: () => {}},
   actions: {
@@ -63,3 +80,7 @@ const facade: TMB.Facade = {
 };
 
 global.window.facade = facade;
+
+global.window.alert = (message) => {
+  console.error(message);
+};
