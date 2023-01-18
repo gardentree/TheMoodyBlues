@@ -32,7 +32,6 @@ const Search = (props: OwnProps) => {
       query: screen.options?.query || "",
     };
   });
-  setValue("query", query);
 
   const dispatch = useDispatch();
   function search(values: {query: string}) {
@@ -45,6 +44,9 @@ const Search = (props: OwnProps) => {
   useEffect(() => {
     didMount();
   }, []);
+  useEffect(() => {
+    setValue("query", query);
+  }, [query]);
 
   return (
     <div css={styles}>
